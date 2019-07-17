@@ -1,0 +1,55 @@
+@font-face {
+}
+
+.product-specs {
+  display: flex;
+  margin: auto;
+  margin-top: 95px;
+  height: 478px;
+  width: 80%;
+  background-position: right;
+  .box {
+    display: inline-block;
+    position: absolute;
+  }
+  .specs-inner-box {
+    width: 80%;
+    background-color: white;
+    border-radius: 5px;
+    margin-top: 45px;
+    padding: 4em;
+  }
+  .product-specs-title {
+    height: 38px;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    color: rgba(0, 0, 0, 0.65);
+    padding: 0;
+    text-align: left;
+    text-decoration: none;
+    cursor: default;
+    text-transform: capitalize;
+  }
+  .product-specs-item {
+  }
+  .product-specs-list {
+    &::before {
+      content: "\E916";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      color: #4099d3;
+      margin-left: -28px;
+      font-family: "cred-icon";
+      line-height: 1;
+    }
+  }
+}
+.product-specs-rtl {
+  background-position: left;
+  .specs {
+    right: 0;
+  }
+}
