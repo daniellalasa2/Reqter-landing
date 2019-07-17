@@ -28,13 +28,11 @@
   max-width: 947px;
   padding: 0 3px;
   margin: 50px auto 13px;
-  &:active {
-    border: 3px solid lightblue;
-  }
   .products {
-    display: flex;
+    display: inline-block;
     -ms-flex-pack: justify;
     justify-content: space-between;
+    padding: 0;
     li {
       border-radius: 4px;
       box-shadow: 0 1px 7px 0 rgba(141, 141, 141, 0.25);
@@ -46,7 +44,7 @@
       cursor: pointer;
       position: relative;
       display: -ms-flexbox;
-      display: inline;
+      display: inline-block;
       -ms-flex-direction: column;
       flex-direction: column;
       -ms-flex-align: center;
@@ -57,6 +55,7 @@
       text-align: center;
       margin-right: 1px;
       border: 4px #fff solid;
+      margin-left: 10px;
     }
     li:hover {
       top: -7px;

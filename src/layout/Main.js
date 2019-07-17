@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
 import Head from "./Head";
+import Footer from "./Footer";
 import { ProductSpecs, Title, SpecList, Spec, Btn } from "./ProductSpecs";
 import "../assets/styles/Main.scss";
 import ps from "../assets/images/ps.jpg";
@@ -73,6 +74,7 @@ class Layout extends Component {
             <Btn color="green">Compare Cards</Btn>
           </ProductSpecs>
         </section>
+        <Footer />
       </React.Fragment>
     );
   }

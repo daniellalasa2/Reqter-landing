@@ -1,0 +1,56 @@
+footer {
+  background: url("../images/footer-cover.jpg") no-repeat;
+  background-size: contain;
+  width: 100%;
+  display: block;
+  .contact-info-box {
+    width: 100%;
+  }
+  .contact-info {
+    color: white;
+    height: 356px;
+    .contact-button-box {
+      button {
+        background-color: transparent;
+        border: 1px solid white;
+        padding: 10px;
+        width: 200px;
+        margin: 40px 20px;
+        font-weight: bold;
+      }
+      button:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+  .footer-links {
+    background-color: #364b86;
+    height: 320px;
+    padding-top: 2em;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13px !important;
+  }
+  .column {
+    a {
+      color: #5cc1a7 !important;
+    }
+    text-align: left;
+    h6 {
+      font-size: 14px;
+      color: white;
+    }
+  }
+  .copyright {
+    a {
+      color: white;
+    }
+    margin-bottom: 0;
+    color: lightgrey;
+    font-size: 13px;
+    margin-top: 120px;
+  }
+}

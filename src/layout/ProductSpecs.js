@@ -7,10 +7,10 @@ function ProductSpecs(props) {
       <Row style={{ width: "100%", margin: 0, backgroundColor: "#f6f6f6" }}>
         <section
           className={
-            "product-specs " +
-            (props.direction === "rtl" ? "product-specs-rtl" : "")
+            "product-specs" +
+            (props.direction === "rtl" ? " product-specs-rtl" : "")
           }
-          style={{ background: `url(${props.img}) no-repeat` }}
+          style={{ background: `url(${props.img}) no-repeat right` }}
         >
           <div className="box specs">
             <div className="specs-inner-box">{props.children}</div>
