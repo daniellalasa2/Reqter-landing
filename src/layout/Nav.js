@@ -57,29 +57,46 @@ class Navigation extends Component {
   render() {
     return (
       <Row className="nav-main-container" id="nav-main-container">
-        <Col lg="3" className="nav-logo-container-col">
-          <img src={logo} alt="" width="45" />
-          <strong className="logo-text">eqter</strong>
+        <Col lg="6" className="nav-logo-container-col">
+          <img
+            src={logo}
+            alt=""
+            width="70"
+            onClick={() => {
+              window.location.href = ".";
+            }}
+          />
+          <span className="logo-text-box">
+            <strong className="logo-text">
+              Startup <br />
+              Space
+            </strong>
+          </span>
         </Col>
-        <Col lg="9" className="nav-links-container-col">
+        <Col lg="6" className="nav-links-container-col">
           <Nav className="nav-links-container">
-            <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+            <Dropdown
+              nav
+              isOpen={this.state.dropdownOpen}
+              toggle={this.toggle}
+              className="rtl"
+            >
               <DropdownToggle nav caret>
-                Compare
+                همکاری
               </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem>compare 1</DropdownItem>
-                <DropdownItem>compare 2</DropdownItem>
+              <DropdownMenu className="rtl">
+                <DropdownItem>فرصت های شغلی</DropdownItem>
+                <DropdownItem>همکاری تجاری</DropdownItem>
               </DropdownMenu>
             </Dropdown>
             <NavItem>
-              <NavLink href="#">About</NavLink>
+              <NavLink href="#">درباره ما</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#">FAQs</NavLink>
+              <NavLink href="#">سوالات متداول</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#">Login</NavLink>
+              <NavLink href="#">ورود</NavLink>
             </NavItem>
           </Nav>
         </Col>

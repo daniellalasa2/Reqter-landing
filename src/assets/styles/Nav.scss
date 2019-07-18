@@ -16,6 +16,15 @@
 }
 .nav-links-container-col {
   line-height: 2.3;
+  .logo-text-box {
+    margin-left: 10px;
+    display: inline-block;
+    font-size: 10px;
+    height: 66px;
+    font-family: monospace;
+    position: absolute;
+    top: 11px;
+  }
 }
 .nav-links-container {
   float: right;
@@ -26,8 +35,8 @@
 }
 .logo-text {
   color: #5a4f72;
-  font-size: 2.3em;
   vertical-align: middle;
+  line-height: 1;
 }
 .scrolledNav {
   padding: 7px 17px;
@@ -37,4 +46,20 @@
   a {
     color: black !important;
   }
+  .logo-text-box {
+    font-size: 16px;
+    top: 4px;
+  }
+  img {
+    width: 50px;
+  }
+}
+.logo-text-box {
+  margin-left: 10px;
+  display: inline-block;
+  font-size: 18px;
+  height: 66px;
+  font-family: monospace;
+  position: absolute;
+  top: 8px;
 }

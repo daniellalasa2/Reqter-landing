@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Container, Button } from "reactstrap";
 import "../assets/styles/ProductSpecs.scss";
+import classnames from "classnames";
 function ProductSpecs(props) {
   return (
     <React.Fragment>
@@ -22,20 +23,33 @@ function ProductSpecs(props) {
 }
 function Title(props) {
   return (
-    <span className="product-specs-title">
+    <span className={classnames("product-specs-title", props.className)}>
       <strong>{props.children}</strong>
     </span>
   );
 }
 function Spec(props) {
-  return <li className="product-specs-item">{props.children}</li>;
+  return (
+    <li className={classnames("product-specs-item", props.className)}>
+      {props.children}
+    </li>
+  );
 }
 function SpecList(props) {
-  return <ul className="product-specs-list">{props.children}</ul>;
+  return (
+    <ul className={classnames("product-specs-list", props.className)}>
+      {props.children}
+    </ul>
+  );
 }
 function Btn(props) {
   return (
-    <Button style={{ backgroundColor: props.color }}>{props.children}</Button>
+    <Button
+      style={{ backgroundColor: props.color }}
+      className={classnames(props.classNames)}
+    >
+      {props.children}
+    </Button>
   );
 }
 

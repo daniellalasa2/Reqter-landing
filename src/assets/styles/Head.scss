@@ -1,5 +1,5 @@
 .head-container {
-  background: url("../images/back.jpg") no-repeat;
+  background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
   height: 550px;
@@ -7,11 +7,13 @@
   padding: 0;
   margin: 0;
   position: relative;
-  .header-text {
-    margin: 8em auto;
+  transition: background-image 0.3 ease 0s;
+  .header-content {
+    margin: 100px auto 0;
     display: inline-block;
     position: relative;
     width: 100%;
+    height: 320px;
   }
 }
 .crooked-divider {
@@ -33,14 +35,19 @@
     -ms-flex-pack: justify;
     justify-content: space-between;
     padding: 0;
+    .active {
+      border: 4px solid #79c290;
+    }
     li {
+      width: 159px;
+      height: 135px;
       border-radius: 4px;
       box-shadow: 0 1px 7px 0 rgba(141, 141, 141, 0.25);
       background-color: white;
       position: relative;
       z-index: 1;
-      transition: all 0.3s ease 0s;
-      top: 0; /* start out at position 0 */
+      transition: all 0.2s ease 0s;
+      top: -54px; /* start out at position 0 */
       cursor: pointer;
       position: relative;
       display: -ms-flexbox;
@@ -51,14 +58,17 @@
       align-items: center;
       -ms-flex-pack: center;
       justify-content: center;
-      padding: 25px 20px 19px;
+      padding: 16px 8px 19px;
       text-align: center;
       margin-right: 1px;
       border: 4px #fff solid;
       margin-left: 10px;
+      .product-icons {
+        width: 48px;
+      }
     }
     li:hover {
-      top: -7px;
+      top: -62px;
     }
   }
 }
