@@ -14,8 +14,10 @@
     "popper.js": "^1.14.7",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-number-format": "^4.0.8",
     "react-scripts": "3.0.1",
-    "reactstrap": "^8.0.1"
+    "reactstrap": "^8.0.1",
+    "samim-font": "^1.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

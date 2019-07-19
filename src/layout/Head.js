@@ -1,9 +1,20 @@
 //core
 import React, { Component } from "react";
-import { Row, Col, TabContent, TabPane } from "reactstrap";
+import {
+  Row,
+  Col,
+  TabContent,
+  TabPane,
+  Input,
+  FormGroup,
+  Button,
+  InputGroup,
+  InputGroupAddon
+} from "reactstrap";
 import Navigation from "./Nav";
 import "../assets/styles/Head.scss";
 import classnames from "classnames";
+import NumberFormat from "react-number-format";
 //icons
 import startup from "../assets/images/products-icons/003-rocket.png";
 import privateOffice from "../assets/images/products-icons/004-meet.png";
@@ -44,6 +55,7 @@ class Head extends Component {
   render() {
     return (
       <React.Fragment>
+        <div className="picture-fader" />
         <Navigation />
         <Row>
           <Col lg="12">
@@ -60,62 +72,129 @@ class Head extends Component {
                   <TabPane tabId="1">
                     <Row>
                       <Col sm="12">
-                        <h2>
-                          <strong>موفقیت را فرا بخوان</strong>
-                        </h2>
-                        <h5>
-                          استارتاپ اسپیس پلتفرم جامع نیازمندیهای استارتاپی کشور
-                        </h5>
+                        <section className="default-header-content">
+                          <br />
+                          <br />
+                          <h2>
+                            <strong>موفقیت را فرا بخوان</strong>
+                          </h2>
+                          <h5>
+                            استارتاپ اسپیس پلتفرم جامع نیازمندیهای استارتاپی
+                            کشور
+                          </h5>
+                          <div className="feautures">
+                            <span />
+                            <span />
+                            <span />
+                          </div>
+                          <span className="choose-a-product">
+                            <strong>: یک محصول را انتخاب کنید </strong>
+                          </span>
+                        </section>
                       </Col>
                     </Row>
                   </TabPane>
                   <TabPane tabId="2">
                     <Row>
-                      <Col sm="6">
-                        <h4>Tab 2 Contents</h4>
-                      </Col>
-                      <Col sm="6">
-                        <h4>Tab 2 Contents</h4>
+                      <Col sm="12">
+                        <div className="product-request-form-box">
+                          <InputGroup size="lg">
+                            <InputGroupAddon addonType="prepend">
+                              <Button>شروع درخواست</Button>
+                            </InputGroupAddon>
+                            <Input type="number" min="1" placeholder="تعداد" />
+                            <Input type="select">
+                              <option>شهر</option>
+                              <option>تهران</option>
+                            </Input>
+                          </InputGroup>
+                        </div>
                       </Col>
                     </Row>
                   </TabPane>
                   <TabPane tabId="3">
                     <Row>
-                      <Col sm="6">
-                        <h4>Tab 3 Contents</h4>
-                      </Col>
-                      <Col sm="6">
-                        <h4>Tab 3 Contents</h4>
+                      <Col sm="12">
+                        <div className="product-request-form-box">
+                          <InputGroup size="lg">
+                            <InputGroupAddon addonType="prepend">
+                              <Button>شروع درخواست</Button>
+                            </InputGroupAddon>
+                            <Input type="number" min="1" placeholder="ظرفیت" />
+                            <Input type="select">
+                              <option>شهر</option>
+                              <option>تهران</option>
+                            </Input>
+                          </InputGroup>
+                        </div>
                       </Col>
                     </Row>
                   </TabPane>
                   <TabPane tabId="4">
                     <Row>
-                      <Col sm="6">
-                        <h4>Tab 4 Contents</h4>
-                      </Col>
-                      <Col sm="6">
-                        <h4>Tab 4 Contents</h4>
+                      <Col sm="12">
+                        <div className="product-request-form-box">
+                          <InputGroup size="lg">
+                            <InputGroupAddon addonType="prepend">
+                              <Button>شروع درخواست</Button>
+                            </InputGroupAddon>
+                            <NumberFormat
+                              thousandSeparator={true}
+                              customInput={Input}
+                              prefix="تومان "
+                              style={{ textAlign: "right" }}
+                              placeholder="چقدر سرمایه لازم داری؟"
+                            />
+                          </InputGroup>
+                        </div>
                       </Col>
                     </Row>
                   </TabPane>
                   <TabPane tabId="5">
                     <Row>
-                      <Col sm="6">
-                        <h4>Tab 5 Contents</h4>
-                      </Col>
-                      <Col sm="6">
-                        <h4>Tab 5 Contents</h4>
+                      <Col sm="12">
+                        <div className="product-request-form-box">
+                          <InputGroup size="lg">
+                            <InputGroupAddon addonType="prepend">
+                              <Button>شروع درخواست</Button>
+                            </InputGroupAddon>
+                            <Input type="number" min="1" placeholder="ظرفیت" />
+                            <Input type="select">
+                              <option>شهر</option>
+                              <option>تهران</option>
+                            </Input>
+                          </InputGroup>
+                        </div>
                       </Col>
                     </Row>
                   </TabPane>
                   <TabPane tabId="6">
                     <Row>
-                      <Col sm="6">
-                        <h4>Tab 6 Contents</h4>
-                      </Col>
-                      <Col sm="6">
-                        <h4>Tab 6 Contents</h4>
+                      <Col sm="12">
+                        <div className="product-request-form-box">
+                          <InputGroup size="lg">
+                            <InputGroupAddon addonType="prepend">
+                              <Button>شروع درخواست</Button>
+                            </InputGroupAddon>
+                            <Input type="select">
+                              <option>زمینه فعالیت</option>
+                              <option>فینتک</option>
+                              <option>حوزه سلامت</option>
+                              <option>گردشگری</option>
+                              <option>آموزش</option>
+                              <option>حمل و نقل</option>
+                              <option>صادرات و واردات</option>
+                              <option>کشاورزی</option>
+                              <option>مشاغل</option>
+                              <option>اینترنت اشیا</option>
+                              <option>اتوماسیون</option>
+                            </Input>
+                            <Input type="select">
+                              <option>شهر</option>
+                              <option>تهران</option>
+                            </Input>
+                          </InputGroup>
+                        </div>
                       </Col>
                     </Row>
                   </TabPane>

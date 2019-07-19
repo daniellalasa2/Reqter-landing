@@ -1,6 +1,6 @@
 .nav-main-container {
   padding: 23px 39px;
-  height: 80px;
+  height: 97px;
   position: fixed;
   z-index: 10;
   width: 100%;
@@ -28,13 +28,22 @@
 }
 .nav-links-container {
   float: right;
+  a.nav-link {
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
 }
 .nav-logo-container-col {
   text-align: left;
   line-height: 1.4;
+  img {
+    cursor: pointer;
+    width: 70px;
+  }
 }
 .logo-text {
-  color: #5a4f72;
+  color: whitesmoke;
   vertical-align: middle;
   line-height: 1;
 }
@@ -49,6 +58,9 @@
   .logo-text-box {
     font-size: 16px;
     top: 4px;
+    .logo-text {
+      color: #5a4f72;
+    }
   }
   img {
     width: 50px;

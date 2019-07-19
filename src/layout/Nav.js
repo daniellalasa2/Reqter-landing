@@ -61,7 +61,6 @@ class Navigation extends Component {
           <img
             src={logo}
             alt=""
-            width="70"
             onClick={() => {
               window.location.href = ".";
             }}
