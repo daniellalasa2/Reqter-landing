@@ -12,130 +12,98 @@ class Footer extends Component {
       <footer className="contact-info-box">
         <section className="contact-info">
           <h1 style={{ paddingTop: "90px", fontWeight: 400 }}>
-            Our Client Success Team is always here to help
+            تیم موفقیت مشتریان ما همیشه همراهته .
           </h1>
           <p style={{ fontSize: "25px", paddingTop: "10px" }}>
-            Have questions? We are only a call, email or chat away.
+            سوالی داری؟ فاصله ات با ما یه زنگ یا چت یا ایمیله :)
           </p>
           <div className="contact-button-box">
-            <Button>Contact Us</Button>
-            <Button>Read FAQs</Button>
+            <Button>تماس با ما</Button>
+            <Button>سوالات متداول</Button>
           </div>
         </section>
         <section className="footer-links">
           <Container>
             <Row>
               <Col className="column" lg="2">
-                <h6>PRODUCT</h6>
+                <h6>محصولات</h6>
                 <ul>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">فضای کار اشتراکی</a>
                   </li>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">سالن جلسات</a>
                   </li>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">جذب سرمایه</a>
                   </li>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">اتاق کار خصوصی</a>
                   </li>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">پذیرش استارت آپ</a>
                   </li>
                 </ul>
               </Col>
               <Col className="column" lg="2">
-                <h6>PRODUCT</h6>
+                <h6>پشتیبانی</h6>
                 <ul>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">سوالات متداول</a>
                   </li>
                   <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">امنیت</a>
                   </li>
                 </ul>
               </Col>
               <Col className="column" lg="2">
-                <h6>PRODUCT</h6>
+                <h6>شرکت</h6>
                 <ul>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">بلاگ</a>
                   </li>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">فرصت های شغلی</a>
                   </li>
                   <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">اخبار</a>
                   </li>
                 </ul>
               </Col>
               <Col className="column" lg="2">
-                <h6>PRODUCT</h6>
+                <h6>همکاران تجاری</h6>
                 <ul>
                   <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">درخواست همکاری</a>
                   </li>
                 </ul>
               </Col>
               <Col className="column" lg="2">
-                <h6>PRODUCT</h6>
+                <h6>قوانین و مجوز ها</h6>
                 <ul>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="" />
                   </li>
                   <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">قوانین استفاده</a>
                   </li>
                   <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
-                  </li>
-                  <li>
-                    <a href="">Credit Cards</a>
+                    <a href="">حریم خصوصی</a>
                   </li>
                 </ul>
               </Col>
             </Row>
             <Row className="copyright">
               <Col lg="12">
-                <span style={{ float: "left" }}>© 2019 Reqter</span>
-                <span style={{ float: "right" }}>
-                  FIND US: <a href="">Twitter</a> | <a href="">LinkedIn</a>
+                <span style={{ float: "right" }}>© 2019 Startup Space</span>
+                <span style={{ float: "left" }}>
+                  ما را دنبال کنید: <a href="">اینستاگرام</a> |{" "}
+                  <a href="">لینکداین</a>
                 </span>
                 <br />
                 <hr style={{ margin: 0, borderColor: "lightgrey" }} />
-                <span style={{ float: "left" }}>
-                  Credible Operations, Inc. NMLS ID# 1681276
+                <span style={{ float: "right" }}>
+                  حق کپی رایت برای استارت آپ اسپیس محفوظ است.
                 </span>
               </Col>
             </Row>

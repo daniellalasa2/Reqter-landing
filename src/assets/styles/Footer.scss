@@ -3,6 +3,8 @@ footer {
   background-size: contain;
   width: 100%;
   display: block;
+  direction: rtl;
+
   .contact-info-box {
     width: 100%;
   }
@@ -38,7 +40,7 @@ footer {
     a {
       color: #5cc1a7 !important;
     }
-    text-align: left;
+    text-align: right;
     h6 {
       font-size: 14px;
       color: white;

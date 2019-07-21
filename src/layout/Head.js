@@ -28,6 +28,7 @@ import conferenceRoomBgImg from "../assets/images/products-bgImg/conferenceRoom.
 import investBgImg from "../assets/images/products-bgImg/invest.jpg";
 import privateOfficeBgImg from "../assets/images/products-bgImg/privateOffice.jpg";
 import startupBgImg from "../assets/images/products-bgImg/startup.jpg";
+// import defaultGIF from "../assets/images/products-bgImg/default-gif.mp4";
 class Head extends Component {
   constructor(props) {
     super(props);
@@ -64,7 +65,8 @@ class Head extends Component {
               style={{
                 backgroundImage: `url(${
                   this.state.bgImg[this.state.activeTab]
-                })`
+                })`,
+                backgroundColor: "#93D2FA"
               }}
             >
               <div className="header-content">
