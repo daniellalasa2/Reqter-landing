@@ -6,13 +6,11 @@ import {
   TabContent,
   TabPane,
   Input,
-  FormGroup,
   Button,
   InputGroup,
   InputGroupAddon
 } from "reactstrap";
-import Navigation from "./Nav";
-import "../assets/styles/Head.scss";
+import "../assets/styles/Products.scss";
 import classnames from "classnames";
 import NumberFormat from "react-number-format";
 //icons
@@ -28,8 +26,8 @@ import conferenceRoomBgImg from "../assets/images/products-bgImg/conferenceRoom.
 import investBgImg from "../assets/images/products-bgImg/invest.jpg";
 import privateOfficeBgImg from "../assets/images/products-bgImg/privateOffice.jpg";
 import startupBgImg from "../assets/images/products-bgImg/startup.jpg";
-// import defaultGIF from "../assets/images/products-bgImg/default-gif.mp4";
-class Head extends Component {
+
+class Products extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
@@ -51,13 +49,11 @@ class Head extends Component {
         activeTab: tab
       });
     }
-    console.log(this.state.bgImg["2"]);
   }
   render() {
     return (
       <React.Fragment>
         <div className="picture-fader" />
-        <Navigation />
         <Row>
           <Col lg="12">
             <div
@@ -138,7 +134,9 @@ class Head extends Component {
                         <div className="product-request-form-box">
                           <InputGroup size="lg">
                             <InputGroupAddon addonType="prepend">
-                              <Button>شروع درخواست</Button>
+                              <Button className="invest-fields">
+                                شروع درخواست
+                              </Button>
                             </InputGroupAddon>
                             <NumberFormat
                               thousandSeparator={true}
@@ -146,7 +144,17 @@ class Head extends Component {
                               prefix="تومان "
                               style={{ textAlign: "right" }}
                               placeholder="چقدر سرمایه لازم داری؟"
+                              className="invest-fields"
                             />
+                            <Input type="select" className="invest-fields">
+                              <option>مرحله</option>
+                              <option>Pre-Seed</option>
+                              <option>Seed</option>
+                              <option>Round A</option>
+                              <option>Round B</option>
+                              <option>Round C</option>
+                              <option>Round D</option>
+                            </Input>
                           </InputGroup>
                         </div>
                       </Col>
@@ -213,6 +221,7 @@ class Head extends Component {
                     }}
                   >
                     <img src={cowork} alt="" className="product-icons" />
+
                     <br />
                     <br />
                     <strong>فضای کار اشتراکی</strong>
@@ -230,6 +239,7 @@ class Head extends Component {
                       alt=""
                       className="product-icons"
                     />
+
                     <br />
                     <br />
                     <strong>سالن جلسات</strong>
@@ -243,6 +253,7 @@ class Head extends Component {
                     }}
                   >
                     <img src={invest} alt="" className="product-icons" />
+
                     <br />
                     <br />
                     <strong>جذب سرمایه</strong>
@@ -256,6 +267,7 @@ class Head extends Component {
                     }}
                   >
                     <img src={privateOffice} alt="" className="product-icons" />
+
                     <br />
                     <br />
                     <strong>اتاق کار خصوصی</strong>
@@ -269,6 +281,7 @@ class Head extends Component {
                     }}
                   >
                     <img src={startup} alt="" className="product-icons" />
+
                     <br />
                     <br />
                     <strong>پذیرش استارتاپ</strong>
@@ -292,4 +305,4 @@ class Head extends Component {
   }
 }
 
-export default Head;
+export default Products;

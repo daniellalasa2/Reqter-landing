@@ -25,6 +25,9 @@
     height: 320px;
     z-index: 2;
     color: white;
+    .invest-fields {
+      font-size: 16px;
+    }
     .default-header-content {
       span.choose-a-product {
         margin: 161px auto 0;
@@ -77,9 +80,9 @@
   }
 }
 .crooked-divider {
-  height: 128px;
+  height: 145px;
   background-color: white;
-  width: 102%;
+  width: 107%;
   transform: rotate(-5deg);
   transform-origin: 100% 100%;
   bottom: 0;
@@ -98,7 +101,7 @@
     justify-content: space-between;
     padding: 0;
     .active {
-      border: 4px solid #79c290;
+      border: 4px solid #b8a4e6;
     }
     li {
       width: 159px;

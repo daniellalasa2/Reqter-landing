@@ -2,6 +2,7 @@ import React from "react";
 import { Row, Col, Container, Button } from "reactstrap";
 import "../assets/styles/ProductSpecs.scss";
 import classnames from "classnames";
+
 function ProductSpecs(props) {
   return (
     <React.Fragment>

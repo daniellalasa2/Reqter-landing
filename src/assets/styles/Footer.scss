@@ -26,9 +26,12 @@ footer {
     }
   }
   .footer-links {
-    background-color: #364b86;
+    background-color: #6d8ae0;
     height: 320px;
     padding-top: 2em;
+    h6 {
+      font-weight: bold;
+    }
   }
   ul {
     list-style: none;
@@ -38,7 +41,7 @@ footer {
   }
   .column {
     a {
-      color: #5cc1a7 !important;
+      color: white !important;
     }
     text-align: right;
     h6 {

@@ -10,6 +10,7 @@ import {
   Row,
   Col
 } from "reactstrap";
+
 import logo from "../assets/images/logo.jpg";
 import "../assets/styles/Nav.scss";
 
@@ -89,13 +90,13 @@ class Navigation extends Component {
               </DropdownMenu>
             </Dropdown>
             <NavItem>
-              <NavLink href="#">درباره ما</NavLink>
+              <NavLink href="/aboutus">درباره ما</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#">سوالات متداول</NavLink>
+              <NavLink href="/faq">سوالات متداول</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="#">ورود</NavLink>
+              <NavLink href="login">ورود</NavLink>
             </NavItem>
           </Nav>
         </Col>
