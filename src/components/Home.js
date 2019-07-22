@@ -1,7 +1,7 @@
 import React from "react";
 import { ProductSpecs, Title, SpecList, Spec, Btn } from "./ProductSpecs";
-import { Row, Col } from "reactstrap";
-import "../assets/styles/Main.scss";
+import { Button, Row, Col } from "reactstrap";
+import "../assets/styles/Home.scss";
 //Import images
 import startup from "../assets/images/startup.jpg";
 import sessionRoom from "../assets/images/session-room.jpg";
@@ -126,6 +126,22 @@ const Home = () => {
           </SpecList>
           <Btn color="#879cdd">رشدت رو شروع کن</Btn>
         </ProductSpecs>
+      </section>
+      <section className="contact-info">
+        <h1 style={{ paddingTop: "90px", fontWeight: 400 }}>
+          تیم موفقیت مشتریان ما همیشه همراهته .
+        </h1>
+        <p style={{ fontSize: "25px", paddingTop: "10px" }}>
+          سوالی داری؟ فاصله ات با ما یه زنگ یا چت یا ایمیله :)
+        </p>
+        <div className="contact-button-box">
+          <Button onClick={() => (window.location.href = "/comingsoon")}>
+            تماس با ما
+          </Button>
+          <Button onClick={() => (window.location.href = "/comingsoon")}>
+            سوالات متداول
+          </Button>
+        </div>
       </section>
     </React.Fragment>
   );

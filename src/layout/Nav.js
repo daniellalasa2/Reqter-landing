@@ -10,7 +10,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-
+import { Link } from "react-router-dom";
 import logo from "../assets/images/logo.jpg";
 import "../assets/styles/Nav.scss";
 
@@ -85,18 +85,26 @@ class Navigation extends Component {
                 همکاری
               </DropdownToggle>
               <DropdownMenu className="rtl">
-                <DropdownItem>فرصت های شغلی</DropdownItem>
-                <DropdownItem>همکاری تجاری</DropdownItem>
+                <DropdownItem
+                  onClick={() => (window.location.href = "/comingsoon")}
+                >
+                  فرصت های شغلی
+                </DropdownItem>
+                <DropdownItem
+                  onClick={() => (window.location.href = "/comingsoon")}
+                >
+                  همکاری تجاری
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
             <NavItem>
-              <NavLink href="/aboutus">درباره ما</NavLink>
+              <NavLink href="/comingsoon">درباره ما</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/faq">سوالات متداول</NavLink>
+              <NavLink href="/comingsoon">سوالات متداول</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="login">ورود</NavLink>
+              <NavLink href="/comingsoon">ورود</NavLink>
             </NavItem>
           </Nav>
         </Col>

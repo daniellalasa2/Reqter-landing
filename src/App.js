@@ -8,10 +8,13 @@ class App extends React.Component {
   loading = () => (
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
+  componentDidMount() {
+    // const element = document.getElementsByTagName("a");
+  }
   render() {
     return (
       <div className="App">
-        <BrowserRouter basename="/b7a9cea64a5ef2d8e1b515d5a514565d">
+        <BrowserRouter>
           <React.Suspense fallback={this.loading()}>
             <Switch>
               <Route

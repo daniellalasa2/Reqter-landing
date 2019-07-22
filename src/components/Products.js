@@ -13,6 +13,7 @@ import {
 import "../assets/styles/Products.scss";
 import classnames from "classnames";
 import NumberFormat from "react-number-format";
+import { Link } from "react-router-dom";
 //icons
 import startup from "../assets/images/products-icons/003-rocket.png";
 import privateOffice from "../assets/images/products-icons/004-meet.png";
@@ -40,6 +41,30 @@ class Products extends Component {
         "4": investBgImg,
         "5": privateOfficeBgImg,
         "6": startupBgImg
+      },
+      combo: {
+        startup: [
+          "فینتک",
+          "حوزه سلامت",
+          "گردشگری",
+          "آموزش",
+          "حمل و نقل",
+          "صادرات و واردات",
+          "کشاورزی",
+          "مشاغل",
+          "اینترنت اشیا",
+          "اتوماسیون",
+          "ورزشی"
+        ],
+        investing: [
+          "Pre-Seed",
+          "Seed",
+          "Round A",
+          "Round B",
+          "Round C",
+          "Round D"
+        ],
+        city: ["تهران"]
       }
     };
   }
@@ -49,6 +74,13 @@ class Products extends Component {
         activeTab: tab
       });
     }
+  }
+  fillCombo(name) {
+    return this.state.combo[name].map((val, key) => (
+      <option value={val} key={key}>
+        {val}
+      </option>
+    ));
   }
   render() {
     return (
@@ -98,12 +130,19 @@ class Products extends Component {
                         <div className="product-request-form-box">
                           <InputGroup size="lg">
                             <InputGroupAddon addonType="prepend">
-                              <Button>شروع درخواست</Button>
+                              <Button
+                                onClick={() =>
+                                  (window.location.href = "/comingsoon")
+                                }
+                              >
+                                شروع درخواست
+                              </Button>
                             </InputGroupAddon>
                             <Input type="number" min="1" placeholder="تعداد" />
+                            {/* Combo box */}
                             <Input type="select">
                               <option>شهر</option>
-                              <option>تهران</option>
+                              {this.fillCombo("city")}
                             </Input>
                           </InputGroup>
                         </div>
@@ -116,12 +155,18 @@ class Products extends Component {
                         <div className="product-request-form-box">
                           <InputGroup size="lg">
                             <InputGroupAddon addonType="prepend">
-                              <Button>شروع درخواست</Button>
+                              <Button
+                                onClick={() =>
+                                  (window.location.href = "/comingsoon")
+                                }
+                              >
+                                شروع درخواست
+                              </Button>
                             </InputGroupAddon>
                             <Input type="number" min="1" placeholder="ظرفیت" />
                             <Input type="select">
                               <option>شهر</option>
-                              <option>تهران</option>
+                              {this.fillCombo("city")}
                             </Input>
                           </InputGroup>
                         </div>
@@ -134,7 +179,12 @@ class Products extends Component {
                         <div className="product-request-form-box">
                           <InputGroup size="lg">
                             <InputGroupAddon addonType="prepend">
-                              <Button className="invest-fields">
+                              <Button
+                                onClick={() =>
+                                  (window.location.href = "/comingsoon")
+                                }
+                                className="invest-fields"
+                              >
                                 شروع درخواست
                               </Button>
                             </InputGroupAddon>
@@ -147,13 +197,8 @@ class Products extends Component {
                               className="invest-fields"
                             />
                             <Input type="select" className="invest-fields">
-                              <option>مرحله</option>
-                              <option>Pre-Seed</option>
-                              <option>Seed</option>
-                              <option>Round A</option>
-                              <option>Round B</option>
-                              <option>Round C</option>
-                              <option>Round D</option>
+                              <option>شهر</option>
+                              {this.fillCombo("city")}
                             </Input>
                           </InputGroup>
                         </div>
@@ -166,12 +211,18 @@ class Products extends Component {
                         <div className="product-request-form-box">
                           <InputGroup size="lg">
                             <InputGroupAddon addonType="prepend">
-                              <Button>شروع درخواست</Button>
+                              <Button
+                                onClick={() =>
+                                  (window.location.href = "/comingsoon")
+                                }
+                              >
+                                شروع درخواست
+                              </Button>
                             </InputGroupAddon>
                             <Input type="number" min="1" placeholder="ظرفیت" />
                             <Input type="select">
                               <option>شهر</option>
-                              <option>تهران</option>
+                              {this.fillCombo("city")}
                             </Input>
                           </InputGroup>
                         </div>
@@ -184,24 +235,15 @@ class Products extends Component {
                         <div className="product-request-form-box">
                           <InputGroup size="lg">
                             <InputGroupAddon addonType="prepend">
-                              <Button>شروع درخواست</Button>
+                              <Button type="submit">شروع درخواست</Button>
                             </InputGroupAddon>
                             <Input type="select">
                               <option>زمینه فعالیت</option>
-                              <option>فینتک</option>
-                              <option>حوزه سلامت</option>
-                              <option>گردشگری</option>
-                              <option>آموزش</option>
-                              <option>حمل و نقل</option>
-                              <option>صادرات و واردات</option>
-                              <option>کشاورزی</option>
-                              <option>مشاغل</option>
-                              <option>اینترنت اشیا</option>
-                              <option>اتوماسیون</option>
+                              {this.fillCombo("startup")}
                             </Input>
                             <Input type="select">
                               <option>شهر</option>
-                              <option>تهران</option>
+                              {this.fillCombo("city")}
                             </Input>
                           </InputGroup>
                         </div>

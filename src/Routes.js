@@ -17,8 +17,19 @@ const PartnerShip = React.lazy(() => import("./components/PartnerShip"));
 const Security = React.lazy(() => import("./components/Security"));
 const News = React.lazy(() => import("./components/News"));
 
+//temporary
+const ComingSoon = React.lazy(() =>
+  import("./components/DefaultInnerLinks.js")
+);
+
 const routes = [
   { path: "/", exact: true, name: "Home", component: Home },
+  {
+    path: "/comingsoon",
+    exact: true,
+    name: "Coming Soon",
+    component: ComingSoon
+  },
   {
     path: "/aboutus",
     exact: true,
