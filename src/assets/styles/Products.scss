@@ -17,6 +17,10 @@
   margin: 0;
   position: relative;
   transition: background-image 0.3 ease 0s;
+  a {
+    color: white;
+    text-decoration: none;
+  }
   .header-content {
     margin: 100px auto 0;
     display: inline-block;

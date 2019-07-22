@@ -65,8 +65,44 @@ class Products extends Component {
           "Round D"
         ],
         city: ["تهران"]
+      },
+      productForms: {
+        startup: {
+          city: null,
+          major: null
+        },
+        investing: {
+          city: null,
+          amount: null
+        },
+        privateOffice: {
+          city: null,
+          seats: null
+        },
+        conferenceRoom: {
+          seats: null,
+          city: null
+        },
+        coworking: {
+          city: null,
+          seats: null
+        }
       }
     };
+  }
+  formHandler(product, element) {
+    console.log(element.target.value);
+    const name = element.target.name;
+    const value = element.target.value;
+    this.setState({
+      productForms: {
+        ...this.state.productForms,
+        [product]: {
+          ...this.state.productForms[product],
+          [name]: value
+        }
+      }
+    });
   }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -235,13 +271,32 @@ class Products extends Component {
                         <div className="product-request-form-box">
                           <InputGroup size="lg">
                             <InputGroupAddon addonType="prepend">
-                              <Button type="submit">شروع درخواست</Button>
+                              <Button type="submit">
+                                <Link
+                                  to={{
+                                    pathname: "/apply/startup",
+                                    state: {
+                                      data: this.state.productForms.startup
+                                    }
+                                  }}
+                                >
+                                  شروع درخواست
+                                </Link>
+                              </Button>
                             </InputGroupAddon>
-                            <Input type="select">
+                            <Input
+                              type="select"
+                              onChange={this.formHandler.bind(this, "startup")}
+                              name="major"
+                            >
                               <option>زمینه فعالیت</option>
                               {this.fillCombo("startup")}
                             </Input>
-                            <Input type="select">
+                            <Input
+                              type="select"
+                              name="city"
+                              onChange={this.formHandler.bind(this, "startup")}
+                            >
                               <option>شهر</option>
                               {this.fillCombo("city")}
                             </Input>
