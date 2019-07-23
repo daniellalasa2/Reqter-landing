@@ -1,7 +1,6 @@
 import React, { Component, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import routes from "../Routes";
-
 const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
 
@@ -9,20 +8,18 @@ class Layout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      navTransformStatus: true
+      navTransformStatus: false
     };
   }
-  componentDidMount() {
-    this.navTransform(this.props.navTransform);
-  }
-  navTransform = status => {
+  enableNavTransform = () => {
     this.setState({
-      navTransformStatus: Boolean(status)
+      navTransformStatus: true
     });
   };
   loading = () => (
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
+
   render() {
     return (
       <React.Fragment>
@@ -37,7 +34,12 @@ class Layout extends Component {
                   path={route.path}
                   exact={route.exact}
                   name={route.name}
-                  render={props => <route.component {...props} />}
+                  render={props => (
+                    <route.component
+                      {...props}
+                      navTransform={this.enableNavTransform}
+                    />
+                  )}
                 />
               ) : null;
             })}

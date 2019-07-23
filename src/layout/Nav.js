@@ -22,6 +22,7 @@ class Navigation extends Component {
       dropdownOpen: false,
       didBodyScrolled: false
     };
+    console.log("nav props : ", this.props.transform);
   }
 
   componentDidMount() {

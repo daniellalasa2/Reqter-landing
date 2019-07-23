@@ -15,11 +15,22 @@ import "../assets/styles/Startup.scss";
 export default class StartUp extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      form: {
+        name: ""
+      }
+    };
   }
-  componentDidMount() {
-    console.log(this.props.navTransform);
-  }
+  handleForm = e => {
+    const value = e.target.value;
+    const name = e.target.name;
+    this.setState({
+      form: {
+        ...this.state.form,
+        [name]: value
+      }
+    });
+  };
   render() {
     return (
       <section className="startup-section">
@@ -32,23 +43,31 @@ export default class StartUp extends React.PureComponent {
               </CardHeader>
               <CardBody>
                 <div className="field-row">
-                  <label for="name">نام و نام خانوادگی&nbsp;&nbsp;</label>
-                  <Input type="text" value="" name="name" />
+                  <label>نام و نام خانوادگی&nbsp;&nbsp;</label>
+                  <Input type="text" onChange={this.handleForm} name="name" />
                 </div>
 
                 <div className="field-row">
-                  <label for="ideaname">نام ایده شما&nbsp;&nbsp;</label>
-                  <Input type="text" value="" name="ideaname" />
+                  <label>نام ایده شما&nbsp;&nbsp;</label>
+                  <Input
+                    type="text"
+                    onChange={this.handleForm}
+                    name="ideaname"
+                  />
                 </div>
 
                 <div className="field-row">
-                  <label for="ideaname">نام ایده شما&nbsp;&nbsp;</label>
-                  <Input type="select" value="" name="ideaname" />
+                  <label>نام ایده شما&nbsp;&nbsp;</label>
+                  <Input
+                    type="select"
+                    onChange={this.handleForm}
+                    name="ideaname"
+                  />
                 </div>
                 <div className="field-row">
                   <label className="checkboxContainer">
                     چک باکس
-                    <Input type="checkbox" checked="" />
+                    <Input type="checkbox" onChange={this.handleForm} />
                     <span className="checkmark" />
                   </label>
                 </div>
