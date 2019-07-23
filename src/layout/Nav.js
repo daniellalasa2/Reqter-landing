@@ -10,7 +10,8 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import classnames from "classnames";
+
 import logo from "../assets/images/logo.jpg";
 import "../assets/styles/Nav.scss";
 
@@ -24,7 +25,12 @@ class Navigation extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
+    if (Boolean(this.props.transform)) {
+      window.addEventListener("scroll", this.handleScroll);
+    } else {
+      const navMainContainer = document.getElementById("nav-main-container");
+      navMainContainer.classList.add("scrolledNav");
+    }
   }
 
   componentWillUnmount() {
@@ -34,7 +40,9 @@ class Navigation extends Component {
   handleScroll = event => {
     let scrollTop = window.scrollY;
     const navMainContainer = document.getElementById("nav-main-container");
+    console.log(Boolean(this.props.transform));
     //scroll from top 0 position
+    //check if this.props.transform is true then active scrolled navigation behavior
     if (scrollTop > 0 && !this.state.didBodyScrolled) {
       navMainContainer.classList.add("scrolledNav");
       this.setState({
@@ -50,7 +58,6 @@ class Navigation extends Component {
   };
 
   toggle = () => {
-    console.log(this.updater);
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
     });
@@ -63,7 +70,7 @@ class Navigation extends Component {
             src={logo}
             alt=""
             onClick={() => {
-              window.location.href = ".";
+              window.location.href = "/";
             }}
           />
           <span className="logo-text-box">

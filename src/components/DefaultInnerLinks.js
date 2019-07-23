@@ -1,5 +1,6 @@
 import React from "react";
-import img from "../assets/images/defaultInnerLinks.jpg";
+import img from "../assets/images/temporarily/defaultInnerLinks.jpg";
+import underconstruction from "../assets/images/temporarily/underconstruction.gif";
 const DefaultInnerLinks = () => {
   return (
     <React.Fragment>
@@ -26,12 +27,12 @@ const DefaultInnerLinks = () => {
       />
       <section
         style={{
-          height: "300px",
-          backgroundColor: "whitesmoke",
-          lineHeight: 10
+          height: "400px",
+          backgroundColor: "white",
+          lineHeight: 25
         }}
       >
-        <h1 style={{ lineHeight: 7.5 }}>Coming Soon :)</h1>
+        <img src={underconstruction} alt="under construction" />
       </section>
     </React.Fragment>
   );

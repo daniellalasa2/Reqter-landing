@@ -8,15 +8,25 @@ const Footer = React.lazy(() => import("./Footer"));
 class Layout extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      navTransformStatus: true
+    };
   }
-
+  componentDidMount() {
+    this.navTransform(this.props.navTransform);
+  }
+  navTransform = status => {
+    this.setState({
+      navTransformStatus: Boolean(status)
+    });
+  };
   loading = () => (
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
   render() {
     return (
       <React.Fragment>
-        <Navigation />
+        <Navigation transform={this.state.navTransformStatus} />
         {/* Routes */}
         <Suspense fallback={this.loading()}>
           <Switch>
