@@ -23,12 +23,13 @@ const ComingSoon = React.lazy(() =>
 );
 
 const routes = [
-  { path: "/", exact: true, name: "Home", component: Home },
+  { path: "/", exact: true, name: "Home", component: Home, navTransform: true },
   {
     path: "/comingsoon",
     exact: true,
     name: "Coming Soon",
-    component: ComingSoon
+    component: ComingSoon,
+    navTransform: true
   },
   {
     path: "/aboutus",

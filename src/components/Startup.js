@@ -10,6 +10,8 @@ import {
   CardFooter,
   CardBody
 } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "../assets/styles/FlatForm.scss";
 import "../assets/styles/Startup.scss";
 export default class StartUp extends React.PureComponent {
@@ -38,8 +40,17 @@ export default class StartUp extends React.PureComponent {
           <Col xs="12" sm="12" md={{ size: 8, offset: 2 }}>
             <Card style={{ margin: "auto" }}>
               <CardHeader>
-                <i className="" />
-                اطلاعات استارت آپ ::
+                <span className="fa-layers fa-fw icon">
+                  <FontAwesomeIcon
+                    icon={faInfoCircle}
+                    pull="right"
+                    size="lg"
+                    color="white"
+                  />
+                </span>
+                <span className="title">
+                  <strong>اطلاعات استارت آپ</strong>
+                </span>
               </CardHeader>
               <CardBody>
                 <div className="field-row">

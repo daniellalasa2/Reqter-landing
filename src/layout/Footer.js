@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
 import "../assets/styles/Footer.scss";
-
+import { Link } from "react-router-dom";
 class Footer extends Component {
   constructor(props) {
     super(props);
@@ -17,19 +17,19 @@ class Footer extends Component {
                 <h6>محصولات</h6>
                 <ul>
                   <li>
-                    <a href="/comingsoon">فضای کار اشتراکی</a>
+                    <Link to="/comingsoon">فضای کار اشتراکی</Link>
                   </li>
                   <li>
-                    <a href="/comingsoon">سالن جلسات</a>
+                    <Link to="/comingsoon">سالن جلسات</Link>
                   </li>
                   <li>
-                    <a href="/comingsoon">جذب سرمایه</a>
+                    <Link to="/comingsoon">جذب سرمایه</Link>
                   </li>
                   <li>
-                    <a href="/comingsoon">اتاق کار خصوصی</a>
+                    <Link to="/comingsoon">اتاق کار خصوصی</Link>
                   </li>
                   <li>
-                    <a href="/comingsoon">پذیرش استارت آپ</a>
+                    <Link to="/comingsoon">پذیرش استارت آپ</Link>
                   </li>
                 </ul>
               </Col>
@@ -37,10 +37,10 @@ class Footer extends Component {
                 <h6>پشتیبانی</h6>
                 <ul>
                   <li>
-                    <a href="/comingsoon">سوالات متداول</a>
+                    <Link to="/comingsoon">سوالات متداول</Link>
                   </li>
                   <li>
-                    <a href="/comingsoon">امنیت</a>
+                    <Link to="/comingsoon">امنیت</Link>
                   </li>
                 </ul>
               </Col>
@@ -48,13 +48,13 @@ class Footer extends Component {
                 <h6>شرکت</h6>
                 <ul>
                   <li>
-                    <a href="/comingsoon">بلاگ</a>
+                    <Link to="/comingsoon">بلاگ</Link>
                   </li>
                   <li>
-                    <a href="/comingsoon">فرصت های شغلی</a>
+                    <Link to="/comingsoon">فرصت های شغلی</Link>
                   </li>
                   <li>
-                    <a href="/comingsoon">اخبار</a>
+                    <Link to="/comingsoon">اخبار</Link>
                   </li>
                 </ul>
               </Col>
@@ -62,7 +62,7 @@ class Footer extends Component {
                 <h6>همکاران تجاری</h6>
                 <ul>
                   <li>
-                    <a href="/comingsoon">درخواست همکاری</a>
+                    <Link to="/comingsoon">درخواست همکاری</Link>
                   </li>
                 </ul>
               </Col>
@@ -70,13 +70,10 @@ class Footer extends Component {
                 <h6>قوانین و مجوز ها</h6>
                 <ul>
                   <li>
-                    <a href="/comingsoon" />
+                    <Link to="/comingsoon">قوانین استفاده</Link>
                   </li>
                   <li>
-                    <a href="/comingsoon">قوانین استفاده</a>
-                  </li>
-                  <li>
-                    <a href="/comingsoon">حریم خصوصی</a>
+                    <Link to="/comingsoon">حریم خصوصی</Link>
                   </li>
                 </ul>
               </Col>
@@ -85,8 +82,8 @@ class Footer extends Component {
               <Col lg="12">
                 <span style={{ float: "right" }}>© 2019 Startup Space</span>
                 <span style={{ float: "left" }}>
-                  ما را دنبال کنید: <a href="/comingsoon">اینستاگرام</a> |{" "}
-                  <a href="/comingsoon">لینکداین</a>
+                  ما را دنبال کنید: <Link to="/comingsoon">اینستاگرام</Link> |{" "}
+                  <Link to="/comingsoon">لینکداین</Link>
                 </span>
                 <br />
                 <hr style={{ margin: 0, borderColor: "lightgrey" }} />

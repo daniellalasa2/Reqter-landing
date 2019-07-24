@@ -11,7 +11,7 @@ import {
   Col
 } from "reactstrap";
 import classnames from "classnames";
-
+import { Link } from "react-router-dom";
 import logo from "../assets/images/logo.jpg";
 import "../assets/styles/Nav.scss";
 
@@ -22,10 +22,10 @@ class Navigation extends Component {
       dropdownOpen: false,
       didBodyScrolled: false
     };
-    console.log("nav props : ", this.props.transform);
   }
 
   componentDidMount() {
+    console.log("nav props: ", this.transform);
     if (Boolean(this.props.transform)) {
       window.addEventListener("scroll", this.handleScroll);
     } else {
@@ -41,7 +41,6 @@ class Navigation extends Component {
   handleScroll = event => {
     let scrollTop = window.scrollY;
     const navMainContainer = document.getElementById("nav-main-container");
-    console.log(Boolean(this.props.transform));
     //scroll from top 0 position
     //check if this.props.transform is true then active scrolled navigation behavior
     if (scrollTop > 0 && !this.state.didBodyScrolled) {
@@ -67,13 +66,7 @@ class Navigation extends Component {
     return (
       <Row className="nav-main-container" id="nav-main-container">
         <Col lg="6" className="nav-logo-container-col">
-          <img
-            src={logo}
-            alt=""
-            onClick={() => {
-              window.location.href = "/";
-            }}
-          />
+          <img src={logo} alt="" onClick={() => this.props.history.push("/")} />
           <span className="logo-text-box">
             <strong className="logo-text">
               Startup <br />
@@ -93,26 +86,28 @@ class Navigation extends Component {
                 همکاری
               </DropdownToggle>
               <DropdownMenu className="rtl">
-                <DropdownItem
-                  onClick={() => (window.location.href = "/comingsoon")}
-                >
+                <DropdownItem onClick={() => this.props.history.push("/")}>
                   فرصت های شغلی
                 </DropdownItem>
-                <DropdownItem
-                  onClick={() => (window.location.href = "/comingsoon")}
-                >
+                <DropdownItem onClick={() => this.props.history.push("/")}>
                   همکاری تجاری
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
             <NavItem>
-              <NavLink href="/comingsoon">درباره ما</NavLink>
+              <Link className="nav-link" to="/comingsoon">
+                درباره ما
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="/comingsoon">سوالات متداول</NavLink>
+              <Link className="nav-link" to="/comingsoon">
+                سوالات متداول
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="/comingsoon">ورود</NavLink>
+              <Link className="nav-link" to="/comingsoon">
+                ورود
+              </Link>
             </NavItem>
           </Nav>
         </Col>

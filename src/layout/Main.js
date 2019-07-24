@@ -5,29 +5,25 @@ const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
 
 class Layout extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      navTransformStatus: false
-    };
-  }
-  enableNavTransform = () => {
-    this.setState({
-      navTransformStatus: true
-    });
-  };
   loading = () => (
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
-
+  componentWillMount() {
+    this.unlisten = this.props.history.listen((location, action) => {
+      window.scrollTo({ top: 0 });
+    });
+  }
+  componentWillUnmount() {
+    this.unlisten();
+  }
   render() {
     return (
       <React.Fragment>
-        <Navigation transform={this.state.navTransformStatus} />
         {/* Routes */}
         <Suspense fallback={this.loading()}>
           <Switch>
             {routes.map((route, idx) => {
+              console.log(route.navTransform);
               return route.component ? (
                 <Route
                   key={idx}
@@ -35,10 +31,10 @@ class Layout extends Component {
                   exact={route.exact}
                   name={route.name}
                   render={props => (
-                    <route.component
-                      {...props}
-                      navTransform={this.enableNavTransform}
-                    />
+                    <React.Fragment>
+                      <Navigation transform={route.navTransform} {...props} />
+                      <route.component {...props} />
+                    </React.Fragment>
                   )}
                 />
               ) : null;

@@ -14,12 +14,7 @@ import offer from "../assets/images/service-icons/offer.png";
 
 const Products = React.lazy(() => import("./Products"));
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    this.props.navTransform();
-  }
+  componentDidMount() {}
   render() {
     return (
       <React.Fragment>
@@ -150,10 +145,10 @@ class Home extends React.Component {
             سوالی داری؟ فاصله ات با ما یه زنگ یا چت یا ایمیله :)
           </p>
           <div className="contact-button-box">
-            <Button onClick={() => (window.location.href = "/comingsoon")}>
+            <Button onClick={() => this.props.history.push("/comingsoon")}>
               تماس با ما
             </Button>
-            <Button onClick={() => (window.location.href = "/comingsoon")}>
+            <Button onClick={() => this.props.history.push("/comingsoon")}>
               سوالات متداول
             </Button>
           </div>
