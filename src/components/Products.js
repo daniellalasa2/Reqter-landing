@@ -233,8 +233,8 @@ class Products extends Component {
                               className="invest-fields"
                             />
                             <Input type="select" className="invest-fields">
-                              <option>شهر</option>
-                              {this.fillCombo("city")}
+                              <option>مرحله سرمایه گذاری</option>
+                              {this.fillCombo("investing")}
                             </Input>
                           </InputGroup>
                         </div>

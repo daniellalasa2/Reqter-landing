@@ -65,7 +65,7 @@ class Navigation extends Component {
   render() {
     return (
       <Row className="nav-main-container" id="nav-main-container">
-        <Col lg="6" className="nav-logo-container-col">
+        <Col xs="6" className="nav-logo-container-col">
           <img src={logo} alt="" onClick={() => this.props.history.push("/")} />
           <span className="logo-text-box">
             <strong className="logo-text">
@@ -74,7 +74,7 @@ class Navigation extends Component {
             </strong>
           </span>
         </Col>
-        <Col lg="6" className="nav-links-container-col">
+        <Col md="6" className="nav-links-container-col">
           <Nav className="nav-links-container">
             <Dropdown
               nav
