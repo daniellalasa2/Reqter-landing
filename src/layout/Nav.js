@@ -6,11 +6,9 @@ import {
   DropdownItem,
   DropdownToggle,
   DropdownMenu,
-  NavLink,
   Row,
   Col
 } from "reactstrap";
-import classnames from "classnames";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logo.jpg";
 import "../assets/styles/Nav.scss";
@@ -25,7 +23,6 @@ class Navigation extends Component {
   }
 
   componentDidMount() {
-    console.log("nav props: ", this.transform);
     if (Boolean(this.props.transform)) {
       window.addEventListener("scroll", this.handleScroll);
     } else {

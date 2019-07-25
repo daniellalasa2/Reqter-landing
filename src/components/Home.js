@@ -14,11 +14,13 @@ import offer from "../assets/images/service-icons/offer.png";
 
 const Products = React.lazy(() => import("./Products"));
 class Home extends React.Component {
-  componentDidMount() {}
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <React.Fragment>
-        <Products />
+        <Products {...this.props} />
         <section>
           <Row>
             <Col lg="12" style={{ padding: "5% 11%" }}>

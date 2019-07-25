@@ -31,6 +31,7 @@ import startupBgImg from "../assets/images/products-bgImg/startup.jpg";
 class Products extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
       activeTab: "1",
@@ -168,7 +169,7 @@ class Products extends Component {
                             <InputGroupAddon addonType="prepend">
                               <Button
                                 onClick={() =>
-                                  (window.location.href = "/comingsoon")
+                                  this.props.history.push("/comingsoon")
                                 }
                               >
                                 شروع درخواست
@@ -193,7 +194,7 @@ class Products extends Component {
                             <InputGroupAddon addonType="prepend">
                               <Button
                                 onClick={() =>
-                                  (window.location.href = "/comingsoon")
+                                  this.props.history.push("/comingsoon")
                                 }
                               >
                                 شروع درخواست
@@ -217,7 +218,7 @@ class Products extends Component {
                             <InputGroupAddon addonType="prepend">
                               <Button
                                 onClick={() =>
-                                  (window.location.href = "/comingsoon")
+                                  this.props.history.push("/comingsoon")
                                 }
                                 className="invest-fields"
                               >
@@ -249,7 +250,7 @@ class Products extends Component {
                             <InputGroupAddon addonType="prepend">
                               <Button
                                 onClick={() =>
-                                  (window.location.href = "/comingsoon")
+                                  this.props.history.push("/comingsoon")
                                 }
                               >
                                 شروع درخواست

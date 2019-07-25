@@ -23,7 +23,6 @@ class Layout extends Component {
         <Suspense fallback={this.loading()}>
           <Switch>
             {routes.map((route, idx) => {
-              console.log(route.navTransform);
               return route.component ? (
                 <Route
                   key={idx}

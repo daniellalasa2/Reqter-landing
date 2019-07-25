@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Container, Button } from "reactstrap";
+import { Row, Button } from "reactstrap";
 import "../assets/styles/ProductSpecs.scss";
 import classnames from "classnames";
 
