@@ -322,8 +322,7 @@ export default class StartUp extends React.Component {
     ));
   }
   submit = () => {
-    console.log(this.state.form._api);
-    SubmitForm(this.state.form.api, res => {
+    SubmitForm(this.state.form._api, res => {
       alert(res.message);
     });
   };
@@ -520,25 +519,32 @@ export default class StartUp extends React.Component {
                 </CardBody>
               </section>
               <CardFooter>
-                {this.state.form[`step${this.state.wizardInfo.currentStep}`]
-                  .isValid ? (
-                  this.state.wizardInfo.lastStep !==
-                  this.state.wizardInfo.currentStep ? (
-                    <Button
-                      className="navigation-button next"
-                      onClick={this.wizardStep.bind(this, "next")}
-                    >
-                      بعدی
-                    </Button>
-                  ) : (
-                    <Button
-                      className="navigation-button submit"
-                      onClick={this.submit.bind(this)}
-                    >
-                      ثبت
-                    </Button>
-                  )
-                ) : null}
+                {this.state.wizardInfo.lastStep !==
+                this.state.wizardInfo.currentStep ? (
+                  <Button
+                    className="navigation-button next"
+                    onClick={this.wizardStep.bind(this, "next")}
+                    disabled={
+                      !this.state.form[
+                        `step${this.state.wizardInfo.currentStep}`
+                      ].isValid
+                    }
+                  >
+                    بعدی
+                  </Button>
+                ) : (
+                  <Button
+                    className="navigation-button submit"
+                    onClick={this.submit.bind(this)}
+                    disabled={
+                      !this.state.form[
+                        `step${this.state.wizardInfo.currentStep}`
+                      ].isValid
+                    }
+                  >
+                    ثبت
+                  </Button>
+                )}
 
                 {this.state.wizardInfo.currentStep !==
                   this.state.wizardInfo.firstStep && (

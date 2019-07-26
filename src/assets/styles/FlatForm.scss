@@ -56,6 +56,9 @@ input:focus {
       &.next {
         float: right;
         background-color: #8ea3e3 !important;
+        &[disabled] {
+          cursor: not-allowed;
+        }
       }
       &.prev {
         float: left;
@@ -64,6 +67,9 @@ input:focus {
       &.submit {
         background-color: #53ba58 !important;
         float: left;
+        &[disabled] {
+          cursor: not-allowed;
+        }
       }
     }
   }
