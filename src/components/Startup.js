@@ -7,7 +7,9 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  CardBody
+  CardBody,
+  InputGroup,
+  ButtonGroup
 } from "reactstrap";
 import NumberFormat from "react-number-format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -189,10 +191,10 @@ export default class StartUp extends React.Component {
       return validationObj;
     }
   };
-  formStateHandler = e => {
+  formStateHandler = (val, e) => {
     let _this = e.target;
-    const value = _this.value;
     const name = _this.name;
+    const value = name === "teammembers" ? val : _this.value;
     const currentStep = this.state.wizardInfo.currentStep;
     const validation = this.validation(value, this.validationRules[name]);
     let checkStepValidation = () => {
@@ -214,7 +216,6 @@ export default class StartUp extends React.Component {
         }
       });
     };
-
     if (!validation.valid) {
       _this.classList.add("error-input");
       this.setState(
@@ -348,14 +349,28 @@ export default class StartUp extends React.Component {
                 </CardHeader>
                 <CardBody>
                   <div className="field-row">
+                    <label>چک باکس&nbsp;&nbsp;</label>
+                    <Input
+                      placeholder="نام و نام خانوادگی خود را وارد کنید."
+                      type="text"
+                      name="name"
+                      onChange={this.formStateHandler.bind(this, null)}
+                      // onBlur={this.formStateHandler.bind(this)}
+                      // autoFocus
+                    />
+                    <span className="error-message">
+                      {this.state.form.step1.fields.name.error}
+                    </span>
+                  </div>
+                  <div className="field-row">
                     <label>نام و نام خانوادگی&nbsp;&nbsp;</label>
                     <Input
                       placeholder="نام و نام خانوادگی خود را وارد کنید."
                       type="text"
                       name="name"
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
-                      autoFocus
+                      onChange={this.formStateHandler.bind(this, null)}
+                      // onBlur={this.formStateHandler.bind(this)}
+                      // autoFocus
                     />
                     <span className="error-message">
                       {this.state.form.step1.fields.name.error}
@@ -366,8 +381,8 @@ export default class StartUp extends React.Component {
                     <label>نام استارتاپ شما&nbsp;&nbsp;</label>
                     <Input
                       type="text"
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
+                      onChange={this.formStateHandler.bind(this, null)}
+                      onBlur={this.formStateHandler.bind(this, null)}
                       name="youridea"
                       placeholder="نام استارتاپ خود را وارد کنید."
                     />
@@ -379,8 +394,8 @@ export default class StartUp extends React.Component {
                     <label>شهر&nbsp;&nbsp;</label>
                     <Input
                       type="select"
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
+                      onChange={this.formStateHandler.bind(this, null)}
+                      onBlur={this.formStateHandler.bind(this, null)}
                       name="city"
                     >
                       <option>شهر</option>
@@ -395,8 +410,8 @@ export default class StartUp extends React.Component {
                     <label>کشور&nbsp;&nbsp;</label>
                     <Input
                       type="select"
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
+                      onChange={this.formStateHandler.bind(this, null)}
+                      onBlur={this.formStateHandler.bind(this, null)}
                       name="country"
                     >
                       <option>کشور</option>
@@ -411,8 +426,8 @@ export default class StartUp extends React.Component {
                     <label>حوزه فعالیتت&nbsp;&nbsp;</label>
                     <Input
                       type="select"
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
+                      onChange={this.formStateHandler.bind(this, null)}
+                      onBlur={this.formStateHandler.bind(this, null)}
                       name="domain"
                     >
                       <option>حوزه فعالیتت چیه؟</option>
@@ -427,8 +442,8 @@ export default class StartUp extends React.Component {
                     <label>مرحله استارتاپ&nbsp;&nbsp;</label>
                     <Input
                       type="select"
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
+                      onChange={this.formStateHandler.bind(this, null)}
+                      onBlur={this.formStateHandler.bind(this, null)}
                       name="stage"
                     >
                       <option>تو کدوم مرحله هستید؟</option>
@@ -443,8 +458,8 @@ export default class StartUp extends React.Component {
                     <label>خلاصه طرح شما&nbsp;&nbsp;</label>
                     <Input
                       type="textarea"
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
+                      onChange={this.formStateHandler.bind(this, null)}
+                      onBlur={this.formStateHandler.bind(this, null)}
                       name="summary"
                       placeholder="خلاصه طرحت رو وارد کن ."
                       rows="5"
@@ -458,8 +473,8 @@ export default class StartUp extends React.Component {
                     <label>مشکل حل شده توسط استارتاپ شما&nbsp;&nbsp;</label>
                     <Input
                       type="textarea"
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
+                      onChange={this.formStateHandler.bind(this, null)}
+                      onBlur={this.formStateHandler.bind(this, null)}
                       name="theproblem"
                       placeholder="استارتاپ شما چه مشکلی رو حل کرده ؟"
                       rows="5"
@@ -473,8 +488,8 @@ export default class StartUp extends React.Component {
                     <label>تجربه قبلی در شتاب دهنده&nbsp;&nbsp;</label>
                     <Input
                       type="textarea"
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
+                      onChange={this.formStateHandler.bind(this, null)}
+                      onBlur={this.formStateHandler.bind(this, null)}
                       name="acceleratorexperiance"
                       placeholder="اگه تجربه قبلی تو شتاب دهنده ای داشتی برامون بنویس ."
                       rows="5"
@@ -503,15 +518,88 @@ export default class StartUp extends React.Component {
                 <CardBody>
                   <div className="field-row">
                     <label>تعداد اعضای تیمت&nbsp;&nbsp;</label>
-                    <NumberFormat
-                      customInput={Input}
-                      style={{ textAlign: "right" }}
-                      onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
-                      placeholder="تعداد اعضای تیمت"
-                      name="teammembers"
-                      min={1}
-                    />
+                    <ButtonGroup>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 1)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 1}
+                      >
+                        ۱
+                      </Button>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 2)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 2}
+                      >
+                        ۲
+                      </Button>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 3)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 3}
+                      >
+                        ۳
+                      </Button>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 4)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 4}
+                      >
+                        ۴
+                      </Button>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 5)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 5}
+                      >
+                        ۵
+                      </Button>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 6)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 6}
+                      >
+                        ۶
+                      </Button>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 7)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 7}
+                      >
+                        ۷
+                      </Button>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 8)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 8}
+                      >
+                        ۸
+                      </Button>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 9)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 9}
+                      >
+                        ۹
+                      </Button>
+                      <Button
+                        outline
+                        onClick={this.formStateHandler.bind(this, 10)}
+                        name="teammembers"
+                        active={this.state.form._api.teammembers === 10}
+                      >
+                        + ۱۰
+                      </Button>
+                    </ButtonGroup>
                     <span className="error-message">
                       {this.state.form.step2.fields.teammembers.error}
                     </span>
