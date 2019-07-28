@@ -17,6 +17,8 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "../assets/styles/FlatForm.scss";
 import "../assets/styles/Startup.scss";
 import { SubmitForm } from "./ApiHandlers/ApiHandler";
+import { ImageCheckBox, InlineCheckBox } from "./CustomCheckbox/CustomCheckbox";
+import checkboxImg from "../assets/images/logo.jpg";
 export default class StartUp extends React.Component {
   constructor(props) {
     super(props);
@@ -327,6 +329,9 @@ export default class StartUp extends React.Component {
       alert(res.message);
     });
   };
+  checkBox = (val, e) => {
+    console.log(e);
+  };
   render() {
     return (
       <section className="startup-section rtl-layout">
@@ -348,20 +353,6 @@ export default class StartUp extends React.Component {
                   </span>
                 </CardHeader>
                 <CardBody>
-                  <div className="field-row">
-                    <label>چک باکس&nbsp;&nbsp;</label>
-                    <Input
-                      placeholder="نام و نام خانوادگی خود را وارد کنید."
-                      type="text"
-                      name="name"
-                      onChange={this.formStateHandler.bind(this, null)}
-                      // onBlur={this.formStateHandler.bind(this)}
-                      // autoFocus
-                    />
-                    <span className="error-message">
-                      {this.state.form.step1.fields.name.error}
-                    </span>
-                  </div>
                   <div className="field-row">
                     <label>نام و نام خانوادگی&nbsp;&nbsp;</label>
                     <Input
@@ -496,6 +487,34 @@ export default class StartUp extends React.Component {
                     />
                     <span className="error-message">
                       {this.state.form.step1.fields.acceleratorexperiance.error}
+                    </span>
+                  </div>
+                  <div className="field-row">
+                    <label>چک باکس&nbsp;&nbsp;</label>
+
+                    <ImageCheckBox
+                      imgSrc={checkboxImg}
+                      onChange={this.checkBox}
+                      checked={false}
+                      title="فضای کار اشتراکی"
+                    />
+                    <ImageCheckBox
+                      imgSrc={checkboxImg}
+                      onChange={this.checkBox}
+                      checked={false}
+                      title="صندلی اختصاصی"
+                      style={{}}
+                    />
+                    <InlineCheckBox
+                      checked={false}
+                      title="اختصاصی"
+                      onChange={() => console.log("selected")}
+                      width="200"
+                      boxValue="C"
+                      dir="ltr"
+                    />
+                    <span className="error-message">
+                      {this.state.form.step1.fields.name.error}
                     </span>
                   </div>
                 </CardBody>

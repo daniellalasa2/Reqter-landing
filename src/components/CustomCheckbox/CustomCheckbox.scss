@@ -1,0 +1,124 @@
+.hidden-checkbox {
+  display: none;
+}
+.styled-checkbox-wrapper {
+  width: auto;
+  display: inline-block;
+  width: 150px;
+  height: 183px;
+  margin: 10px;
+  .styled-checkbox {
+    cursor: pointer;
+    background-color: rgba(232, 232, 232, 0.7);
+    padding: 11px;
+
+    position: relative;
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    &:after {
+      content: "";
+      box-sizing: content-box;
+    }
+    .checked-icon {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      opacity: 0.5;
+      display: none;
+      #tickSvg {
+        width: 20px;
+        position: absolute;
+        right: 3px;
+      }
+      #polygon {
+        border-radius: 0px 5px;
+        position: absolute;
+        right: 0;
+      }
+    }
+    img {
+      width: 120px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .title {
+      font-weight: bold;
+      text-align: center;
+      width: 100%;
+      display: inline-block;
+      margin-top: 10px;
+      line-height: 1;
+    }
+    &.checked {
+      border-width: 2px;
+      margin: -1px;
+      .checked-icon {
+        display: block;
+      }
+    }
+  }
+}
+.inline-checkbox-wrapper {
+  line-height: 2.2;
+  display: inline-flex;
+  width: auto;
+  .inline-checkbox {
+    overflow: hidden;
+    cursor: pointer;
+    padding: 2px;
+    height: 45px;
+    border-radius: 5px;
+    width: auto;
+    border: 1px solid green;
+    background-color: rgba(158, 214, 152, 0.6);
+    display: inline-flex;
+    .key {
+      width: 40px;
+      display: inline-flex;
+      text-align: center;
+      span {
+        width: 36px;
+        border: 1px solid green;
+        background-color: rgba(240, 240, 240, 0.4);
+        margin: 2px;
+        display: block;
+        border-radius: 5px;
+      }
+    }
+    .title {
+      width: auto;
+      display: inline-flex;
+      text-align: center;
+      max-width: auto;
+      overflow: hidden;
+      margin: auto 5px;
+      height: 40px;
+    }
+    .checked-icon {
+      width: 40px;
+      display: inline-flex;
+      #tickSvg {
+        margin: auto;
+        display: none;
+        width: 20px;
+        margin: auto;
+      }
+    }
+    &.checked {
+      border-width: 2px;
+      margin: -1px;
+      .key {
+        span {
+          background-color: darkgreen;
+          color: white;
+        }
+      }
+      .checked-icon {
+        #tickSvg {
+          display: inline-flex;
+        }
+      }
+    }
+  }
+}
