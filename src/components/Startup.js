@@ -509,9 +509,8 @@ export default class StartUp extends React.Component {
                       checked={false}
                       title="اختصاصی"
                       onChange={() => console.log("selected")}
-                      width="200"
-                      boxValue="C"
-                      dir="ltr"
+                      boxValue="الف"
+                      dir="rtl"
                     />
                     <span className="error-message">
                       {this.state.form.step1.fields.name.error}
