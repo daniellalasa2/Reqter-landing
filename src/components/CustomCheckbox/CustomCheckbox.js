@@ -5,23 +5,78 @@ import "./CustomCheckbox.scss";
 class CheckBoxRow extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      checkedElements: [],
+      renderedChildren: this.childRenderer()
+    };
     this.thisRef = React.createRef();
   }
+  removeObjByKey = (array, object, indexName) => {
+    array.forEach((val, key) => {
+      if (val[indexName] === object[indexName]) {
+        array.splice(key, 1);
+      }
+    });
+    return array;
+  };
   selectionHandler = data => {
     const type = this.props.type || "checkbox";
     switch (type) {
       case "checkbox":
+        var arr = this.state.checkedElements;
+        if (data.checked) {
+          arr.push(data);
+          this.setState(
+            {
+              checkedElements: arr
+            },
+            () => {
+              this.props.onChange();
+            }
+          );
+        } else {
+          arr = this.removeObjByKey(arr, data, "key");
+          this.setState(
+            {
+              checkedElements: arr
+            },
+            () => {
+              this.props.onChange(this.state.checkedElements);
+            }
+          );
+        }
         break;
       case "radio":
+        const newChilds = React.Children.map(this.props.children, child => {
+          return React.cloneElement(child, {
+            width: `${this.childWidth}px`,
+            onChange: this.selectionHandler,
+            checked: child.key == data.key
+          });
+        });
+        this.setState(
+          {
+            checkedElements: data,
+            renderedChildren: newChilds
+          },
+          () => {
+            this.props.onChange(this.state.checkedElements);
+          }
+        );
         break;
 
       default:
         console.warn('CheckBoxRow component expected a "type" property .');
         break;
     }
-
-    console.log("handled: ", type);
+  };
+  childRenderer = newProps => {
+    return React.Children.map(this.props.children, child =>
+      React.cloneElement(child, {
+        width: `${this.childWidth}px`,
+        onChange: this.selectionHandler
+      })
+    );
   };
   componentDidMount() {
     //get width from props or style !!!!
@@ -30,12 +85,6 @@ class CheckBoxRow extends React.PureComponent {
   }
 
   render() {
-    const checkBoxes = React.Children.map(this.props.children, child =>
-      React.cloneElement(child, {
-        width: `${this.childWidth}px`,
-        onChange: this.selectionHandler
-      })
-    );
     return (
       <div
         ref={this.thisRef}
@@ -44,7 +93,7 @@ class CheckBoxRow extends React.PureComponent {
           boxSizing: "content-box"
         }}
       >
-        {checkBoxes}
+        {this.state.renderedChildren}
       </div>
     );
   }

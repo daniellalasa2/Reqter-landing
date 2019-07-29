@@ -195,6 +195,9 @@ export default class StartUp extends React.Component {
       return validationObj;
     }
   };
+  handleCheckBox = data => {
+    console.log("checkbox data: ", data);
+  };
   formStateHandler = (val, e) => {
     let _this = e.target;
     const name = _this.name;
@@ -363,7 +366,12 @@ export default class StartUp extends React.Component {
                 </CardHeader>
                 <CardBody>
                   <div className="field-row">
-                    <CheckBoxRow rowitems="4">
+                    <CheckBoxRow
+                      rowitems="4"
+                      onChange={() => this.handleCheckBox}
+                      type="radio"
+                      style={{ width: "100%" }}
+                    >
                       <InlineCheckBox
                         checked={false}
                         title={"hi2"}
@@ -372,7 +380,7 @@ export default class StartUp extends React.Component {
                         dir="ltr"
                       />
                       <InlineCheckBox
-                        checked={true}
+                        checked={false}
                         title={"hi2"}
                         key={2}
                         boxValue={2}
