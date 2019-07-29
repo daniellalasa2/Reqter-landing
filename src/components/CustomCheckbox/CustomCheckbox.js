@@ -1,6 +1,10 @@
 import React, { useRef } from "react";
 import "./CustomCheckbox.scss";
 
+//TODO:
+//  radio and checkbox default select must return default selected field
+//  grid items happening after select an element not at the beginning of rendering
+
 //HOC wrapper
 class CheckBoxRow extends React.PureComponent {
   constructor(props) {
