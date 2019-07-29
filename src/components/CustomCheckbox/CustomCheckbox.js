@@ -1,5 +1,9 @@
 import React, { useRef } from "react";
 import "./CustomCheckbox.scss";
+const CheckBoxRow = ({ width, col, type, ...props }) => {
+  console.log(props);
+  return <section style={{ width: width }}>{}</section>;
+};
 const ImageCheckBox = ({
   imgAlt,
   onChange,
@@ -68,7 +72,6 @@ const InlineCheckBox = ({
   dir,
   ...props
 }) => {
-  console.log(boxValue);
   const checkbox = useRef();
   const toggleCheckbox = e => {
     checked = !checked;
@@ -78,7 +81,7 @@ const InlineCheckBox = ({
   };
   return (
     <React.Fragment>
-      <div className="inline-checkbox-wrapper">
+      <div className="inline-checkbox-wrapper" style={style}>
         <div
           className="inline-checkbox"
           ref={checkbox}
@@ -88,7 +91,7 @@ const InlineCheckBox = ({
           <div className="key">
             <span>{boxValue}</span>
           </div>
-          <div className="title" style={{ width: width + "px" }}>
+          <div className="title" style={{ width: width }}>
             {title}
           </div>
           <div className="checked-icon">
@@ -110,4 +113,4 @@ const InlineCheckBox = ({
   );
 };
 
-export { ImageCheckBox, InlineCheckBox };
+export { ImageCheckBox, InlineCheckBox, CheckBoxRow };

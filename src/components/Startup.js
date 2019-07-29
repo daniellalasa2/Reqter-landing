@@ -17,7 +17,11 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "../assets/styles/FlatForm.scss";
 import "../assets/styles/Startup.scss";
 import { SubmitForm } from "./ApiHandlers/ApiHandler";
-import { ImageCheckBox, InlineCheckBox } from "./CustomCheckbox/CustomCheckbox";
+import {
+  ImageCheckBox,
+  InlineCheckBox,
+  CheckBoxRow
+} from "./CustomCheckbox/CustomCheckbox";
 import checkboxImg from "../assets/images/logo.jpg";
 export default class StartUp extends React.Component {
   constructor(props) {
@@ -319,9 +323,16 @@ export default class StartUp extends React.Component {
   };
   fillCombo(name) {
     return this.state.combo[name].map((val, key) => (
-      <option value={val} key={key}>
-        {val}
-      </option>
+      <InlineCheckBox
+        checked={false}
+        title={val}
+        key={key}
+        width="100%"
+        onChange={() => console.log("selected")}
+        boxValue={key}
+        dir="rtl"
+        style={{ margin: "5px" }}
+      />
     ));
   }
   submit = () => {
@@ -354,6 +365,7 @@ export default class StartUp extends React.Component {
                 </CardHeader>
                 <CardBody>
                   <div className="field-row">
+                    <CheckBoxRow width="200px" {...this.props} />
                     <label>نام و نام خانوادگی&nbsp;&nbsp;</label>
                     <Input
                       placeholder="نام و نام خانوادگی خود را وارد کنید."
@@ -415,7 +427,7 @@ export default class StartUp extends React.Component {
 
                   <div className="field-row">
                     <label>حوزه فعالیتت&nbsp;&nbsp;</label>
-                    <Input
+                    {/* <Input
                       type="select"
                       onChange={this.formStateHandler.bind(this, null)}
                       onBlur={this.formStateHandler.bind(this, null)}
@@ -423,7 +435,18 @@ export default class StartUp extends React.Component {
                     >
                       <option>حوزه فعالیتت چیه؟</option>
                       {this.fillCombo("startup")}
-                    </Input>
+                    </Input> */}
+                    <div
+                      style={{
+                        position: "flex",
+                        width: "auto",
+                        border: "1px solid grey",
+                        borderRadius: "5px",
+                        padding: "10px"
+                      }}
+                    >
+                      {this.fillCombo("startup")}
+                    </div>
                     <span className="error-message">
                       {this.state.form.step1.fields.domain.error}
                     </span>
