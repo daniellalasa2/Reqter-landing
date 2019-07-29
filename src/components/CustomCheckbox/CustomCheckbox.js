@@ -1,9 +1,56 @@
 import React, { useRef } from "react";
 import "./CustomCheckbox.scss";
-const CheckBoxRow = ({ width, col, type, ...props }) => {
-  console.log(props);
-  return <section style={{ width: width }}>{}</section>;
-};
+
+//HOC wrapper
+class CheckBoxRow extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.thisRef = React.createRef();
+  }
+  selectionHandler = data => {
+    const type = this.props.type || "checkbox";
+    switch (type) {
+      case "checkbox":
+        break;
+      case "radio":
+        break;
+
+      default:
+        console.warn('CheckBoxRow component expected a "type" property .');
+        break;
+    }
+
+    console.log("handled: ", type);
+  };
+  componentDidMount() {
+    //get width from props or style !!!!
+    this.width = this.thisRef.current.clientWidth;
+    this.childWidth = this.width / this.props.rowitems;
+  }
+
+  render() {
+    const checkBoxes = React.Children.map(this.props.children, child =>
+      React.cloneElement(child, {
+        width: `${this.childWidth}px`,
+        onChange: this.selectionHandler
+      })
+    );
+    return (
+      <div
+        ref={this.thisRef}
+        style={{
+          ...this.props.style,
+          boxSizing: "content-box"
+        }}
+      >
+        {checkBoxes}
+      </div>
+    );
+  }
+}
+
+//Image check box comopnent
 const ImageCheckBox = ({
   imgAlt,
   onChange,
@@ -60,6 +107,7 @@ const ImageCheckBox = ({
   );
 };
 
+//Inline checkbox component
 const InlineCheckBox = ({
   onChange,
   checked,
@@ -73,17 +121,20 @@ const InlineCheckBox = ({
   ...props
 }) => {
   const checkbox = useRef();
-  const toggleCheckbox = e => {
+  const toggleCheckbox = () => {
     checked = !checked;
     if (checked) checkbox.current.classList.add("checked");
     else checkbox.current.classList.remove("checked");
-    onChange();
+    onChange({ title: title, key: boxValue, checked: checked });
   };
   return (
     <React.Fragment>
-      <div className="inline-checkbox-wrapper" style={style}>
+      <div
+        className="inline-checkbox-wrapper"
+        style={{ width: width, ...style }}
+      >
         <div
-          className="inline-checkbox"
+          className={"inline-checkbox" + (checked ? " checked" : "")}
           ref={checkbox}
           onClick={toggleCheckbox}
           style={{ direction: dir }}
@@ -91,9 +142,7 @@ const InlineCheckBox = ({
           <div className="key">
             <span>{boxValue}</span>
           </div>
-          <div className="title" style={{ width: width }}>
-            {title}
-          </div>
+          <div className="title">{title}</div>
           <div className="checked-icon">
             <svg id="tickSvg" x="0px" y="0px" viewBox="0 0 512 512">
               <g>

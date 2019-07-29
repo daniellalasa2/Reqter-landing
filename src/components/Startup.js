@@ -8,10 +8,8 @@ import {
   CardHeader,
   CardFooter,
   CardBody,
-  InputGroup,
   ButtonGroup
 } from "reactstrap";
-import NumberFormat from "react-number-format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "../assets/styles/FlatForm.scss";
@@ -327,7 +325,7 @@ export default class StartUp extends React.Component {
         checked={false}
         title={val}
         key={key}
-        width="100%"
+        width="23.2%"
         onChange={() => console.log("selected")}
         boxValue={key}
         dir="rtl"
@@ -365,7 +363,43 @@ export default class StartUp extends React.Component {
                 </CardHeader>
                 <CardBody>
                   <div className="field-row">
-                    <CheckBoxRow width="200px" {...this.props} />
+                    <CheckBoxRow rowitems="4">
+                      <InlineCheckBox
+                        checked={false}
+                        title={"hi2"}
+                        key={1}
+                        boxValue={1}
+                        dir="ltr"
+                      />
+                      <InlineCheckBox
+                        checked={true}
+                        title={"hi2"}
+                        key={2}
+                        boxValue={2}
+                        dir="ltr"
+                      />
+                      <InlineCheckBox
+                        checked={false}
+                        title={"hi2"}
+                        key={3}
+                        boxValue={3}
+                        dir="ltr"
+                      />
+                      <InlineCheckBox
+                        checked={false}
+                        title={"hi2"}
+                        key={4}
+                        boxValue={4}
+                        dir="ltr"
+                      />
+                      <InlineCheckBox
+                        checked={false}
+                        title={"hi"}
+                        key={5}
+                        boxValue={5}
+                        dir="ltr"
+                      />
+                    </CheckBoxRow>
                     <label>نام و نام خانوادگی&nbsp;&nbsp;</label>
                     <Input
                       placeholder="نام و نام خانوادگی خود را وارد کنید."
@@ -426,7 +460,7 @@ export default class StartUp extends React.Component {
                   </div>
 
                   <div className="field-row">
-                    <label>حوزه فعالیتت&nbsp;&nbsp;</label>
+                    <span>حوزه فعالیتت&nbsp;&nbsp;</span>
                     {/* <Input
                       type="select"
                       onChange={this.formStateHandler.bind(this, null)}
