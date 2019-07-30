@@ -65,7 +65,10 @@ input:focus {
         background-color: #8ea3e3 !important;
       }
       &.submit {
-        background-color: #53ba58 !important;
+        background-color: #727fdd !important;
+        border-radius: 2px !important;
+        padding: 8px 28px;
+
         float: left;
         &[disabled] {
           cursor: not-allowed;
@@ -76,6 +79,9 @@ input:focus {
 }
 .field-row {
   margin-bottom: 40px;
+  .field-title {
+    font-size: 15px;
+  }
   .error-message {
     color: lightcoral;
     font-size: 12px;

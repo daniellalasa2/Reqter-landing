@@ -86,7 +86,9 @@ class Navigation extends Component {
                 <DropdownItem onClick={() => this.props.history.push("/")}>
                   فرصت های شغلی
                 </DropdownItem>
-                <DropdownItem onClick={() => this.props.history.push("/")}>
+                <DropdownItem
+                  onClick={() => this.props.history.push("/partnership")}
+                >
                   همکاری تجاری
                 </DropdownItem>
               </DropdownMenu>

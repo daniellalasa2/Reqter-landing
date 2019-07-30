@@ -60,6 +60,7 @@ class CheckBoxRow extends React.PureComponent {
             renderedChildren: newChilds
           },
           () => {
+            console.log(this.state.checkedElements);
             this.props.onChange(this.state.checkedElements);
           }
         );
