@@ -192,7 +192,7 @@ class PartnerShip extends React.PureComponent {
                   <div className="field-row">
                     <span className="field-title">زمینه همکاری</span>
                     <CheckBoxRow
-                      rowitems="4"
+                      rowitems="3"
                       onChange={() => this.handleCheckBox}
                       type="checkbox"
                       style={{ width: "100%", marginTop: "10px" }}
