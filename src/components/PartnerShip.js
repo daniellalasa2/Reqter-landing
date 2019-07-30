@@ -78,10 +78,10 @@ class PartnerShip extends React.PureComponent {
     this.validationRules = {
       name: ["required", "minCharecters"],
       primarycontact: ["required", "minCharecters"],
-      workingfields: ["required"],
-      phonenumber: ["required", "minCharecters"],
-      email: ["required", "minCharecters"],
-      homepage: ["required"]
+      workingfields: ["required", "checkbox"],
+      phonenumber: ["required", "phonenumber"],
+      email: ["email"],
+      homepage: ["url"]
     };
   }
 
