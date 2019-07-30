@@ -371,41 +371,37 @@ export default class StartUp extends React.Component {
                       onChange={() => this.handleCheckBox}
                       type="radio"
                       style={{ width: "100%" }}
+                      dir="rtl"
                     >
                       <InlineCheckBox
                         checked={false}
                         title={"hi2"}
                         key={1}
                         boxValue={1}
-                        dir="ltr"
                       />
                       <InlineCheckBox
                         checked={false}
                         title={"hi2"}
                         key={2}
                         boxValue={2}
-                        dir="ltr"
                       />
                       <InlineCheckBox
                         checked={false}
                         title={"hi2"}
                         key={3}
                         boxValue={3}
-                        dir="ltr"
                       />
                       <InlineCheckBox
                         checked={false}
                         title={"hi2"}
                         key={4}
                         boxValue={4}
-                        dir="ltr"
                       />
                       <InlineCheckBox
                         checked={false}
                         title={"hi"}
                         key={5}
                         boxValue={5}
-                        dir="ltr"
                       />
                     </CheckBoxRow>
                     <label>نام و نام خانوادگی&nbsp;&nbsp;</label>

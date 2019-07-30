@@ -1,17 +1,13 @@
 import React, { useRef } from "react";
 import "./CustomCheckbox.scss";
 
-//TODO:
-//  radio and checkbox default select must return default selected field
-//  grid items happening after select an element not at the beginning of rendering
-
 //HOC wrapper
 class CheckBoxRow extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       checkedElements: [],
-      renderedChildren: this.childRenderer()
+      renderedChildren: null
     };
     this.thisRef = React.createRef();
   }
@@ -78,7 +74,8 @@ class CheckBoxRow extends React.PureComponent {
     return React.Children.map(this.props.children, child =>
       React.cloneElement(child, {
         width: `${this.childWidth}px`,
-        onChange: this.selectionHandler
+        onChange: this.selectionHandler,
+        dir: this.props.dir
       })
     );
   };
@@ -86,6 +83,9 @@ class CheckBoxRow extends React.PureComponent {
     //get width from props or style !!!!
     this.width = this.thisRef.current.clientWidth;
     this.childWidth = this.width / this.props.rowitems;
+    this.setState({
+      renderedChildren: this.childRenderer()
+    });
   }
 
   render() {
@@ -94,7 +94,8 @@ class CheckBoxRow extends React.PureComponent {
         ref={this.thisRef}
         style={{
           ...this.props.style,
-          boxSizing: "content-box"
+          boxSizing: "content-box",
+          direction: this.props.dir
         }}
       >
         {this.state.renderedChildren}
