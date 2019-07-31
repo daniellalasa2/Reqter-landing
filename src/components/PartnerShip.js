@@ -9,6 +9,7 @@ import {
   CardBody,
   Input
 } from "reactstrap";
+import { SubmitForm } from "./ApiHandlers/ApiHandler";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { InlineCheckBox, CheckBoxRow } from "./CustomCheckbox/CustomCheckbox";
@@ -78,18 +79,70 @@ class PartnerShip extends React.PureComponent {
     this.validationRules = {
       name: ["required", "minCharecters"],
       primarycontact: ["required", "minCharecters"],
-      workingfields: ["required", "checkbox"],
+      workingfields: ["required"],
       phonenumber: ["required", "phonenumber"],
       email: ["email"],
       homepage: ["url"]
     };
   }
 
+  checkFormValidation = () => {
+    const fields = this.state.form.fields;
+    let boolean = true;
+    for (let key in fields) {
+      if (!fields[key].isValid) {
+        boolean = false;
+        break;
+      }
+    }
+    this.setState({
+      form: {
+        ...this.state.form,
+        isValid: boolean
+      }
+    });
+  };
+  checkboxStateHandler = (name, data) => {
+    const checkBoxValuesArr = [];
+    data.forEach(val => {
+      checkBoxValuesArr.push(val.title);
+    });
+    const validation = { valid: true }; //Validator(checkBoxValuesArr, this.validationRules[name]);
+    let toBeAssignObject = {
+      error: validation.message,
+      isValid: validation.valid
+    };
+    //if value is valid then assign value to form state
+    if (validation.valid) {
+      toBeAssignObject.value = checkBoxValuesArr;
+    }
+    this.setState(
+      {
+        form: {
+          fields: {
+            ...this.state.form.fields,
+            [name]: {
+              ...this.state.form.fields[name],
+              ...toBeAssignObject
+            }
+          },
+          api: {
+            ...this.state.form.api,
+            [name]: checkBoxValuesArr
+          }
+        }
+      },
+      () => {
+        console.log(this.state.form.api);
+        this.checkFormValidation();
+      }
+    );
+  };
   formStateHandler = e => {
     let _this = e.target;
     const name = _this.name;
     const value = _this.value;
-    const validation = Validator(value, this.validationRules[name]);
+    const validation = { valid: true }; //Validator(value, this.validationRules[name]);
     if (!validation.valid) {
       _this.classList.add("error-input");
       this.setState(
@@ -106,14 +159,13 @@ class PartnerShip extends React.PureComponent {
             }
           }
         },
-        () => console.log(this.state.form)
+        () => this.checkFormValidation()
       );
     } else {
       _this.classList.remove("error-input");
       this.setState(
         {
           form: {
-            ...this.state.form,
             fields: {
               ...this.state.form.fields,
               [name]: {
@@ -121,20 +173,25 @@ class PartnerShip extends React.PureComponent {
                 error: validation.message,
                 isValid: validation.valid
               }
+            },
+            api: {
+              ...this.state.form.api,
+              [name]: value
             }
-          },
-          api: {
-            ...this.state.form._api,
-            [name]: value
           }
         },
-        () => console.log(this.state.form)
+        () => {
+          this.checkFormValidation();
+          console.log(this.state.form);
+        }
       );
     }
   };
   handleCheckBox = () => {};
   submitForm = () => {
-    console.log("done");
+    SubmitForm("partnership", this.state.form.api, res => {
+      alert(res.message);
+    });
   };
   render() {
     return (
@@ -193,17 +250,21 @@ class PartnerShip extends React.PureComponent {
                     <span className="field-title">زمینه همکاری</span>
                     <CheckBoxRow
                       rowitems="3"
-                      onChange={() => this.handleCheckBox}
+                      //custom checkbox must return data as the last or the first arguments toward onChange function
+                      onChange={this.checkboxStateHandler.bind(
+                        null,
+                        "workingfields"
+                      )}
                       type="checkbox"
                       style={{ width: "100%", marginTop: "10px" }}
                       dir="rtl"
+                      name="workingfields"
                     >
                       {this.state.combo["startup"].map((val, key) => (
                         <InlineCheckBox
                           checked={false}
                           title={val}
                           key={key}
-                          onChange={() => console.log("selected")}
                           boxValue={key}
                           dir="rtl"
                         />

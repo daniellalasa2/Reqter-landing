@@ -1,7 +1,11 @@
 import React, { useRef } from "react";
 import "./CustomCheckbox.scss";
 
+//Improvement:
+//1- CustomCheckBox must return data as the last or the first arguments toward onChange function
+//2- CheckBoxRow radio mode has an error while a radio element is selected have not deselect by clicking again.
 //HOC wrapper
+
 class CheckBoxRow extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -30,8 +34,8 @@ class CheckBoxRow extends React.PureComponent {
             {
               checkedElements: arr
             },
-            () => {
-              this.props.onChange();
+            (...restArgs) => {
+              this.props.onChange(this.state.checkedElements);
             }
           );
         } else {
@@ -60,7 +64,6 @@ class CheckBoxRow extends React.PureComponent {
             renderedChildren: newChilds
           },
           () => {
-            console.log(this.state.checkedElements);
             this.props.onChange(this.state.checkedElements);
           }
         );
@@ -172,8 +175,7 @@ const InlineCheckBox = ({
   style,
   boxValue,
   width,
-  dir,
-  ...props
+  dir
 }) => {
   const checkbox = useRef();
   const toggleCheckbox = () => {

@@ -10,22 +10,17 @@ const Validator = (value, rules) => {
     for (let rule of rules) {
       switch (rule) {
         case "required":
-          if (!value) {
+          value = value.replace(/\s/g, "");
+          if (value.length) {
             validationObj.message = "فیلد الزامی";
             validationObj.valid = false;
             return validationObj;
           }
           break;
         case "minCharecters":
+          value = value.replace(/\s/g, "");
           if (value.length < 3) {
             validationObj.message = "حداقل ۳ کاراکتر";
-            validationObj.valid = false;
-            return validationObj;
-          }
-          break;
-        case "checkbox":
-          if (!value) {
-            validationObj.message = "یک گزینه را انتخاب کنید";
             validationObj.valid = false;
             return validationObj;
           }

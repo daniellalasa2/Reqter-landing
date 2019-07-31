@@ -38,13 +38,13 @@ function errorHandler(statusCode) {
   return result;
 }
 
-function SubmitForm(data, callback) {
+function SubmitForm(formName, data, callback) {
   axios({
     url: _api.submitForm,
     method: "POST",
     headers: _api.header,
     data: {
-      contentType: config.CONTENT_TYPE_ID,
+      contentType: config.CONTENT_TYPE_ID[formName],
       fields: data
     }
   })
