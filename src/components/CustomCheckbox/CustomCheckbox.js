@@ -175,6 +175,7 @@ const InlineCheckBox = ({
   style,
   boxValue,
   width,
+  keys,
   dir
 }) => {
   const checkbox = useRef();
@@ -182,7 +183,7 @@ const InlineCheckBox = ({
     checked = !checked;
     if (checked) checkbox.current.classList.add("checked");
     else checkbox.current.classList.remove("checked");
-    onChange({ title: title, key: boxValue, checked: checked });
+    onChange({ title: title, key: keys, checked: checked });
   };
   return (
     <React.Fragment>

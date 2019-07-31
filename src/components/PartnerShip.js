@@ -1,3 +1,6 @@
+//TODO:
+// When all the inputs are filled and one of the required fields would remove, form submition happens but why?
+
 import React from "react";
 import {
   Button,
@@ -35,7 +38,7 @@ class PartnerShip extends React.PureComponent {
             error: "",
             isValid: false
           },
-          collborationTypes: {
+          collaborationtypes: {
             value: "",
             error: "",
             isValid: false
@@ -59,7 +62,7 @@ class PartnerShip extends React.PureComponent {
         api: {
           name: "",
           primarycontact: "",
-          collborationTypes: "",
+          collaborationtypes: "",
           phonenumber: "",
           email: "",
           homepage: ""
@@ -70,9 +73,9 @@ class PartnerShip extends React.PureComponent {
       }
     };
     this.validationRules = {
-      name: ["required", "minCharecters"],
-      primarycontact: ["required", "minCharecters"],
-      collborationTypes: ["required"],
+      name: ["required"],
+      primarycontact: ["required"],
+      collaborationtypes: ["required"],
       phonenumber: ["required", "phonenumber"],
       email: ["email"],
       homepage: ["url"]
@@ -98,8 +101,9 @@ class PartnerShip extends React.PureComponent {
   };
   checkboxStateHandler = (name, data) => {
     const checkBoxValuesArr = [];
+    console.log(data);
     data.forEach(val => {
-      checkBoxValuesArr.push(val.title);
+      checkBoxValuesArr.push(val.key);
     });
     const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
     let toBeAssignObject = {
@@ -127,7 +131,6 @@ class PartnerShip extends React.PureComponent {
         }
       },
       () => {
-        console.log(this.state.form.api);
         this.checkFormValidation();
       }
     );
@@ -181,22 +184,56 @@ class PartnerShip extends React.PureComponent {
       );
     }
   };
-  handleCheckBox = () => {};
   submitForm = () => {
-    SubmitForm("partnership", this.state.form.api, res => {
-      alert(res.message);
-    });
+    const inputs = this.state.form.fields;
+    // console.log(inputs);
+    // return 0;
+    let _isValid = true;
+    const fields = {};
+    let validation = {};
+    for (let index in inputs) {
+      validation = Validator(inputs[index].value, this.validationRules[index]);
+      if (!validation.valid) {
+        _isValid = false;
+        fields[index] = {
+          value: inputs[index].value,
+          error: validation.message,
+          isValid: false
+        };
+      }
+    }
+    //console.log(_isValid);
+    this.setState(
+      {
+        form: {
+          ...this.state.form,
+          isValid: _isValid,
+          fields: {
+            ...this.state.form.fields,
+            ...fields
+          }
+        }
+      },
+      () => {
+        console.log(this.state.form);
+      }
+    );
+    if (_isValid) {
+      SubmitForm("partnership", this.state.form.api, res => {
+        alert(res.message);
+      });
+    }
   };
   PartnershipWorkingFields = () => {
     GetPartnerShipWorkingFields(res => {
       if (res.success_result.code === 200) {
-        const options = res.data.map(val => {
+        const options = res.data.map((val, index) => {
           return (
             <InlineCheckBox
               checked={false}
               title={val.fields.name.fa}
-              key={val.id}
-              boxValue=""
+              keys={val._id}
+              boxValue={index + 1}
               dir="rtl"
             />
           );
@@ -205,11 +242,13 @@ class PartnerShip extends React.PureComponent {
           <CheckBoxRow
             rowitems="3"
             //custom checkbox must return data as the last or the first arguments toward onChange function
-            onChange={this.checkboxStateHandler.bind(null, "collborationTypes")}
+            onChange={this.checkboxStateHandler.bind(
+              null,
+              "collaborationtypes"
+            )}
             type="checkbox"
             style={{ width: "100%", marginTop: "10px" }}
             dir="rtl"
-            name="workingfields"
           >
             {options}
           </CheckBoxRow>
@@ -256,8 +295,8 @@ class PartnerShip extends React.PureComponent {
                       type="text"
                       name="name"
                       onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
                       autoFocus
+                      id="name"
                     />
                     <span className="error-message">
                       {this.state.form.fields.name.error}
@@ -269,7 +308,6 @@ class PartnerShip extends React.PureComponent {
                     <Input
                       type="text"
                       onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
                       name="primarycontact"
                       placeholder="نام درخواست کننده را وارد کنید."
                     />
@@ -284,7 +322,7 @@ class PartnerShip extends React.PureComponent {
                     {/* fill checkboxes */}
                     {this.state.combo.startup}
                     <span className="error-message">
-                      {this.state.form.fields.collborationTypes.error}
+                      {this.state.form.fields.collaborationtypes.error}
                     </span>
                   </div>
 
@@ -293,7 +331,6 @@ class PartnerShip extends React.PureComponent {
                     <Input
                       type="text"
                       onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
                       name="phonenumber"
                       placeholder="مثال : 09123456789"
                     />
@@ -307,7 +344,6 @@ class PartnerShip extends React.PureComponent {
                     <Input
                       type="text"
                       onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
                       name="email"
                       placeholder="ایمیل خود را وارد کنید ."
                     />
@@ -320,7 +356,6 @@ class PartnerShip extends React.PureComponent {
                     <Input
                       type="text"
                       onChange={this.formStateHandler}
-                      onBlur={this.formStateHandler}
                       name="homepage"
                       placeholder="آدرس وبسایت خود را وارد کنید ."
                     />
@@ -335,7 +370,7 @@ class PartnerShip extends React.PureComponent {
                 <Button
                   className="navigation-button submit"
                   onClick={() => this.submitForm()}
-                  disabled={!this.state.form.isValid}
+                  // disabled={!this.state.form.isValid}
                 >
                   ثبت
                 </Button>

@@ -1,7 +1,10 @@
-const Validator = (value, rules) => {
+//TODO:
+//    min and max validator bug
+
+const Validator = (value, rules, chars) => {
   let regexPatterns = {
     email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    phonenumber: /^(\+98|0)?9\d{9}$/,
+    phonenumber: /^(\+98|0)?[1-9]\d{9}$/,
     url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
   };
   let validationObj = { message: "", valid: true };
@@ -19,43 +22,59 @@ const Validator = (value, rules) => {
           break;
         case "minCharecters":
           value = value.replace(/\s/g, "");
-          if (value.length < 3) {
+          if (value.length < parseInt(chars)) {
+            validationObj.message = "حداقل ۳ کاراکتر";
+            validationObj.valid = false;
+            return validationObj;
+          }
+          break;
+        case "maxCharecters":
+          value = value.replace(/\s/g, "");
+          if (value.length > parseInt(chars)) {
             validationObj.message = "حداقل ۳ کاراکتر";
             validationObj.valid = false;
             return validationObj;
           }
           break;
         case "email":
-          const email = regexPatterns.email.test(String(value).toLowerCase());
-          if (!email) {
-            validationObj.message = "ایمیل نامعتبر است";
-            validationObj.valid = false;
-            return validationObj;
+          if (value.length > 0) {
+            const email = regexPatterns.email.test(String(value).toLowerCase());
+            if (!email) {
+              validationObj.message = "ایمیل نامعتبر است";
+              validationObj.valid = false;
+              return validationObj;
+            }
           }
           break;
         case "phonenumber":
-          const phonenumber = regexPatterns.phonenumber.test(
-            String(value).toLowerCase()
-          );
-          if (!phonenumber) {
-            validationObj.message = "شماره وارد شده صحیح نیست";
-            validationObj.valid = false;
-            return validationObj;
+          if (value.length > 0) {
+            const phonenumber = regexPatterns.phonenumber.test(
+              String(value).toLowerCase()
+            );
+            if (!phonenumber) {
+              validationObj.message = "شماره وارد شده صحیح نیست";
+              validationObj.valid = false;
+              return validationObj;
+            }
           }
           break;
         case "url":
-          const url = regexPatterns.url.test(String(value).toLowerCase());
-          if (!url) {
-            validationObj.message = "فرمت آدرس وبسایت وارد شده نامعتبر است";
-            validationObj.valid = false;
-            return validationObj;
+          if (value.length > 0) {
+            const url = regexPatterns.url.test(String(value).toLowerCase());
+            if (!url) {
+              validationObj.message = "فرمت آدرس وبسایت وارد شده نامعتبر است";
+              validationObj.valid = false;
+              return validationObj;
+            }
           }
           break;
         case "number":
-          if (isNaN(Number(value))) {
-            validationObj.message = "لطفا مقدار عددی صحیح وارد کنید";
-            validationObj.valid = false;
-            return validationObj;
+          if (value.length > 0) {
+            if (isNaN(Number(value))) {
+              validationObj.message = "لطفا مقدار عددی صحیح وارد کنید";
+              validationObj.valid = false;
+              return validationObj;
+            }
           }
           break;
         default:
