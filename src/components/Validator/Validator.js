@@ -10,8 +10,8 @@ const Validator = (value, rules) => {
     for (let rule of rules) {
       switch (rule) {
         case "required":
-          value = value.replace(/\s/g, "");
-          if (value.length) {
+          if (typeof value === "string") value = value.replace(/\s/g, "");
+          if (!value.length) {
             validationObj.message = "فیلد الزامی";
             validationObj.valid = false;
             return validationObj;

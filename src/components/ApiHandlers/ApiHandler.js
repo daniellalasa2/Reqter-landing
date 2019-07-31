@@ -6,7 +6,9 @@ let _api = {
     spaceid: config.SPACEID,
     authorization: config.AUTH
   },
-  submitForm: config.BASE_URL_CONTENT + config.submitForm
+  submitForm: config.BASE_URL_CONTENT + config.URLS.submit_form,
+  GetPartnerShipWorkingFields:
+    config.BASE_URL_CONTENT + config.URLS.partner_ship_working_fields
 };
 
 function errorHandler(statusCode) {
@@ -51,11 +53,30 @@ function SubmitForm(formName, data, callback) {
     .then(res => {
       const result = errorHandler(res.status);
       callback(result);
-      return result;
+      return 0;
     })
     .catch(err => {
       return errorHandler(0);
     });
 }
 
-export { SubmitForm };
+//PartnerShip API sets
+function GetPartnerShipWorkingFields(callback) {
+  axios({
+    url: _api.GetPartnerShipWorkingFields,
+    method: "GET",
+    headers: _api.header,
+    params: {
+      contentType: config.CONTENT_TYPE_ID.partnership_working_fields
+    }
+  })
+    .then(res => {
+      const result = errorHandler(res.status);
+      callback({ success_result: result, data: res.data });
+      return 0;
+    })
+    .catch(err => {
+      return errorHandler(0);
+    });
+}
+export { SubmitForm, GetPartnerShipWorkingFields };

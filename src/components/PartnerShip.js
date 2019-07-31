@@ -9,7 +9,10 @@ import {
   CardBody,
   Input
 } from "reactstrap";
-import { SubmitForm } from "./ApiHandlers/ApiHandler";
+import {
+  SubmitForm,
+  GetPartnerShipWorkingFields
+} from "./ApiHandlers/ApiHandler";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { InlineCheckBox, CheckBoxRow } from "./CustomCheckbox/CustomCheckbox";
@@ -32,7 +35,7 @@ class PartnerShip extends React.PureComponent {
             error: "",
             isValid: false
           },
-          workingfields: {
+          collborationTypes: {
             value: "",
             error: "",
             isValid: false
@@ -56,30 +59,20 @@ class PartnerShip extends React.PureComponent {
         api: {
           name: "",
           primarycontact: "",
-          workingfields: "",
+          collborationTypes: "",
           phonenumber: "",
           email: "",
           homepage: ""
         }
       },
       combo: {
-        startup: [
-          "فضای کاری اشتراکی",
-          "مرکز رشد",
-          "پارک علم و فناوری",
-          "شتاب دهنده",
-          "سرمایه گذار",
-          "مرکز نوآوری",
-          "استارتاپ استودیو",
-          "مشاور / منتور",
-          "تولید محتوا"
-        ]
+        startup: []
       }
     };
     this.validationRules = {
       name: ["required", "minCharecters"],
       primarycontact: ["required", "minCharecters"],
-      workingfields: ["required"],
+      collborationTypes: ["required"],
       phonenumber: ["required", "phonenumber"],
       email: ["email"],
       homepage: ["url"]
@@ -92,6 +85,7 @@ class PartnerShip extends React.PureComponent {
     for (let key in fields) {
       if (!fields[key].isValid) {
         boolean = false;
+
         break;
       }
     }
@@ -107,7 +101,7 @@ class PartnerShip extends React.PureComponent {
     data.forEach(val => {
       checkBoxValuesArr.push(val.title);
     });
-    const validation = { valid: true }; //Validator(checkBoxValuesArr, this.validationRules[name]);
+    const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
     let toBeAssignObject = {
       error: validation.message,
       isValid: validation.valid
@@ -142,7 +136,7 @@ class PartnerShip extends React.PureComponent {
     let _this = e.target;
     const name = _this.name;
     const value = _this.value;
-    const validation = { valid: true }; //Validator(value, this.validationRules[name]);
+    const validation = Validator(value, this.validationRules[name]);
     if (!validation.valid) {
       _this.classList.add("error-input");
       this.setState(
@@ -193,6 +187,44 @@ class PartnerShip extends React.PureComponent {
       alert(res.message);
     });
   };
+  PartnershipWorkingFields = () => {
+    GetPartnerShipWorkingFields(res => {
+      if (res.success_result.code === 200) {
+        const options = res.data.map(val => {
+          return (
+            <InlineCheckBox
+              checked={false}
+              title={val.fields.name.fa}
+              key={val.id}
+              boxValue=""
+              dir="rtl"
+            />
+          );
+        });
+        const select = (
+          <CheckBoxRow
+            rowitems="3"
+            //custom checkbox must return data as the last or the first arguments toward onChange function
+            onChange={this.checkboxStateHandler.bind(null, "collborationTypes")}
+            type="checkbox"
+            style={{ width: "100%", marginTop: "10px" }}
+            dir="rtl"
+            name="workingfields"
+          >
+            {options}
+          </CheckBoxRow>
+        );
+        this.setState({
+          combo: {
+            startup: select
+          }
+        });
+      }
+    });
+  };
+  componentDidMount() {
+    this.PartnershipWorkingFields();
+  }
   render() {
     return (
       <section
@@ -218,9 +250,9 @@ class PartnerShip extends React.PureComponent {
                 </CardHeader>
                 <CardBody>
                   <div className="field-row">
-                    <span className="field-title">نام شرکت یا سازمان </span>
+                    <span className="field-title">نام شرکت یا سازمان</span>
                     <Input
-                      placeholder="نام شرکت یا سازمان را وارد کنید ."
+                      placeholder="نام شرکت یا سازمان را وارد کنید"
                       type="text"
                       name="name"
                       onChange={this.formStateHandler}
@@ -233,7 +265,7 @@ class PartnerShip extends React.PureComponent {
                   </div>
 
                   <div className="field-row">
-                    <span className="field-title">نام درخواست کننده </span>
+                    <span className="field-title">نام درخواست کننده</span>
                     <Input
                       type="text"
                       onChange={this.formStateHandler}
@@ -248,30 +280,11 @@ class PartnerShip extends React.PureComponent {
 
                   <div className="field-row">
                     <span className="field-title">زمینه همکاری</span>
-                    <CheckBoxRow
-                      rowitems="3"
-                      //custom checkbox must return data as the last or the first arguments toward onChange function
-                      onChange={this.checkboxStateHandler.bind(
-                        null,
-                        "workingfields"
-                      )}
-                      type="checkbox"
-                      style={{ width: "100%", marginTop: "10px" }}
-                      dir="rtl"
-                      name="workingfields"
-                    >
-                      {this.state.combo["startup"].map((val, key) => (
-                        <InlineCheckBox
-                          checked={false}
-                          title={val}
-                          key={key}
-                          boxValue={key}
-                          dir="rtl"
-                        />
-                      ))}
-                    </CheckBoxRow>
+
+                    {/* fill checkboxes */}
+                    {this.state.combo.startup}
                     <span className="error-message">
-                      {this.state.form.fields.workingfields.error}
+                      {this.state.form.fields.collborationTypes.error}
                     </span>
                   </div>
 
