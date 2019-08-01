@@ -124,7 +124,7 @@ class Products extends Component {
       <React.Fragment>
         <div className="picture-fader" />
         <Row>
-          <Col lg="12">
+          <Col lg="12" className="products-col">
             <div
               className="head-container"
               style={{

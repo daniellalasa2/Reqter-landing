@@ -10,6 +10,8 @@ import {
   Col
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/images/logo.jpg";
 import "../assets/styles/Nav.scss";
 
@@ -62,7 +64,7 @@ class Navigation extends Component {
   render() {
     return (
       <Row className="nav-main-container" id="nav-main-container">
-        <Col xs="6" className="nav-logo-container-col">
+        <Col xs="8" lg="2" md="2" className="nav-logo-container-col">
           <img src={logo} alt="" onClick={() => this.props.history.push("/")} />
           <span className="logo-text-box">
             <strong className="logo-text">
@@ -71,7 +73,14 @@ class Navigation extends Component {
             </strong>
           </span>
         </Col>
-        <Col md="6" className="nav-links-container-col">
+        <Col xs="4" md="10" lg="10" className="nav-links-container-col">
+          <FontAwesomeIcon
+            className="menu-icon"
+            icon={faBars}
+            pull="right"
+            size="lg"
+            color="black"
+          />
           <Nav className="nav-links-container">
             <Dropdown
               nav

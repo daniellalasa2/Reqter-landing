@@ -16,6 +16,10 @@
 }
 .nav-links-container-col {
   line-height: 2.3;
+  .menu-icon {
+    display: none;
+    font-size: 30px;
+  }
   .logo-text-box {
     margin-left: 10px;
     display: inline-block;
@@ -74,4 +78,23 @@
   font-family: monospace;
   position: absolute;
   top: 8px;
+}
+
+//responsive section
+@media (max-width: 768px) {
+  .nav-main-container {
+    .nav-links-container-col {
+      display: flex;
+      flex-direction: row-reverse;
+      .menu-icon {
+        display: block;
+        color: #6d8ae0;
+        font-size: 2rem;
+        align-items: center;
+      }
+      .nav-links-container {
+        display: none;
+      }
+    }
+  }
 }

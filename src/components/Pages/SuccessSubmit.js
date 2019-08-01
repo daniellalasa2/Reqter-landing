@@ -9,6 +9,10 @@ function SuccessSubmit() {
         <section className="main">
           <div className="thankyou-section">
             <h1 className="thankyou-sentence">از درخواست شما متشکریم !</h1>
+            <p>
+              درخواست شما برای تیم استارتاپ اسپیس ارسال شد و بزودی با شما تماس
+              خواهیم گرفت .
+            </p>
           </div>
           <div className="more-request">
             <Link to="/">

@@ -6,6 +6,9 @@
   top: 0;
   z-index: 2;
 }
+.products-col {
+  padding: 0;
+}
 .head-container {
   background-repeat: no-repeat;
   background-size: cover;
@@ -86,12 +89,13 @@
 .crooked-divider {
   height: 145px;
   background-color: white;
-  width: 107%;
+  width: 106%;
   transform: rotate(-5deg);
   transform-origin: 100% 100%;
   bottom: 0;
   position: absolute;
   z-index: 2;
+  margin-left: -3%;
 }
 .products-box {
   position: relative;

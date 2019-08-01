@@ -271,18 +271,14 @@ class PartnerShip extends React.PureComponent {
     this.PartnershipWorkingFields();
   }
   render() {
-    if (this.state.form.isSubmit) {
-    }
-    return <SuccessSubmit />;
-
     return (
       <section
         className="startup-section rtl-layout"
         style={{ backgroundColor: "whitesmoke" }}
       >
         <Row>
-          <Col xs="12" sm="12" md={{ size: 8, offset: 2 }}>
-            <Card style={{ margin: "auto" }}>
+          <Card className="form-card">
+            {(this.state.form.isSubmit && <SuccessSubmit />) || (
               <section id="form1" className="wizardForm show">
                 <CardHeader>
                   <span className="fa-layers fa-fw icon">
@@ -375,18 +371,17 @@ class PartnerShip extends React.PureComponent {
                   </div>
                 </CardBody>
               </section>
-
-              <CardFooter>
-                <Button
-                  className="navigation-button submit"
-                  onClick={() => this.submitForm()}
-                  // disabled={!this.state.form.isValid}
-                >
-                  ثبت
-                </Button>
-              </CardFooter>
-            </Card>
-          </Col>
+            )}
+            <CardFooter>
+              <Button
+                className="navigation-button submit"
+                onClick={() => this.submitForm()}
+                // disabled={!this.state.form.isValid}
+              >
+                ثبت
+              </Button>
+            </CardFooter>
+          </Card>
         </Row>
       </section>
     );
