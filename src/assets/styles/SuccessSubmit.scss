@@ -1,0 +1,40 @@
+.success-section {
+  margin: 0;
+  padding: 0;
+  .main {
+    direction: rtl;
+    height: 400px;
+    padding-top: 70px;
+    padding-bottom: 100px;
+    width: 100%;
+    background-color: whitesmoke;
+    display: flex;
+    align-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    .thankyou-section {
+      width: fit-content;
+      align-self: center;
+      .thankyou-sentence {
+        font-size: 3rem;
+        font-weight: bold;
+        text-align: center;
+        padding: 2em;
+      }
+    }
+    .more-request {
+      align-self: center;
+      a {
+        text-decoration: none;
+      }
+      button {
+        display: block;
+        padding: 10px 15px;
+        border: none;
+        margin: auto;
+        position: relative;
+      }
+    }
+  }
+}

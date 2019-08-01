@@ -1,21 +1,26 @@
 import React from "react";
 import { Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
-import "../../assets/styles/FailedSubmit";
-export default class FailedSubmit extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <Row>
-        <Col xs="12">
-          <img src={this.props.imgSrc} alt="Error" className="FailedImg" />
-          <Row className="moreRequest">
-            <Button className="moreRequestBtn">درخواست جدید ...</Button>
-          </Row>
-        </Col>
-      </Row>
-    );
-  }
+import "../../assets/styles/SuccessSubmit.scss";
+function SuccessSubmit() {
+  return (
+    <Row>
+      <Col xs="12" className="success-section">
+        <section className="main">
+          <div className="thankyou-section">
+            <h1 className="thankyou-sentence">از درخواست شما متشکریم !</h1>
+          </div>
+          <div className="more-request">
+            <Link to="/">
+              <Button color="info" className="moreRequestBtn">
+                درخواست جدید ...
+              </Button>
+            </Link>
+          </div>
+        </section>
+      </Col>
+    </Row>
+  );
 }
+
+export default SuccessSubmit;

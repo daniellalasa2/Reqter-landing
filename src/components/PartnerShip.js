@@ -16,6 +16,7 @@ import {
   SubmitForm,
   GetPartnerShipWorkingFields
 } from "./ApiHandlers/ApiHandler";
+import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { InlineCheckBox, CheckBoxRow } from "./CustomCheckbox/CustomCheckbox";
@@ -27,6 +28,7 @@ class PartnerShip extends React.PureComponent {
     this.state = {
       form: {
         isValid: false,
+        isSubmit: false,
         fields: {
           name: {
             value: "",
@@ -88,7 +90,6 @@ class PartnerShip extends React.PureComponent {
     for (let key in fields) {
       if (!fields[key].isValid) {
         boolean = false;
-
         break;
       }
     }
@@ -101,7 +102,6 @@ class PartnerShip extends React.PureComponent {
   };
   checkboxStateHandler = (name, data) => {
     const checkBoxValuesArr = [];
-    console.log(data);
     data.forEach(val => {
       checkBoxValuesArr.push(val.key);
     });
@@ -202,7 +202,6 @@ class PartnerShip extends React.PureComponent {
         };
       }
     }
-    //console.log(_isValid);
     this.setState(
       {
         form: {
@@ -220,7 +219,14 @@ class PartnerShip extends React.PureComponent {
     );
     if (_isValid) {
       SubmitForm("partnership", this.state.form.api, res => {
-        alert(res.message);
+        if (res.code == 200) {
+          this.setState({
+            form: {
+              ...this.state.form,
+              isSubmit: true
+            }
+          });
+        }
       });
     }
   };
@@ -265,6 +271,10 @@ class PartnerShip extends React.PureComponent {
     this.PartnershipWorkingFields();
   }
   render() {
+    if (this.state.form.isSubmit) {
+    }
+    return <SuccessSubmit />;
+
     return (
       <section
         className="startup-section rtl-layout"
