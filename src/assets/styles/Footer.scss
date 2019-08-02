@@ -1,15 +1,19 @@
 footer {
   background-size: contain;
   width: 100%;
-  display: block;
   direction: rtl;
+  display: flex;
+  background-color: #6d8ae0;
+  justify-content: space-between;
+  flex-direction: column;
   .contact-info-box {
     width: 100%;
   }
   .footer-links {
-    background-color: #6d8ae0;
+    display: flex;
     height: auto;
     padding-top: 2em;
+    padding-bottom: 5em;
     h6 {
       font-weight: bold;
     }
@@ -21,7 +25,10 @@ footer {
     font-size: 13px !important;
   }
   .column {
+    flex-grow: 1;
+    padding-right: 30px;
     a {
+      padding-right: 10px;
       color: white !important;
     }
     text-align: right;
@@ -31,12 +38,32 @@ footer {
     }
   }
   .copyright {
+    padding: 10px 20px;
     a {
       color: white;
     }
     margin-bottom: 0;
     color: lightgrey;
     font-size: 13px;
-    margin-top: 120px;
+  }
+}
+
+//Responsive
+
+@media (max-width: 768px) {
+  footer {
+    .footer-links {
+      display: none;
+    }
+  }
+}
+@media (max-width: 576px) {
+  footer {
+    .copyright {
+      padding: 5px 15px;
+      .followus-text {
+        display: none;
+      }
+    }
   }
 }

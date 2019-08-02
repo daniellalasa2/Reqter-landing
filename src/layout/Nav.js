@@ -118,6 +118,11 @@ class Navigation extends Component {
               </Link>
             </NavItem>
           </Nav>
+          <div className="nav-links-container-mobile">
+            <a />
+            <a />
+            <a />
+          </div>
         </Col>
       </Row>
     );
