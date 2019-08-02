@@ -149,11 +149,6 @@ class Products extends Component {
                             استارتاپ اسپیس پلتفرم جامع نیازمندیهای استارتاپی
                             کشور
                           </h5>
-                          <div className="feautures">
-                            <span />
-                            <span />
-                            <span />
-                          </div>
                           <span className="choose-a-product">
                             <strong>: یک محصول را انتخاب کنید </strong>
                           </span>
@@ -320,8 +315,6 @@ class Products extends Component {
                   >
                     <img src={cowork} alt="" className="product-icons" />
 
-                    <br />
-                    <br />
                     <strong>فضای کار اشتراکی</strong>
                   </li>
                   <li
@@ -338,8 +331,6 @@ class Products extends Component {
                       className="product-icons"
                     />
 
-                    <br />
-                    <br />
                     <strong>سالن جلسات</strong>
                   </li>
                   <li
@@ -352,8 +343,6 @@ class Products extends Component {
                   >
                     <img src={invest} alt="" className="product-icons" />
 
-                    <br />
-                    <br />
                     <strong>جذب سرمایه</strong>
                   </li>
                   <li
@@ -366,8 +355,6 @@ class Products extends Component {
                   >
                     <img src={privateOffice} alt="" className="product-icons" />
 
-                    <br />
-                    <br />
                     <strong>اتاق کار خصوصی</strong>
                   </li>
                   <li
@@ -379,9 +366,6 @@ class Products extends Component {
                     }}
                   >
                     <img src={startup} alt="" className="product-icons" />
-
-                    <br />
-                    <br />
                     <strong>پذیرش استارتاپ</strong>
                   </li>
                 </ul>
