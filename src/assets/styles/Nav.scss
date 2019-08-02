@@ -79,6 +79,7 @@
   top: 8px;
 }
 .mobile-menu-wrapper {
+  transition: left 3s;
   display: none;
   position: fixed;
   height: 100%;
@@ -129,13 +130,14 @@
 //responsive section
 @media (max-width: 768px) {
   .nav-main-container {
+    padding: 10px 3px;
     .nav-links-container-col {
       display: flex;
       flex-direction: row-reverse;
       align-items: center;
       .menu-icon {
         display: block;
-        color: #6d8ae0;
+        color: white;
         font-size: 1.85rem;
       }
       .nav-links-container {
@@ -146,6 +148,9 @@
 
   .scrolledNav {
     padding: 12px 0;
+    .menu-icon {
+      color: #5a4f72 !important;
+    }
     .nav-logo-container-col {
       line-height: 1;
     }
@@ -163,7 +168,6 @@
 
   .mobile-menu-wrapper {
     &.open {
-      transition: all 1s ease-in-out;
       display: flex;
       .container {
         left: 30%;
