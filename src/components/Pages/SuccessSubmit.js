@@ -13,13 +13,13 @@ function SuccessSubmit() {
               درخواست شما برای تیم استارتاپ اسپیس ارسال شد و بزودی با شما تماس
               خواهیم گرفت .
             </p>
-          </div>
-          <div className="more-request">
-            <Link to="/">
-              <Button color="info" className="moreRequestBtn">
-                درخواست جدید ...
-              </Button>
-            </Link>
+            <div className="more-request">
+              <Link to="/">
+                <Button color="info" className="moreRequestBtn">
+                  درخواست جدید ...
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       </Col>
