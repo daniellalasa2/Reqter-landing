@@ -6,7 +6,9 @@ import {
   DropdownItem,
   DropdownToggle,
   DropdownMenu,
+  Collapse,
   Row,
+  Button,
   Col
 } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -58,10 +60,14 @@ class Navigation extends Component {
     }
   };
 
-  toggle = () => {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    });
+  toggle = e => {
+    e.preventDefault();
+    this.setState(
+      {
+        dropdownOpen: !this.state.dropdownOpen
+      },
+      () => console.log(this.state.dropdownOpen)
+    );
   };
   toggleMenu = action => {
     switch (action) {
@@ -157,32 +163,28 @@ class Navigation extends Component {
                 icon={faTimes}
                 pull="right"
                 size="lg"
-                color="black"
+                color="white"
                 onClick={() => this.toggleMenu("close")}
               />
             </div>
             <ul className="items-container">
               <li>
-                <Dropdown
-                  nav
-                  isOpen={this.state.dropdownOpen}
-                  toggle={this.toggle}
-                  className="rtl"
+                <a
+                  onClick={this.toggle.bind(this)}
+                  style={{ display: "block" }}
                 >
-                  <DropdownToggle nav caret>
-                    همکاری
-                  </DropdownToggle>
-                  <DropdownMenu className="rtl">
-                    <DropdownItem onClick={() => this.props.history.push("/")}>
+                  همکاری
+                </a>
+                <Collapse isOpen={this.state.dropdownOpen} className="rtl">
+                  <ul className="rtl">
+                    <li onClick={() => this.props.history.push("/")}>
                       فرصت های شغلی
-                    </DropdownItem>
-                    <DropdownItem
-                      onClick={() => this.props.history.push("/partnership")}
-                    >
+                    </li>
+                    <li onClick={() => this.props.history.push("/partnership")}>
                       همکاری تجاری
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
+                    </li>
+                  </ul>
+                </Collapse>
               </li>
               <li>
                 <NavItem>
