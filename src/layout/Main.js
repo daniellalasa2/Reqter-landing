@@ -1,12 +1,20 @@
 import React, { Component, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import routes from "../Routes";
+import "./loader.scss";
 const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
 
 class Layout extends Component {
   loading = () => (
-    <div className="animated fadeIn pt-1 text-center">Loading...</div>
+    <div className="preloader">
+      <div className="ball-rotate">
+        <div />
+      </div>
+      <span className="loading-text">
+        <strong>Startup Space</strong>
+      </span>
+    </div>
   );
   componentWillMount() {
     this.unlisten = this.props.history.listen((location, action) => {

@@ -8,15 +8,19 @@ import {
   CardHeader,
   CardFooter,
   CardBody,
-  InputGroup,
   ButtonGroup
 } from "reactstrap";
-import NumberFormat from "react-number-format";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "../assets/styles/FlatForm.scss";
 import "../assets/styles/Startup.scss";
 import { SubmitForm } from "./ApiHandlers/ApiHandler";
+import {
+  ImageCheckBox,
+  InlineCheckBox,
+  CheckBoxRow
+} from "./CustomCheckbox/CustomCheckbox";
+import checkboxImg from "../assets/images/logo.jpg";
 export default class StartUp extends React.Component {
   constructor(props) {
     super(props);
@@ -191,6 +195,9 @@ export default class StartUp extends React.Component {
       return validationObj;
     }
   };
+  handleCheckBox = data => {
+    console.log("checkbox data: ", data);
+  };
   formStateHandler = (val, e) => {
     let _this = e.target;
     const name = _this.name;
@@ -317,15 +324,25 @@ export default class StartUp extends React.Component {
   };
   fillCombo(name) {
     return this.state.combo[name].map((val, key) => (
-      <option value={val} key={key}>
-        {val}
-      </option>
+      <InlineCheckBox
+        checked={false}
+        title={val}
+        key={key}
+        width="23.2%"
+        onChange={() => console.log("selected")}
+        boxValue={key}
+        dir="rtl"
+        style={{ margin: "5px" }}
+      />
     ));
   }
   submit = () => {
     SubmitForm(this.state.form._api, res => {
       alert(res.message);
     });
+  };
+  checkBox = (val, e) => {
+    console.log(e);
   };
   render() {
     return (
@@ -349,20 +366,44 @@ export default class StartUp extends React.Component {
                 </CardHeader>
                 <CardBody>
                   <div className="field-row">
-                    <label>چک باکس&nbsp;&nbsp;</label>
-                    <Input
-                      placeholder="نام و نام خانوادگی خود را وارد کنید."
-                      type="text"
-                      name="name"
-                      onChange={this.formStateHandler.bind(this, null)}
-                      // onBlur={this.formStateHandler.bind(this)}
-                      // autoFocus
-                    />
-                    <span className="error-message">
-                      {this.state.form.step1.fields.name.error}
-                    </span>
-                  </div>
-                  <div className="field-row">
+                    <CheckBoxRow
+                      rowitems="4"
+                      onChange={() => this.handleCheckBox}
+                      type="radio"
+                      style={{ width: "100%" }}
+                      dir="rtl"
+                    >
+                      <InlineCheckBox
+                        checked={false}
+                        title={"hi2"}
+                        key={1}
+                        boxValue={1}
+                      />
+                      <InlineCheckBox
+                        checked={false}
+                        title={"hi2"}
+                        key={2}
+                        boxValue={2}
+                      />
+                      <InlineCheckBox
+                        checked={false}
+                        title={"hi2"}
+                        key={3}
+                        boxValue={3}
+                      />
+                      <InlineCheckBox
+                        checked={false}
+                        title={"hi2"}
+                        key={4}
+                        boxValue={4}
+                      />
+                      <InlineCheckBox
+                        checked={false}
+                        title={"hi"}
+                        key={5}
+                        boxValue={5}
+                      />
+                    </CheckBoxRow>
                     <label>نام و نام خانوادگی&nbsp;&nbsp;</label>
                     <Input
                       placeholder="نام و نام خانوادگی خود را وارد کنید."
@@ -423,8 +464,8 @@ export default class StartUp extends React.Component {
                   </div>
 
                   <div className="field-row">
-                    <label>حوزه فعالیتت&nbsp;&nbsp;</label>
-                    <Input
+                    <span>حوزه فعالیتت&nbsp;&nbsp;</span>
+                    {/* <Input
                       type="select"
                       onChange={this.formStateHandler.bind(this, null)}
                       onBlur={this.formStateHandler.bind(this, null)}
@@ -432,7 +473,18 @@ export default class StartUp extends React.Component {
                     >
                       <option>حوزه فعالیتت چیه؟</option>
                       {this.fillCombo("startup")}
-                    </Input>
+                    </Input> */}
+                    <div
+                      style={{
+                        position: "flex",
+                        width: "auto",
+                        border: "1px solid grey",
+                        borderRadius: "5px",
+                        padding: "10px"
+                      }}
+                    >
+                      {this.fillCombo("startup")}
+                    </div>
                     <span className="error-message">
                       {this.state.form.step1.fields.domain.error}
                     </span>
@@ -496,6 +548,33 @@ export default class StartUp extends React.Component {
                     />
                     <span className="error-message">
                       {this.state.form.step1.fields.acceleratorexperiance.error}
+                    </span>
+                  </div>
+                  <div className="field-row">
+                    <label>چک باکس&nbsp;&nbsp;</label>
+
+                    <ImageCheckBox
+                      imgSrc={checkboxImg}
+                      onChange={this.checkBox}
+                      checked={false}
+                      title="فضای کار اشتراکی"
+                    />
+                    <ImageCheckBox
+                      imgSrc={checkboxImg}
+                      onChange={this.checkBox}
+                      checked={false}
+                      title="صندلی اختصاصی"
+                      style={{}}
+                    />
+                    <InlineCheckBox
+                      checked={false}
+                      title="اختصاصی"
+                      onChange={() => console.log("selected")}
+                      boxValue="الف"
+                      dir="rtl"
+                    />
+                    <span className="error-message">
+                      {this.state.form.step1.fields.name.error}
                     </span>
                   </div>
                 </CardBody>
