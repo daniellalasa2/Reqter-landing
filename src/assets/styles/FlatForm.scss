@@ -1,6 +1,8 @@
 .form-section {
   background-color: whitesmoke;
-  min-height: calc(100vh - 320px);
+  min-height: calc(
+    100vh - 320px
+  ); //min-height of content section to fill the entire height of device screen
 }
 
 input,
@@ -247,7 +249,9 @@ label.checkboxContainer {
 //responsive style
 @media (max-width: 768px) {
   .form-section {
-    min-height: calc(100vh - 89px);
+    min-height: calc(
+      100vh - 89px
+    ); //min-height calculation for tablets to large mobiles
   }
   .form-card {
     margin: 70px 10px 10px;
@@ -313,6 +317,6 @@ label.checkboxContainer {
 
 @media (max-width: 576px) {
   .form-section {
-    min-height: calc(100vh - 49px);
+    min-height: calc(100vh - 49px); //min-height calculation for small mobiles
   }
 }

@@ -149,6 +149,11 @@ class Navigation extends Component {
                 </Link>
               </NavItem>
               <NavItem>
+                <Link className="nav-link" to="/">
+                  خانه
+                </Link>
+              </NavItem>
+              <NavItem>
                 <Link className="nav-link" to="/comingsoon">
                   ورود
                 </Link>
@@ -176,7 +181,10 @@ class Navigation extends Component {
             </div>
             <ul className="items-container">
               <li>
-                <a
+                <Link to="/">خانه</Link>
+              </li>
+              <li>
+                <span
                   onClick={() => this.dropDownToggler("mobile")}
                   className="ul-dropdown-header rtl"
                 >
@@ -196,7 +204,7 @@ class Navigation extends Component {
                       color="white"
                     />
                   )}
-                </a>
+                </span>
                 <Collapse
                   isOpen={this.state.dropdownOpen.mobile}
                   className="rtl "
