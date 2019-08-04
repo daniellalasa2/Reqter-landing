@@ -101,6 +101,7 @@ class CheckBoxRow extends React.PureComponent {
           boxSizing: "content-box",
           direction: this.props.dir
         }}
+        className="CheckBoxRow"
       >
         {this.state.renderedChildren}
       </div>

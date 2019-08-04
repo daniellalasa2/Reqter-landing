@@ -59,11 +59,12 @@
 }
 .inline-checkbox-wrapper {
   line-height: 1.9;
-  display: inline-flex;
   width: auto;
   padding: 5px;
+  flex-grow: 1;
   .inline-checkbox {
     overflow: hidden;
+    flex-grow: 1;
     cursor: pointer;
     height: 36px;
     border-radius: 4px;
@@ -126,4 +127,13 @@
       background-color: rgb(230, 230, 230);
     }
   }
+}
+//Wrapper checbox component styles
+.CheckBoxRow {
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
 }

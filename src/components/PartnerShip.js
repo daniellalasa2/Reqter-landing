@@ -246,14 +246,12 @@ class PartnerShip extends React.PureComponent {
         });
         const select = (
           <CheckBoxRow
-            rowitems="3"
             //custom checkbox must return data as the last or the first arguments toward onChange function
             onChange={this.checkboxStateHandler.bind(
               null,
               "collaborationtypes"
             )}
             type="checkbox"
-            style={{ width: "100%", marginTop: "10px" }}
             dir="rtl"
           >
             {options}
