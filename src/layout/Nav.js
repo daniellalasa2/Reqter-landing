@@ -8,13 +8,17 @@ import {
   DropdownMenu,
   Collapse,
   Row,
-  Button,
   Col
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faTimes,
+  faAngleDown,
+  faAngleUp
+} from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/images/logo.jpg";
 import "../assets/styles/Nav.scss";
 
@@ -22,7 +26,10 @@ class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpen: false,
+      dropdownOpen: {
+        mobile: false,
+        normal: false
+      },
       didBodyScrolled: false,
       isMobileMenuOpen: false
     };
@@ -60,14 +67,13 @@ class Navigation extends Component {
     }
   };
 
-  toggle = e => {
-    e.preventDefault();
-    this.setState(
-      {
-        dropdownOpen: !this.state.dropdownOpen
-      },
-      () => console.log(this.state.dropdownOpen)
-    );
+  dropDownToggler = mode => {
+    this.setState({
+      dropdownOpen: {
+        ...this.state.dropdownOpen,
+        [mode]: !this.state.dropdownOpen[mode]
+      }
+    });
   };
   toggleMenu = action => {
     switch (action) {
@@ -114,8 +120,8 @@ class Navigation extends Component {
             <Nav className="nav-links-container">
               <Dropdown
                 nav
-                isOpen={this.state.dropdownOpen}
-                toggle={this.toggle}
+                isOpen={this.state.dropdownOpen.normal}
+                toggle={() => this.dropDownToggler("normal")}
                 className="rtl"
               >
                 <DropdownToggle nav caret>
@@ -150,13 +156,14 @@ class Navigation extends Component {
             </Nav>
           </Col>
         </Row>
+
         <div
           className={classnames(
             "mobile-menu-wrapper",
             this.state.isMobileMenuOpen && "open"
           )}
         >
-          <div className="container">
+          <div className="_container">
             <div className="close-icon-box">
               <FontAwesomeIcon
                 className="close-icon"
@@ -170,42 +177,54 @@ class Navigation extends Component {
             <ul className="items-container">
               <li>
                 <a
-                  onClick={this.toggle.bind(this)}
-                  style={{ display: "block" }}
+                  onClick={() => this.dropDownToggler("mobile")}
+                  className="ul-dropdown-header rtl"
                 >
-                  همکاری
+                  <span>همکاری</span>
+                  {this.state.dropdownOpen.mobile ? (
+                    <FontAwesomeIcon
+                      icon={faAngleUp}
+                      pull="left"
+                      size="md"
+                      color="white"
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      pull="left"
+                      size="md"
+                      color="white"
+                    />
+                  )}
                 </a>
-                <Collapse isOpen={this.state.dropdownOpen} className="rtl">
-                  <ul className="rtl">
-                    <li onClick={() => this.props.history.push("/")}>
-                      فرصت های شغلی
+                <Collapse
+                  isOpen={this.state.dropdownOpen.mobile}
+                  className="rtl "
+                >
+                  <ul className="rtl ul-dropdown">
+                    <li>
+                      <Link to="/comingsoon">فرصت های شغلی</Link>
                     </li>
-                    <li onClick={() => this.props.history.push("/partnership")}>
-                      همکاری تجاری
+                    <li>
+                      <Link to="/partnership">همکاری تجاری</Link>
                     </li>
                   </ul>
                 </Collapse>
               </li>
               <li>
-                <NavItem>
-                  <Link className="nav-link" to="/comingsoon">
-                    درباره ما
-                  </Link>
-                </NavItem>
+                <Link className="nav-link" to="/comingsoon">
+                  درباره ما
+                </Link>
               </li>
               <li>
-                <NavItem>
-                  <Link className="nav-link" to="/comingsoon">
-                    سوالات متداول
-                  </Link>
-                </NavItem>
+                <Link className="nav-link" to="/comingsoon">
+                  سوالات متداول
+                </Link>
               </li>
               <li>
-                <NavItem>
-                  <Link className="nav-link" to="/comingsoon">
-                    ورود
-                  </Link>
-                </NavItem>
+                <Link className="nav-link" to="/comingsoon">
+                  ورود
+                </Link>
               </li>
             </ul>
           </div>
