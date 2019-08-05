@@ -31,7 +31,6 @@ import startupBgImg from "../assets/images/products-bgImg/startup.jpg";
 class Products extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
       activeTab: "1",
@@ -136,6 +135,7 @@ class Products extends Component {
             >
               <div className="header-content">
                 <TabContent activeTab={this.state.activeTab}>
+                  {/* Default */}
                   <TabPane tabId="1">
                     <Row>
                       <Col sm="12">
@@ -156,6 +156,8 @@ class Products extends Component {
                       </Col>
                     </Row>
                   </TabPane>
+
+                  {/* coworking */}
                   <TabPane tabId="2">
                     <Row>
                       <Col sm="12">
@@ -164,7 +166,7 @@ class Products extends Component {
                             <InputGroupAddon addonType="prepend">
                               <Button
                                 onClick={() =>
-                                  this.props.history.push("/comingsoon")
+                                  this.props.history.push("/apply/coworking")
                                 }
                               >
                                 شروع درخواست
@@ -181,6 +183,8 @@ class Products extends Component {
                       </Col>
                     </Row>
                   </TabPane>
+
+                  {/* Conference */}
                   <TabPane tabId="3">
                     <Row>
                       <Col sm="12">
@@ -205,6 +209,8 @@ class Products extends Component {
                       </Col>
                     </Row>
                   </TabPane>
+
+                  {/* Investment */}
                   <TabPane tabId="4">
                     <Row>
                       <Col sm="12">
@@ -237,6 +243,8 @@ class Products extends Component {
                       </Col>
                     </Row>
                   </TabPane>
+
+                  {/* Private Office */}
                   <TabPane tabId="5">
                     <Row>
                       <Col sm="12">
@@ -261,6 +269,8 @@ class Products extends Component {
                       </Col>
                     </Row>
                   </TabPane>
+
+                  {/* Start Up */}
                   <TabPane tabId="6">
                     <Row>
                       <Col sm="12">

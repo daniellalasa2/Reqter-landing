@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Row, Col, Container } from "reactstrap";
 import "../assets/styles/Footer.scss";
 import { Link } from "react-router-dom";
 class Footer extends Component {

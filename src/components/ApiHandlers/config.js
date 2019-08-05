@@ -10,6 +10,7 @@ var config = {
   CONTENT_TYPE_ID: {
     accelerator: "5cfce5561772c0001748d1a7",
     partnership: "5d358ebc8e6e9a0017c28fc9",
+    coworking: "5cfc95472606810017dca194",
     partnership_working_fields: "5d4169c642afbf00179b0569"
   },
   AUTH:

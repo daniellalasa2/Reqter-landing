@@ -1,11 +1,62 @@
 import React, { useRef } from "react";
-import "./CustomCheckbox.scss";
-
+import "./FlatForm.scss";
 //Improvement:
 //1- CustomCheckBox must return data as the last or the first arguments toward onChange function
 //2- CheckBoxRow radio mode has an error while a radio element is selected have not deselect by clicking again.
 //HOC wrapper
 
+//All components show the error property if it has value
+const FlatInput = ({
+  type,
+  placeholder,
+  onClick,
+  onChange,
+  label,
+  error,
+  name,
+  id
+}) => {
+  return (
+    <div className="field-row">
+      <span className="field-title">{label}</span>
+      <input
+        type={type}
+        placeholder={placeholder}
+        onClick={onClick}
+        onChange={onChange}
+        name={name}
+        id={id}
+      />
+      <span className="error-message">{error}</span>
+    </div>
+  );
+};
+const FlatTextArea = ({
+  type,
+  placeholder,
+  onClick,
+  onChange,
+  label,
+  error,
+  name,
+  props
+}) => {
+  return (
+    <div className="field-row">
+      <span className="field-title">{label}</span>
+      <textarea
+        placeholder={placeholder}
+        onClick={onClick}
+        type={type}
+        onChange={onChange}
+        {...props}
+        name={name}
+      />
+      <span className="error-message">{error}</span>
+    </div>
+  );
+};
+//custom check box wrapper component
 class CheckBoxRow extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -152,8 +203,8 @@ const ImageCheckBox = ({
                 <g>
                   <path
                     d="M504.502,75.496c-9.997-9.998-26.205-9.998-36.204,0L161.594,382.203L43.702,264.311c-9.997-9.998-26.205-9.997-36.204,0
-			c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7
-			C514.5,101.703,514.499,85.494,504.502,75.496z"
+              c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7
+              C514.5,101.703,514.499,85.494,504.502,75.496z"
                   />
                 </g>
               </g>
@@ -208,8 +259,8 @@ const InlineCheckBox = ({
                 <g>
                   <path
                     d="M504.502,75.496c-9.997-9.998-26.205-9.998-36.204,0L161.594,382.203L43.702,264.311c-9.997-9.998-26.205-9.997-36.204,0
-			c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7
-			C514.5,101.703,514.499,85.494,504.502,75.496z"
+              c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7
+              C514.5,101.703,514.499,85.494,504.502,75.496z"
                   />
                 </g>
               </g>
@@ -221,4 +272,4 @@ const InlineCheckBox = ({
   );
 };
 
-export { ImageCheckBox, InlineCheckBox, CheckBoxRow };
+export { ImageCheckBox, InlineCheckBox, CheckBoxRow, FlatInput, FlatTextArea };

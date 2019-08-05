@@ -5,14 +5,13 @@
 import React from "react";
 import {
   Button,
-  Row,
   CardFooter,
   Card,
   CardHeader,
   CardBody,
   Input
 } from "reactstrap";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import Skeleton from "react-loading-skeleton";
 import {
   SubmitForm,
   GetPartnerShipWorkingFields
@@ -20,7 +19,8 @@ import {
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { InlineCheckBox, CheckBoxRow } from "./CustomCheckbox/CustomCheckbox";
+// import { InlineCheckBox, CheckBoxRow } from "./CustomCheckbox/CustomCheckbox";
+import { InlineCheckBox, CheckBoxRow, FlatInput } from "./FlatForm/FlatForm";
 import "../assets/styles/FlatForm.scss";
 import Validator from "./Validator/Validator";
 class PartnerShip extends React.PureComponent {
@@ -72,7 +72,10 @@ class PartnerShip extends React.PureComponent {
         }
       },
       combo: {
-        startup: []
+        startup: {
+          hasLoaded: false,
+          childs: {}
+        }
       }
     };
     this.validationRules = {
@@ -138,6 +141,7 @@ class PartnerShip extends React.PureComponent {
   };
   formStateHandler = e => {
     let _this = e.target;
+    console.log(e.target.value);
     const name = _this.name;
     const value = _this.value;
     const validation = Validator(value, this.validationRules[name]);
@@ -180,7 +184,6 @@ class PartnerShip extends React.PureComponent {
         },
         () => {
           this.checkFormValidation();
-          console.log(this.state.form);
         }
       );
     }
@@ -218,9 +221,10 @@ class PartnerShip extends React.PureComponent {
         console.log(this.state.form);
       }
     );
+    //if the form was valid then active form submit button
     if (_isValid) {
       SubmitForm("partnership", this.state.form.api, res => {
-        if (res.code == 200) {
+        if (res.code === 200) {
           this.setState({
             form: {
               ...this.state.form,
@@ -261,7 +265,10 @@ class PartnerShip extends React.PureComponent {
         );
         this.setState({
           combo: {
-            startup: select
+            startup: {
+              hasLoaded: true,
+              childs: select
+            }
           }
         });
       }
@@ -270,137 +277,112 @@ class PartnerShip extends React.PureComponent {
   componentDidMount() {
     this.PartnershipWorkingFields();
   }
-  componentWillUnmount() {
-    window.scrollTo({ top: 0 });
-  }
-  // componentWillUpdate() {
-  //   // console.log("going to update");
-  // }
+
   render() {
     return (
       <section
         className="form-section rtl-layout"
-        style={{ backgroundColor: "whitesmoke" }}
+        style={{
+          backgroundColor: "whitesmoke",
+          display: "flex",
+          flexWrap: "wrap"
+        }}
       >
-        <ReactCSSTransitionGroup
-          component="div"
-          className="row"
-          transitionName="example"
-          transitionEnterTimeout={1000}
-          transitionLeaveTimeout={1500}
-        >
-          {this.state.form.isSubmit ? (
-            <Card className="form-card" key={113123123}>
-              <SuccessSubmit />
+        {this.state.form.isSubmit ? (
+          <Card className="form-card">
+            <SuccessSubmit />
+          </Card>
+        ) : (
+          <React.Fragment>
+            <Card className="form-card">
+              <section id="form1" className="wizardForm show">
+                <CardHeader>
+                  <span className="fa-layers fa-fw icon">
+                    <FontAwesomeIcon
+                      icon={faInfoCircle}
+                      pull="right"
+                      size="lg"
+                      color="white"
+                    />
+                  </span>
+                  <span className="title">
+                    <strong>فرم همکاری</strong>
+                  </span>
+                </CardHeader>
+                <CardBody>
+                  <FlatInput
+                    label="نام شرکت یا سازمان"
+                    type="text"
+                    placeholder="نام شرکت یا سازمان را وارد کنید"
+                    name="name"
+                    id="name"
+                    autoFocus
+                    onChange={this.formStateHandler}
+                    error={this.state.form.fields.name.error}
+                  />
+
+                  <FlatInput
+                    label="نام درخواست کننده"
+                    type="text"
+                    placeholder="نام درخواست کننده را وارد کنید"
+                    name="primarycontact"
+                    id="primarycontact"
+                    onChange={this.formStateHandler}
+                    error={this.state.form.fields.primarycontact.error}
+                  />
+                  <div className="field-row">
+                    <span className="field-title">زمینه همکاری</span>
+
+                    {/* fill checkboxes */}
+                    {this.state.combo.startup.hasLoaded ? (
+                      this.state.combo.startup.childs
+                    ) : (
+                      <Skeleton count={8} style={{ lineHeight: 3 }} />
+                    )}
+                    <span className="error-message">
+                      {this.state.form.fields.collaborationtypes.error}
+                    </span>
+                  </div>
+                  <FlatInput
+                    label="شماره تماس"
+                    type="text"
+                    placeholder="مثال : 09123456789"
+                    name="phonenumber"
+                    id="phonenumber"
+                    onChange={this.formStateHandler}
+                    error={this.state.form.fields.phonenumber.error}
+                  />
+                  <FlatInput
+                    label="ایمیل"
+                    type="email"
+                    placeholder="ایمیل خود را وارد کنید"
+                    name="email"
+                    id="email"
+                    onChange={this.formStateHandler}
+                    error={this.state.form.fields.email.error}
+                  />
+                  <FlatInput
+                    label="وبسایت"
+                    type="text"
+                    placeholder="آدرس وبسایت خود را وارد کنید"
+                    name="homepage"
+                    id="homepage"
+                    onChange={this.formStateHandler}
+                    error={this.state.form.fields.homepage.error}
+                  />
+                </CardBody>
+              </section>
+              <CardFooter>
+                <Button
+                  className="navigation-button submit"
+                  onClick={() => this.submitForm()}
+                >
+                  ثبت
+                </Button>
+              </CardFooter>
             </Card>
-          ) : (
-            <React.Fragment key={2123131313}>
-              <Card className="form-card">
-                <section id="form1" className="wizardForm show">
-                  <CardHeader>
-                    <span className="fa-layers fa-fw icon">
-                      <FontAwesomeIcon
-                        icon={faInfoCircle}
-                        pull="right"
-                        size="lg"
-                        color="white"
-                      />
-                    </span>
-                    <span className="title">
-                      <strong>فرم همکاری</strong>
-                    </span>
-                  </CardHeader>
-                  <CardBody>
-                    <div className="field-row">
-                      <span className="field-title">نام شرکت یا سازمان</span>
-                      <Input
-                        placeholder="نام شرکت یا سازمان را وارد کنید"
-                        type="text"
-                        name="name"
-                        onChange={this.formStateHandler}
-                        autoFocus
-                        id="name"
-                      />
-                      <span className="error-message">
-                        {this.state.form.fields.name.error}
-                      </span>
-                    </div>
-
-                    <div className="field-row">
-                      <span className="field-title">نام درخواست کننده</span>
-                      <Input
-                        type="text"
-                        onChange={this.formStateHandler}
-                        name="primarycontact"
-                        placeholder="نام درخواست کننده را وارد کنید."
-                      />
-                      <span className="error-message">
-                        {this.state.form.fields.primarycontact.error}
-                      </span>
-                    </div>
-
-                    <div className="field-row">
-                      <span className="field-title">زمینه همکاری</span>
-
-                      {/* fill checkboxes */}
-                      {this.state.combo.startup}
-                      <span className="error-message">
-                        {this.state.form.fields.collaborationtypes.error}
-                      </span>
-                    </div>
-
-                    <div className="field-row">
-                      <span className="field-title">شماره تماس </span>
-                      <Input
-                        type="text"
-                        onChange={this.formStateHandler}
-                        name="phonenumber"
-                        placeholder="مثال : 09123456789"
-                      />
-                      <span className="error-message">
-                        {this.state.form.fields.phonenumber.error}
-                      </span>
-                    </div>
-
-                    <div className="field-row">
-                      <span className="field-title">ایمیل </span>
-                      <Input
-                        type="text"
-                        onChange={this.formStateHandler}
-                        name="email"
-                        placeholder="ایمیل خود را وارد کنید ."
-                      />
-                      <span className="error-message">
-                        {this.state.form.fields.email.error}
-                      </span>
-                    </div>
-                    <div className="field-row">
-                      <span className="field-title">وبسایت </span>
-                      <Input
-                        type="text"
-                        onChange={this.formStateHandler}
-                        name="homepage"
-                        placeholder="آدرس وبسایت خود را وارد کنید ."
-                      />
-                      <span className="error-message">
-                        {this.state.form.fields.homepage.error}
-                      </span>
-                    </div>
-                  </CardBody>
-                </section>
-                <CardFooter>
-                  <Button
-                    className="navigation-button submit"
-                    onClick={() => this.submitForm()}
-                    // disabled={!this.state.form.isValid}
-                  >
-                    ثبت
-                  </Button>
-                </CardFooter>
-              </Card>
-            </React.Fragment>
-          )}
-        </ReactCSSTransitionGroup>
+          </React.Fragment>
+        )}
       </section>
     );
   }

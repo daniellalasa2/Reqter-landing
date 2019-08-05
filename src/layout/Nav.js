@@ -193,14 +193,14 @@ class Navigation extends Component {
                     <FontAwesomeIcon
                       icon={faAngleUp}
                       pull="left"
-                      size="md"
+                      size="1x"
                       color="white"
                     />
                   ) : (
                     <FontAwesomeIcon
                       icon={faAngleDown}
                       pull="left"
-                      size="md"
+                      size="1x"
                       color="white"
                     />
                   )}

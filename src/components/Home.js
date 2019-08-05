@@ -14,9 +14,6 @@ import offer from "../assets/images/service-icons/offer.png";
 
 const Products = React.lazy(() => import("./Products"));
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <React.Fragment>
