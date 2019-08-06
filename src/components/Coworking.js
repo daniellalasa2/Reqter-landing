@@ -257,7 +257,8 @@ class Coworking extends React.PureComponent {
                   <FlatInput
                     label="سال تولد"
                     type="number"
-                    maxlength={4}
+                    max={9999}
+                    min={1270}
                     placeholder="مثال : 1359"
                     name="birthyear"
                     id="birthyear"
@@ -305,6 +306,7 @@ class Coworking extends React.PureComponent {
                   <FlatInput
                     label="تعداد صندلی"
                     type="number"
+                    min="1"
                     placeholder="تعداد صندلی درخواستی خود را وارد کنید"
                     name="seats"
                     id="seats"

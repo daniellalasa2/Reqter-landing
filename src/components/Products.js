@@ -121,7 +121,6 @@ class Products extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="picture-fader" />
         <Row>
           <Col lg="12" className="products-col">
             <div
@@ -134,184 +133,204 @@ class Products extends Component {
               }}
             >
               <div className="header-content">
-                <TabContent activeTab={this.state.activeTab}>
-                  {/* Default */}
-                  <TabPane tabId="1">
-                    <Row>
-                      <Col sm="12">
-                        <section className="default-header-content">
-                          <br />
-                          <br />
-                          <h2>
-                            <strong>موفقیت را فرا بخوان</strong>
-                          </h2>
-                          <h5>
-                            استارتاپ اسپیس پلتفرم جامع نیازمندیهای استارتاپی
-                            کشور
-                          </h5>
-                          <span className="choose-a-product">
-                            <strong>: یک محصول را انتخاب کنید </strong>
-                          </span>
-                        </section>
-                      </Col>
-                    </Row>
-                  </TabPane>
+                <div className="picture-fader">
+                  <TabContent activeTab={this.state.activeTab}>
+                    {/* Default */}
+                    <TabPane tabId="1">
+                      <Row>
+                        <Col sm="12">
+                          <section className="default-header-content">
+                            <br />
+                            <br />
+                            <h2>
+                              <strong>موفقیت را فرا بخوان</strong>
+                            </h2>
+                            <h5>
+                              استارتاپ اسپیس پلتفرم جامع نیازمندیهای استارتاپی
+                              کشور
+                            </h5>
+                            <span className="choose-a-product">
+                              <strong>: یک محصول را انتخاب کنید </strong>
+                            </span>
+                          </section>
+                        </Col>
+                      </Row>
+                    </TabPane>
 
-                  {/* coworking */}
-                  <TabPane tabId="2">
-                    <Row>
-                      <Col sm="12">
-                        <div className="product-request-form-box">
-                          <InputGroup size="lg">
-                            <InputGroupAddon addonType="prepend">
-                              <Button
-                                onClick={() =>
-                                  this.props.history.push("/apply/coworking")
-                                }
-                              >
-                                شروع درخواست
-                              </Button>
-                            </InputGroupAddon>
-                            <Input type="number" min="1" placeholder="تعداد" />
-                            {/* Combo box */}
-                            <Input type="select">
-                              <option>شهر</option>
-                              {this.fillCombo("city")}
-                            </Input>
-                          </InputGroup>
-                        </div>
-                      </Col>
-                    </Row>
-                  </TabPane>
-
-                  {/* Conference */}
-                  <TabPane tabId="3">
-                    <Row>
-                      <Col sm="12">
-                        <div className="product-request-form-box">
-                          <InputGroup size="lg">
-                            <InputGroupAddon addonType="prepend">
-                              <Button
-                                onClick={() =>
-                                  this.props.history.push("/comingsoon")
-                                }
-                              >
-                                شروع درخواست
-                              </Button>
-                            </InputGroupAddon>
-                            <Input type="number" min="1" placeholder="ظرفیت" />
-                            <Input type="select">
-                              <option>شهر</option>
-                              {this.fillCombo("city")}
-                            </Input>
-                          </InputGroup>
-                        </div>
-                      </Col>
-                    </Row>
-                  </TabPane>
-
-                  {/* Investment */}
-                  <TabPane tabId="4">
-                    <Row>
-                      <Col sm="12">
-                        <div className="product-request-form-box">
-                          <InputGroup size="lg">
-                            <InputGroupAddon addonType="prepend">
-                              <Button
-                                onClick={() =>
-                                  this.props.history.push("/comingsoon")
-                                }
-                                className="invest-fields"
-                              >
-                                شروع درخواست
-                              </Button>
-                            </InputGroupAddon>
-                            <NumberFormat
-                              thousandSeparator={true}
-                              customInput={Input}
-                              prefix="تومان "
-                              style={{ textAlign: "right" }}
-                              placeholder="چقدر سرمایه لازم داری؟"
-                              className="invest-fields"
-                            />
-                            <Input type="select" className="invest-fields">
-                              <option>مرحله سرمایه گذاری</option>
-                              {this.fillCombo("investing")}
-                            </Input>
-                          </InputGroup>
-                        </div>
-                      </Col>
-                    </Row>
-                  </TabPane>
-
-                  {/* Private Office */}
-                  <TabPane tabId="5">
-                    <Row>
-                      <Col sm="12">
-                        <div className="product-request-form-box">
-                          <InputGroup size="lg">
-                            <InputGroupAddon addonType="prepend">
-                              <Button
-                                onClick={() =>
-                                  this.props.history.push("/comingsoon")
-                                }
-                              >
-                                شروع درخواست
-                              </Button>
-                            </InputGroupAddon>
-                            <Input type="number" min="1" placeholder="ظرفیت" />
-                            <Input type="select">
-                              <option>شهر</option>
-                              {this.fillCombo("city")}
-                            </Input>
-                          </InputGroup>
-                        </div>
-                      </Col>
-                    </Row>
-                  </TabPane>
-
-                  {/* Start Up */}
-                  <TabPane tabId="6">
-                    <Row>
-                      <Col sm="12">
-                        <div className="product-request-form-box">
-                          <InputGroup size="lg">
-                            <InputGroupAddon addonType="prepend">
-                              <Button type="submit">
-                                <Link
-                                  to={{
-                                    pathname: "/apply/startup",
-                                    state: {
-                                      data: this.state.productForms.startup
-                                    }
-                                  }}
+                    {/* coworking */}
+                    <TabPane tabId="2">
+                      <Row>
+                        <Col sm="12">
+                          <div className="product-request-form-box">
+                            <InputGroup size="lg">
+                              <InputGroupAddon addonType="prepend">
+                                <Button
+                                  onClick={() =>
+                                    this.props.history.push("/apply/coworking")
+                                  }
                                 >
                                   شروع درخواست
-                                </Link>
-                              </Button>
-                            </InputGroupAddon>
-                            <Input
-                              type="select"
-                              onChange={this.formHandler.bind(this, "startup")}
-                              name="major"
-                            >
-                              <option>زمینه فعالیت</option>
-                              {this.fillCombo("startup")}
-                            </Input>
-                            <Input
-                              type="select"
-                              name="city"
-                              onChange={this.formHandler.bind(this, "startup")}
-                            >
-                              <option>شهر</option>
-                              {this.fillCombo("city")}
-                            </Input>
-                          </InputGroup>
-                        </div>
-                      </Col>
-                    </Row>
-                  </TabPane>
-                </TabContent>
+                                </Button>
+                              </InputGroupAddon>
+                              <Input
+                                type="number"
+                                min="1"
+                                placeholder="تعداد"
+                              />
+                              {/* Combo box */}
+                              <Input type="select">
+                                <option>شهر</option>
+                                {this.fillCombo("city")}
+                              </Input>
+                            </InputGroup>
+                          </div>
+                        </Col>
+                      </Row>
+                    </TabPane>
+
+                    {/* Conference */}
+                    <TabPane tabId="3">
+                      <Row>
+                        <Col sm="12">
+                          <div className="product-request-form-box">
+                            <InputGroup size="lg">
+                              <InputGroupAddon addonType="prepend">
+                                <Button
+                                  onClick={() =>
+                                    this.props.history.push("/comingsoon")
+                                  }
+                                >
+                                  شروع درخواست
+                                </Button>
+                              </InputGroupAddon>
+                              <Input
+                                type="number"
+                                min="1"
+                                placeholder="ظرفیت"
+                              />
+                              <Input type="select">
+                                <option>شهر</option>
+                                {this.fillCombo("city")}
+                              </Input>
+                            </InputGroup>
+                          </div>
+                        </Col>
+                      </Row>
+                    </TabPane>
+
+                    {/* Investment */}
+                    <TabPane tabId="4">
+                      <Row>
+                        <Col sm="12">
+                          <div className="product-request-form-box">
+                            <InputGroup size="lg">
+                              <InputGroupAddon addonType="prepend">
+                                <Button
+                                  onClick={() =>
+                                    this.props.history.push("/comingsoon")
+                                  }
+                                  className="invest-fields"
+                                >
+                                  شروع درخواست
+                                </Button>
+                              </InputGroupAddon>
+                              <NumberFormat
+                                thousandSeparator={true}
+                                customInput={Input}
+                                prefix="تومان "
+                                style={{ textAlign: "right" }}
+                                placeholder="چقدر سرمایه لازم داری؟"
+                                className="invest-fields"
+                              />
+                              <Input type="select" className="invest-fields">
+                                <option>مرحله سرمایه گذاری</option>
+                                {this.fillCombo("investing")}
+                              </Input>
+                            </InputGroup>
+                          </div>
+                        </Col>
+                      </Row>
+                    </TabPane>
+
+                    {/* Private Office */}
+                    <TabPane tabId="5">
+                      <Row>
+                        <Col sm="12">
+                          <div className="product-request-form-box">
+                            <InputGroup size="lg">
+                              <InputGroupAddon addonType="prepend">
+                                <Button
+                                  onClick={() =>
+                                    this.props.history.push("/comingsoon")
+                                  }
+                                >
+                                  شروع درخواست
+                                </Button>
+                              </InputGroupAddon>
+                              <Input
+                                type="number"
+                                min="1"
+                                placeholder="ظرفیت"
+                              />
+                              <Input type="select">
+                                <option>شهر</option>
+                                {this.fillCombo("city")}
+                              </Input>
+                            </InputGroup>
+                          </div>
+                        </Col>
+                      </Row>
+                    </TabPane>
+
+                    {/* Start Up */}
+                    <TabPane tabId="6">
+                      <Row>
+                        <Col sm="12">
+                          <div className="product-request-form-box">
+                            <InputGroup size="lg">
+                              <InputGroupAddon addonType="prepend">
+                                <Button type="submit">
+                                  <Link
+                                    to={{
+                                      pathname: "/apply/startup",
+                                      state: {
+                                        data: this.state.productForms.startup
+                                      }
+                                    }}
+                                  >
+                                    شروع درخواست
+                                  </Link>
+                                </Button>
+                              </InputGroupAddon>
+                              <Input
+                                type="select"
+                                onChange={this.formHandler.bind(
+                                  this,
+                                  "startup"
+                                )}
+                                name="major"
+                              >
+                                <option>زمینه فعالیت</option>
+                                {this.fillCombo("startup")}
+                              </Input>
+                              <Input
+                                type="select"
+                                name="city"
+                                onChange={this.formHandler.bind(
+                                  this,
+                                  "startup"
+                                )}
+                              >
+                                <option>شهر</option>
+                                {this.fillCombo("city")}
+                              </Input>
+                            </InputGroup>
+                          </div>
+                        </Col>
+                      </Row>
+                    </TabPane>
+                  </TabContent>
+                </div>
               </div>
               <div className="products-box">
                 <ul className="products">

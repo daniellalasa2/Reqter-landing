@@ -2,8 +2,7 @@
   background-color: rgba(0, 0, 0, 0.35);
   height: 550px;
   width: 100%;
-  position: absolute;
-  top: 0;
+  position: relative;
   z-index: 2;
 }
 .products-col {
@@ -19,13 +18,12 @@
   padding: 0;
   margin: 0;
   position: relative;
-  transition: background-image 0.3 ease 0s;
   a {
     color: white;
     text-decoration: none;
   }
   .header-content {
-    margin: 100px auto 0;
+    margin: 0 auto 0;
     display: inline-block;
     position: relative;
     width: 100%;
@@ -34,6 +32,9 @@
     color: white;
     .invest-fields {
       font-size: 16px;
+    }
+    .tab-content {
+      padding-top: 100px;
     }
     .default-header-content {
       span.choose-a-product {
@@ -101,7 +102,7 @@
   position: relative;
   max-width: 947px;
   padding: 0 3px;
-  margin: 50px auto 13px;
+  margin: 145px auto 13px;
   z-index: 4;
   .products {
     display: flex;
@@ -147,8 +148,89 @@
   }
 }
 
-@media (max-width: 767.98px) {
+//responsive
+
+//Small devices (portrait phone )
+@media (max-width: 576px) {
   .crooked-divider {
     display: none;
+  }
+  .products-box {
+    .products {
+      flex-direction: column;
+      align-items: center;
+      .active {
+        border: 2px solid #b8a4e6;
+      }
+      li {
+        flex-direction: row-reverse;
+        align-items: center;
+        width: 75%;
+        height: 50px;
+        box-shadow: none;
+        top: 0;
+        border-radius: 0;
+        border: 1px solid lightgrey;
+        .product-icons {
+          width: 40px;
+        }
+        &:first-child {
+          border-radius: 5px 5px 0 0;
+        }
+        &:last-child {
+          border-radius: 0 0 5px 5px;
+        }
+      }
+      li:hover {
+        top: 0;
+        width: 80%;
+      }
+    }
+  }
+  .tab-content {
+    .choose-a-product {
+      margin-top: 190px !important;
+      text-align: center !important;
+    }
+  }
+}
+
+//landscape phone and up , small tablets
+@media (min-width: 576.01px) {
+  .crooked-divider {
+    height: 70px;
+    transform: rotate(0deg);
+  }
+}
+
+//tablets and up
+@media (min-width: 768px) {
+  .crooked-divider {
+    height: 70px;
+    transform: rotate(0deg);
+  }
+}
+
+//Large devices , landscape tablets , desktops
+@media (min-width: 992px) {
+  .crooked-divider {
+    height: 100px;
+    transform: rotate(-4deg);
+  }
+}
+
+//large desktops and up
+@media (min-width: 1200px) {
+  .crooked-divider {
+    height: 120px;
+    transform: rotate(-4deg);
+  }
+}
+
+//Extra large desktops, 4k Monitors, TVs
+@media (min-width: 1440px) {
+  .crooked-divider {
+    height: 120px;
+    transform: rotate(-2deg);
   }
 }

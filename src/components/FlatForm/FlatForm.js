@@ -13,6 +13,11 @@ const FlatInput = ({
   onChange,
   label,
   error,
+  minlength,
+  maxlength,
+  pattern,
+  min,
+  max,
   name,
   id
 }) => {
@@ -25,6 +30,11 @@ const FlatInput = ({
         onClick={onClick}
         onChange={onChange}
         name={name}
+        min={min}
+        max={max}
+        pattern={pattern}
+        minlength={minlength}
+        maxlength={maxlength}
         id={id}
       />
       <span className="error-message">{error}</span>
