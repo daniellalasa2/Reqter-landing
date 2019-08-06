@@ -1,4 +1,5 @@
 .facilities-description {
+  padding: 7% 11%;
   .header {
     color: #555;
     padding: 30px 0 24px;
@@ -70,4 +71,88 @@
       background-color: rgba(255, 255, 255, 0.2);
     }
   }
+}
+
+//responsive
+
+//Small devices (portrait phone )
+@media (max-width: 576px) {
+  .contact-info {
+    display: none;
+  }
+  .crooked-divider {
+    display: none;
+  }
+  .products-box {
+    margin-top: 45px !important;
+    .products {
+      flex-direction: column;
+      align-items: center;
+      .active {
+        border: 2px solid #b8a4e6;
+      }
+      li {
+        flex-direction: row-reverse;
+        align-items: center;
+        width: 75%;
+        height: 50px;
+        box-shadow: none;
+        top: 0;
+        border-radius: 0;
+        border: 1px solid lightgrey;
+        .product-icons {
+          width: 40px;
+        }
+        &:first-child {
+          border-radius: 5px 5px 0 0;
+        }
+        &:last-child {
+          border-radius: 0 0 5px 5px;
+        }
+      }
+      li:hover {
+        top: 0;
+        width: 80%;
+      }
+    }
+  }
+  .tab-content {
+    .choose-a-product {
+      margin-top: 100px !important;
+      text-align: center !important;
+    }
+  }
+}
+
+//Small devices (portrait phone )
+@media (max-width: 576px) {
+  .facilities-description {
+    padding: 20% 0 0 0 !important;
+    ul {
+      li {
+        margin: 0;
+        max-width: auto;
+      }
+    }
+  }
+}
+
+//landscape phone and up , small tablets
+@media (min-width: 576.01px) {
+}
+
+//tablets and up
+@media (min-width: 768px) {
+}
+
+//Large devices , landscape tablets , desktops
+@media (min-width: 992px) {
+}
+
+//large desktops and up
+@media (min-width: 1200px) {
+}
+
+//Extra large desktops, 4k Monitors, TVs
+@media (min-width: 1440px) {
 }

@@ -15,7 +15,7 @@
     height: 477px;
   }
   .specs-inner-box {
-    width: 80%;
+    width: 28rem;
     background-color: white;
     border-radius: 5px;
     margin-top: 45px;
@@ -37,6 +37,8 @@
   .product-specs-item {
   }
   .product-specs-list {
+    padding: 0;
+    list-style: none;
     &::before {
       display: inline-block;
       width: 20px;
@@ -53,5 +55,24 @@
   background-position: left !important;
   .specs {
     right: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .product-specs {
+    width: 100%;
+    .box {
+      position: relative;
+      width: 100%;
+    }
+    .specs-inner-box {
+      width: auto;
+      padding: 1.5rem;
+      list-style: none;
+      height: auto;
+      opacity: 0.9;
+      margin: 20px 10px;
+      border-radius: 1px;
+    }
   }
 }

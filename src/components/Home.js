@@ -20,7 +20,7 @@ class Home extends React.Component {
         <Products {...this.props} />
         <section>
           <Row>
-            <Col lg="12" style={{ padding: "5% 11%" }}>
+            <Col lg="12">
               <section className="facilities-description">
                 <div className="header">حالا روش کار چطوریه؟</div>
                 {/* <p>
