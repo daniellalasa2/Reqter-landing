@@ -15,7 +15,8 @@
     height: 477px;
   }
   .specs-inner-box {
-    width: 28rem;
+    min-width: fit-content;
+    width: 29rem;
     background-color: white;
     border-radius: 5px;
     margin-top: 45px;
