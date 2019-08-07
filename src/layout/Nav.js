@@ -17,7 +17,9 @@ import {
   faBars,
   faTimes,
   faAngleDown,
-  faAngleUp
+  faAngleUp,
+  faLockOpen,
+  faLock
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/images/logo.jpg";
 import "../assets/styles/Nav.scss";
@@ -154,8 +156,22 @@ class Navigation extends Component {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link className="nav-link" to="/comingsoon">
+                <Link className="nav-link login" to="/comingsoon">
                   ورود
+                  <FontAwesomeIcon
+                    icon={faLockOpen}
+                    pull="right"
+                    size="sm"
+                    color="black"
+                    className="icon-lock-open"
+                  />
+                  <FontAwesomeIcon
+                    icon={faLock}
+                    pull="right"
+                    size="sm"
+                    color="black"
+                    className="icon-lock-close"
+                  />
                 </Link>
               </NavItem>
             </Nav>

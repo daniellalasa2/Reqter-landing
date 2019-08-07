@@ -32,10 +32,45 @@
 }
 .nav-links-container {
   float: right;
+  .nav-item {
+    display: flex;
+    align-items: center;
+  }
   a.nav-link {
     text-decoration: none;
     font-weight: 600;
     letter-spacing: 1px;
+    &.login {
+      width: 77px;
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      border-radius: 4px;
+      border: 1px solid white;
+      padding: 0.1rem 0.8rem;
+      background-color: rgba(255, 255, 255, 0.2);
+      text-decoration: none;
+      color: white;
+      .icon-lock-open {
+        display: none;
+        color: white;
+      }
+      .icon-lock-close {
+        display: block;
+        color: white;
+      }
+      &:hover {
+        color: #222;
+        background-color: rgba(255, 255, 255, 1);
+        .icon-lock-open {
+          display: block;
+          color: #222;
+        }
+        .icon-lock-close {
+          display: none;
+        }
+      }
+    }
   }
 }
 .nav-logo-container-col {
@@ -67,6 +102,27 @@
   }
   img {
     width: 50px;
+  }
+  a.nav-link {
+    &.login {
+      opacity: 0.8;
+      border: 1px solid rgb(20, 20, 20);
+      .icon-lock-open,
+      .icon-lock-close {
+        color: rgb(20, 20, 20);
+      }
+      &:hover {
+        color: white !important;
+        background-color: rgba(20, 20, 20, 1);
+        .icon-lock-open,
+        .icon-lock-close {
+          color: white !important;
+        }
+        .icon-lock-close {
+          display: none;
+        }
+      }
+    }
   }
 }
 .logo-text-box {
