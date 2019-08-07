@@ -21,6 +21,7 @@ import {
   CheckBoxRow
 } from "./CustomCheckbox/CustomCheckbox";
 import checkboxImg from "../assets/images/logo.jpg";
+import FlatUploader from "./FlatUploader/FlatUploader";
 export default class StartUp extends React.Component {
   constructor(props) {
     super(props);
@@ -682,6 +683,13 @@ export default class StartUp extends React.Component {
                     <span className="error-message">
                       {this.state.form.step2.fields.teammembers.error}
                     </span>
+                  </div>
+
+                  <div className="field-row">
+                    <FlatUploader
+                      placeholder="انتخاب فایل ..."
+                      progresscolor="grey"
+                    />
                   </div>
                 </CardBody>
               </section>

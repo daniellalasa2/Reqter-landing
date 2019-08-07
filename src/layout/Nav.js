@@ -197,7 +197,7 @@ class Navigation extends Component {
             </div>
             <ul className="items-container">
               <li>
-                <Link to="/">خانه</Link>
+                <span onClick={() => (window.location.href = "/")}>خانه</span>
               </li>
               <li>
                 <span
