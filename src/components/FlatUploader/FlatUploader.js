@@ -19,7 +19,8 @@ class FlatUploader extends React.PureComponent {
   render() {
     return (
       <div
-        className={classnames("flatuploader", () =>
+        className={classnames(
+          "flatuploader",
           this.props.progress === 100 ? "success-upload" : null
         )}
         style={{ ...this.props.style }}
@@ -28,7 +29,7 @@ class FlatUploader extends React.PureComponent {
           %{this.props.progress ? this.props.progress : "0"}
         </div>
         <FontAwesomeIcon
-          classnames="cloud-icon"
+          className="cloud-icon"
           icon={faCloud}
           size="3x"
           color={this.props.progresscolor}

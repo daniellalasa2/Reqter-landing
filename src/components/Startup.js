@@ -689,6 +689,7 @@ export default class StartUp extends React.Component {
                     <FlatUploader
                       placeholder="انتخاب فایل ..."
                       progresscolor="grey"
+                      progress={100}
                     />
                   </div>
                 </CardBody>

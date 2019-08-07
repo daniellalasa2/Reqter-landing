@@ -26,14 +26,7 @@
     overflow: hidden;
     font-size: 13px;
   }
-  .success-upload {
-    .success-icon {
-      display: block !important;
-    }
-    .cloud-icon {
-      display: none;
-    }
-  }
+
   .file-select-button {
     padding: 0.25rem 0.5rem;
     border: 1px solid black;
@@ -47,7 +40,14 @@
     }
   }
 }
-
+.success-upload {
+  .success-icon {
+    display: block !important;
+  }
+  .cloud-icon {
+    display: none !important;
+  }
+}
 @media (max-width: 320px) {
   .flatuploader {
     padding: 1rem 1rem;
