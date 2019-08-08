@@ -12,15 +12,16 @@ import {
   Input
 } from "reactstrap";
 import Skeleton from "react-loading-skeleton";
-import {
-  SubmitForm,
-  GetPartnerShipWorkingFields
-} from "./ApiHandlers/ApiHandler";
+import { SubmitForm, FilterContents } from "./ApiHandlers/ApiHandler";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 // import { InlineCheckBox, CheckBoxRow } from "./CustomCheckbox/CustomCheckbox";
-import { InlineCheckBox, CheckBoxRow, FlatInput } from "./FlatForm/FlatForm";
+import {
+  FlatInlineSelect,
+  FlatImageSelect,
+  FlatInput
+} from "./FlatForm/FlatForm";
 import "../assets/styles/FlatForm.scss";
 import Validator from "./Validator/Validator";
 class PartnerShip extends React.PureComponent {
@@ -229,38 +230,13 @@ class PartnerShip extends React.PureComponent {
     }
   };
   PartnershipWorkingFields = () => {
-    GetPartnerShipWorkingFields(res => {
+    FilterContents("partnership_working_fields", res => {
       if (res.success_result.code === 200) {
-        const options = res.data.map((val, index) => {
-          return (
-            <InlineCheckBox
-              checked={false}
-              title={val.fields.name.fa}
-              keys={val._id}
-              boxValue={index + 1}
-              dir="rtl"
-              key={val._id}
-            />
-          );
-        });
-        const select = (
-          <CheckBoxRow
-            //custom checkbox must return data as the last or the first arguments toward onChange function
-            onChange={this.checkboxStateHandler.bind(
-              null,
-              "collaborationtypes"
-            )}
-            type="checkbox"
-            dir="rtl"
-          >
-            {options}
-          </CheckBoxRow>
-        );
         this.setState({
           combo: {
             startup: {
               hasLoaded: true,
-              childs: select
+              items: res.data
             }
           }
         });
@@ -328,7 +304,12 @@ class PartnerShip extends React.PureComponent {
 
                     {/* fill checkboxes */}
                     {this.state.combo.startup.hasLoaded ? (
-                      this.state.combo.startup.childs
+                      <FlatInlineSelect
+                        type="checkbox"
+                        items={this.state.combo.startup.items}
+                        onChange={this.checkboxStateHandler}
+                        dir="rtl"
+                      />
                     ) : (
                       <Skeleton count={8} style={{ lineHeight: 3 }} />
                     )}

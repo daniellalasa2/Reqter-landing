@@ -1,73 +1,14 @@
 import React, { useRef } from "react";
 import "./FlatForm.scss";
-//Improvement:
-//1- CustomCheckBox must return data as the last or the first arguments toward onChange function
-//2- CheckBoxRow radio mode has an error while a radio element is selected have not deselect by clicking again.
-//HOC wrapper
-
-//All components show the error property if it has value
-const FlatInput = ({
-  type,
-  placeholder,
-  onClick,
-  onChange,
-  label,
-  error,
-  minlength,
-  maxlength,
-  pattern,
-  min,
-  max,
-  name,
-  id
-}) => {
-  return (
-    <div className="field-row">
-      <span className="field-title">{label}</span>
-      <input
-        type={type}
-        placeholder={placeholder}
-        onClick={onClick}
-        onChange={onChange}
-        name={name}
-        min={min}
-        max={max}
-        pattern={pattern}
-        minLength={minlength}
-        maxLength={maxlength}
-        id={id}
-      />
-      <span className="error-message">{error}</span>
-    </div>
-  );
-};
-const FlatTextArea = ({
-  type,
-  placeholder,
-  onClick,
-  onChange,
-  label,
-  error,
-  name,
-  props
-}) => {
-  return (
-    <div className="field-row">
-      <span className="field-title">{label}</span>
-      <textarea
-        placeholder={placeholder}
-        onClick={onClick}
-        type={type}
-        onChange={onChange}
-        {...props}
-        name={name}
-      />
-      <span className="error-message">{error}</span>
-    </div>
-  );
-};
-//custom check box wrapper component
-class CheckBoxRow extends React.PureComponent {
+/*
+  Todo:
+    1- CustomCheckBox must return data as the last or the first arguments toward onChange function
+    2- CheckBoxRow radio mode has an error while a radio element is selected have not deselect by clicking again.
+    3- Alphabetic value box for image and inline select components
+    4- set proptypes for props of each component
+*/
+//HOC select wrapper
+class SelectRow extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -171,24 +112,26 @@ class CheckBoxRow extends React.PureComponent {
 }
 
 //Image check box comopnent
-const ImageCheckBox = ({
-  imgAlt,
+const ImageSelect = ({
   onChange,
-  imgSrc,
   checked,
   className,
   value,
   title,
   style,
-  ...props
+  boxValue,
+  width,
+  keys,
+  dir,
+  imgSrc,
+  imgAlt
 }) => {
   const checkbox = useRef();
-  const toggleCheckbox = e => {
+  const toggleCheckbox = () => {
     checked = !checked;
-
     if (checked) checkbox.current.classList.add("checked");
     else checkbox.current.classList.remove("checked");
-    onChange();
+    onChange({ title: title, key: keys, checked: checked });
   };
   return (
     <React.Fragment>
@@ -213,8 +156,8 @@ const ImageCheckBox = ({
                 <g>
                   <path
                     d="M504.502,75.496c-9.997-9.998-26.205-9.998-36.204,0L161.594,382.203L43.702,264.311c-9.997-9.998-26.205-9.997-36.204,0
-              c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7
-              C514.5,101.703,514.499,85.494,504.502,75.496z"
+			c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7
+			C514.5,101.703,514.499,85.494,504.502,75.496z"
                   />
                 </g>
               </g>
@@ -228,7 +171,7 @@ const ImageCheckBox = ({
 };
 
 //Inline checkbox component
-const InlineCheckBox = ({
+const InlineSelect = ({
   onChange,
   checked,
   className,
@@ -269,8 +212,8 @@ const InlineCheckBox = ({
                 <g>
                   <path
                     d="M504.502,75.496c-9.997-9.998-26.205-9.998-36.204,0L161.594,382.203L43.702,264.311c-9.997-9.998-26.205-9.997-36.204,0
-              c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7
-              C514.5,101.703,514.499,85.494,504.502,75.496z"
+			c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7
+			C514.5,101.703,514.499,85.494,504.502,75.496z"
                   />
                 </g>
               </g>
@@ -282,4 +225,179 @@ const InlineCheckBox = ({
   );
 };
 
-export { ImageCheckBox, InlineCheckBox, CheckBoxRow, FlatInput, FlatTextArea };
+const FlatNumberSet = ({
+  onClick,
+  onChange,
+  label,
+  range,
+  error,
+  name,
+  id
+}) => {
+  // console.log(range);
+  // return null;
+  const _wrapperRef = useRef();
+  const _activated = e => {
+    // const childs = _wrapperRef.current.children[1].children;
+    // const childCount = childs.length;
+    // for (let i = 0; i <= childCount; i++) {
+    //   childs[i].classList.remove("active");
+    // }
+    e.target.classList.add("active");
+  };
+  let numberRangeButtons = [];
+  for (let i = range[0]; i <= range[1]; i++) {
+    numberRangeButtons.push(
+      <button onClick={_activated} name={name} className="sets">
+        {i === range[1] ? `${i}+` : i}
+      </button>
+    );
+  }
+  return (
+    <div className="field-row" id={id} ref={_wrapperRef}>
+      <label>{label}</label>
+      <div className="number-range-buttons-container">{numberRangeButtons}</div>
+      <span className="error-message">{error}</span>
+    </div>
+  );
+};
+//All components show the error property if it has value
+const FlatInput = ({
+  type,
+  placeholder,
+  onClick,
+  onChange,
+  label,
+  error,
+  minlength,
+  maxlength,
+  pattern,
+  min,
+  max,
+  name,
+  id
+}) => {
+  return (
+    <div className="field-row">
+      <span className="field-title">{label}</span>
+      <input
+        type={type}
+        placeholder={placeholder}
+        onClick={onClick}
+        onChange={onChange}
+        name={name}
+        min={min}
+        max={max}
+        pattern={pattern}
+        minLength={minlength}
+        maxLength={maxlength}
+        id={id}
+      />
+      <span className="error-message">{error}</span>
+    </div>
+  );
+};
+const FlatTextArea = ({
+  type,
+  placeholder,
+  onClick,
+  onChange,
+  label,
+  error,
+  name,
+  props
+}) => {
+  return (
+    <div className="field-row">
+      <span className="field-title">{label}</span>
+      <textarea
+        placeholder={placeholder}
+        onClick={onClick}
+        type={type}
+        onChange={onChange}
+        {...props}
+        name={name}
+      />
+      <span className="error-message">{error}</span>
+    </div>
+  );
+};
+
+/*************************
+    *** Flat Inline Select component ***
+    Accepted array of object:
+    example = [{
+                checked = true || false
+                title= "select 1"
+                key = "A unique react child key :)"
+                boxValue= "1"
+                dir= "rtl || ltr"
+                keys = "select1"  value of select box
+                },...]
+***************************/
+const FlatInlineSelect = ({ items, onChange, dir, type }) => {
+  const _options = items.map((val, index) => {
+    return (
+      <InlineSelect
+        checked={val.defaultChecked}
+        title={val.title}
+        keys={val.value}
+        boxValue={index + 1}
+        dir={dir}
+        key={val.key}
+      />
+    );
+  });
+  const _select = (
+    <SelectRow onChange={onChange} dir={dir} type={type}>
+      {_options}
+    </SelectRow>
+  );
+  return _select;
+};
+
+/*************************
+    *** Flat Image Select component ***
+    Accepted array of object:
+    example = [{
+                checked = true || false
+                title= "select 1"
+                key = "A unique react child key :)"
+                boxValue= "1"
+                dir= "rtl || ltr"
+                keys = "select1"  value of select box
+                imgSrc = "http://example.com/example.jpg" //image source of each select
+                imgAlt = "Image Exampe"  //alt attr for img  
+                },...]
+***************************/
+const FlatImageSelect = ({ items, onChange, dir, type }) => {
+  const _options = items.map((val, index) => {
+    return (
+      <ImageSelect
+        checked={val.defaultChecked}
+        title={val.title}
+        keys={val.key}
+        boxValue={index + 1}
+        dir={dir}
+        imgSrc={val.imgSrc}
+        imgAlt={val.imgAlt | "Flat Image Select"}
+        key={val.value}
+      />
+    );
+  });
+  const _select = (
+    <SelectRow onChange={onChange} dir={dir} type={type}>
+      {_options}
+    </SelectRow>
+  );
+  return _select;
+};
+export {
+  ImageSelect,
+  InlineSelect,
+  FlatInput,
+  FlatTextArea,
+  FlatInlineSelect,
+  FlatImageSelect,
+  FlatNumberSet
+};

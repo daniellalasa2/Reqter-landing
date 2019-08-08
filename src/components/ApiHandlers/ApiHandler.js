@@ -7,18 +7,17 @@ let _api = {
     authorization: config.AUTH
   },
   submitForm: config.BASE_URL_CONTENT + config.URLS.submit_form,
-  GetPartnerShipWorkingFields:
-    config.BASE_URL_CONTENT + config.URLS.partner_ship_working_fields
+  FilterContents: config.BASE_URL_CONTENT + config.URLS.filter_contents
 };
 
 function errorHandler(statusCode) {
   const result = { message: "", code: statusCode };
   switch (statusCode) {
     case 200:
-      result.message = "فرم با موفقیت ارسال شد .";
+      result.message = " با موفقیت ارسال شد .";
       break;
     case 201:
-      result.message = "فرم با موفقیت ساخته شد .";
+      result.message = " با موفقیت ساخته شد .";
       break;
     case 404:
       result.message = "نتیجه ای یافت نشد .";
@@ -28,7 +27,7 @@ function errorHandler(statusCode) {
       break;
     case 400:
       result.message =
-        "اطلاعات نامناسب ارسال شده . لطفا از صحبت اطلاعات اطمینان حاصل کنید .";
+        "اطلاعات نامناسب ارسال شده . لطفا از صحت اطلاعات اطمینان حاصل کنید .";
       break;
     case 401:
       result.message = "مشکل امنیتی رخ داده است . لطفا بعدا امتحان کنید";
@@ -60,14 +59,17 @@ function SubmitForm(formName, data, callback) {
     });
 }
 
-//PartnerShip API sets
-function GetPartnerShipWorkingFields(callback) {
+//Get list of special contents by sending specific arguments
+// Accepted types: 1- partnership_working_fields
+//                 2- list_of_countries
+//                 3- list_of_cities
+function FilterContents(type, callback) {
   axios({
-    url: _api.GetPartnerShipWorkingFields,
+    url: _api.FilterContents,
     method: "GET",
     headers: _api.header,
     params: {
-      contentType: config.CONTENT_TYPE_ID.partnership_working_fields
+      contentType: config.CONTENT_TYPE_ID[type]
     }
   })
     .then(res => {
@@ -79,4 +81,4 @@ function GetPartnerShipWorkingFields(callback) {
       return errorHandler(0);
     });
 }
-export { SubmitForm, GetPartnerShipWorkingFields };
+export { SubmitForm, FilterContents };

@@ -111,23 +111,25 @@ class CheckBoxRow extends React.PureComponent {
 
 //Image check box comopnent
 const ImageCheckBox = ({
-  imgAlt,
   onChange,
-  imgSrc,
   checked,
   className,
   value,
   title,
   style,
-  ...props
+  boxValue,
+  width,
+  keys,
+  dir,
+  imgSrc,
+  imgAlt
 }) => {
   const checkbox = useRef();
-  const toggleCheckbox = e => {
+  const toggleCheckbox = () => {
     checked = !checked;
-
     if (checked) checkbox.current.classList.add("checked");
     else checkbox.current.classList.remove("checked");
-    onChange();
+    onChange({ title: title, key: keys, checked: checked });
   };
   return (
     <React.Fragment>

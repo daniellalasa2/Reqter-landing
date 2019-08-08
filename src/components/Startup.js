@@ -22,6 +22,7 @@ import {
 } from "./CustomCheckbox/CustomCheckbox";
 import checkboxImg from "../assets/images/logo.jpg";
 import FlatUploader from "./FlatUploader/FlatUploader";
+import { FlatNumberSet } from "./FlatForm/FlatForm";
 export default class StartUp extends React.Component {
   constructor(props) {
     super(props);
@@ -596,94 +597,7 @@ export default class StartUp extends React.Component {
                   </span>
                 </CardHeader>
                 <CardBody>
-                  <div className="field-row">
-                    <label>تعداد اعضای تیمت&nbsp;&nbsp;</label>
-                    <ButtonGroup>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 1)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 1}
-                      >
-                        ۱
-                      </Button>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 2)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 2}
-                      >
-                        ۲
-                      </Button>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 3)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 3}
-                      >
-                        ۳
-                      </Button>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 4)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 4}
-                      >
-                        ۴
-                      </Button>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 5)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 5}
-                      >
-                        ۵
-                      </Button>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 6)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 6}
-                      >
-                        ۶
-                      </Button>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 7)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 7}
-                      >
-                        ۷
-                      </Button>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 8)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 8}
-                      >
-                        ۸
-                      </Button>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 9)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 9}
-                      >
-                        ۹
-                      </Button>
-                      <Button
-                        outline
-                        onClick={this.formStateHandler.bind(this, 10)}
-                        name="teammembers"
-                        active={this.state.form._api.teammembers === 10}
-                      >
-                        + ۱۰
-                      </Button>
-                    </ButtonGroup>
-                    <span className="error-message">
-                      {this.state.form.step2.fields.teammembers.error}
-                    </span>
-                  </div>
+                  <FlatNumberSet range={[1, 10]} label="تعداد صندلی" />
 
                   <div className="field-row">
                     <FlatUploader
