@@ -33,8 +33,8 @@ const FlatInput = ({
         min={min}
         max={max}
         pattern={pattern}
-        minlength={minlength}
-        maxlength={maxlength}
+        minLength={minlength}
+        maxLength={maxlength}
         id={id}
       />
       <span className="error-message">{error}</span>

@@ -151,6 +151,19 @@
 
 //responsive
 
+//smart watches and extra small devices
+@media (max-width: 320px) {
+  .products-box {
+    .products {
+      li {
+        width: 90% !important;
+      }
+      li:hover {
+        width: 95% !important;
+      }
+    }
+  }
+}
 //Small devices (portrait phone )
 @media (max-width: 576px) {
   .crooked-divider {
@@ -165,9 +178,14 @@
         border: 2px solid #b8a4e6;
       }
       li {
+        padding: 0 15px;
+        .chevron-icon {
+          display: block;
+        }
+        justify-content: flex-start;
         flex-direction: row-reverse;
         align-items: center;
-        width: 75%;
+        width: 68%;
         height: 50px;
         box-shadow: none;
         top: 0;
@@ -175,6 +193,11 @@
         border: 1px solid lightgrey;
         .product-icons {
           width: 40px;
+        }
+        & strong {
+          margin: 0 10px;
+          width: 80%;
+          text-align: right;
         }
         &:first-child {
           border-radius: 5px 5px 0 0;
@@ -185,7 +208,10 @@
       }
       li:hover {
         top: 0;
-        width: 80%;
+        width: 75%;
+        .chevron-icon {
+          color: #7ac290;
+        }
       }
     }
   }
@@ -240,6 +266,15 @@
 
 //landscape phone and up , small tablets
 @media (min-width: 576.01px) {
+  .products-box {
+    .products {
+      li {
+        .chevron-icon {
+          display: none;
+        }
+      }
+    }
+  }
   .crooked-divider {
     height: 70px;
     transform: rotate(0deg);

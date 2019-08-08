@@ -5,7 +5,11 @@
   z-index: 5;
   width: 100%;
   margin: auto;
-  transition: width 0.3s, height 0.3s, background-color 0.3s, padding 0.4s;
+  background-color: transparent;
+  transition: background-color 0.4s ease-in-out, height 0.4s ease-in-out,
+    width 0.4s ease-in-out, padding 0.4s ease-in-out;
+  -webkit-transition: background-color 0.4s ease-in-out, height 0.4s ease-in-out,
+    width 0.4s ease-in-out, padding 0.4s ease-in-out;
   li > a {
     color: white;
     margin-left: 0.5rem;
@@ -77,6 +81,8 @@
   text-align: left;
   line-height: 1.4;
   img {
+    transition: width 0.4s ease-in-out;
+    -webkit-transition: width 0.4s ease-in-out;
     cursor: pointer;
     width: 70px;
   }

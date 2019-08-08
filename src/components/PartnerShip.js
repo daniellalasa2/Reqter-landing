@@ -141,7 +141,6 @@ class PartnerShip extends React.PureComponent {
   };
   formStateHandler = e => {
     let _this = e.target;
-    console.log(e.target.value);
     const name = _this.name;
     const value = _this.value;
     const validation = Validator(value, this.validationRules[name]);
@@ -154,7 +153,7 @@ class PartnerShip extends React.PureComponent {
             fields: {
               ...this.state.form.fields,
               [name]: {
-                ...this.state.form.fields[name],
+                value: value,
                 error: validation.message,
                 isValid: validation.valid
               }
@@ -190,8 +189,6 @@ class PartnerShip extends React.PureComponent {
   };
   submitForm = () => {
     const inputs = this.state.form.fields;
-    // console.log(inputs);
-    // return 0;
     let _isValid = true;
     const fields = {};
     let validation = {};
@@ -206,23 +203,19 @@ class PartnerShip extends React.PureComponent {
         };
       }
     }
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          isValid: _isValid,
-          fields: {
-            ...this.state.form.fields,
-            ...fields
-          }
+    this.setState({
+      form: {
+        ...this.state.form,
+        isValid: _isValid,
+        fields: {
+          ...this.state.form.fields,
+          ...fields
         }
-      },
-      () => {
-        console.log(this.state.form);
       }
-    );
+    });
     //if the form was valid then active form submit button
     if (_isValid) {
+      //submit api call
       SubmitForm("partnership", this.state.form.api, res => {
         if (res.code === 200) {
           this.setState({
@@ -375,7 +368,7 @@ class PartnerShip extends React.PureComponent {
               <CardFooter>
                 <Button
                   className="navigation-button submit"
-                  onClick={() => this.submitForm()}
+                  onClick={this.submitForm}
                 >
                   ثبت
                 </Button>

@@ -1,3 +1,5 @@
+//pdf,png,jpg,jpeg,zip,rar,doc,docx,mp4,mkv,xls,xlsx,xlsm,mov,gif,
+
 import React from "react";
 import "./FlatUploader.scss";
 import classnames from "classnames";

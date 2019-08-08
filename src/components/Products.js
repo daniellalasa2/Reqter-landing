@@ -14,6 +14,11 @@ import "../assets/styles/Products.scss";
 import classnames from "classnames";
 import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronCircleLeft,
+  faChevronCircleRight
+} from "@fortawesome/free-solid-svg-icons";
 //icons
 import startup from "../assets/images/products-icons/003-rocket.png";
 import privateOffice from "../assets/images/products-icons/004-meet.png";
@@ -345,6 +350,14 @@ class Products extends Component {
                     <img src={cowork} alt="" className="product-icons" />
 
                     <strong>فضای کار اشتراکی</strong>
+
+                    <FontAwesomeIcon
+                      icon={faChevronCircleLeft}
+                      pull="left"
+                      size="lg"
+                      className="chevron-icon"
+                      color="grey"
+                    />
                   </li>
                   <li
                     className={classnames({
@@ -361,6 +374,13 @@ class Products extends Component {
                     />
 
                     <strong>سالن جلسات</strong>
+                    <FontAwesomeIcon
+                      icon={faChevronCircleLeft}
+                      pull="left"
+                      size="lg"
+                      className="chevron-icon"
+                      color="grey"
+                    />
                   </li>
                   <li
                     className={classnames({
@@ -373,6 +393,13 @@ class Products extends Component {
                     <img src={invest} alt="" className="product-icons" />
 
                     <strong>جذب سرمایه</strong>
+                    <FontAwesomeIcon
+                      icon={faChevronCircleLeft}
+                      pull="left"
+                      size="lg"
+                      className="chevron-icon"
+                      color="grey"
+                    />
                   </li>
                   <li
                     className={classnames({
@@ -385,6 +412,13 @@ class Products extends Component {
                     <img src={privateOffice} alt="" className="product-icons" />
 
                     <strong>اتاق کار خصوصی</strong>
+                    <FontAwesomeIcon
+                      icon={faChevronCircleLeft}
+                      pull="left"
+                      size="lg"
+                      className="chevron-icon"
+                      color="grey"
+                    />
                   </li>
                   <li
                     className={classnames({
@@ -396,6 +430,13 @@ class Products extends Component {
                   >
                     <img src={startup} alt="" className="product-icons" />
                     <strong>پذیرش استارتاپ</strong>
+                    <FontAwesomeIcon
+                      icon={faChevronCircleLeft}
+                      pull="left"
+                      size="lg"
+                      className="chevron-icon"
+                      color="grey"
+                    />
                   </li>
                 </ul>
               </div>
