@@ -597,7 +597,7 @@ export default class StartUp extends React.Component {
                   </span>
                 </CardHeader>
                 <CardBody>
-                  <FlatNumberSet range={[1, 10]} label="تعداد صندلی" />
+                  <FlatNumberSet range={[1, 5]} label="تعداد صندلی" />
 
                   <div className="field-row">
                     <FlatUploader

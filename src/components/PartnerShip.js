@@ -105,10 +105,12 @@ class PartnerShip extends React.PureComponent {
       }
     });
   };
-  checkboxStateHandler = (name, data) => {
+  checkboxStateHandler = (data, e) => {
     const checkBoxValuesArr = [];
+    let name = "";
     data.forEach(val => {
-      checkBoxValuesArr.push(val.key);
+      name = val.name;
+      checkBoxValuesArr.push(val.value);
     });
     const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
     let toBeAssignObject = {
@@ -136,6 +138,7 @@ class PartnerShip extends React.PureComponent {
         }
       },
       () => {
+        console.log(this.state.form.fields.collaborationtypes);
         this.checkFormValidation();
       }
     );
@@ -232,11 +235,22 @@ class PartnerShip extends React.PureComponent {
   PartnershipWorkingFields = () => {
     FilterContents("partnership_working_fields", res => {
       if (res.success_result.code === 200) {
+        const arr = [];
+        res.data.map((val, key) => {
+          arr.push({
+            title: val.fields.name.fa,
+            key: val._id,
+            boxValue: key + 1,
+            dir: "rtl",
+            value: val._id
+          });
+          return null;
+        });
         this.setState({
           combo: {
             startup: {
               hasLoaded: true,
-              items: res.data
+              items: arr
             }
           }
         });
@@ -309,6 +323,7 @@ class PartnerShip extends React.PureComponent {
                         items={this.state.combo.startup.items}
                         onChange={this.checkboxStateHandler}
                         dir="rtl"
+                        name="collaborationtypes"
                       />
                     ) : (
                       <Skeleton count={8} style={{ lineHeight: 3 }} />

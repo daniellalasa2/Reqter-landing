@@ -41,7 +41,7 @@ class SelectRow extends React.PureComponent {
             }
           );
         } else {
-          arr = this.removeObjByKey(arr, data, "key");
+          arr = this.removeObjByKey(arr, data, "value");
           this.setState(
             {
               checkedElements: arr
@@ -57,7 +57,7 @@ class SelectRow extends React.PureComponent {
           return React.cloneElement(child, {
             width: `${this.childWidth}px`,
             onChange: this.selectionHandler,
-            checked: child.key === data.key
+            checked: child.value === data.value
           });
         });
         this.setState(
@@ -116,22 +116,23 @@ const ImageSelect = ({
   onChange,
   checked,
   className,
-  value,
   title,
   style,
   boxValue,
   width,
-  keys,
+  key,
+  val,
   dir,
   imgSrc,
-  imgAlt
+  imgAlt,
+  name
 }) => {
   const checkbox = useRef();
   const toggleCheckbox = () => {
     checked = !checked;
     if (checked) checkbox.current.classList.add("checked");
     else checkbox.current.classList.remove("checked");
-    onChange({ title: title, key: keys, checked: checked });
+    onChange({ title: title, value: val, checked: checked, name: name });
   };
   return (
     <React.Fragment>
@@ -175,20 +176,21 @@ const InlineSelect = ({
   onChange,
   checked,
   className,
-  value,
   title,
   style,
+  val,
   boxValue,
   width,
-  keys,
-  dir
+  key,
+  dir,
+  name
 }) => {
   const checkbox = useRef();
   const toggleCheckbox = () => {
     checked = !checked;
     if (checked) checkbox.current.classList.add("checked");
     else checkbox.current.classList.remove("checked");
-    onChange({ title: title, key: keys, checked: checked });
+    onChange({ title: title, value: val, checked: checked, name: name });
   };
   return (
     <React.Fragment>
@@ -328,23 +330,24 @@ const FlatTextArea = ({
     Accepted array of object:
     example = [{
                 checked = true || false
-                title= "select 1"
-                key = "A unique react child key :)"
+                title   = "select 1"
+                key     = "A unique react child key :)"
                 boxValue= "1"
-                dir= "rtl || ltr"
-                keys = "select1"  value of select box
+                dir     = "rtl || ltr"
+                value    = "select1"  value of select box
                 },...]
 ***************************/
-const FlatInlineSelect = ({ items, onChange, dir, type }) => {
+const FlatInlineSelect = ({ items, onChange, dir, type, name }) => {
   const _options = items.map((val, index) => {
     return (
       <InlineSelect
         checked={val.defaultChecked}
         title={val.title}
-        keys={val.value}
+        val={val.value}
         boxValue={index + 1}
         dir={dir}
         key={val.key}
+        name={name}
       />
     );
   });
@@ -365,23 +368,24 @@ const FlatInlineSelect = ({ items, onChange, dir, type }) => {
                 key = "A unique react child key :)"
                 boxValue= "1"
                 dir= "rtl || ltr"
-                keys = "select1"  value of select box
+                value = "select1"  value of select box
                 imgSrc = "http://example.com/example.jpg" //image source of each select
                 imgAlt = "Image Exampe"  //alt attr for img  
                 },...]
 ***************************/
-const FlatImageSelect = ({ items, onChange, dir, type }) => {
+const FlatImageSelect = ({ items, onChange, dir, type, name }) => {
   const _options = items.map((val, index) => {
     return (
       <ImageSelect
         checked={val.defaultChecked}
         title={val.title}
-        keys={val.key}
+        key={val.key}
         boxValue={index + 1}
         dir={dir}
         imgSrc={val.imgSrc}
         imgAlt={val.imgAlt | "Flat Image Select"}
-        key={val.value}
+        val={val.value}
+        name={name}
       />
     );
   });
