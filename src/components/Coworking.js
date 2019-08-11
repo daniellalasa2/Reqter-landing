@@ -274,7 +274,13 @@ class Coworking extends React.PureComponent {
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.educationfield.error}
                   />
-                  <div style={{ display: "flex", width: "100%" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
                     <FlatInput
                       label="شماره تماس"
                       type="text"
