@@ -4,6 +4,24 @@
 //     url:"https://app-ipanel.herokuapp.com/auth/token",
 //   });
 // };
+import React from "react";
+import axios from "axios";
+// export default class Config {
+//   constructor(){
+//     getInitialToken();
+//   };
+//   getInitialToken = function() {
+//     axios
+//       .get(config.BASE_URL_CONTENT + "/api/v1/auth/token", {
+//         headers: {
+//           clientid: "1d42c55e-0f44-4613-adba-a5bbbca878e1",
+//           "Content-type": "application/json"
+//         }
+//       })
+//       .then(res => {
+//         console.log(res.data);
+//       });
+//   };
 
 var config = {
   BASE_URL_CONTENT: "https://app-ipanel.herokuapp.com/",
@@ -24,5 +42,6 @@ var config = {
     filter_contents: "contents/filter"
   }
 };
+// };
 
 export default config;

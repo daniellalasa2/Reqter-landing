@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FlatInput } from "./FlatForm/FlatForm";
 import Validator from "./Validator/Validator";
+import "../assets/styles/Coworking.scss";
 class Coworking extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -274,13 +275,7 @@ class Coworking extends React.PureComponent {
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.educationfield.error}
                   />
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                  >
+                  <div className="contact-section">
                     <FlatInput
                       label="شماره تماس"
                       type="text"
