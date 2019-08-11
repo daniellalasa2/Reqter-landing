@@ -4,12 +4,13 @@ import { SubmitForm } from "./ApiHandlers/ApiHandler";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FlatInput } from "./FlatForm/FlatForm";
+import { FlatInput, FlatUploader, FlatNumberSet } from "./FlatForm/FlatForm";
 import Validator from "./Validator/Validator";
 import "../assets/styles/Coworking.scss";
 class Coworking extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.formTitle = props.location.state.title;
     this.state = {
       form: {
         isValid: false,
@@ -240,7 +241,7 @@ class Coworking extends React.PureComponent {
                     />
                   </span>
                   <span className="title">
-                    <strong>فرم درخواست فضای کار اشتراکی</strong>
+                    <strong>فرم درخواست {this.formTitle}</strong>
                   </span>
                 </CardHeader>
                 <CardBody>
@@ -304,15 +305,22 @@ class Coworking extends React.PureComponent {
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.university.error}
                   />
-                  <FlatInput
+                  <FlatNumberSet
                     label="تعداد صندلی"
                     type="number"
-                    min="1"
-                    placeholder="تعداد صندلی درخواستی خود را وارد کنید"
+                    range={[1, 13]}
                     name="seats"
                     id="seats"
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.seats.error}
+                  />
+                  <FlatUploader
+                    label="آپلود رزومه"
+                    name="resume"
+                    id="resume"
+                    progresscolor="lightblue"
+                    // onChange={this.formStateHandler}
+                    // error={this.state.form.fields.resume.error}
                   />
                 </CardBody>
               </section>

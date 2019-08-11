@@ -1,4 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import classnames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCloud, faCheck } from "@fortawesome/free-solid-svg-icons";
 import "./FlatForm.scss";
 /*
   Todo:
@@ -396,6 +399,59 @@ const FlatImageSelect = ({ items, onChange, dir, type, name }) => {
   );
   return _select;
 };
+
+//Uploader Component
+const FlatUploader = ({
+  style,
+  progress,
+  progresscolor,
+  placeholder,
+  onChange
+}) => {
+  let input = useRef();
+  const [fileName, setFileName] = useState("- - -");
+  const changeFileName = e => {
+    setFileName(e.target.files[0].name);
+  };
+  return (
+    <div
+      className={classnames(
+        "flatuploader",
+        progress === 100 ? "success-upload" : null
+      )}
+      style={{ ...style }}
+    >
+      <div className="percentage-number">%{progress ? progress : "0"}</div>
+      <FontAwesomeIcon
+        className="cloud-icon"
+        icon={faCloud}
+        size="3x"
+        color={progresscolor}
+      />
+      <FontAwesomeIcon
+        className="success-icon"
+        icon={faCheck}
+        size="3x"
+        color="green"
+      />
+      <span className="file-name-section">{fileName}</span>
+      <div className="file-select-button" onClick={() => input.current.click()}>
+        <strong className="placeholder">{placeholder || "انتخاب فایل"}</strong>
+      </div>
+
+      <input
+        type="file"
+        onChange={e => {
+          changeFileName(e);
+          if (typeof onChange === "function") return onChange;
+        }}
+        ref={input}
+        style={{ display: "none" }}
+      />
+    </div>
+  );
+};
+
 export {
   ImageSelect,
   InlineSelect,
@@ -403,5 +459,6 @@ export {
   FlatTextArea,
   FlatInlineSelect,
   FlatImageSelect,
-  FlatNumberSet
+  FlatNumberSet,
+  FlatUploader
 };

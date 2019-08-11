@@ -616,6 +616,7 @@ label.checkboxContainer {
   display: flex;
   justify-content: center;
   width: 100%;
+  flex-wrap: wrap;
   .sets {
     appearance: none;
     -webkit-appearance: none;
@@ -631,10 +632,10 @@ label.checkboxContainer {
       color: white;
     }
     &:first-child {
-      border-radius: 5px 0 0 5px;
+      border-radius: 0.7vw 0 0 0.7vw;
     }
     &:last-child {
-      border-radius: 0 5px 5px 0;
+      border-radius: 0 0.7vw 0.7vw 0;
     }
   }
   .active {
@@ -642,6 +643,73 @@ label.checkboxContainer {
     color: white;
   }
 }
+
+//Flat Uploader
+.flatuploader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: space-around;
+  padding: 1rem 1rem;
+  border: 2px dashed #5993bf;
+  direction: rtl;
+  .percentage-number {
+    font-size: 17px;
+    width: 45px;
+    font-weight: bold;
+  }
+  .cloud-icon {
+    cursor: pointer;
+  }
+  .success-icon {
+    display: none;
+  }
+  .file-name-section {
+    direction: ltr;
+    text-align: left;
+    padding: 0 5px;
+    max-width: 165px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+
+  .file-select-button {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid black;
+    border-radius: 3px;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    .placeholder {
+      font-size: 0.8rem;
+    }
+  }
+}
+.success-upload {
+  .success-icon {
+    display: block !important;
+  }
+  .cloud-icon {
+    display: none !important;
+  }
+}
+
+//responsive styles section
+@media (max-width: 320px) {
+  .flatuploader {
+    padding: 1rem 1rem;
+  }
+}
+@media (max-width: 410px) {
+  .flatuploader {
+    .file-name-section {
+      display: none;
+    }
+  }
+}
+
 @media (max-width: 576px) {
   .form-section {
     min-height: calc(100vh - 49px); //min-height calculation for small mobiles

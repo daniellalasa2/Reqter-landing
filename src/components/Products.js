@@ -27,11 +27,10 @@ import invest from "../assets/images/products-icons/001-money.png";
 import conferenceRoom from "../assets/images/products-icons/002-desk.png";
 //backgrounds
 import defaultBgImg from "../assets/images/products-bgImg/default.jpg";
-import coworkingBgImg from "../assets/images/products-bgImg/coworking.jpg";
-import conferenceRoomBgImg from "../assets/images/products-bgImg/conferenceRoom.jpg";
-import investBgImg from "../assets/images/products-bgImg/invest.jpg";
-import privateOfficeBgImg from "../assets/images/products-bgImg/privateOffice.jpg";
-import startupBgImg from "../assets/images/products-bgImg/startup.jpg";
+import privateDeskBgImg from "../assets/images/products-bgImg/coworking.jpg";
+import sharedDeskBgImg from "../assets/images/products-bgImg/conferenceRoom.jpg";
+import dedicatedOffice from "../assets/images/products-bgImg/invest.jpg";
+import sessionRoomBgImg from "../assets/images/products-bgImg/privateOffice.jpg";
 
 class Products extends Component {
   constructor(props) {
@@ -41,11 +40,10 @@ class Products extends Component {
       activeTab: "1",
       bgImg: {
         "1": defaultBgImg,
-        "2": coworkingBgImg,
-        "3": conferenceRoomBgImg,
-        "4": investBgImg,
-        "5": privateOfficeBgImg,
-        "6": startupBgImg
+        "2": sharedDeskBgImg,
+        "3": privateDeskBgImg,
+        "4": dedicatedOffice,
+        "5": sessionRoomBgImg
       },
       combo: {
         startup: [
@@ -96,7 +94,6 @@ class Products extends Component {
     };
   }
   formHandler(product, element) {
-    console.log(element.target.value);
     const name = element.target.name;
     const value = element.target.value;
     this.setState({
@@ -171,7 +168,92 @@ class Products extends Component {
                               <InputGroupAddon addonType="prepend">
                                 <Button
                                   onClick={() =>
-                                    this.props.history.push("/apply/coworking")
+                                    this.props.history.push({
+                                      pathname: `/apply/coworking`,
+                                      params: { city: "tehran" },
+                                      state: {
+                                        pathname: `/apply/coworking`,
+                                        city: "tehran",
+                                        title: "میزکار اشتراکی"
+                                      }
+                                    })
+                                  }
+                                >
+                                  شروع درخواست
+                                </Button>
+                              </InputGroupAddon>
+                              <Input
+                                type="number"
+                                min="1"
+                                placeholder="تعداد"
+                              />
+                              {/* Combo box */}
+                              <Input type="select">
+                                <option>شهر</option>
+                                {this.fillCombo("city")}
+                              </Input>
+                            </InputGroup>
+                          </div>
+                        </Col>
+                      </Row>
+                    </TabPane>
+
+                    {/* coworking */}
+                    <TabPane tabId="3">
+                      <Row>
+                        <Col sm="12">
+                          <div className="product-request-form-box">
+                            <InputGroup size="lg">
+                              <InputGroupAddon addonType="prepend">
+                                <Button
+                                  onClick={() =>
+                                    this.props.history.push({
+                                      pathname: `/apply/coworking`,
+                                      params: { city: "tehran" },
+                                      state: {
+                                        pathname: `/apply/coworking`,
+                                        city: "tehran",
+                                        title: "میزکار اختصاصی"
+                                      }
+                                    })
+                                  }
+                                >
+                                  شروع درخواست
+                                </Button>
+                              </InputGroupAddon>
+                              <Input
+                                type="number"
+                                min="1"
+                                placeholder="تعداد"
+                              />
+                              {/* Combo box */}
+                              <Input type="select">
+                                <option>شهر</option>
+                                {this.fillCombo("city")}
+                              </Input>
+                            </InputGroup>
+                          </div>
+                        </Col>
+                      </Row>
+                    </TabPane>
+
+                    {/* coworking */}
+                    <TabPane tabId="4">
+                      <Row>
+                        <Col sm="12">
+                          <div className="product-request-form-box">
+                            <InputGroup size="lg">
+                              <InputGroupAddon addonType="prepend">
+                                <Button
+                                  onClick={() =>
+                                    this.props.history.push({
+                                      pathname: `/apply/coworking`,
+                                      params: { city: "tehran" },
+                                      state: {
+                                        city: "tehran",
+                                        title: "دفترکار اختصاصی"
+                                      }
+                                    })
                                   }
                                 >
                                   شروع درخواست
@@ -194,70 +276,6 @@ class Products extends Component {
                     </TabPane>
 
                     {/* Conference */}
-                    <TabPane tabId="3">
-                      <Row>
-                        <Col sm="12">
-                          <div className="product-request-form-box">
-                            <InputGroup size="lg">
-                              <InputGroupAddon addonType="prepend">
-                                <Button
-                                  onClick={() =>
-                                    this.props.history.push("/comingsoon")
-                                  }
-                                >
-                                  شروع درخواست
-                                </Button>
-                              </InputGroupAddon>
-                              <Input
-                                type="number"
-                                min="1"
-                                placeholder="ظرفیت"
-                              />
-                              <Input type="select">
-                                <option>شهر</option>
-                                {this.fillCombo("city")}
-                              </Input>
-                            </InputGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </TabPane>
-
-                    {/* Investment */}
-                    <TabPane tabId="4">
-                      <Row>
-                        <Col sm="12">
-                          <div className="product-request-form-box">
-                            <InputGroup size="lg">
-                              <InputGroupAddon addonType="prepend">
-                                <Button
-                                  onClick={() =>
-                                    this.props.history.push("/comingsoon")
-                                  }
-                                  className="invest-fields"
-                                >
-                                  شروع درخواست
-                                </Button>
-                              </InputGroupAddon>
-                              <NumberFormat
-                                thousandSeparator={true}
-                                customInput={Input}
-                                prefix="تومان "
-                                style={{ textAlign: "right" }}
-                                placeholder="چقدر سرمایه لازم داری؟"
-                                className="invest-fields"
-                              />
-                              <Input type="select" className="invest-fields">
-                                <option>مرحله سرمایه گذاری</option>
-                                {this.fillCombo("investing")}
-                              </Input>
-                            </InputGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </TabPane>
-
-                    {/* Private Office */}
                     <TabPane tabId="5">
                       <Row>
                         <Col sm="12">
@@ -266,7 +284,13 @@ class Products extends Component {
                               <InputGroupAddon addonType="prepend">
                                 <Button
                                   onClick={() =>
-                                    this.props.history.push("/comingsoon")
+                                    this.props.history.push({
+                                      pathname: `/apply/coworking`,
+                                      state: {
+                                        city: "tehran",
+                                        title: "سالن جلسات"
+                                      }
+                                    })
                                   }
                                 >
                                   شروع درخواست
@@ -278,54 +302,6 @@ class Products extends Component {
                                 placeholder="ظرفیت"
                               />
                               <Input type="select">
-                                <option>شهر</option>
-                                {this.fillCombo("city")}
-                              </Input>
-                            </InputGroup>
-                          </div>
-                        </Col>
-                      </Row>
-                    </TabPane>
-
-                    {/* Start Up */}
-                    <TabPane tabId="6">
-                      <Row>
-                        <Col sm="12">
-                          <div className="product-request-form-box">
-                            <InputGroup size="lg">
-                              <InputGroupAddon addonType="prepend">
-                                <Button type="submit">
-                                  <Link
-                                    to={{
-                                      pathname: "/apply/startup",
-                                      state: {
-                                        data: this.state.productForms.startup
-                                      }
-                                    }}
-                                  >
-                                    شروع درخواست
-                                  </Link>
-                                </Button>
-                              </InputGroupAddon>
-                              <Input
-                                type="select"
-                                onChange={this.formHandler.bind(
-                                  this,
-                                  "startup"
-                                )}
-                                name="major"
-                              >
-                                <option>زمینه فعالیت</option>
-                                {this.fillCombo("startup")}
-                              </Input>
-                              <Input
-                                type="select"
-                                name="city"
-                                onChange={this.formHandler.bind(
-                                  this,
-                                  "startup"
-                                )}
-                              >
                                 <option>شهر</option>
                                 {this.fillCombo("city")}
                               </Input>
@@ -349,7 +325,7 @@ class Products extends Component {
                   >
                     <img src={cowork} alt="" className="product-icons" />
 
-                    <strong>فضای کار اشتراکی</strong>
+                    <strong>میزکار اشتراکی</strong>
 
                     <FontAwesomeIcon
                       icon={faChevronCircleLeft}
@@ -367,13 +343,10 @@ class Products extends Component {
                       this.toggle("3");
                     }}
                   >
-                    <img
-                      src={conferenceRoom}
-                      alt=""
-                      className="product-icons"
-                    />
+                    <img src={cowork} alt="" className="product-icons" />
 
-                    <strong>سالن جلسات</strong>
+                    <strong>میزکار اختصاصی</strong>
+
                     <FontAwesomeIcon
                       icon={faChevronCircleLeft}
                       pull="left"
@@ -390,9 +363,9 @@ class Products extends Component {
                       this.toggle("4");
                     }}
                   >
-                    <img src={invest} alt="" className="product-icons" />
+                    <img src={privateOffice} alt="" className="product-icons" />
 
-                    <strong>جذب سرمایه</strong>
+                    <strong>دفتر کار اختصاصی</strong>
                     <FontAwesomeIcon
                       icon={faChevronCircleLeft}
                       pull="left"
@@ -409,27 +382,13 @@ class Products extends Component {
                       this.toggle("5");
                     }}
                   >
-                    <img src={privateOffice} alt="" className="product-icons" />
-
-                    <strong>اتاق کار خصوصی</strong>
-                    <FontAwesomeIcon
-                      icon={faChevronCircleLeft}
-                      pull="left"
-                      size="lg"
-                      className="chevron-icon"
-                      color="grey"
+                    <img
+                      src={conferenceRoom}
+                      alt=""
+                      className="product-icons"
                     />
-                  </li>
-                  <li
-                    className={classnames({
-                      active: this.state.activeTab === "6"
-                    })}
-                    onClick={() => {
-                      this.toggle("6");
-                    }}
-                  >
-                    <img src={startup} alt="" className="product-icons" />
-                    <strong>پذیرش استارتاپ</strong>
+
+                    <strong>سالن جلسات</strong>
                     <FontAwesomeIcon
                       icon={faChevronCircleLeft}
                       pull="left"

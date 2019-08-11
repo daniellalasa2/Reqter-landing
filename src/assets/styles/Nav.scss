@@ -25,6 +25,8 @@
     font-size: 30px;
   }
   .logo-text-box {
+    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
     margin-left: 10px;
     display: inline-block;
     font-size: 10px;
@@ -239,7 +241,7 @@
       line-height: 1;
     }
     .logo-text-box {
-      display: inline;
+      display: inline-block;
       font-size: 14px;
       .logo-text {
         color: #5a4f72;

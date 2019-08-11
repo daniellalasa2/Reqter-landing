@@ -94,7 +94,7 @@
   width: 106%;
   transform: rotate(-5deg);
   transform-origin: 100% 100%;
-  bottom: 0;
+  bottom: -1px;
   position: absolute;
   z-index: 2;
   margin-left: -3%;
@@ -107,6 +107,7 @@
   z-index: 4;
   .products {
     display: flex;
+    flex-flow: row-reverse;
     padding: 0;
     justify-content: center;
     .active {
@@ -117,8 +118,8 @@
       justify-content: space-around;
       flex-direction: column;
       align-items: center;
-      width: 159px;
-      height: 135px;
+      width: 180px;
+      height: 146px;
       border-radius: 4px;
       box-shadow: 0 0px 14px 0px rgba(141, 141, 141, 0.5);
       background-color: white;
@@ -137,10 +138,10 @@
       text-align: center;
       margin-right: 1px;
       border: 4px #fff solid;
-      margin-left: 5px;
+      margin-left: 20px;
       font-size: 0.95rem;
       .product-icons {
-        width: 48px;
+        width: 55px;
       }
     }
     li:hover {
