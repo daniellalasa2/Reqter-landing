@@ -253,7 +253,12 @@ const FlatNumberSet = ({
   let numberRangeButtons = [];
   for (let i = range[0]; i <= range[1]; i++) {
     numberRangeButtons.push(
-      <button onClick={_activated} name={name} className="sets">
+      <button
+        onClick={_activated}
+        name={name}
+        key={`flatFormNumberSetButton${i}`}
+        className="sets"
+      >
         {i === range[1] ? `${i}+` : i}
       </button>
     );
@@ -405,49 +410,67 @@ const FlatUploader = ({
   style,
   progress,
   progresscolor,
+  label,
   placeholder,
-  onChange
+  buttonValue,
+  onChange,
+  id,
+  error
 }) => {
   let input = useRef();
-  const [fileName, setFileName] = useState("- - -");
+  const [fileName, setFileName] = useState(placeholder);
   const changeFileName = e => {
     setFileName(e.target.files[0].name);
   };
   return (
-    <div
-      className={classnames(
-        "flatuploader",
-        progress === 100 ? "success-upload" : null
-      )}
-      style={{ ...style }}
-    >
-      <div className="percentage-number">%{progress ? progress : "0"}</div>
-      <FontAwesomeIcon
-        className="cloud-icon"
-        icon={faCloud}
-        size="3x"
-        color={progresscolor}
-      />
-      <FontAwesomeIcon
-        className="success-icon"
-        icon={faCheck}
-        size="3x"
-        color="green"
-      />
-      <span className="file-name-section">{fileName}</span>
-      <div className="file-select-button" onClick={() => input.current.click()}>
-        <strong className="placeholder">{placeholder || "انتخاب فایل"}</strong>
-      </div>
+    <div className="field-row" id={id}>
+      <label>{label}</label>
+      <div
+        className={classnames(
+          "flatuploader",
+          progress === 100 ? "success-upload" : null
+        )}
+        style={{ ...style }}
+      >
+        <div
+          className="percentage-number"
+          style={{ display: progress ? "block" : "none" }}
+        >
+          {progress ? `%${progress}` : null}
+        </div>
+        <FontAwesomeIcon
+          className="cloud-icon"
+          icon={faCloud}
+          size="3x"
+          color={progresscolor}
+        />
+        <FontAwesomeIcon
+          className="success-icon"
+          icon={faCheck}
+          size="3x"
+          color="green"
+        />
+        <span className="file-name-section">{fileName}</span>
+        <div
+          className="file-select-button"
+          onClick={() => input.current.click()}
+        >
+          <strong className="placeholder">
+            {buttonValue || "انتخاب فایل"}
+          </strong>
+        </div>
 
-      <input
-        type="file"
-        onChange={e => {
-          changeFileName(e);
-          if (typeof onChange === "function") return onChange;
-        }}
-        ref={input}
-        style={{ display: "none" }}
-      />
+        <input
+          type="file"
+          onChange={e => {
+            changeFileName(e);
+            if (typeof onChange === "function") return onChange(e);
+          }}
+          ref={input}
+          style={{ display: "none" }}
+        />
+      </div>
+      <span className="error-message">{error}</span>
     </div>
   );
 };

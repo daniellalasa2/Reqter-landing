@@ -1,12 +1,13 @@
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
-import { SubmitForm } from "./ApiHandlers/ApiHandler";
+import { SubmitForm, Upload } from "./ApiHandlers/ApiHandler";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FlatInput, FlatUploader, FlatNumberSet } from "./FlatForm/FlatForm";
 import Validator from "./Validator/Validator";
 import "../assets/styles/Coworking.scss";
+import { reset } from "ansi-colors";
 class Coworking extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -50,6 +51,12 @@ class Coworking extends React.PureComponent {
             value: "",
             error: "",
             isValid: false
+          },
+          resume: {
+            uploadProgress: 0,
+            value: "",
+            error: "",
+            isValid: ""
           }
         },
         api: {
@@ -213,6 +220,55 @@ class Coworking extends React.PureComponent {
       });
     }
   };
+  uploadFile = e => {
+    Upload(
+      e.target.files[0],
+      res => {
+        if (res.data.success) {
+          this.setState({
+            form: {
+              ...this.state.form,
+              fields: {
+                ...this.state.form.fields,
+                resume: {
+                  ...this.state.form.fields.resume,
+                  isValid: true,
+                  value: res.data.file.url
+                }
+              }
+            }
+          });
+        } else {
+          this.setState({
+            form: {
+              ...this.state.form,
+              fields: {
+                ...this.state.form.fields,
+                resume: {
+                  ...this.state.form.fields.resume,
+                  error: res.success_result.message
+                }
+              }
+            }
+          });
+        }
+      },
+      res => {
+        this.setState({
+          form: {
+            ...this.state.form,
+            fields: {
+              ...this.state.form.fields,
+              resume: {
+                ...this.state.form.fields.resume,
+                uploadProgress: res.progress
+              }
+            }
+          }
+        });
+      }
+    );
+  };
   render() {
     return (
       <section
@@ -308,7 +364,7 @@ class Coworking extends React.PureComponent {
                   <FlatNumberSet
                     label="تعداد صندلی"
                     type="number"
-                    range={[1, 13]}
+                    range={[1, 10]}
                     name="seats"
                     id="seats"
                     onChange={this.formStateHandler}
@@ -318,9 +374,11 @@ class Coworking extends React.PureComponent {
                     label="آپلود رزومه"
                     name="resume"
                     id="resume"
+                    placeholder="یک فایل انتخاب کنید"
+                    progress={this.state.form.fields.resume.uploadProgress}
                     progresscolor="lightblue"
-                    // onChange={this.formStateHandler}
-                    // error={this.state.form.fields.resume.error}
+                    onChange={this.uploadFile}
+                    error={this.state.form.fields.resume.error}
                   />
                 </CardBody>
               </section>

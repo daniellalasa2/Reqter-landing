@@ -7,6 +7,7 @@ let _api = {
     authorization: config.AUTH
   },
   submitForm: config.BASE_URL_CONTENT + config.URLS.submit_form,
+  Upload: config.BASE_URL_UPLOAD + config.URLS.upload,
   FilterContents: config.BASE_URL_CONTENT + config.URLS.filter_contents
 };
 
@@ -81,4 +82,43 @@ function FilterContents(type, callback) {
       return errorHandler(0);
     });
 }
-export { SubmitForm, FilterContents };
+
+//Upload file
+function Upload(file, callback, progress) {
+  const form = new FormData();
+  form.append("file", file);
+  axios({
+    url: _api.Upload,
+    method: "POST",
+    headers: _api.header,
+    data: form,
+    onUploadProgress: progressEvent => {
+      const totalLength = progressEvent.lengthComputable
+        ? progressEvent.total
+        : progressEvent.target.getResponseHeader("content-length") ||
+          progressEvent.target.getResponseHeader(
+            "x-decompressed-content-length"
+          );
+      let progressPercentage = 0;
+      if (totalLength !== null) {
+        progressPercentage = Math.round(
+          (progressEvent.loaded * 100) / totalLength
+        );
+        return progress({
+          totalLength: totalLength,
+          uploadedLength: progressEvent.loaded,
+          progress: progressPercentage
+        });
+      }
+    }
+  })
+    .then(res => {
+      const result = errorHandler(res.status);
+      callback({ success_result: result, data: res.data });
+      return 0;
+    })
+    .catch(err => {
+      return errorHandler(0);
+    });
+}
+export { SubmitForm, FilterContents, Upload };

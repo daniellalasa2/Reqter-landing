@@ -40,7 +40,8 @@
       span.choose-a-product {
         margin: 161px auto 0;
         display: block;
-        width: 65%;
+        width: 90vw;
+        max-width: 780px;
         position: relative;
         text-align: right;
       }
@@ -138,7 +139,7 @@
       text-align: center;
       margin-right: 1px;
       border: 4px #fff solid;
-      margin-left: 20px;
+      margin: auto 10px;
       font-size: 0.95rem;
       .product-icons {
         width: 55px;

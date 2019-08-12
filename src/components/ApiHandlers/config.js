@@ -25,6 +25,7 @@ import axios from "axios";
 
 var config = {
   BASE_URL_CONTENT: "https://app-ipanel.herokuapp.com/",
+  BASE_URL_UPLOAD: "https://app-spanel.herokuapp.com/",
   CONTENT_TYPE_ID: {
     accelerator: "5cfce5561772c0001748d1a7",
     partnership: "5d358ebc8e6e9a0017c28fc9",
@@ -39,7 +40,8 @@ var config = {
   SPACEID: "5cf3883dcce4de00174d48cf",
   URLS: {
     submit_form: "contents/add",
-    filter_contents: "contents/filter"
+    filter_contents: "contents/filter",
+    upload: "asset/upload"
   }
 };
 // };
