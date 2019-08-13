@@ -622,20 +622,22 @@ label.checkboxContainer {
     -webkit-appearance: none;
     -moz-appearance: none;
     border-radius: none;
-    border: 1px solid grey;
+    border: 1px solid grey !important;
     background-color: transparent;
     color: black;
     padding: 9px 12px 7px;
     outline: none;
+    width: auto;
+    min-width: 10%;
     &:hover {
       background-color: rgba(20, 20, 20, 0.4);
       color: white;
     }
     &:first-child {
-      border-radius: 0.7vw 0 0 0.7vw;
+      border-radius: 0.35vw 0 0 0.35vw !important;
     }
     &:last-child {
-      border-radius: 0 0.7vw 0.7vw 0;
+      border-radius: 0 0.35vw 0.35vw 0 !important;
     }
   }
   .active {
@@ -668,9 +670,11 @@ label.checkboxContainer {
   }
   .file-name-section {
     direction: ltr;
-    text-align: left;
     padding: 0 5px;
-    max-width: 165px;
+    width: 42%;
+    text-align: center;
+    max-width: calc(0.42 * 620px);
+    max-height: 54px;
     overflow: hidden;
     font-size: 13px;
   }

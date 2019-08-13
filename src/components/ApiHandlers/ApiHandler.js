@@ -15,7 +15,7 @@ function errorHandler(statusCode) {
   const result = { message: "", code: statusCode };
   switch (statusCode) {
     case 200:
-      result.message = " با موفقیت ارسال شد .";
+      result.message = " با موفقیت انجام شد .";
       break;
     case 201:
       result.message = " با موفقیت ساخته شد .";
@@ -75,8 +75,7 @@ function FilterContents(type, callback) {
   })
     .then(res => {
       const result = errorHandler(res.status);
-      callback({ success_result: result, data: res.data });
-      return 0;
+      return callback({ success_result: result, data: res.data });
     })
     .catch(err => {
       return errorHandler(0);

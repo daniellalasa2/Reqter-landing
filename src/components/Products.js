@@ -10,7 +10,7 @@ import {
   InputGroup,
   InputGroupAddon
 } from "reactstrap";
-import "../assets/styles/Products.scss";
+import { FilterContents } from "./ApiHandlers/ApiHandler";
 import classnames from "classnames";
 import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
@@ -20,10 +20,8 @@ import {
   faChevronCircleRight
 } from "@fortawesome/free-solid-svg-icons";
 //icons
-import startup from "../assets/images/products-icons/003-rocket.png";
 import privateOffice from "../assets/images/products-icons/004-meet.png";
 import cowork from "../assets/images/products-icons/005-coworking.png";
-import invest from "../assets/images/products-icons/001-money.png";
 import conferenceRoom from "../assets/images/products-icons/002-desk.png";
 //backgrounds
 import defaultBgImg from "../assets/images/products-bgImg/default.jpg";
@@ -31,12 +29,15 @@ import privateDeskBgImg from "../assets/images/products-bgImg/coworking.jpg";
 import sharedDeskBgImg from "../assets/images/products-bgImg/conferenceRoom.jpg";
 import dedicatedOffice from "../assets/images/products-bgImg/invest.jpg";
 import sessionRoomBgImg from "../assets/images/products-bgImg/privateOffice.jpg";
-
+//styles
+import "../assets/styles/Products.scss";
 class Products extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
+      selectedCity: "",
+      neededSeats: 0,
       activeTab: "1",
       bgImg: {
         "1": defaultBgImg,
@@ -46,79 +47,52 @@ class Products extends Component {
         "5": sessionRoomBgImg
       },
       combo: {
-        startup: [
-          "فینتک",
-          "حوزه سلامت",
-          "گردشگری",
-          "آموزش",
-          "حمل و نقل",
-          "صادرات و واردات",
-          "کشاورزی",
-          "مشاغل",
-          "اینترنت اشیا",
-          "اتوماسیون",
-          "ورزشی"
-        ],
-        investing: [
-          "Pre-Seed",
-          "Seed",
-          "Round A",
-          "Round B",
-          "Round C",
-          "Round D"
-        ],
-        city: ["تهران"]
-      },
-      productForms: {
-        startup: {
-          city: null,
-          major: null
-        },
-        investing: {
-          city: null,
-          amount: null
-        },
-        privateOffice: {
-          city: null,
-          seats: null
-        },
-        conferenceRoom: {
-          seats: null,
-          city: null
-        },
-        coworking: {
-          city: null,
-          seats: null
-        }
+        city: []
       }
     };
   }
-  formHandler(product, element) {
-    const name = element.target.name;
-    const value = element.target.value;
+  formStateHandler = e => {
+    const name = e.target.name;
+    const value = e.target.value;
     this.setState({
-      productForms: {
-        ...this.state.productForms,
-        [product]: {
-          ...this.state.productForms[product],
-          [name]: value
-        }
-      }
+      [name]: value
     });
-  }
-  toggle(tab) {
+  };
+  toggle = tab => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
       });
     }
-  }
-  fillCombo(name) {
-    return this.state.combo[name].map((val, key) => (
-      <option value={val} key={key}>
-        {val}
-      </option>
-    ));
+  };
+  fillCombo = optionsArray => {
+    if (typeof optionsArray === "object") {
+      console.log(optionsArray);
+      for (let id in optionsArray) {
+        return (
+          <option value={id} key={id}>
+            {optionsArray[id]}
+          </option>
+        );
+      }
+    }
+  };
+
+  getCitiesList = () => {
+    const obj = {};
+    FilterContents("list_of_cities", res => {
+      res.data.forEach(val => {
+        obj[val._id] = val.fields.name.fa;
+      });
+      this.setState({
+        combo: {
+          city: obj
+        }
+      });
+    });
+  };
+  componentDidMount() {
+    this.getCitiesList();
   }
   render() {
     return (
@@ -159,7 +133,7 @@ class Products extends Component {
                       </Row>
                     </TabPane>
 
-                    {/* coworking */}
+                    {/* shared desk */}
                     <TabPane tabId="2">
                       <Row>
                         <Col sm="12">
@@ -169,13 +143,10 @@ class Products extends Component {
                                 <Button
                                   onClick={() =>
                                     this.props.history.push({
-                                      pathname: `/apply/coworking`,
-                                      params: { city: "tehran" },
-                                      state: {
-                                        pathname: `/apply/coworking`,
-                                        city: "tehran",
-                                        title: "میزکار اشتراکی"
-                                      }
+                                      pathname: `/apply/shareddesk`,
+                                      search: `?city=${
+                                        this.state.selectedCity
+                                      }&seats=${this.state.neededSeats}`
                                     })
                                   }
                                 >
@@ -186,11 +157,17 @@ class Products extends Component {
                                 type="number"
                                 min="1"
                                 placeholder="تعداد"
+                                name="neededSeats"
+                                onChange={this.formStateHandler}
                               />
                               {/* Combo box */}
-                              <Input type="select">
+                              <Input
+                                name="selectedCity"
+                                type="select"
+                                onChange={this.formStateHandler}
+                              >
                                 <option>شهر</option>
-                                {this.fillCombo("city")}
+                                {this.fillCombo(this.state.combo.city)}
                               </Input>
                             </InputGroup>
                           </div>
@@ -198,7 +175,7 @@ class Products extends Component {
                       </Row>
                     </TabPane>
 
-                    {/* coworking */}
+                    {/* private desk */}
                     <TabPane tabId="3">
                       <Row>
                         <Col sm="12">
@@ -208,13 +185,10 @@ class Products extends Component {
                                 <Button
                                   onClick={() =>
                                     this.props.history.push({
-                                      pathname: `/apply/coworking`,
-                                      params: { city: "tehran" },
-                                      state: {
-                                        pathname: `/apply/coworking`,
-                                        city: "tehran",
-                                        title: "میزکار اختصاصی"
-                                      }
+                                      pathname: `/apply/privatedesk`,
+                                      search: `?city=${
+                                        this.state.selectedCity
+                                      }&seats=${this.state.neededSeats}`
                                     })
                                   }
                                 >
@@ -223,13 +197,19 @@ class Products extends Component {
                               </InputGroupAddon>
                               <Input
                                 type="number"
+                                name="neededSeats"
                                 min="1"
                                 placeholder="تعداد"
+                                onChange={this.formStateHandler}
                               />
                               {/* Combo box */}
-                              <Input type="select">
+                              <Input
+                                name="selectedCity"
+                                type="select"
+                                onChange={this.formStateHandler}
+                              >
                                 <option>شهر</option>
-                                {this.fillCombo("city")}
+                                {this.fillCombo(this.state.combo.city)}
                               </Input>
                             </InputGroup>
                           </div>
@@ -237,7 +217,7 @@ class Products extends Component {
                       </Row>
                     </TabPane>
 
-                    {/* coworking */}
+                    {/* dedicated Office */}
                     <TabPane tabId="4">
                       <Row>
                         <Col sm="12">
@@ -247,12 +227,10 @@ class Products extends Component {
                                 <Button
                                   onClick={() =>
                                     this.props.history.push({
-                                      pathname: `/apply/coworking`,
-                                      params: { city: "tehran" },
-                                      state: {
-                                        city: "tehran",
-                                        title: "دفترکار اختصاصی"
-                                      }
+                                      pathname: `/apply/dedicatedoffice`,
+                                      search: `?city=${
+                                        this.state.selectedCity
+                                      }&seats=${this.state.neededSeats}`
                                     })
                                   }
                                 >
@@ -261,13 +239,19 @@ class Products extends Component {
                               </InputGroupAddon>
                               <Input
                                 type="number"
+                                name="neededSeats"
                                 min="1"
                                 placeholder="تعداد"
+                                onChange={this.formStateHandler}
                               />
                               {/* Combo box */}
-                              <Input type="select">
+                              <Input
+                                type="select"
+                                name="selectedCity"
+                                onChange={this.formStateHandler}
+                              >
                                 <option>شهر</option>
-                                {this.fillCombo("city")}
+                                {this.fillCombo(this.state.combo.city)}
                               </Input>
                             </InputGroup>
                           </div>
@@ -275,7 +259,7 @@ class Products extends Component {
                       </Row>
                     </TabPane>
 
-                    {/* Conference */}
+                    {/* session room */}
                     <TabPane tabId="5">
                       <Row>
                         <Col sm="12">
@@ -285,11 +269,10 @@ class Products extends Component {
                                 <Button
                                   onClick={() =>
                                     this.props.history.push({
-                                      pathname: `/apply/coworking`,
-                                      state: {
-                                        city: "tehran",
-                                        title: "سالن جلسات"
-                                      }
+                                      pathname: `/apply/sessionroom`,
+                                      search: `?city=${
+                                        this.state.selectedCity
+                                      }&seats=${this.state.neededSeats}`
                                     })
                                   }
                                 >
@@ -298,12 +281,18 @@ class Products extends Component {
                               </InputGroupAddon>
                               <Input
                                 type="number"
+                                name="neededSeats"
                                 min="1"
                                 placeholder="ظرفیت"
+                                onChange={this.formStateHandler}
                               />
-                              <Input type="select">
+                              <Input
+                                type="select"
+                                name="selectedCity"
+                                onChange={this.formStateHandler}
+                              >
                                 <option>شهر</option>
-                                {this.fillCombo("city")}
+                                {this.fillCombo(this.state.combo.city)}
                               </Input>
                             </InputGroup>
                           </div>

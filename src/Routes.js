@@ -4,6 +4,11 @@ const Home = React.lazy(() => import("./components/Home"));
 const AboutUs = React.lazy(() => import("./components/AboutUs"));
 const Login = React.lazy(() => import("./components/Login"));
 const Coworking = React.lazy(() => import("./components/Coworking"));
+const PrivateDesk = React.lazy(() => import("./components/PrivateDesk"));
+const SharedDesk = React.lazy(() => import("./components/SharedDesk"));
+const DedicatedOffice = React.lazy(() =>
+  import("./components/DedicatedOffice")
+);
 const SessionRoom = React.lazy(() => import("./components/SessionRoom"));
 const Investing = React.lazy(() => import("./components/Investing"));
 const PrivateOffice = React.lazy(() => import("./components/PrivateOffice"));
@@ -51,9 +56,24 @@ const routes = [
   },
   {
     path: "/apply/sessionroom",
-    exact: true,
     name: "Session Room",
     component: SessionRoom
+  },
+  {
+    path: "/apply/dedicatedoffice",
+    name: "Dedicated Office",
+    component: DedicatedOffice
+  },
+  {
+    path: "/apply/privatedesk",
+    name: "Private Desk",
+    component: PrivateDesk
+  },
+  {
+    path: "/apply/shareddesk",
+    name: "Shared Desk",
+    exact: true,
+    component: SharedDesk
   },
   {
     path: "/apply/investing",

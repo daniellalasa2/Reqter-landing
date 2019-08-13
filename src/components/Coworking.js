@@ -7,7 +7,6 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FlatInput, FlatUploader, FlatNumberSet } from "./FlatForm/FlatForm";
 import Validator from "./Validator/Validator";
 import "../assets/styles/Coworking.scss";
-import { reset } from "ansi-colors";
 class Coworking extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -58,15 +57,6 @@ class Coworking extends React.PureComponent {
             error: "",
             isValid: ""
           }
-        },
-        api: {
-          name: "",
-          birthyear: "",
-          educationfield: "",
-          phonenumber: "",
-          university: "",
-          seats: "",
-          email: ""
         }
       }
     };
@@ -77,7 +67,8 @@ class Coworking extends React.PureComponent {
       phonenumber: ["required", "phonenumber"],
       university: ["required"],
       seats: ["required", "number"],
-      email: ["email"]
+      email: ["email"],
+      resume: []
     };
   }
 
@@ -120,10 +111,6 @@ class Coworking extends React.PureComponent {
               ...this.state.form.fields[name],
               ...toBeAssignObject
             }
-          },
-          api: {
-            ...this.state.form.api,
-            [name]: checkBoxValuesArr
           }
         }
       },
@@ -137,61 +124,38 @@ class Coworking extends React.PureComponent {
     const name = _this.name;
     const value = _this.value;
     const validation = Validator(value, this.validationRules[name]);
-    if (!validation.valid) {
-      _this.classList.add("error-input");
-      this.setState(
-        {
-          form: {
-            ...this.state.form,
-            fields: {
-              ...this.state.form.fields,
-              [name]: {
-                ...this.state.form.fields[name],
-                error: validation.message,
-                isValid: validation.valid
-              }
+    this.setState(
+      {
+        form: {
+          ...this.state.form,
+          fields: {
+            ...this.state.form.fields,
+            [name]: {
+              ...this.state.form.fields[name],
+              value: value,
+              error: validation.message,
+              isValid: validation.valid
             }
           }
-        },
-        () => this.checkFormValidation()
-      );
-    } else {
-      _this.classList.remove("error-input");
-      this.setState(
-        {
-          form: {
-            fields: {
-              ...this.state.form.fields,
-              [name]: {
-                value: value,
-                error: validation.message,
-                isValid: validation.valid
-              }
-            },
-            api: {
-              ...this.state.form.api,
-              [name]: value
-            }
-          }
-        },
-        () => {
-          this.checkFormValidation();
         }
-      );
-    }
+      },
+      () => this.checkFormValidation()
+    );
   };
   submitForm = () => {
     const inputs = this.state.form.fields;
     let _isValid = true;
-    const fields = {};
-    let validation = {};
+    const _fields = {};
+    const _formObjectGoingToSubmit = {};
+    let _validation = {};
     for (let index in inputs) {
-      validation = Validator(inputs[index].value, this.validationRules[index]);
-      if (!validation.valid) {
+      _formObjectGoingToSubmit[index] = inputs[index].value;
+      _validation = Validator(inputs[index].value, this.validationRules[index]);
+      if (!_validation.valid) {
         _isValid = false;
-        fields[index] = {
+        _fields[index] = {
           value: inputs[index].value,
-          error: validation.message,
+          error: _validation.message,
           isValid: false
         };
       }
@@ -202,13 +166,14 @@ class Coworking extends React.PureComponent {
         isValid: _isValid,
         fields: {
           ...this.state.form.fields,
-          ...fields
+          ..._fields
         }
       }
     });
-    //if the form was valid then active form submit button
+    //if the form was valid then submit it
     if (_isValid) {
-      SubmitForm("coworking", this.state.form.api, res => {
+      console.log(_formObjectGoingToSubmit);
+      SubmitForm("coworking", _formObjectGoingToSubmit, res => {
         if (res.code === 200) {
           this.setState({
             form: {

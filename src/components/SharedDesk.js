@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
-import queryString from "querystring";
-import { SubmitForm, Upload, FilterContents } from "./ApiHandlers/ApiHandler";
+import { SubmitForm, Upload } from "./ApiHandlers/ApiHandler";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -36,7 +35,7 @@ class Coworking extends React.PureComponent {
             error: "",
             isValid: false
           },
-          city: {
+          university: {
             value: "",
             error: "",
             isValid: false
@@ -65,11 +64,10 @@ class Coworking extends React.PureComponent {
       birthyear: ["required", "number"],
       educationfield: ["required"],
       phonenumber: ["required", "phonenumber"],
-      city: ["required"],
+      university: ["required"],
       seats: ["required", "number"],
       email: ["email"],
-      resume: [],
-      country: "5d35e8288e6e9a0017c28fcf"
+      resume: []
     };
   }
 
@@ -174,7 +172,7 @@ class Coworking extends React.PureComponent {
     //if the form was valid then submit it
     if (_isValid) {
       console.log(_formObjectGoingToSubmit);
-      SubmitForm("sessionroom", _formObjectGoingToSubmit, res => {
+      SubmitForm("shareddesk", _formObjectGoingToSubmit, res => {
         if (res.code === 200) {
           this.setState({
             form: {
@@ -235,35 +233,6 @@ class Coworking extends React.PureComponent {
       }
     );
   };
-
-  getCitiesList = () => {
-    const arr = [];
-    FilterContents("list_of_cities", res => {
-      res.data.forEach(val => {
-        arr.push(val.fields.name.fa);
-      });
-      this.setState({
-        combo: {
-          city: arr
-        }
-      });
-    });
-  };
-  urlParser = url => {
-    let regex = /[?&]([^=#]+)=([^&#]*)/g,
-      params = {},
-      match;
-    while ((match = regex.exec(url))) {
-      params[match[1]] = match[2];
-    }
-    return params;
-  };
-  componentDidMount() {
-    // this.getCitiesList();
-    const exportedUrlParams = this.urlParser(this.props.location.search);
-    const selectedCity = exportedUrlParams.city,
-      neededSeats = exportedUrlParams.seats;
-  }
   render() {
     return (
       <section
@@ -292,7 +261,7 @@ class Coworking extends React.PureComponent {
                     />
                   </span>
                   <span className="title">
-                    <strong>فرم درخواست اتاق جلسات</strong>
+                    <strong>فرم درخواست میزکار اشتراکی</strong>
                   </span>
                 </CardHeader>
                 <CardBody>

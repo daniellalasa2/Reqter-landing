@@ -239,34 +239,35 @@ const FlatNumberSet = ({
   name,
   id
 }) => {
-  // console.log(range);
-  // return null;
   const _wrapperRef = useRef();
   const _activated = e => {
-    // const childs = _wrapperRef.current.children[1].children;
-    // const childCount = childs.length;
-    // for (let i = 0; i <= childCount; i++) {
-    //   childs[i].classList.remove("active");
-    // }
+    const childs = _wrapperRef.current.children;
+    const childCount = childs.length;
+    for (let i = 0; i < childCount; i++) {
+      childs[i].classList.remove("active");
+    }
     e.target.classList.add("active");
+    onChange(e);
   };
   let numberRangeButtons = [];
   for (let i = range[0]; i <= range[1]; i++) {
     numberRangeButtons.push(
-      <button
+      <input
         onClick={_activated}
+        type="button"
         name={name}
         key={`flatFormNumberSetButton${i}`}
         className="sets"
-      >
-        {i === range[1] ? `${i}+` : i}
-      </button>
+        value={i === range[1] ? `+${i}` : i}
+      />
     );
   }
   return (
-    <div className="field-row" id={id} ref={_wrapperRef}>
+    <div className="field-row" id={id}>
       <label>{label}</label>
-      <div className="number-range-buttons-container">{numberRangeButtons}</div>
+      <div ref={_wrapperRef} className="number-range-buttons-container">
+        {numberRangeButtons}
+      </div>
       <span className="error-message">{error}</span>
     </div>
   );
@@ -327,6 +328,7 @@ const FlatTextArea = ({
         onChange={onChange}
         {...props}
         name={name}
+        className={error && "error-input"}
       />
       <span className="error-message">{error}</span>
     </div>
@@ -474,7 +476,13 @@ const FlatUploader = ({
     </div>
   );
 };
-
+//helper functions
+const removeClass = (e, nameOfClass) => {
+  e.target.classList.remove(nameOfClass);
+};
+const addClass = (e, nameOfClass) => {
+  e.target.classList.add(nameOfClass);
+};
 export {
   ImageSelect,
   InlineSelect,
