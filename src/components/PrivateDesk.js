@@ -1,13 +1,19 @@
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
-import { SubmitForm, Upload } from "./ApiHandlers/ApiHandler";
+import { SubmitForm, Upload, FilterContents } from "./ApiHandlers/ApiHandler";
+import Skeleton from "react-loading-skeleton";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FlatInput, FlatUploader, FlatNumberSet } from "./FlatForm/FlatForm";
+import {
+  FlatInput,
+  FlatUploader,
+  FlatNumberSet,
+  FlatInlineSelect
+} from "./FlatForm/FlatForm";
 import Validator from "./Validator/Validator";
 import "../assets/styles/Coworking.scss";
-class Coworking extends React.PureComponent {
+class PrivateDesk extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,7 +41,7 @@ class Coworking extends React.PureComponent {
             error: "",
             isValid: false
           },
-          university: {
+          city: {
             value: "",
             error: "",
             isValid: false
@@ -54,8 +60,19 @@ class Coworking extends React.PureComponent {
             uploadProgress: 0,
             value: "",
             error: "",
-            isValid: ""
+            isValid: false
+          },
+          country: {
+            value: "5d35e8288e6e9a0017c28fcf",
+            error: "",
+            isValid: false
           }
+        }
+      },
+      combo: {
+        city: {
+          hasLoaded: false,
+          items: []
         }
       }
     };
@@ -64,7 +81,7 @@ class Coworking extends React.PureComponent {
       birthyear: ["required", "number"],
       educationfield: ["required"],
       phonenumber: ["required", "phonenumber"],
-      university: ["required"],
+      city: ["required"],
       seats: ["required", "number"],
       email: ["email"],
       resume: []
@@ -110,6 +127,43 @@ class Coworking extends React.PureComponent {
               ...this.state.form.fields[name],
               ...toBeAssignObject
             }
+          }
+        }
+      },
+      () => {
+        this.checkFormValidation();
+      }
+    );
+  };
+  checkboxStateHandler = (data, e) => {
+    const checkBoxValuesArr = [];
+    let name = "";
+    data.forEach(val => {
+      name = val.name;
+      checkBoxValuesArr.push(val.value);
+    });
+    const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
+    let toBeAssignObject = {
+      error: validation.message,
+      isValid: validation.valid
+    };
+    //if value is valid then assign value to form state
+    if (validation.valid) {
+      toBeAssignObject.value = checkBoxValuesArr;
+    }
+    this.setState(
+      {
+        form: {
+          fields: {
+            ...this.state.form.fields,
+            [name]: {
+              ...this.state.form.fields[name],
+              ...toBeAssignObject
+            }
+          },
+          api: {
+            ...this.state.form.api,
+            [name]: checkBoxValuesArr
           }
         }
       },
@@ -172,7 +226,7 @@ class Coworking extends React.PureComponent {
     //if the form was valid then submit it
     if (_isValid) {
       console.log(_formObjectGoingToSubmit);
-      SubmitForm("privatedesk", _formObjectGoingToSubmit, res => {
+      SubmitForm("private_desk", _formObjectGoingToSubmit, res => {
         if (res.code === 200) {
           this.setState({
             form: {
@@ -197,7 +251,7 @@ class Coworking extends React.PureComponent {
                 resume: {
                   ...this.state.form.fields.resume,
                   isValid: true,
-                  value: res.data.file.url
+                  value: [{ en: res.data.file.url, fa: res.data.file.url }]
                 }
               }
             }
@@ -233,6 +287,79 @@ class Coworking extends React.PureComponent {
       }
     );
   };
+
+  getCitiesList = () => {
+    const arr = [];
+    FilterContents("list_of_cities", res => {
+      res.data.forEach(val => {
+        arr.push(val.fields.name.fa);
+      });
+      this.setState({
+        combo: {
+          city: arr
+        }
+      });
+    });
+  };
+  urlParser = url => {
+    let regex = /[?&]([^=#]+)=([^&#]*)/g,
+      params = {},
+      match;
+    while ((match = regex.exec(url))) {
+      params[match[1]] = match[2];
+    }
+    return params;
+  };
+
+  getCitiesList = defaultCity => {
+    FilterContents("list_of_cities", res => {
+      const arr = [];
+      res.data.map((val, key) => {
+        arr.push({
+          title: val.fields.name.fa,
+          key: val._id,
+          boxValue: key + 1,
+          dir: "rtl",
+          value: val._id,
+          defaultChecked: defaultCity === val._id
+        });
+        return null;
+      });
+      this.setState({
+        combo: {
+          city: {
+            hasLoaded: true,
+            items: arr
+          }
+        }
+      });
+    });
+  };
+  componentDidMount() {
+    const exportedUrlParams = this.urlParser(this.props.location.search);
+    const selectedCity = exportedUrlParams.city,
+      neededSeats = exportedUrlParams.seats;
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          seats: {
+            ...this.state.form.fields.seats,
+            value: !isNaN(Number(neededSeats)) && neededSeats,
+            isValid: !isNaN(Number(neededSeats))
+          },
+          city: {
+            ...this.state.form.fields.city,
+            value: selectedCity,
+            isValid: selectedCity && true
+          }
+        }
+      }
+    });
+    this.getCitiesList(selectedCity);
+    // console.log(this.state.form.fields.seats.value);
+  }
   render() {
     return (
       <section
@@ -261,7 +388,7 @@ class Coworking extends React.PureComponent {
                     />
                   </span>
                   <span className="title">
-                    <strong>فرم درخواست میزکار اختصاصی</strong>
+                    <strong>فرم درخواست اتاق جلسات</strong>
                   </span>
                 </CardHeader>
                 <CardBody>
@@ -316,19 +443,30 @@ class Coworking extends React.PureComponent {
                       error={this.state.form.fields.email.error}
                     />
                   </div>
-                  <FlatInput
-                    label="دانشگاه"
-                    type="text"
-                    placeholder="دانشگاه محل تحصیل خود را وارد کنید"
-                    name="university"
-                    id="university"
-                    onChange={this.formStateHandler}
-                    error={this.state.form.fields.university.error}
-                  />
+                  <div className="field-row">
+                    <span className="field-title">شهر</span>
+
+                    {/* fill checkboxes */}
+                    {this.state.combo.city.hasLoaded ? (
+                      <FlatInlineSelect
+                        type="checkbox"
+                        items={this.state.combo.city.items}
+                        onChange={this.checkboxStateHandler}
+                        dir="rtl"
+                        name="city"
+                      />
+                    ) : (
+                      <Skeleton count={2} style={{ lineHeight: 2 }} />
+                    )}
+                    <span className="error-message">
+                      {this.state.form.fields.city.error}
+                    </span>
+                  </div>
                   <FlatNumberSet
                     label="تعداد صندلی"
                     type="number"
                     range={[1, 10]}
+                    defaultValue={this.state.form.fields.seats.value}
                     name="seats"
                     id="seats"
                     onChange={this.formStateHandler}
@@ -362,4 +500,4 @@ class Coworking extends React.PureComponent {
   }
 }
 
-export default Coworking;
+export default PrivateDesk;

@@ -30,7 +30,10 @@ var config = {
     accelerator: "5cfce5561772c0001748d1a7",
     partnership: "5d358ebc8e6e9a0017c28fc9",
     coworking: "5cfc95472606810017dca194",
-    private_office: "5cf7e7449916860017805408",
+    dedicated_office: "5cf7e7449916860017805408",
+    session_room: "5cf7e7289916860017805407",
+    private_desk: "5cfc95472606810017dca194",
+    shared_desk: "5cfc95472606810017dca194",
     partnership_working_fields: "5d4169c642afbf00179b0569",
     list_of_countries: "5d35e6e68e6e9a0017c28fcd",
     list_of_cities: "5d35e6fa8e6e9a0017c28fce"

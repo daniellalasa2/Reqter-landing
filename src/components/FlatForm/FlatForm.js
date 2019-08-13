@@ -237,6 +237,7 @@ const FlatNumberSet = ({
   range,
   error,
   name,
+  defaultValue,
   id
 }) => {
   const _wrapperRef = useRef();
@@ -257,7 +258,7 @@ const FlatNumberSet = ({
         type="button"
         name={name}
         key={`flatFormNumberSetButton${i}`}
-        className="sets"
+        className={"sets" + (defaultValue == i ? " active" : "")}
         value={i === range[1] ? `+${i}` : i}
       />
     );
