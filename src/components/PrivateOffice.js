@@ -84,7 +84,8 @@ class PrivateOffice extends React.PureComponent {
       city: ["required"],
       seats: ["required", "number"],
       email: ["email"],
-      resume: []
+      resume: [],
+      country: []
     };
   }
 
