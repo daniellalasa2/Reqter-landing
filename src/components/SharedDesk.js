@@ -11,6 +11,7 @@ import {
   FlatNumberSet,
   FlatInlineSelect
 } from "./FlatForm/FlatForm";
+import LoadingSpinner from "../assets/images/spinner.svg";
 import Validator from "./Validator/Validator";
 import "../assets/styles/Coworking.scss";
 class SharedDesk extends React.PureComponent {
@@ -19,7 +20,8 @@ class SharedDesk extends React.PureComponent {
     this.state = {
       form: {
         isValid: false,
-        isSubmit: false,
+        submitted: false,
+        isSubmitting: false,
         fields: {
           name: {
             value: "",
@@ -224,17 +226,33 @@ class SharedDesk extends React.PureComponent {
     });
     //if the form was valid then submit it
     if (_isValid) {
-      console.log(_formObjectGoingToSubmit);
-      SubmitForm("shared_desk", _formObjectGoingToSubmit, res => {
-        if (res.code === 200) {
-          this.setState({
-            form: {
-              ...this.state.form,
-              isSubmit: true
+      this.setState(
+        {
+          form: {
+            ...this.state.form,
+            isSubmitting: true
+          }
+        },
+        () => {
+          SubmitForm("session_room", _formObjectGoingToSubmit, res => {
+            if (res.code === 200) {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  submitted: true
+                }
+              });
+            } else {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  isSubmitting: false
+                }
+              });
             }
           });
         }
-      });
+      );
     }
   };
   uploadFile = e => {
@@ -369,7 +387,7 @@ class SharedDesk extends React.PureComponent {
           flexWrap: "wrap"
         }}
       >
-        {this.state.form.isSubmit ? (
+        {this.state.form.submitted ? (
           <Card className="form-card">
             <SuccessSubmit />
           </Card>
@@ -484,12 +502,21 @@ class SharedDesk extends React.PureComponent {
                 </CardBody>
               </section>
               <CardFooter>
-                <Button
-                  className="navigation-button submit"
-                  onClick={() => this.submitForm()}
-                >
-                  ثبت
-                </Button>
+                {this.state.form.isSubmitting ? (
+                  <Button
+                    style={{ padding: "0px 44px" }}
+                    className="navigation-button submit"
+                  >
+                    <img src={LoadingSpinner} alt="" />
+                  </Button>
+                ) : (
+                  <Button
+                    className="navigation-button submit"
+                    onClick={() => this.submitForm()}
+                  >
+                    ثبت و ارسال
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           </React.Fragment>
