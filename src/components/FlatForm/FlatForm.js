@@ -258,7 +258,13 @@ const FlatNumberSet = ({
         type="button"
         name={name}
         key={`flatFormNumberSetButton${i}`}
-        className={"sets" + (defaultValue == i ? " active" : "")}
+        className={
+          "sets" +
+          (parseInt(defaultValue) === i ||
+          (i === range[1] && defaultValue > range[1])
+            ? " active"
+            : "")
+        }
         value={i === range[1] ? `+${i}` : i}
       />
     );

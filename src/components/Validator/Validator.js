@@ -8,7 +8,7 @@ const Validator = (value, rules, chars) => {
     url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
   };
   let validationObj = { message: "", valid: true };
-  let numberOfValidations = rules.length;
+  let numberOfValidations = rules ? rules.length : 0;
   if (numberOfValidations !== 0) {
     for (let rule of rules) {
       switch (rule) {

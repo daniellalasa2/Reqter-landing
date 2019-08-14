@@ -83,9 +83,7 @@ class PrivateOffice extends React.PureComponent {
       phonenumber: ["required", "phonenumber"],
       city: ["required"],
       seats: ["required", "number"],
-      email: ["email"],
-      resume: [],
-      country: []
+      email: ["email"]
     };
   }
 
