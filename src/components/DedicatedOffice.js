@@ -11,6 +11,7 @@ import {
   FlatNumberSet,
   FlatInlineSelect
 } from "./FlatForm/FlatForm";
+import LoadingSpinner from "../assets/images/spinner.svg";
 import Validator from "./Validator/Validator";
 import "../assets/styles/Coworking.scss";
 class DedicatedOffice extends React.PureComponent {
@@ -19,7 +20,8 @@ class DedicatedOffice extends React.PureComponent {
     this.state = {
       form: {
         isValid: false,
-        isSubmit: false,
+        submitted: false,
+        isSubmitting: false,
         fields: {
           name: {
             value: "",
@@ -31,7 +33,7 @@ class DedicatedOffice extends React.PureComponent {
             error: "",
             isValid: false
           },
-          educationfield: {
+          workingfield: {
             value: "",
             error: "",
             isValid: false
@@ -70,7 +72,11 @@ class DedicatedOffice extends React.PureComponent {
         }
       },
       combo: {
-        city: {
+        list_of_cities: {
+          hasLoaded: false,
+          items: []
+        },
+        coworking_working_field: {
           hasLoaded: false,
           items: []
         }
@@ -83,8 +89,7 @@ class DedicatedOffice extends React.PureComponent {
       phonenumber: ["required", "phonenumber"],
       city: ["required"],
       seats: ["required", "number"],
-      email: ["email"],
-      resume: []
+      email: ["email"]
     };
   }
 
@@ -225,17 +230,33 @@ class DedicatedOffice extends React.PureComponent {
     });
     //if the form was valid then submit it
     if (_isValid) {
-      console.log(_formObjectGoingToSubmit);
-      SubmitForm("dedicated_office", _formObjectGoingToSubmit, res => {
-        if (res.code === 200) {
-          this.setState({
-            form: {
-              ...this.state.form,
-              isSubmit: true
+      this.setState(
+        {
+          form: {
+            ...this.state.form,
+            isSubmitting: true
+          }
+        },
+        () => {
+          SubmitForm("session_room", _formObjectGoingToSubmit, res => {
+            if (res.code === 200) {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  submitted: true
+                }
+              });
+            } else {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  isSubmitting: false
+                }
+              });
             }
           });
         }
-      });
+      );
     }
   };
   uploadFile = e => {
@@ -288,19 +309,6 @@ class DedicatedOffice extends React.PureComponent {
     );
   };
 
-  getCitiesList = () => {
-    const arr = [];
-    FilterContents("list_of_cities", res => {
-      res.data.forEach(val => {
-        arr.push(val.fields.name.fa);
-      });
-      this.setState({
-        combo: {
-          city: arr
-        }
-      });
-    });
-  };
   urlParser = url => {
     let regex = /[?&]([^=#]+)=([^&#]*)/g,
       params = {},
@@ -311,8 +319,9 @@ class DedicatedOffice extends React.PureComponent {
     return params;
   };
 
-  getCitiesList = defaultCity => {
-    FilterContents("list_of_cities", res => {
+  generateCheckboxDataFromApi = (name, defaultChecked) => {
+    console.log("defaultChecked: ", defaultChecked);
+    FilterContents(name, res => {
       const arr = [];
       res.data.map((val, key) => {
         arr.push({
@@ -321,13 +330,14 @@ class DedicatedOffice extends React.PureComponent {
           boxValue: key + 1,
           dir: "rtl",
           value: val._id,
-          defaultChecked: defaultCity === val._id
+          defaultChecked: defaultChecked && defaultChecked === val._id
         });
         return null;
       });
       this.setState({
         combo: {
-          city: {
+          ...this.state.combo,
+          [name]: {
             hasLoaded: true,
             items: arr
           }
@@ -357,8 +367,8 @@ class DedicatedOffice extends React.PureComponent {
         }
       }
     });
-    this.getCitiesList(selectedCity);
-    // console.log(this.state.form.fields.seats.value);
+    this.generateCheckboxDataFromApi("list_of_cities", selectedCity);
+    this.generateCheckboxDataFromApi("coworking_working_field");
   }
   render() {
     return (
@@ -370,7 +380,7 @@ class DedicatedOffice extends React.PureComponent {
           flexWrap: "wrap"
         }}
       >
-        {this.state.form.isSubmit ? (
+        {this.state.form.submitted ? (
           <Card className="form-card">
             <SuccessSubmit />
           </Card>
@@ -388,7 +398,7 @@ class DedicatedOffice extends React.PureComponent {
                     />
                   </span>
                   <span className="title">
-                    <strong>فرم درخواست اتاق جلسات</strong>
+                    <strong>فرم درخواست دفتر اختصاصی</strong>
                   </span>
                 </CardHeader>
                 <CardBody>
@@ -414,15 +424,25 @@ class DedicatedOffice extends React.PureComponent {
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.birthyear.error}
                   />
-                  <FlatInput
-                    label="رشته تحصیلی"
-                    type="text"
-                    placeholder="مثال : مهندسی کامپیوتر"
-                    name="educationfield"
-                    id="educationfield"
-                    onChange={this.formStateHandler}
-                    error={this.state.form.fields.educationfield.error}
-                  />
+                  <div className="field-row">
+                    <span className="field-title">حوزه فعالیت</span>
+
+                    {/* fill checkboxes */}
+                    {this.state.combo.coworking_working_field.hasLoaded ? (
+                      <FlatInlineSelect
+                        type="checkbox"
+                        items={this.state.combo.coworking_working_field.items}
+                        onChange={this.checkboxStateHandler}
+                        dir="rtl"
+                        name="workingfield"
+                      />
+                    ) : (
+                      <Skeleton count={5} style={{ lineHeight: 2 }} />
+                    )}
+                    <span className="error-message">
+                      {this.state.form.fields.workingfield.error}
+                    </span>
+                  </div>
                   <div className="contact-section">
                     <FlatInput
                       label="شماره تماس"
@@ -447,10 +467,10 @@ class DedicatedOffice extends React.PureComponent {
                     <span className="field-title">شهر</span>
 
                     {/* fill checkboxes */}
-                    {this.state.combo.city.hasLoaded ? (
+                    {this.state.combo.list_of_cities.hasLoaded ? (
                       <FlatInlineSelect
-                        type="checkbox"
-                        items={this.state.combo.city.items}
+                        type="radio"
+                        items={this.state.combo.list_of_cities.items}
                         onChange={this.checkboxStateHandler}
                         dir="rtl"
                         name="city"
@@ -489,7 +509,15 @@ class DedicatedOffice extends React.PureComponent {
                   className="navigation-button submit"
                   onClick={() => this.submitForm()}
                 >
-                  ثبت
+                  {this.state.form.isSubmitting ? (
+                    <img
+                      src={LoadingSpinner}
+                      alt=""
+                      style={{ margin: "-12px 16px" }}
+                    />
+                  ) : (
+                    "ثبت و ارسال "
+                  )}
                 </Button>
               </CardFooter>
             </Card>

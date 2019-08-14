@@ -234,7 +234,7 @@ class PrivateOffice extends React.PureComponent {
           }
         },
         () => {
-          SubmitForm("session_room", _formObjectGoingToSubmit, res => {
+          SubmitForm("dedicated_office", _formObjectGoingToSubmit, res => {
             if (res.code === 200) {
               this.setState({
                 form: {

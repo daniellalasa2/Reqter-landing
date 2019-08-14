@@ -33,7 +33,7 @@ class PrivateDesk extends React.PureComponent {
             error: "",
             isValid: false
           },
-          educationfield: {
+          workingfield: {
             value: "",
             error: "",
             isValid: false
@@ -72,7 +72,11 @@ class PrivateDesk extends React.PureComponent {
         }
       },
       combo: {
-        city: {
+        list_of_cities: {
+          hasLoaded: false,
+          items: []
+        },
+        coworking_working_field: {
           hasLoaded: false,
           items: []
         }
@@ -234,7 +238,7 @@ class PrivateDesk extends React.PureComponent {
           }
         },
         () => {
-          SubmitForm("session_room", _formObjectGoingToSubmit, res => {
+          SubmitForm("private_desk", _formObjectGoingToSubmit, res => {
             if (res.code === 200) {
               this.setState({
                 form: {
@@ -305,19 +309,6 @@ class PrivateDesk extends React.PureComponent {
     );
   };
 
-  getCitiesList = () => {
-    const arr = [];
-    FilterContents("list_of_cities", res => {
-      res.data.forEach(val => {
-        arr.push(val.fields.name.fa);
-      });
-      this.setState({
-        combo: {
-          city: arr
-        }
-      });
-    });
-  };
   urlParser = url => {
     let regex = /[?&]([^=#]+)=([^&#]*)/g,
       params = {},
@@ -328,8 +319,8 @@ class PrivateDesk extends React.PureComponent {
     return params;
   };
 
-  getCitiesList = defaultCity => {
-    FilterContents("list_of_cities", res => {
+  generateCheckboxDataFromApi = (name, defaultChecked) => {
+    FilterContents(name, res => {
       const arr = [];
       res.data.map((val, key) => {
         arr.push({
@@ -338,13 +329,14 @@ class PrivateDesk extends React.PureComponent {
           boxValue: key + 1,
           dir: "rtl",
           value: val._id,
-          defaultChecked: defaultCity === val._id
+          defaultChecked: defaultChecked && defaultChecked === val._id
         });
         return null;
       });
       this.setState({
         combo: {
-          city: {
+          ...this.state.combo,
+          [name]: {
             hasLoaded: true,
             items: arr
           }
@@ -374,8 +366,8 @@ class PrivateDesk extends React.PureComponent {
         }
       }
     });
-    this.getCitiesList(selectedCity);
-    // console.log(this.state.form.fields.seats.value);
+    this.generateCheckboxDataFromApi("list_of_cities", selectedCity);
+    this.generateCheckboxDataFromApi("coworking_working_field");
   }
   render() {
     return (
@@ -405,7 +397,7 @@ class PrivateDesk extends React.PureComponent {
                     />
                   </span>
                   <span className="title">
-                    <strong>فرم درخواست اتاق جلسات</strong>
+                    <strong>فرم درخواست میز اختصاصی</strong>
                   </span>
                 </CardHeader>
                 <CardBody>
@@ -431,15 +423,25 @@ class PrivateDesk extends React.PureComponent {
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.birthyear.error}
                   />
-                  <FlatInput
-                    label="رشته تحصیلی"
-                    type="text"
-                    placeholder="مثال : مهندسی کامپیوتر"
-                    name="educationfield"
-                    id="educationfield"
-                    onChange={this.formStateHandler}
-                    error={this.state.form.fields.educationfield.error}
-                  />
+                  <div className="field-row">
+                    <span className="field-title">حوزه فعالیت</span>
+
+                    {/* fill checkboxes */}
+                    {this.state.combo.coworking_working_field.hasLoaded ? (
+                      <FlatInlineSelect
+                        type="checkbox"
+                        items={this.state.combo.coworking_working_field.items}
+                        onChange={this.checkboxStateHandler}
+                        dir="rtl"
+                        name="workingfield"
+                      />
+                    ) : (
+                      <Skeleton count={5} style={{ lineHeight: 2 }} />
+                    )}
+                    <span className="error-message">
+                      {this.state.form.fields.workingfield.error}
+                    </span>
+                  </div>
                   <div className="contact-section">
                     <FlatInput
                       label="شماره تماس"
@@ -464,10 +466,10 @@ class PrivateDesk extends React.PureComponent {
                     <span className="field-title">شهر</span>
 
                     {/* fill checkboxes */}
-                    {this.state.combo.city.hasLoaded ? (
+                    {this.state.combo.list_of_cities.hasLoaded ? (
                       <FlatInlineSelect
-                        type="checkbox"
-                        items={this.state.combo.city.items}
+                        type="radio"
+                        items={this.state.combo.list_of_cities.items}
                         onChange={this.checkboxStateHandler}
                         dir="rtl"
                         name="city"
@@ -502,21 +504,20 @@ class PrivateDesk extends React.PureComponent {
                 </CardBody>
               </section>
               <CardFooter>
-                {this.state.form.isSubmitting ? (
-                  <Button
-                    style={{ padding: "0px 44px" }}
-                    className="navigation-button submit"
-                  >
-                    <img src={LoadingSpinner} alt="" />
-                  </Button>
-                ) : (
-                  <Button
-                    className="navigation-button submit"
-                    onClick={() => this.submitForm()}
-                  >
-                    ثبت و ارسال
-                  </Button>
-                )}
+                <Button
+                  className="navigation-button submit"
+                  onClick={() => this.submitForm()}
+                >
+                  {this.state.form.isSubmitting ? (
+                    <img
+                      src={LoadingSpinner}
+                      alt=""
+                      style={{ margin: "-12px 16px" }}
+                    />
+                  ) : (
+                    "ثبت و ارسال "
+                  )}
+                </Button>
               </CardFooter>
             </Card>
           </React.Fragment>

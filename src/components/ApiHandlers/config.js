@@ -35,6 +35,7 @@ var config = {
     private_desk: "5cfc95472606810017dca194",
     shared_desk: "5cfc95472606810017dca194",
     partnership_working_fields: "5d4169c642afbf00179b0569",
+    coworking_working_field: "5d3af3a1a9602900177a5056",
     list_of_countries: "5d35e6e68e6e9a0017c28fcd",
     list_of_cities: "5d35e6fa8e6e9a0017c28fce"
   },
