@@ -304,6 +304,7 @@ const FlatInput = ({
         minLength={minlength}
         maxLength={maxlength}
         id={id}
+        className={classnames(error && "error-input")}
       />
       <span className="error-message">{error}</span>
     </div>
