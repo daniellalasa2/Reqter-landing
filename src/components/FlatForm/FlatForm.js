@@ -484,7 +484,32 @@ const FlatUploader = ({
     </div>
   );
 };
-//helper functions
+
+// Flat Time Picker
+// const TimePicker = ({ type }) => {
+//   switch (type) {
+//     case "date":
+//       return (
+//         <div className = "timeWrapper" style={{display}}>
+//         <input
+//           type="file"
+//           onChange={e => {
+//             if (typeof onChange === "function") return ;
+//           }}
+
+//           style={{ display: "none" }}
+//         />
+//         </div>
+//       );
+//       break;
+//     case "time":
+//       break;
+//     default:
+//       break;
+//   }
+// };
+
+// Helper Functions
 const removeClass = (e, nameOfClass) => {
   e.target.classList.remove(nameOfClass);
 };
