@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloud, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,8 @@ import "./FlatForm.scss";
     2- CheckBoxRow radio mode has an error while a radio element is selected have not deselect by clicking again.
     3- Alphabetic value box for image and inline select components
     4- set proptypes for props of each component
+    5- make an appropriate behavior for Flat date and time picker components it must behave as a normal input
+
 */
 //HOC select wrapper
 class SelectRow extends React.PureComponent {
@@ -485,29 +487,113 @@ const FlatUploader = ({
   );
 };
 
-// Flat Time Picker
-// const TimePicker = ({ type }) => {
-//   switch (type) {
-//     case "date":
-//       return (
-//         <div className = "timeWrapper" style={{display}}>
-//         <input
-//           type="file"
-//           onChange={e => {
-//             if (typeof onChange === "function") return ;
-//           }}
+// Flat Time
+const FlatTimePicker = ({ onChange, name }) => {
+  const [time, setTime] = useState({
+    hour: { amount: "", valid: false },
+    minute: { amount: "", valid: false }
+  });
 
-//           style={{ display: "none" }}
-//         />
-//         </div>
-//       );
-//       break;
-//     case "time":
-//       break;
-//     default:
-//       break;
-//   }
-// };
+  useEffect(() => {
+    let isValid = true;
+    for (let detail in time) {
+      isValid *= time[detail].valid;
+    }
+    if (isValid) {
+      onChange(`${time.hour.amount}/${time.minute.amount}`);
+    }
+  });
+
+  const StateHandler = e => {
+    const name = e.target.name,
+      value = e.target.value,
+      isValid = Boolean(parseInt(e.target.value));
+    setTime({
+      ...time,
+      [name]: { amount: value, valid: isValid }
+    });
+  };
+  return (
+    <div className="timeWrapper">
+      <input
+        type="number"
+        className="hour"
+        placeholder="ساعت"
+        min="00"
+        max="23"
+        name="hour"
+        onChange={StateHandler}
+      />
+      <input
+        min="00"
+        max="59"
+        type="number"
+        name="minute"
+        placeholder="دقیقه"
+        className="minute"
+        onChange={StateHandler}
+      />
+    </div>
+  );
+};
+const FlatDatePicker = ({ onChange, name }) => {
+  // define states
+  const [date, setDate] = useState({
+    year: { amount: "", valid: false },
+    month: { amount: "", valid: false },
+    day: { amount: "", valid: false }
+  });
+  useEffect(() => {
+    let isValid = true;
+    for (let detail in date) {
+      isValid *= date[detail].valid;
+    }
+    if (isValid) {
+      onChange(`${date.year.amount}/${date.month.amount}/${date.day.amount}`);
+    }
+  });
+  // hanle state changes
+  const StateHandler = e => {
+    const name = e.target.name,
+      value = e.target.value,
+      isValid = Boolean(parseInt(e.target.value));
+    setDate({
+      ...date,
+      [name]: { amount: value, valid: isValid }
+    });
+  };
+  return (
+    <div className="dateWrapper">
+      <input
+        type="number"
+        className="year"
+        placeholder="سال"
+        min="1398"
+        max="1400"
+        name="year"
+        onChange={StateHandler}
+      />
+      <input
+        min="1"
+        max="12"
+        type="number"
+        name="month"
+        placeholder="ماه"
+        className="month"
+        onChange={StateHandler}
+      />
+      <input
+        min="1"
+        max="31"
+        name="day"
+        type="number"
+        placeholder="روز"
+        className="day"
+        onChange={StateHandler}
+      />
+    </div>
+  );
+};
 
 // Helper Functions
 const removeClass = (e, nameOfClass) => {
@@ -524,5 +610,7 @@ export {
   FlatInlineSelect,
   FlatImageSelect,
   FlatNumberSet,
-  FlatUploader
+  FlatUploader,
+  FlatTimePicker,
+  FlatDatePicker
 };

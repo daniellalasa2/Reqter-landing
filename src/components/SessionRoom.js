@@ -1,3 +1,5 @@
+//make an appropriate behavior for Flat date and time picker components it must behave as a normal input
+
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
 import { SubmitForm, Upload, FilterContents } from "./ApiHandlers/ApiHandler";
@@ -9,9 +11,12 @@ import {
   FlatInput,
   FlatUploader,
   FlatNumberSet,
-  FlatInlineSelect
+  FlatInlineSelect,
+  FlatTimePicker,
+  FlatDatePicker
 } from "./FlatForm/FlatForm";
 import LoadingSpinner from "../assets/images/spinner.svg";
+import NumberFormat from "react-number-format";
 import Validator from "./Validator/Validator";
 import "../assets/styles/Coworking.scss";
 class SessionRoom extends React.PureComponent {
@@ -140,45 +145,11 @@ class SessionRoom extends React.PureComponent {
       }
     );
   };
-  checkboxStateHandler = (data, e) => {
-    const checkBoxValuesArr = [];
-    let name = "";
-    data.forEach(val => {
-      name = val.name;
-      checkBoxValuesArr.push(val.value);
-    });
-    const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
-    let toBeAssignObject = {
-      error: validation.message,
-      isValid: validation.valid
-    };
-    //if value is valid then assign value to form state
-    if (validation.valid) {
-      toBeAssignObject.value = checkBoxValuesArr;
-    }
-    this.setState(
-      {
-        form: {
-          fields: {
-            ...this.state.form.fields,
-            [name]: {
-              ...this.state.form.fields[name],
-              ...toBeAssignObject
-            }
-          },
-          api: {
-            ...this.state.form.api,
-            [name]: checkBoxValuesArr
-          }
-        }
-      },
-      () => {
-        this.checkFormValidation();
-      }
-    );
+  dateStateHandler = (date, name) => {
+    console.log(date);
   };
   formStateHandler = e => {
-    let _this = e.target;
+    let _this = e.target ? e.target : e;
     const name = _this.name;
     const value = _this.value;
     const validation = Validator(value, this.validationRules[name]);
@@ -320,7 +291,6 @@ class SessionRoom extends React.PureComponent {
   };
 
   generateCheckboxDataFromApi = (name, defaultChecked) => {
-    console.log("defaultChecked: ", defaultChecked);
     FilterContents(name, res => {
       const arr = [];
       res.data.map((val, key) => {
@@ -412,7 +382,28 @@ class SessionRoom extends React.PureComponent {
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.name.error}
                   />
+                  <div className="field-row">
+                    <span className="field-title">زمان جلسه</span>
+                    <br />
+                    <br />
+                    <div
+                      className="FlatTimePicker"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-around"
+                      }}
+                    >
+                      {/* <FlatDatePicker onChange={this.dateStateHandler} /> */}
 
+                      {/* <FlatTimePicker onChange={this.dateStateHandler} /> */}
+                      <NumberFormat
+                        mask="_"
+                        format="####/##/##"
+                        type="text"
+                        style={{ direction: "ltr", textAlign: "left" }}
+                      />
+                    </div>
+                  </div>
                   <FlatInput
                     label="سال تولد"
                     type="number"
