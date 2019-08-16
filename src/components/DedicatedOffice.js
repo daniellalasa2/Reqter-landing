@@ -17,6 +17,8 @@ import "../assets/styles/Coworking.scss";
 class DedicatedOffice extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.urlParams = this.urlParser(this.props.location.search);
+    this.src = this.urlParams.src ? this.urlParams.src : "direct";
     this.state = {
       form: {
         isValid: false,
@@ -204,7 +206,7 @@ class DedicatedOffice extends React.PureComponent {
     const inputs = this.state.form.fields;
     let _isValid = true;
     const _fields = {};
-    const _formObjectGoingToSubmit = {};
+    let _formObjectGoingToSubmit = {};
     let _validation = {};
     for (let index in inputs) {
       _formObjectGoingToSubmit[index] = inputs[index].value;
@@ -228,8 +230,14 @@ class DedicatedOffice extends React.PureComponent {
         }
       }
     });
-    //if the form was valid then submit it
+    // if the form was valid then submit it
     if (_isValid) {
+      // fetch additional background data state to final api object if form was valid
+      _formObjectGoingToSubmit = {
+        ...this.state.form.backgroundData,
+        ..._formObjectGoingToSubmit
+      };
+
       this.setState(
         {
           form: {
@@ -238,7 +246,7 @@ class DedicatedOffice extends React.PureComponent {
           }
         },
         () => {
-          SubmitForm("session_room", _formObjectGoingToSubmit, res => {
+          SubmitForm("dedicated_office", _formObjectGoingToSubmit, res => {
             if (res.code === 200) {
               this.setState({
                 form: {

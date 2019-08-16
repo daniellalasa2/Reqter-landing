@@ -15,6 +15,7 @@ import {
   FlatTimePicker,
   FlatDatePicker
 } from "./FlatForm/FlatForm";
+import moment from "jalali-moment";
 import LoadingSpinner from "../assets/images/spinner.svg";
 import NumberFormat from "react-number-format";
 import Validator from "./Validator/Validator";
@@ -22,11 +23,16 @@ import "../assets/styles/Coworking.scss";
 class SessionRoom extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.urlParams = this.urlParser(this.props.location.search);
+    this.src = this.urlParams.src ? this.urlParams.src : "direct";
     this.state = {
       form: {
         isValid: false,
         submitted: false,
         isSubmitting: false,
+        backgroundData: {
+          src: this.src
+        },
         fields: {
           name: {
             value: "",
@@ -69,6 +75,16 @@ class SessionRoom extends React.PureComponent {
             error: "",
             isValid: false
           },
+          startdate: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          enddate: {
+            value: "",
+            error: "",
+            isValid: false
+          },
           country: {
             value: "5d35e8288e6e9a0017c28fcf",
             error: "",
@@ -94,7 +110,9 @@ class SessionRoom extends React.PureComponent {
       phonenumber: ["required", "phonenumber"],
       city: ["required"],
       seats: ["required", "number"],
-      email: ["email"]
+      email: ["email"],
+      startdate: ["date"],
+      enddate: ["date"]
     };
   }
 
@@ -145,13 +163,15 @@ class SessionRoom extends React.PureComponent {
       }
     );
   };
-  dateStateHandler = (date, name) => {
-    console.log(date);
-  };
   formStateHandler = e => {
     let _this = e.target ? e.target : e;
     const name = _this.name;
-    const value = _this.value;
+    let value = null;
+    if (name === "startdate" || name === "enddate") {
+      value = moment.from(_this.value, "fa", "YYYY/MM/DD").format("MM/DD/YYYY");
+    } else {
+      value = _this.value;
+    }
     const validation = Validator(value, this.validationRules[name]);
     this.setState(
       {
@@ -175,7 +195,7 @@ class SessionRoom extends React.PureComponent {
     const inputs = this.state.form.fields;
     let _isValid = true;
     const _fields = {};
-    const _formObjectGoingToSubmit = {};
+    let _formObjectGoingToSubmit = {};
     let _validation = {};
     for (let index in inputs) {
       _formObjectGoingToSubmit[index] = inputs[index].value;
@@ -199,8 +219,14 @@ class SessionRoom extends React.PureComponent {
         }
       }
     });
-    //if the form was valid then submit it
+    // if the form was valid then submit it
     if (_isValid) {
+      // fetch additional background data state to final api object if form was valid
+      _formObjectGoingToSubmit = {
+        ...this.state.form.backgroundData,
+        ..._formObjectGoingToSubmit
+      };
+
       this.setState(
         {
           form: {
@@ -316,9 +342,8 @@ class SessionRoom extends React.PureComponent {
     });
   };
   componentDidMount() {
-    const exportedUrlParams = this.urlParser(this.props.location.search);
-    const selectedCity = exportedUrlParams.city,
-      neededSeats = exportedUrlParams.seats;
+    const selectedCity = this.urlParams.city,
+      neededSeats = this.urlParams.seats;
     this.setState({
       form: {
         ...this.state.form,
@@ -383,7 +408,7 @@ class SessionRoom extends React.PureComponent {
                     error={this.state.form.fields.name.error}
                   />
                   <div className="field-row">
-                    <span className="field-title">زمان جلسه</span>
+                    <span className="field-title">زمان شروع جلسه</span>
                     <br />
                     <br />
                     <div
@@ -400,8 +425,42 @@ class SessionRoom extends React.PureComponent {
                         mask="_"
                         format="####/##/##"
                         type="text"
+                        name="startdate"
+                        placeholder="زمان شروع جلسه"
+                        onChange={this.formStateHandler}
                         style={{ direction: "ltr", textAlign: "left" }}
                       />
+                      <span className="error-message">
+                        {this.state.form.fields.startdate.error}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-title">زمان پایان جلسه</span>
+                    <br />
+                    <br />
+                    <div
+                      className="FlatTimePicker"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-around"
+                      }}
+                    >
+                      {/* <FlatDatePicker onChange={this.dateStateHandler} /> */}
+
+                      {/* <FlatTimePicker onChange={this.dateStateHandler} /> */}
+                      <NumberFormat
+                        mask="_"
+                        format="####/##/##"
+                        type="text"
+                        placeholder="زمان پایان جلسه"
+                        onChange={this.formStateHandler}
+                        style={{ direction: "ltr", textAlign: "left" }}
+                        name="enddate"
+                      />
+                      <span className="error-message">
+                        {this.state.form.fields.enddate.error}
+                      </span>
                     </div>
                   </div>
                   <FlatInput

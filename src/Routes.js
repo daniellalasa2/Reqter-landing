@@ -3,15 +3,12 @@ import React from "react";
 const Home = React.lazy(() => import("./components/Home"));
 const AboutUs = React.lazy(() => import("./components/AboutUs"));
 const Login = React.lazy(() => import("./components/Login"));
-const Coworking = React.lazy(() => import("./components/Coworking"));
 const PrivateDesk = React.lazy(() => import("./components/PrivateDesk"));
 const SharedDesk = React.lazy(() => import("./components/SharedDesk"));
 const DedicatedOffice = React.lazy(() =>
   import("./components/DedicatedOffice")
 );
 const SessionRoom = React.lazy(() => import("./components/SessionRoom"));
-const Investing = React.lazy(() => import("./components/Investing"));
-const PrivateOffice = React.lazy(() => import("./components/PrivateOffice"));
 const Startup = React.lazy(() => import("./components/Startup"));
 const PrivacyPolicy = React.lazy(() => import("./components/PrivacyPolicy"));
 const TermsOfUse = React.lazy(() => import("./components/TermsOfUse"));
@@ -20,7 +17,6 @@ const FAQ = React.lazy(() => import("./components/FAQ"));
 const Careers = React.lazy(() => import("./components/Careers"));
 const PartnerShip = React.lazy(() => import("./components/PartnerShip"));
 const Security = React.lazy(() => import("./components/Security"));
-const News = React.lazy(() => import("./components/News"));
 
 //temporary
 const ComingSoon = React.lazy(() =>
@@ -48,12 +44,7 @@ const routes = [
     name: "Login",
     component: Login
   },
-  {
-    path: "/apply/coworking",
-    exact: true,
-    name: "Coworking",
-    component: Coworking
-  },
+
   {
     path: "/apply/sessionroom",
     name: "Session Room",
@@ -75,18 +66,7 @@ const routes = [
     exact: true,
     component: SharedDesk
   },
-  {
-    path: "/apply/investing",
-    exact: true,
-    name: "Investing",
-    component: Investing
-  },
-  {
-    path: "/apply/privateoffice",
-    exact: true,
-    name: "Private Office",
-    component: PrivateOffice
-  },
+
   {
     path: "/apply/startup",
     exact: true,
@@ -134,12 +114,6 @@ const routes = [
     exact: true,
     name: "Security",
     component: Security
-  },
-  {
-    path: "/news",
-    exact: true,
-    name: "News",
-    component: News
   }
 ];
 

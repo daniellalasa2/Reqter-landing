@@ -17,11 +17,16 @@ import "../assets/styles/Coworking.scss";
 class PrivateDesk extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.urlParams = this.urlParser(this.props.location.search);
+    this.src = this.urlParams.src ? this.urlParams.src : "direct";
     this.state = {
       form: {
         isValid: false,
         submitted: false,
         isSubmitting: false,
+        backgroundData: {
+          src: this.src
+        },
         fields: {
           name: {
             value: "",
@@ -204,7 +209,7 @@ class PrivateDesk extends React.PureComponent {
     const inputs = this.state.form.fields;
     let _isValid = true;
     const _fields = {};
-    const _formObjectGoingToSubmit = {};
+    let _formObjectGoingToSubmit = {};
     let _validation = {};
     for (let index in inputs) {
       _formObjectGoingToSubmit[index] = inputs[index].value;
@@ -228,8 +233,14 @@ class PrivateDesk extends React.PureComponent {
         }
       }
     });
-    //if the form was valid then submit it
+    // if the form was valid then submit it
     if (_isValid) {
+      // fetch additional background data state to final api object if form was valid
+      _formObjectGoingToSubmit = {
+        ...this.state.form.backgroundData,
+        ..._formObjectGoingToSubmit
+      };
+
       this.setState(
         {
           form: {
@@ -345,9 +356,8 @@ class PrivateDesk extends React.PureComponent {
     });
   };
   componentDidMount() {
-    const exportedUrlParams = this.urlParser(this.props.location.search);
-    const selectedCity = exportedUrlParams.city,
-      neededSeats = exportedUrlParams.seats;
+    const selectedCity = this.urlParams.city,
+      neededSeats = this.urlParams.seats;
     this.setState({
       form: {
         ...this.state.form,

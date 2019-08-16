@@ -77,8 +77,28 @@ const Validator = (value, rules, chars) => {
             }
           }
           break;
-        default:
+        case "date":
+          if (value.length > 0) {
+            const currentTime = new Date();
+            const day = currentTime.getDate();
+            const month = currentTime.getMonth() + 1;
+            const year = currentTime.getFullYear();
+            const beginningOfToday = new Date(
+              `${month}-${day}-${year}`
+            ).getTime();
+            const incomingDateToTimeStamp = new Date(value).getTime();
+            if (
+              incomingDateToTimeStamp < beginningOfToday ||
+              value === "Invalid date"
+            ) {
+              validationObj.message = "لطفا تاریخ صحیح وارد کنید";
+              validationObj.valid = false;
+              return validationObj;
+            }
+          }
           break;
+        default:
+          throw new Error("ّInvalid validation rule");
       }
       //If everythings is valid and the loop is on the last child of array then return validationObj
       if (numberOfValidations === 1 && validationObj.valid) {

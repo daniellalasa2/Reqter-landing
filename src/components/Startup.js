@@ -21,7 +21,6 @@ import {
   CheckBoxRow
 } from "./CustomCheckbox/CustomCheckbox";
 import checkboxImg from "../assets/images/logo.jpg";
-import FlatUploader from "./FlatUploader/FlatUploader";
 import { FlatNumberSet } from "./FlatForm/FlatForm";
 export default class StartUp extends React.Component {
   constructor(props) {
@@ -599,13 +598,7 @@ export default class StartUp extends React.Component {
                 <CardBody>
                   <FlatNumberSet range={[1, 5]} label="تعداد صندلی" />
 
-                  <div className="field-row">
-                    <FlatUploader
-                      placeholder="انتخاب فایل ..."
-                      progresscolor="grey"
-                      progress={100}
-                    />
-                  </div>
+                  <div className="field-row" />
                 </CardBody>
               </section>
               <CardFooter>
