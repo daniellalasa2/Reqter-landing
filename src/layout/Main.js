@@ -6,6 +6,18 @@ const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
 
 class Layout extends Component {
+  constructor(props) {
+    super(props);
+    //Gtag implementation for single page application
+    props.history.listen(location => {
+      if (window.gtag) {
+        window.gtag("config", "UA-145850270-1", {
+          page_title: "startup space",
+          page_path: location.pathname
+        });
+      }
+    });
+  }
   loading = () => (
     <div className="preloader">
       <div className="ball-rotate">

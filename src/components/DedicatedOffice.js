@@ -153,43 +153,6 @@ class DedicatedOffice extends React.PureComponent {
       }
     );
   };
-  checkboxStateHandler = (data, e) => {
-    const checkBoxValuesArr = [];
-    let name = "";
-    data.forEach(val => {
-      name = val.name;
-      checkBoxValuesArr.push(val.value);
-    });
-    const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
-    let toBeAssignObject = {
-      error: validation.message,
-      isValid: validation.valid
-    };
-    //if value is valid then assign value to form state
-    if (validation.valid) {
-      toBeAssignObject.value = checkBoxValuesArr;
-    }
-    this.setState(
-      {
-        form: {
-          fields: {
-            ...this.state.form.fields,
-            [name]: {
-              ...this.state.form.fields[name],
-              ...toBeAssignObject
-            }
-          },
-          api: {
-            ...this.state.form.api,
-            [name]: checkBoxValuesArr
-          }
-        }
-      },
-      () => {
-        this.checkFormValidation();
-      }
-    );
-  };
   formStateHandler = e => {
     let _this = e.target;
     const name = _this.name;

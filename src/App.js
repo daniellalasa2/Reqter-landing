@@ -4,13 +4,12 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import Layout from "./layout/Main";
 import "samim-font/dist/font-face.css";
+
 class App extends React.Component {
   loading = () => (
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
-  componentDidMount() {
-    // const element = document.getElementsByTagName("a");
-  }
+
   render() {
     return (
       <div className="App">
