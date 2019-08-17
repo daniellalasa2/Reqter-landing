@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import routes from "../Routes";
-import "./loader.scss";
+// import "./loader.scss";
 const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
 
@@ -18,16 +18,16 @@ class Layout extends Component {
       }
     });
   }
-  loading = () => (
-    <div className="preloader">
-      <div className="ball-rotate">
-        <div />
-      </div>
-      <span className="loading-text">
-        <strong>Startup Space</strong>
-      </span>
-    </div>
-  );
+  // loading = () => (
+  //   <div className="preloader">
+  //     <div className="ball-rotate">
+  //       <div />
+  //     </div>
+  //     <span className="loading-text">
+  //       <strong>Startup Space</strong>
+  //     </span>
+  //   </div>
+  // );
   componentWillMount() {
     this.unlisten = this.props.history.listen((location, action) => {
       window.scrollTo({ top: 0 });
@@ -40,7 +40,7 @@ class Layout extends Component {
     return (
       <React.Fragment>
         {/* Routes */}
-        <Suspense fallback={this.loading()}>
+        <Suspense>
           <Switch>
             {routes.map((route, idx) => {
               return route.component ? (
@@ -60,7 +60,7 @@ class Layout extends Component {
             })}
           </Switch>
         </Suspense>
-        <Suspense fallback={this.loading()}>
+        <Suspense>
           <Footer />
         </Suspense>
       </React.Fragment>
