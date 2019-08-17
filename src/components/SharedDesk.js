@@ -112,44 +112,18 @@ class SharedDesk extends React.PureComponent {
       }
     });
   };
-  checkboxStateHandler = (name, data) => {
-    const checkBoxValuesArr = [];
-    data.forEach(val => {
-      checkBoxValuesArr.push(val.key);
-    });
-    const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
-    let toBeAssignObject = {
-      error: validation.message,
-      isValid: validation.valid
-    };
-    //if value is valid then assign value to form state
-    if (validation.valid) {
-      toBeAssignObject.value = checkBoxValuesArr;
-    }
-    this.setState(
-      {
-        form: {
-          fields: {
-            ...this.state.form.fields,
-            [name]: {
-              ...this.state.form.fields[name],
-              ...toBeAssignObject
-            }
-          }
-        }
-      },
-      () => {
-        this.checkFormValidation();
-      }
-    );
-  };
-  checkboxStateHandler = (data, e) => {
+  checkboxStateHandler = data => {
     const checkBoxValuesArr = [];
     let name = "";
-    data.forEach(val => {
-      name = val.name;
-      checkBoxValuesArr.push(val.value);
-    });
+    if (data.length > 1) {
+      data.map(val => {
+        name = val.name;
+        checkBoxValuesArr.push(val.value);
+      });
+    } else {
+      name = data.name;
+      checkBoxValuesArr.push(data.value);
+    }
     const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
     let toBeAssignObject = {
       error: validation.message,

@@ -114,11 +114,18 @@ class PrivateDesk extends React.PureComponent {
       }
     });
   };
-  checkboxStateHandler = (name, data) => {
+  checkboxStateHandler = data => {
     const checkBoxValuesArr = [];
-    data.forEach(val => {
-      checkBoxValuesArr.push(val.key);
-    });
+    let name = "";
+    if (data.length > 1) {
+      data.map(val => {
+        name = val.name;
+        checkBoxValuesArr.push(val.value);
+      });
+    } else {
+      name = data.name;
+      checkBoxValuesArr.push(data.value);
+    }
     const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
     let toBeAssignObject = {
       error: validation.message,
@@ -137,6 +144,10 @@ class PrivateDesk extends React.PureComponent {
               ...this.state.form.fields[name],
               ...toBeAssignObject
             }
+          },
+          api: {
+            ...this.state.form.api,
+            [name]: checkBoxValuesArr
           }
         }
       },
