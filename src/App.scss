@@ -72,16 +72,17 @@ $white: #ffffff;
   .loading-text {
     position: relative;
     display: block;
-    width: 97.5vw;
+    width: auto;
     text-align: center;
     color: grey;
-    margin-top: 55vh;
+    margin-top: 58vh;
+    margin-left: 5px;
   }
   .ball-rotate {
     @include position(absolute, 0, 0, 0, 0);
     margin: auto;
-    width: 55px;
-    height: 55px;
+    width: 15px;
+    height: 15px;
 
     & > div {
       position: relative;

@@ -78,20 +78,25 @@ const Validator = (value, rules, chars) => {
           }
           break;
         case "date":
-          if (value.length > 0) {
+          if (value.toString().length > 0) {
             const currentTime = new Date();
             const day = currentTime.getDate();
             const month = currentTime.getMonth() + 1;
             const year = currentTime.getFullYear();
+            const hour = currentTime.getHours();
+            const minute = currentTime.getMinutes();
             const beginningOfToday = new Date(
-              `${month}-${day}-${year}`
+              `${month}-${day}-${year} ${hour}:${minute}`
             ).getTime();
-            const incomingDateToTimeStamp = new Date(value).getTime();
-            if (
-              incomingDateToTimeStamp < beginningOfToday ||
-              value === "Invalid date"
-            ) {
-              validationObj.message = "لطفا تاریخ صحیح وارد کنید";
+            //if value is NaN
+            if (!Boolean(value)) {
+              validationObj.message = "لطفا تاریخ و زمان صحیح وارد کنید";
+              validationObj.valid = false;
+              return validationObj;
+            }
+            //if Value is not NaN but is past
+            if (value < beginningOfToday) {
+              validationObj.message = "تاریخ و زمان نباید از الان به قبل باشد";
               validationObj.valid = false;
               return validationObj;
             }

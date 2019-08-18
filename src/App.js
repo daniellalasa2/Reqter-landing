@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import Layout from "./layout/Main";
 import "samim-font/dist/font-face.css";
@@ -18,7 +18,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <BrowserRouter>
+        <HashRouter>
           <React.Suspense fallback={this.loading()}>
             <Switch>
               <Route
@@ -28,7 +28,7 @@ class App extends React.Component {
               />
             </Switch>
           </React.Suspense>
-        </BrowserRouter>
+        </HashRouter>
       </div>
     );
   }

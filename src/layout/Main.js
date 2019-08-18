@@ -6,28 +6,15 @@ const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
 
 class Layout extends Component {
-  constructor(props) {
-    super(props);
-    //Gtag implementation for single page application
-    props.history.listen(location => {
-      if (window.gtag) {
-        window.gtag("config", "UA-145850270-1", {
-          page_title: "startup space",
-          page_path: location.pathname
-        });
-      }
-    });
-  }
-  // loading = () => (
-  //   <div className="preloader">
-  //     <div className="ball-rotate">
-  //       <div />
-  //     </div>
-  //     <span className="loading-text">
-  //       <strong>Startup Space</strong>
-  //     </span>
-  //   </div>
-  // );
+  gtagUpdater = (location, pageName) => {
+    if (window.gtag) {
+      window.gtag("config", "UA-145850270-1", {
+        page_title: pageName,
+        page_path: location.pathname,
+        page_search: location.search
+      });
+    }
+  };
   componentWillMount() {
     this.unlisten = this.props.history.listen((location, action) => {
       window.scrollTo({ top: 0 });
@@ -51,6 +38,7 @@ class Layout extends Component {
                   name={route.name}
                   render={props => (
                     <React.Fragment>
+                      {this.gtagUpdater(this.props.history, route.name)}
                       <Navigation transform={route.navTransform} {...props} />
                       <route.component {...props} />
                     </React.Fragment>

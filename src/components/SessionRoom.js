@@ -178,12 +178,45 @@ class SessionRoom extends React.PureComponent {
     let _this = e.target ? e.target : e;
     const name = _this.name;
     let value = null;
-    if (name === "startdate" || name === "enddate") {
-      value = moment.from(_this.value, "fa", "YYYY/MM/DD").format("MM/DD/YYYY");
+    let validation = {};
+    if (name === "startdate") {
+      const enddate = this.state.from.fields.enddate.value;
+      value = moment
+        .from(_this.value, "fa", "YYYY/MM/DD HH:mm")
+        .format("MM/DD/YYYY HH:mm"); //convert shamsi date to georgian date
+      value = new Date(value).getTime();
+      validation = Validator(value, this.validationRules[name]);
+      validation = validation.valid
+        ? {
+            valid: enddate ? value < parseInt(enddate) : true,
+            message: enddate
+              ? value < enddate
+                ? ""
+                : "زمان شروع جلسه باید قبل از زمان پایان جلسه باشد"
+              : ""
+          }
+        : validation;
+    } else if (name === "enddate") {
+      const startdate = this.state.from.fields.startdate.value;
+      value = moment
+        .from(_this.value, "fa", "YYYY/MM/DD HH:mm")
+        .format("MM/DD/YYYY HH:mm"); //convert shamsi date to georgian date
+      value = new Date(value).getTime();
+      validation = Validator(value, this.validationRules[name]);
+      validation = validation.valid
+        ? {
+            valid: startdate ? value > parseInt(startdate) : true,
+            message: startdate
+              ? value > startdate
+                ? ""
+                : "زمان پایان جلسه باید بعد از زمان شروع جلسه باشد"
+              : ""
+          }
+        : validation;
     } else {
       value = _this.value;
+      validation = Validator(value, this.validationRules[name]);
     }
-    const validation = Validator(value, this.validationRules[name]);
     this.setState(
       {
         form: {
@@ -422,24 +455,15 @@ class SessionRoom extends React.PureComponent {
                     <span className="field-title">زمان شروع جلسه</span>
                     <br />
                     <br />
-                    <div
-                      className="FlatTimePicker"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-around"
-                      }}
-                    >
-                      {/* <FlatDatePicker onChange={this.dateStateHandler} /> */}
-
-                      {/* <FlatTimePicker onChange={this.dateStateHandler} /> */}
+                    <div className="FlatTimePicker">
                       <NumberFormat
                         mask="_"
-                        format="####/##/##"
+                        format="####/##/##   ## : ##"
                         type="text"
                         name="startdate"
-                        placeholder="زمان شروع جلسه"
+                        placeholder="تاریخ - ساعت و دقیقه"
                         onChange={this.formStateHandler}
-                        style={{ direction: "ltr", textAlign: "left" }}
+                        style={{ direction: "ltr", textAlign: "right" }}
                       />
                       <span className="error-message">
                         {this.state.form.fields.startdate.error}
@@ -450,23 +474,14 @@ class SessionRoom extends React.PureComponent {
                     <span className="field-title">زمان پایان جلسه</span>
                     <br />
                     <br />
-                    <div
-                      className="FlatTimePicker"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-around"
-                      }}
-                    >
-                      {/* <FlatDatePicker onChange={this.dateStateHandler} /> */}
-
-                      {/* <FlatTimePicker onChange={this.dateStateHandler} /> */}
+                    <div className="FlatTimePicker">
                       <NumberFormat
-                        mask="_"
-                        format="####/##/##"
+                        mask=" - "
+                        format="####/##/##   ## : ##"
                         type="text"
-                        placeholder="زمان پایان جلسه"
+                        placeholder="تاریخ - ساعت و دقیقه"
                         onChange={this.formStateHandler}
-                        style={{ direction: "ltr", textAlign: "left" }}
+                        style={{ direction: "ltr", textAlign: "right" }}
                         name="enddate"
                       />
                       <span className="error-message">
