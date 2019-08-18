@@ -180,7 +180,7 @@ class SessionRoom extends React.PureComponent {
     let value = null;
     let validation = {};
     if (name === "startdate") {
-      const enddate = this.state.from.fields.enddate.value;
+      const enddate = this.state.form.fields.enddate.value;
       value = moment
         .from(_this.value, "fa", "YYYY/MM/DD HH:mm")
         .format("MM/DD/YYYY HH:mm"); //convert shamsi date to georgian date
@@ -197,7 +197,7 @@ class SessionRoom extends React.PureComponent {
           }
         : validation;
     } else if (name === "enddate") {
-      const startdate = this.state.from.fields.startdate.value;
+      const startdate = this.state.form.fields.startdate.value;
       value = moment
         .from(_this.value, "fa", "YYYY/MM/DD HH:mm")
         .format("MM/DD/YYYY HH:mm"); //convert shamsi date to georgian date
