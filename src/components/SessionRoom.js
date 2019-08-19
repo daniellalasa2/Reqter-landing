@@ -476,7 +476,7 @@ class SessionRoom extends React.PureComponent {
                     <br />
                     <div className="FlatTimePicker">
                       <NumberFormat
-                        mask=" - "
+                        mask="_"
                         format="####/##/##   ## : ##"
                         type="text"
                         placeholder="تاریخ - ساعت و دقیقه"
