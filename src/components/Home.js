@@ -3,11 +3,10 @@ import { ProductSpecs, Title, SpecList, Spec, Btn } from "./ProductSpecs";
 import { Button, Row, Col } from "reactstrap";
 import "../assets/styles/Home.scss";
 //Import images
-import startup from "../assets/images/startup.jpg";
 import sessionRoom from "../assets/images/session-room.jpg";
-import privateOffice from "../assets/images/private-office.jpg";
-import shared from "../assets/images/shared.jpg";
-import invest from "../assets/images/invest.jpg";
+import dedicatedOffice from "../assets/images/dedicated-office.jpg";
+import sharedDesk from "../assets/images/shared-desk.jpg";
+import privateDesk from "../assets/images/private-desk.jpg";
 import service from "../assets/images/service-icons/service.png";
 import apply from "../assets/images/service-icons/apply.png";
 import offer from "../assets/images/service-icons/offer.png";
@@ -22,7 +21,7 @@ class Home extends React.Component {
           <Row>
             <Col lg="12">
               <section className="facilities-description">
-                <div className="header">حالا روش کار چطوریه؟</div>
+                <div className="header">مراحل انجام کار</div>
                 {/* <p>
                   Credible is an online marketplace that provides borrowers with
                   competitive, personalized loan offers from multiple, vetted
@@ -69,19 +68,6 @@ class Home extends React.Component {
               </section>
             </Col>
           </Row>
-          <ProductSpecs img={shared} direction="rtl">
-            <Title>فضای کار اشتراکی</Title>
-            <SpecList className="rtl">
-              <Spec>
-                تو این شرایط گرونی و هزینه های بالای دفترداری بنظر کار کردن تو
-                یک فضای کار اشتراکی خیلی میتونه هزینه هاتون رو کم کنه و شما فقط
-                تمرکز کنی رو تولید ایده ناب خودت! با سرویس فضای کار اشتراکی ما
-                مناسبترین، بهترین و شاید زیباترین فضاهای کاری اشتراکی تو شهر
-                خودت رو که به شرایط تیمت میخوره پیدا می کنی
-              </Spec>
-            </SpecList>
-            <Btn color="#879cdd">همین الان اقدام کن ...</Btn>
-          </ProductSpecs>
           <ProductSpecs img={sessionRoom}>
             <Title>اتاق جلسات و همایش</Title>
             <SpecList className="rtl">
@@ -95,9 +81,14 @@ class Home extends React.Component {
                 بشی
               </Spec>
             </SpecList>
-            <Btn color="#879cdd">همین الان فرمتو پر کن</Btn>
+            <Btn
+              color="#879cdd"
+              onClick={() => this.props.history.push("/apply/sessionroom")}
+            >
+              شروع درخواست
+            </Btn>
           </ProductSpecs>
-          <ProductSpecs img={invest} direction="rtl">
+          <ProductSpecs img={sharedDesk} direction="rtl">
             <Title>میزکار اشتراکی</Title>
             <SpecList className="rtl">
               <Spec>
@@ -106,16 +97,19 @@ class Home extends React.Component {
                 نماید. بنابراین امکان استقرار ملزومات کار از قبیل کامپیوتر و …
                 برروی آنها وجود ندارد. یک نکته جالب راجع به این میزها این است که
                 هرروز ممکن است شخص کناری شما شخص دیگه ای باشد و دوستی و همکاری
-                جدیدی شکل بگیرد و می توانید قسمتهای مختلف فضای کار اشتراکی را
-                امتحان کنید و تجربیات جدید و احتمالا دوستان جدید پیدا کنید. با
-                سرویس میزکار اشتراکی ما تنها با یک درخواست شما چندین پیشنهاد از
-                فضاهای کاری اشتراکی شهر را دریافت می کنید و بهترین و مناسبترین
-                را انتخاب می نمایید.
+                جدیدی شکل بگیرد. با سرویس میزکار اشتراکی ما تنها با یک درخواست
+                شما چندین پیشنهاد از فضاهای کاری اشتراکی شهر را دریافت می کنید و
+                بهترین و مناسبترین را انتخاب می نمایید.
               </Spec>
             </SpecList>
-            <Btn color="#879cdd">درخواستت رو بفرست</Btn>
+            <Btn
+              color="#879cdd"
+              onClick={() => this.props.history.push("/apply/shareddesk")}
+            >
+              شروع درخواست
+            </Btn>
           </ProductSpecs>
-          <ProductSpecs img={privateOffice}>
+          <ProductSpecs img={dedicatedOffice}>
             <Title>اتاق کار اختصاصی</Title>
             <SpecList className="rtl">
               <Spec>
@@ -126,9 +120,14 @@ class Home extends React.Component {
                 پیدا کنی
               </Spec>
             </SpecList>
-            <Btn color="#879cdd">همین الان شروع کن</Btn>
+            <Btn
+              color="#879cdd"
+              onClick={() => this.props.history.push("/apply/dedicatedoffice")}
+            >
+              شروع درخواست
+            </Btn>
           </ProductSpecs>
-          <ProductSpecs img={startup} direction="rtl">
+          <ProductSpecs img={privateDesk} direction="rtl">
             <Title>میز کار اختصاصی</Title>
             <SpecList className="rtl">
               <Spec>
@@ -143,7 +142,12 @@ class Home extends React.Component {
                 خودتان پیشنهاد بگیرید
               </Spec>
             </SpecList>
-            <Btn color="#879cdd">رشدت رو شروع کن</Btn>
+            <Btn
+              color="#879cdd"
+              onClick={() => this.props.history.push("/apply/privatedesk")}
+            >
+              شروع درخواست
+            </Btn>
           </ProductSpecs>
         </section>
         <section className="contact-info">

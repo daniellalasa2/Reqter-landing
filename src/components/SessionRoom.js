@@ -2,7 +2,12 @@
 
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
-import { SubmitForm, Upload, FilterContents } from "./ApiHandlers/ApiHandler";
+import {
+  SubmitForm,
+  Upload,
+  FilterContents,
+  SafeValue
+} from "./ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -39,12 +44,7 @@ class SessionRoom extends React.PureComponent {
             error: "",
             isValid: false
           },
-          birthyear: {
-            value: "",
-            error: "",
-            isValid: false
-          },
-          workingfield: {
+          subject: {
             value: "",
             error: "",
             isValid: false
@@ -69,18 +69,17 @@ class SessionRoom extends React.PureComponent {
             error: "",
             isValid: false
           },
-          resume: {
-            uploadProgress: 0,
-            value: "",
-            error: "",
-            isValid: false
-          },
           startdate: {
             value: "",
             error: "",
             isValid: false
           },
           enddate: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          equipments: {
             value: "",
             error: "",
             isValid: false
@@ -97,7 +96,7 @@ class SessionRoom extends React.PureComponent {
           hasLoaded: false,
           items: []
         },
-        coworking_working_field: {
+        sessionroom_equipments: {
           hasLoaded: false,
           items: []
         }
@@ -105,8 +104,7 @@ class SessionRoom extends React.PureComponent {
     };
     this.validationRules = {
       name: ["required"],
-      birthyear: ["required", "number"],
-      educationfield: ["required"],
+      subject: ["required"],
       phonenumber: ["required", "phonenumber"],
       city: ["required"],
       seats: ["required", "number"],
@@ -133,16 +131,16 @@ class SessionRoom extends React.PureComponent {
     });
   };
   checkboxStateHandler = data => {
-    const checkBoxValuesArr = [];
+    let checkBoxValuesArr = [];
     let name = "";
-    if (data.length > 1) {
-      data.map(val => {
+    if (data.length) {
+      data.forEach(val => {
         name = val.name;
         checkBoxValuesArr.push(val.value);
       });
     } else {
       name = data.name;
-      checkBoxValuesArr.push(data.value);
+      checkBoxValuesArr = SafeValue(data, "value", "string", []);
     }
     const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
     let toBeAssignObject = {
@@ -365,12 +363,16 @@ class SessionRoom extends React.PureComponent {
       const arr = [];
       res.data.map((val, key) => {
         arr.push({
-          title: val.fields.name.fa,
-          key: val._id,
+          title: val.fields.name.fa
+            ? SafeValue(val.fields.name, "fa", "string", "")
+            : SafeValue(val.fields, "name", "string", ""),
+          key: SafeValue(val, "_id", "string", ""),
           boxValue: key + 1,
           dir: "rtl",
-          value: val._id,
-          defaultChecked: defaultChecked && defaultChecked === val._id
+          value: SafeValue(val, "_id", "string", ""),
+          defaultChecked:
+            defaultChecked &&
+            defaultChecked === SafeValue(val, "_id", "string", "")
         });
         return null;
       });
@@ -406,8 +408,8 @@ class SessionRoom extends React.PureComponent {
         }
       }
     });
+    this.generateCheckboxDataFromApi("sessionroom_equipments");
     this.generateCheckboxDataFromApi("list_of_cities", selectedCity);
-    this.generateCheckboxDataFromApi("coworking_working_field");
   }
   render() {
     return (
@@ -442,14 +444,24 @@ class SessionRoom extends React.PureComponent {
                 </CardHeader>
                 <CardBody>
                   <FlatInput
-                    label="نام و نام خانوادگی"
+                    label="نام درخواست کننده"
                     type="text"
-                    placeholder="نام و نام خانوادگی را وارد کنید"
+                    placeholder="نام خود را وارد کنید"
                     name="name"
                     id="name"
                     autoFocus
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.name.error}
+                  />
+                  <FlatInput
+                    label="موضوع جلسه"
+                    type="text"
+                    placeholder="موضوع جلسه را وارد نمایید"
+                    name="subject"
+                    id="subject"
+                    autoFocus
+                    onChange={this.formStateHandler}
+                    error={this.state.form.fields.subject.error}
                   />
                   <div className="field-row">
                     <span className="field-title">زمان شروع جلسه</span>
@@ -489,34 +501,23 @@ class SessionRoom extends React.PureComponent {
                       </span>
                     </div>
                   </div>
-                  <FlatInput
-                    label="سال تولد"
-                    type="number"
-                    max={9999}
-                    min={1270}
-                    placeholder="مثال : 1359"
-                    name="birthyear"
-                    id="birthyear"
-                    onChange={this.formStateHandler}
-                    error={this.state.form.fields.birthyear.error}
-                  />
                   <div className="field-row">
-                    <span className="field-title">حوزه فعالیت</span>
+                    <span className="field-title">تجهیزات مورد نیاز</span>
 
                     {/* fill checkboxes */}
-                    {this.state.combo.coworking_working_field.hasLoaded ? (
+                    {this.state.combo.sessionroom_equipments.hasLoaded ? (
                       <FlatInlineSelect
                         type="checkbox"
-                        items={this.state.combo.coworking_working_field.items}
+                        items={this.state.combo.sessionroom_equipments.items}
                         onChange={this.checkboxStateHandler}
                         dir="rtl"
-                        name="workingfield"
+                        name="equipments"
                       />
                     ) : (
                       <Skeleton count={5} style={{ lineHeight: 2 }} />
                     )}
                     <span className="error-message">
-                      {this.state.form.fields.workingfield.error}
+                      {this.state.form.fields.equipments.error}
                     </span>
                   </div>
                   <div className="contact-section">
@@ -558,25 +559,17 @@ class SessionRoom extends React.PureComponent {
                       {this.state.form.fields.city.error}
                     </span>
                   </div>
-                  <FlatNumberSet
-                    label="تعداد صندلی"
+                  <FlatInput
+                    label="ظرفیت درخواستی"
                     type="number"
-                    range={[1, 10]}
-                    defaultValue={this.state.form.fields.seats.value}
+                    max={100}
+                    min={1}
+                    placeholder="ظرفیت درخواستی"
                     name="seats"
                     id="seats"
+                    defaultValue={this.state.form.fields.seats.value}
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.seats.error}
-                  />
-                  <FlatUploader
-                    label="آپلود رزومه"
-                    name="resume"
-                    id="resume"
-                    placeholder="یک فایل انتخاب کنید"
-                    progress={this.state.form.fields.resume.uploadProgress}
-                    progresscolor="lightblue"
-                    onChange={this.uploadFile}
-                    error={this.state.form.fields.resume.error}
                   />
                 </CardBody>
               </section>

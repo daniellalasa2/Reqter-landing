@@ -120,4 +120,17 @@ function Upload(file, callback, progress) {
       return errorHandler(0);
     });
 }
-export { SubmitForm, FilterContents, Upload };
+//return safe value
+function SafeValue(data, field, type, defaultValue) {
+  if (data[field]) {
+    if (typeof data[field] === type) {
+      return data[field];
+    } else {
+      return defaultValue;
+    }
+  } else {
+    return defaultValue;
+  }
+}
+
+export { SubmitForm, FilterContents, Upload, SafeValue };

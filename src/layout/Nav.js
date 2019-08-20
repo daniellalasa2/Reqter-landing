@@ -130,9 +130,6 @@ class Navigation extends Component {
                   همکاری
                 </DropdownToggle>
                 <DropdownMenu className="rtl">
-                  <DropdownItem onClick={() => this.props.history.push("/")}>
-                    فرصت های شغلی
-                  </DropdownItem>
                   <DropdownItem
                     onClick={() => this.props.history.push("/partnership")}
                   >
@@ -226,9 +223,6 @@ class Navigation extends Component {
                   className="rtl "
                 >
                   <ul className="rtl ul-dropdown">
-                    <li>
-                      <Link to="/comingsoon">فرصت های شغلی</Link>
-                    </li>
                     <li>
                       <Link to="/partnership">همکاری تجاری</Link>
                     </li>

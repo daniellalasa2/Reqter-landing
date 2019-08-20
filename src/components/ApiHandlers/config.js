@@ -37,7 +37,8 @@ var config = {
     partnership_working_fields: "5d4169c642afbf00179b0569",
     coworking_working_field: "5d3af3a1a9602900177a5056",
     list_of_countries: "5d35e6e68e6e9a0017c28fcd",
-    list_of_cities: "5d35e6fa8e6e9a0017c28fce"
+    list_of_cities: "5d35e6fa8e6e9a0017c28fce",
+    sessionroom_equipments: "5d5bcb6eed9a82001737c751"
   },
   AUTH:
     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjZjM4ODNkYWZkMGI5MDAxNzA4YjI3ZSIsImFjY291bnRfdHlwZSI6ImZyZWUiLCJpYXQiOjE1NjQwMzc0NTEsImV4cCI6MTU2NjYyOTQ1MX0.JHhdy93fv0IkOhRYhTi4kmRS2ZnPrEA4uItLguGNUDU",

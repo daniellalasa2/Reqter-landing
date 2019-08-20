@@ -289,6 +289,7 @@ const FlatInput = ({
   onChange,
   label,
   error,
+  defaultValue,
   minlength,
   maxlength,
   pattern,
@@ -306,6 +307,7 @@ const FlatInput = ({
         onClick={onClick}
         onChange={onChange}
         name={name}
+        defaultValue={defaultValue}
         min={min}
         max={max}
         pattern={pattern}

@@ -14,19 +14,16 @@ class Footer extends Component {
             <h6>محصولات</h6>
             <ul>
               <li>
-                <Link to="/comingsoon">فضای کار اشتراکی</Link>
+                <Link to="/apply/sessionroom">سالن جلسات</Link>
               </li>
               <li>
-                <Link to="/comingsoon">سالن جلسات</Link>
+                <Link to="/apply/shareddesk">میزکار اشتراکی</Link>
               </li>
               <li>
-                <Link to="/comingsoon">جذب سرمایه</Link>
+                <Link to="/apply/privatedesk">میزکار اختصاصی</Link>
               </li>
               <li>
-                <Link to="/comingsoon">اتاق کار خصوصی</Link>
-              </li>
-              <li>
-                <Link to="/comingsoon">پذیرش استارت آپ</Link>
+                <Link to="/apply/dedicatedoffice">اتاق کار خصوصی</Link>
               </li>
             </ul>
           </div>
@@ -59,7 +56,7 @@ class Footer extends Component {
             <h6>همکاران تجاری</h6>
             <ul>
               <li>
-                <Link to="/comingsoon">درخواست همکاری</Link>
+                <Link to="/partnership">درخواست همکاری</Link>
               </li>
             </ul>
           </div>
