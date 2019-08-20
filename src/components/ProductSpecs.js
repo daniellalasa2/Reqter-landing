@@ -48,7 +48,7 @@ function Btn(props) {
     <Button
       style={{ backgroundColor: props.color }}
       className={classnames(props.classNames)}
-      onClick={() => (window.location.href = "/comingsoon")}
+      onClick={props.onClick}
     >
       {props.children}
     </Button>

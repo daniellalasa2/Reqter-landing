@@ -83,7 +83,9 @@ class Home extends React.Component {
             </SpecList>
             <Btn
               color="#879cdd"
-              onClick={() => this.props.history.push("/apply/sessionroom")}
+              onClick={() =>
+                this.props.history.push({ pathname: "/apply/sessionroom" })
+              }
             >
               شروع درخواست
             </Btn>
