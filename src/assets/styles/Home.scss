@@ -72,7 +72,59 @@
     }
   }
 }
-
+#FAQ-accordion {
+  background-color: whitesmoke;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 0;
+  .card {
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.06);
+    width: 768px;
+    margin-top: 5px;
+    border: none;
+    text-align: right;
+    .card-header {
+      line-height: 2.7;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: white;
+      border-bottom: none;
+      cursor: pointer;
+      transition: color 0.2s ease-in;
+      -moz-transition: color 0.2s ease-in;
+      -webkit-transition: color 0.2s ease-in;
+      .fa-minus {
+        display: none;
+      }
+      svg {
+        margin: 2px;
+      }
+      &:hover {
+        color: green;
+      }
+      &.activeHeader {
+        color: green;
+        .fa-plus {
+          display: none;
+        }
+        .fa-minus {
+          display: inline-block;
+        }
+      }
+    }
+    .show,
+    .collapsing {
+      .card & {
+        .card-header {
+          color: green;
+        }
+      }
+      border-top: 1px solid green;
+    }
+  }
+}
 //responsive
 //Small devices (portrait phone )
 @media (max-width: 576px) {
@@ -128,6 +180,11 @@
     .choose-a-product {
       margin-top: 100px !important;
       text-align: center !important;
+    }
+  }
+  .FAQ-accordion {
+    .card {
+      width: 95%;
     }
   }
 }

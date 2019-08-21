@@ -1,6 +1,6 @@
 import React from "react";
 import { ProductSpecs, Title, SpecList, Spec, Btn } from "./ProductSpecs";
-import { Button, Row, Col } from "reactstrap";
+import { Collapse, Button, Row, Col } from "reactstrap";
 import "../assets/styles/Home.scss";
 //Import images
 import sessionRoom from "../assets/images/session-room.jpg";
@@ -10,9 +10,30 @@ import privateDesk from "../assets/images/private-desk.jpg";
 import service from "../assets/images/service-icons/service.png";
 import apply from "../assets/images/service-icons/apply.png";
 import offer from "../assets/images/service-icons/offer.png";
+import Card from "reactstrap/lib/Card";
+import CardHeader from "reactstrap/lib/CardHeader";
+import CardBody from "reactstrap/lib/CardBody";
+
+//Import icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import classnames from "classnames";
 
 const Products = React.lazy(() => import("./Products"));
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      FAQCollapse: null
+    };
+  }
+
+  toggleFaqCollapse = e => {
+    let toggleId = e.target.id === this.state.FAQCollapse ? null : e.target.id;
+    this.setState({
+      FAQCollapse: toggleId
+    });
+  };
   render() {
     return (
       <React.Fragment>
@@ -152,6 +173,51 @@ class Home extends React.Component {
             </Btn>
           </ProductSpecs>
         </section>
+
+        <section
+          id="FAQ-accordion"
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignContent: "center"
+          }}
+        >
+          <Card>
+            <CardHeader
+              id="question1"
+              onClick={this.toggleFaqCollapse}
+              className={
+                this.state.FAQCollapse === "question1" && "activeHeader"
+              }
+            >
+              چجوری کار میکنه؟
+              <FontAwesomeIcon icon={faPlus} />
+              <FontAwesomeIcon icon={faMinus} />
+            </CardHeader>
+            <Collapse isOpen={this.state.FAQCollapse === "question1"}>
+              <CardBody>فعلا کار نمیکنه</CardBody>
+            </Collapse>
+          </Card>
+
+          <Card>
+            <CardHeader
+              id="question2"
+              onClick={this.toggleFaqCollapse}
+              className={
+                this.state.FAQCollapse === "question2" && "activeHeader"
+              }
+            >
+              چجوری رزرو کنم؟
+              <FontAwesomeIcon icon={faPlus} />
+              <FontAwesomeIcon icon={faMinus} />
+            </CardHeader>
+            <Collapse isOpen={this.state.FAQCollapse === "question2"}>
+              <CardBody>به سادگی</CardBody>
+            </Collapse>
+          </Card>
+        </section>
+
         <section className="contact-info">
           <h1 style={{ paddingTop: "90px", fontWeight: 400 }}>
             تیم موفقیت مشتریان ما همیشه همراهته .
