@@ -17,7 +17,6 @@ import CardBody from "reactstrap/lib/CardBody";
 //Import icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-import classnames from "classnames";
 
 const Products = React.lazy(() => import("./Products"));
 class Home extends React.Component {
@@ -174,48 +173,43 @@ class Home extends React.Component {
           </ProductSpecs>
         </section>
 
-        <section
-          id="FAQ-accordion"
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignContent: "center"
-          }}
-        >
-          <Card>
-            <CardHeader
-              id="question1"
-              onClick={this.toggleFaqCollapse}
-              className={
-                this.state.FAQCollapse === "question1" && "activeHeader"
-              }
-            >
-              چجوری کار میکنه؟
-              <FontAwesomeIcon icon={faPlus} />
-              <FontAwesomeIcon icon={faMinus} />
-            </CardHeader>
-            <Collapse isOpen={this.state.FAQCollapse === "question1"}>
-              <CardBody>فعلا کار نمیکنه</CardBody>
-            </Collapse>
-          </Card>
+        <section id="FAQ-accordion">
+          <h3 style={{ fontWeight: "bold" }}>سوالات متداول</h3>
+          <div className="questions-wrapper">
+            <Card>
+              <CardHeader
+                id="question1"
+                onClick={this.toggleFaqCollapse}
+                className={
+                  this.state.FAQCollapse === "question1" ? "activeHeader" : ""
+                }
+              >
+                چجوری کار میکنه؟
+                <FontAwesomeIcon icon={faPlus} color="#3fc35f" />
+                <FontAwesomeIcon icon={faMinus} color="#3fc35f" />
+              </CardHeader>
+              <Collapse isOpen={this.state.FAQCollapse === "question1"}>
+                <CardBody>فعلا کار نمیکنه</CardBody>
+              </Collapse>
+            </Card>
 
-          <Card>
-            <CardHeader
-              id="question2"
-              onClick={this.toggleFaqCollapse}
-              className={
-                this.state.FAQCollapse === "question2" && "activeHeader"
-              }
-            >
-              چجوری رزرو کنم؟
-              <FontAwesomeIcon icon={faPlus} />
-              <FontAwesomeIcon icon={faMinus} />
-            </CardHeader>
-            <Collapse isOpen={this.state.FAQCollapse === "question2"}>
-              <CardBody>به سادگی</CardBody>
-            </Collapse>
-          </Card>
+            <Card>
+              <CardHeader
+                id="question2"
+                onClick={this.toggleFaqCollapse}
+                className={
+                  this.state.FAQCollapse === "question2" ? "activeHeader" : ""
+                }
+              >
+                چجوری رزرو کنم؟
+                <FontAwesomeIcon icon={faPlus} color="#3fc35f" />
+                <FontAwesomeIcon icon={faMinus} color="#3fc35f" />
+              </CardHeader>
+              <Collapse isOpen={this.state.FAQCollapse === "question2"}>
+                <CardBody>به سادگی</CardBody>
+              </Collapse>
+            </Card>
+          </div>
         </section>
 
         <section className="contact-info">

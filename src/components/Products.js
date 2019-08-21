@@ -67,7 +67,6 @@ class Products extends Component {
   };
   fillCombo = optionsArray => {
     if (typeof optionsArray === "object") {
-      console.log(optionsArray);
       for (let id in optionsArray) {
         return (
           <option value={id} key={id}>

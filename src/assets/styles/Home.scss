@@ -73,23 +73,28 @@
   }
 }
 #FAQ-accordion {
-  background-color: whitesmoke;
+  background-color: white;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 50px 0;
+  padding: 100px 0;
+  .questions-wrapper {
+    margin-top: 100px;
+    width: auto;
+  }
   .card {
-    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
     width: 768px;
     margin-top: 5px;
     border: none;
     text-align: right;
+    background-color: whitesmoke;
     .card-header {
+      background-color: whitesmoke;
       line-height: 2.7;
       font-size: 16px;
       font-weight: bold;
-      background-color: white;
       border-bottom: none;
       cursor: pointer;
       transition: color 0.2s ease-in;
@@ -99,13 +104,13 @@
         display: none;
       }
       svg {
-        margin: 2px;
+        margin: 7px 5px 0 5px;
       }
       &:hover {
-        color: green;
+        color: #3fc35f;
       }
       &.activeHeader {
-        color: green;
+        color: #3fc35f;
         .fa-plus {
           display: none;
         }
@@ -114,20 +119,23 @@
         }
       }
     }
+    .card-body {
+      background-color: whitesmoke;
+    }
     .show,
     .collapsing {
       .card & {
         .card-header {
-          color: green;
+          color: #3fc35f;
         }
       }
-      border-top: 1px solid green;
+      border-top: 1px solid #3fc35f;
     }
   }
 }
 //responsive
 //Small devices (portrait phone )
-@media (max-width: 576px) {
+@media (max-width: 767px) {
   .facilities-description {
     padding: 20% 0 0 0 !important;
     ul {
@@ -182,9 +190,13 @@
       text-align: center !important;
     }
   }
-  .FAQ-accordion {
+  #FAQ-accordion {
+    .questions-wrapper {
+      width: 100% !important;
+      padding: 12px !important;
+    }
     .card {
-      width: 95%;
+      width: 100% !important;
     }
   }
 }

@@ -15,6 +15,7 @@ class App extends React.Component {
       </span>
     </div>
   );
+
   render() {
     return (
       <div className="App">

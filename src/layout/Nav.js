@@ -93,6 +93,16 @@ class Navigation extends Component {
         break;
     }
   };
+  scrollLink = section => {
+    switch (section) {
+      case "FAQ":
+        const target = document.querySelector("#FAQ-accordion");
+        window.scrollTo(0, target.offsetTop);
+        break;
+      default:
+        throw new Error("section scroll identifier is not valid");
+    }
+  };
   render() {
     return (
       <React.Fragment>
@@ -143,7 +153,10 @@ class Navigation extends Component {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link className="nav-link" to="/comingsoon">
+                <Link
+                  className="nav-link"
+                  onClick={() => this.scrollLink("FAQ")}
+                >
                   سوالات متداول
                 </Link>
               </NavItem>
@@ -235,7 +248,10 @@ class Navigation extends Component {
                 </Link>
               </li>
               <li>
-                <Link className="nav-link" to="/comingsoon">
+                <Link
+                  className="nav-link"
+                  onClick={() => this.scrollLink("FAQ")}
+                >
                   سوالات متداول
                 </Link>
               </li>
