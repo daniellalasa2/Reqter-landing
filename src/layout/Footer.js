@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "../assets/styles/Footer.scss";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInstagram, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 class Footer extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +33,7 @@ class Footer extends Component {
             <h6>پشتیبانی</h6>
             <ul>
               <li>
-                <Link to="/comingsoon">سوالات متداول</Link>
+                <Link to="/faq">سوالات متداول</Link>
               </li>
               <li>
                 <Link to="/comingsoon">امنیت</Link>
@@ -74,10 +76,24 @@ class Footer extends Component {
         </section>
         <section className="copyright">
           <span style={{ float: "right" }}>© 2019 Startup Space</span>
-          <span style={{ float: "left" }}>
+          <span style={{ float: "left", marginTop: "-15px" }}>
             <span className="followus-text"> ما را دنبال کنید: </span>
-            <Link to="/comingsoon">اینستاگرام</Link> |{" "}
-            <Link to="/comingsoon">لینکداین</Link>
+            <div className="footer-social-links">
+              <a
+                href="https://www.instagram.com/startupspace2020/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <FontAwesomeIcon icon={faInstagram} color="white" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/startup-space/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <FontAwesomeIcon icon={faLinkedinIn} color="white" />
+              </a>
+            </div>
           </span>
           <br />
           <hr style={{ margin: 0, borderColor: "lightgrey" }} />

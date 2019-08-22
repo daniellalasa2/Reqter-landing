@@ -148,8 +148,8 @@ class Navigation extends Component {
                 </DropdownMenu>
               </Dropdown>
               <NavItem>
-                <Link className="nav-link" to="/comingsoon">
-                  درباره ما
+                <Link className="nav-link" to="/contactus">
+                  تماس با ما
                 </Link>
               </NavItem>
               <NavItem>
@@ -240,8 +240,8 @@ class Navigation extends Component {
                 </Collapse>
               </li>
               <li>
-                <Link className="nav-link" to="/comingsoon">
-                  درباره ما
+                <Link className="nav-link" to="/contactus">
+                  تماس با ما
                 </Link>
               </li>
               <li>

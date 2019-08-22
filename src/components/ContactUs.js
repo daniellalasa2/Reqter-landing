@@ -5,6 +5,7 @@ import {
   faMapMarkerAlt,
   faPhone
 } from "@fortawesome/free-solid-svg-icons";
+import { faInstagram, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 
 import "../assets/styles/ContactUs.scss";
 class ContactUs extends React.PureComponent {
@@ -16,9 +17,19 @@ class ContactUs extends React.PureComponent {
         </h3>
         <div className="contactUs-row-wrapper">
           <div className="contactUs-fields">
-            <input type="text" name="name" placeholder="نام و نام خانوادگی" />
-            <input type="text" placeholder="موضوع پیام" name="subject" />
-            <textarea name="description" placeholder="توضیحات" />
+            <input
+              type="text"
+              name="name"
+              placeholder="نام و نام خانوادگی"
+              required
+            />
+            <input
+              type="tel"
+              placeholder="شماره تماس"
+              name="subject"
+              required
+            />
+            <textarea name="description" placeholder="توضیحات" required />
           </div>
           <div className="contactUs-details">
             <div className="contantUs-details-spec">
@@ -56,6 +67,32 @@ class ContactUs extends React.PureComponent {
                 info@startupspace.ir <br />
                 support@startupspace.ir
               </p>
+            </div>
+            <div className="contantUs-details-spec social-links">
+              {/* Location */}
+              <a
+                href="https://goo.gl/maps/tWxnvbC6PfcFFDqe7"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <FontAwesomeIcon icon={faMapMarkerAlt} color="#6d8ae0" />
+              </a>
+              {/* Instagram */}
+              <a
+                href="https://www.instagram.com/startupspace2020/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <FontAwesomeIcon icon={faInstagram} color="#6d8ae0" />
+              </a>
+              {/* Linkedin */}
+              <a
+                href="https://www.linkedin.com/company/startup-space/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <FontAwesomeIcon icon={faLinkedinIn} color="#6d8ae0" />
+              </a>
             </div>
           </div>
         </div>
