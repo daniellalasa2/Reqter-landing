@@ -14,6 +14,7 @@ const PrivacyPolicy = React.lazy(() => import("./components/PrivacyPolicy"));
 const TermsOfUse = React.lazy(() => import("./components/TermsOfUse"));
 const Blog = React.lazy(() => import("./components/Blog"));
 const FAQ = React.lazy(() => import("./components/FAQ"));
+const ContactUs = React.lazy(() => import("./components/ContactUs"));
 const Careers = React.lazy(() => import("./components/Careers"));
 const PartnerShip = React.lazy(() => import("./components/PartnerShip"));
 const Security = React.lazy(() => import("./components/Security"));
@@ -96,6 +97,12 @@ const routes = [
     exact: true,
     name: "FAQ",
     component: FAQ
+  },
+  {
+    path: "/contactus",
+    exact: true,
+    name: "Contact Us",
+    component: ContactUs
   },
   {
     path: "/careers",

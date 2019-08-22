@@ -153,10 +153,7 @@ class Navigation extends Component {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link
-                  className="nav-link"
-                  onClick={() => this.scrollLink("FAQ")}
-                >
+                <Link className="nav-link" to="/faq">
                   سوالات متداول
                 </Link>
               </NavItem>
@@ -248,10 +245,7 @@ class Navigation extends Component {
                 </Link>
               </li>
               <li>
-                <Link
-                  className="nav-link"
-                  onClick={() => this.scrollLink("FAQ")}
-                >
+                <Link className="nav-link" to="/faq">
                   سوالات متداول
                 </Link>
               </li>
