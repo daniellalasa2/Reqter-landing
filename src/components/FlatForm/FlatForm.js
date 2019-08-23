@@ -296,11 +296,12 @@ const FlatInput = ({
   min,
   max,
   name,
-  id
+  id,
+  className
 }) => {
   return (
     <div className="field-row">
-      <span className="field-title">{label}</span>
+      {label && <span className="field-title">{label}</span>}
       <input
         type={type}
         placeholder={placeholder}
@@ -314,14 +315,13 @@ const FlatInput = ({
         minLength={minlength}
         maxLength={maxlength}
         id={id}
-        className={classnames(error && "error-input")}
+        className={classnames(className, error && "error-input")}
       />
       <span className="error-message">{error}</span>
     </div>
   );
 };
 const FlatTextArea = ({
-  type,
   placeholder,
   onClick,
   onChange,
@@ -336,7 +336,6 @@ const FlatTextArea = ({
       <textarea
         placeholder={placeholder}
         onClick={onClick}
-        type={type}
         onChange={onChange}
         {...props}
         name={name}
