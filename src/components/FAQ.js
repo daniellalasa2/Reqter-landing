@@ -33,12 +33,17 @@ class FAQ extends React.PureComponent {
                 this.state.FAQCollapse === "question1" ? "activeHeader" : ""
               }
             >
-              چجوری کار میکنه؟
+              رسالت اصلی استارتاپ اسپیس چیست؟
               <FontAwesomeIcon icon={faPlus} color="#6d8ae0" />
               <FontAwesomeIcon icon={faMinus} color="#6d8ae0" />
             </CardHeader>
             <Collapse isOpen={this.state.FAQCollapse === "question1"}>
-              <CardBody>فعلا کار نمیکنه</CardBody>
+              <CardBody>
+                هدف اصلی ما در استارتاپ اسپیس ایجاد مرجع جامعی از فضاهای کاری
+                مشترک در سطح شهر می باشد تا استارتاپ ها و فری لنسرها هرچه راحتتر
+                و سریعتر فضای کاری مورد نیاز خود را یافته و کار مورد علاقه خود
+                را شروع کنند.
+              </CardBody>
             </Collapse>
           </Card>
 
@@ -50,12 +55,19 @@ class FAQ extends React.PureComponent {
                 this.state.FAQCollapse === "question2" ? "activeHeader" : ""
               }
             >
-              چجوری رزرو کنم؟
+              تفاوت استارتاپ اسپیس با سایر سرویسهای موجود که در این حوزه کار
+              میکنند چیست؟
               <FontAwesomeIcon icon={faPlus} color="#6d8ae0" />
               <FontAwesomeIcon icon={faMinus} color="#6d8ae0" />
             </CardHeader>
             <Collapse isOpen={this.state.FAQCollapse === "question2"}>
-              <CardBody>به سادگی</CardBody>
+              <CardBody>
+                استارتاپ اسپیس به شما فضاهای کاری را معرفی نمی کند بلکه شما از
+                ما درخواست فضای کار میکنید و ما به جای شما به همه فضاهای کاری
+                مشترک در شهر درخواستی درخواست میدهیم و پیشنهادشان را به شما
+                ارسال می کنیم و شما از بین پیشنهادهای رسیده بهترین را انتخاب
+                میکنید.
+              </CardBody>
             </Collapse>
           </Card>
         </div>

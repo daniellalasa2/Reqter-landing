@@ -6,18 +6,19 @@ import classnames from "classnames";
 function ProductSpecs(props) {
   return (
     <React.Fragment>
-      <Row style={{ width: "100%", margin: 0, backgroundColor: "#f6f6f6" }}>
-        <section
-          className={
-            "product-specs" +
-            (props.direction === "rtl" ? " product-specs-rtl" : "")
-          }
+      <Row
+        className={classnames(
+          "product-specs-wrapper",
+          props.direction === "rtl" ? " product-specs-rtl" : ""
+        )}
+      >
+        <div
+          className={"product-specs"}
           style={{ background: `url(${props.img}) no-repeat right` }}
-        >
-          <div className="box specs">
-            <div className="specs-inner-box">{props.children}</div>
-          </div>
-        </section>
+        />
+        <div className="box specs">
+          <div className="specs-inner-box">{props.children}</div>
+        </div>
       </Row>
     </React.Fragment>
   );

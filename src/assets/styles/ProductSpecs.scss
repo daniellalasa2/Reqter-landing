@@ -1,28 +1,37 @@
-@font-face {
+.product-specs-wrapper {
+  padding: 80px 0;
+  width: 100%;
+  display: flex;
+  background-color: #f6f6f6;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  &:first-child {
+    padding-top: 0;
+  }
 }
-
+.box {
+  width: 620px;
+  height: 420px;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  margin-left: -170px;
+}
+.specs-inner-box {
+  min-width: fit-content;
+  width: 29rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  padding: 4em;
+  height: 389px;
+}
 .product-specs {
   display: flex;
-  margin: auto;
-  margin-top: 40px;
-  margin-bottom: 90px;
+  margin: 0;
   height: 478px;
-  width: 80%;
-  .box {
-    display: inline-block;
-    position: absolute;
-    width: 55%;
-    height: 477px;
-  }
-  .specs-inner-box {
-    min-width: fit-content;
-    width: 29rem;
-    background-color: white;
-    border-radius: 5px;
-    margin-top: 45px;
-    padding: 4em;
-    height: 389px;
-  }
+  width: 620px;
   .product-specs-title {
     height: 38px;
     font-size: 28px;
@@ -35,8 +44,6 @@
     text-decoration: none;
     cursor: default;
     text-transform: capitalize;
-  }
-  .product-specs-item {
   }
   .product-specs-list {
     padding: 0;
@@ -54,27 +61,40 @@
   }
 }
 .product-specs-rtl {
-  background-position: left !important;
+  &.product-specs-wrapper {
+    direction: rtl;
+  }
   .specs {
-    right: 0;
+    margin-left: 0;
+    margin-right: -170px;
   }
 }
-
-@media (max-width: 576px) {
-  .product-specs {
+@media (max-width: 768px) {
+  .product-specs-wrapper {
+    padding: 30px 0;
+    flex-direction: column;
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+  .box {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    position: relative;
     width: 100%;
-    .box {
-      position: relative;
-      width: 100%;
-    }
-    .specs-inner-box {
-      width: auto;
-      padding: 1.5rem;
-      list-style: none;
-      height: auto;
-      opacity: 0.9;
-      margin: 20px 10px;
-      border-radius: 1px;
-    }
+    height: auto !important;
+  }
+  .specs-inner-box {
+    width: auto;
+    background-color: rgba(255, 255, 255, 1) !important;
+    padding: 1.5rem;
+    list-style: none;
+    height: auto !important;
+    opacity: 0.9;
+    margin: 20px 10px;
+    border-radius: 3px;
+  }
+  .product-specs {
+    align-self: center;
   }
 }
