@@ -10,6 +10,7 @@
   .contactUs-row-wrapper {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     .contactUs-fields {
       margin-top: 70px;
       flex-direction: column;
@@ -117,6 +118,11 @@
         .contantUs-details-spec {
           max-width: 100%;
           margin: 20px 0 0 0;
+          span {
+            font-size: 16px;
+            min-width: 47px;
+            height: 47px;
+          }
         }
         .social-links {
           margin-top: 30px;

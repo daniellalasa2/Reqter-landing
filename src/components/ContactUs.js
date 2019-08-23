@@ -30,6 +30,8 @@ class ContactUs extends React.PureComponent {
               required
             />
             <textarea name="description" placeholder="توضیحات" required />
+            <br />
+            <button className="submit">ارسال</button>
           </div>
           <div className="contactUs-details">
             <div className="contantUs-details-spec">
@@ -51,7 +53,7 @@ class ContactUs extends React.PureComponent {
               <p>
                 <strong>تلفن</strong>
                 <br />
-                +98 21 284 2114
+                +98 21 284 21147
                 <br />
                 +98 919 768 2386
               </p>
@@ -96,7 +98,6 @@ class ContactUs extends React.PureComponent {
             </div>
           </div>
         </div>
-        <button className="submit">ارسال</button>
       </section>
     );
   }
