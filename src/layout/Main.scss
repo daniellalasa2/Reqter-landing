@@ -1,0 +1,10 @@
+.pageWrapper {
+  min-height: calc(100vh - 295px);
+  background-color: whitesmoke;
+}
+
+@media (max-width: 768px) {
+  .pageWrapper {
+    min-height: calc(100vh - 89px);
+  }
+}

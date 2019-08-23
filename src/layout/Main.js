@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import routes from "../Routes";
-// import "./loader.scss";
+import "./Main.scss";
 const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
 
@@ -40,7 +40,9 @@ class Layout extends Component {
                     <React.Fragment>
                       {this.gtagUpdater(this.props.history, route.name)}
                       <Navigation transform={route.navTransform} {...props} />
-                      <route.component {...props} />
+                      <div className="pageWrapper">
+                        <route.component {...props} />
+                      </div>
                     </React.Fragment>
                   )}
                 />
