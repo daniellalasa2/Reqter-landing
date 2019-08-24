@@ -26,9 +26,9 @@ import conferenceRoom from "../assets/images/products-icons/002-desk.png";
 //backgrounds
 import defaultBgImg from "../assets/images/products-bgImg/default.jpg";
 import privateDeskBgImg from "../assets/images/products-bgImg/coworking.jpg";
-import sharedDeskBgImg from "../assets/images/products-bgImg/conferenceRoom.jpg";
-import dedicatedOffice from "../assets/images/products-bgImg/invest.jpg";
-import sessionRoomBgImg from "../assets/images/products-bgImg/privateOffice.jpg";
+import sessionRoomBgImg from "../assets/images/products-bgImg/conferenceRoom.jpg";
+import sharedDeskBgImg from "../assets/images/products-bgImg/invest.jpg";
+import dedicatedOffice from "../assets/images/products-bgImg/privateOffice.jpg";
 //styles
 import "../assets/styles/Products.scss";
 class Products extends Component {
