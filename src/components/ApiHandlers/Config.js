@@ -1,14 +1,16 @@
 var Config = {
   BASE_URL_CONTENT: "https://app-ipanel.herokuapp.com/",
+  BASE_URL_PANEL: "https://app-rpanel.herokuapp.com/",
   BASE_URL_UPLOAD: "https://app-spanel.herokuapp.com/",
   CLIENT_ID: "1d42c55e-0f44-4613-adba-a5bbbca878e1",
   SPACEID: "5cf3883dcce4de00174d48cf",
   AUTH:
     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRJZCI6IjFkNDJjNTVlLTBmNDQtNDYxMy1hZGJhLWE1YmJiY2E4NzhlMSIsInNjb3BlIjoidmVyaWZ5IiwiYXV0aGVudGljYXRlZCI6ZmFsc2UsImlhdCI6MTU2NjcxOTM5MiwiZXhwIjoxNTk4MjU1MzkyfQ.pp_2-3UaSp874g47yAl2v3ERXKHjitzCFrz11pYSKw8",
-  URLS: {
+  URLs: {
     submit_form: "contents/add",
     filter_contents: "contents/filter",
-    upload: "asset/upload"
+    upload: "asset/upload",
+    login: "api/v1/customers/requestcode"
   },
   CONTENT_TYPE_ID: {
     partnership: "5d358ebc8e6e9a0017c28fc9",

@@ -23,12 +23,14 @@ import {
   faLock
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/images/logo.jpg";
+import { GetCookie } from "../components/CookieHandler/CookieHandler";
 import "../assets/styles/Nav.scss";
 
 class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isUserLogin: false,
       dropdownOpen: {
         mobile: false,
         normal: false
@@ -103,10 +105,15 @@ class Navigation extends Component {
         throw new Error("section scroll identifier is not valid");
     }
   };
-  Login = () => {};
+  openLogin = () => {
+    this.setState({
+      isUserLogin: GetCookie("SSUSERAUTH") ? true : false
+    });
+  };
   render() {
     return (
       <React.Fragment>
+        <Login isLogin={this.state.isUserLogin} />
         {/* <Login isLogin={false} /> */}
         <Row className="nav-main-container" id="nav-main-container">
           <Col xs="8" lg="2" md="2" className="nav-logo-container-col">
@@ -165,23 +172,29 @@ class Navigation extends Component {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link className="nav-link login" to="" onClick={Login}>
-                  ورود
-                  <FontAwesomeIcon
-                    icon={faLockOpen}
-                    pull="right"
-                    size="sm"
-                    color="black"
-                    className="icon-lock-open"
-                  />
-                  <FontAwesomeIcon
-                    icon={faLock}
-                    pull="right"
-                    size="sm"
-                    color="black"
-                    className="icon-lock-close"
-                  />
-                </Link>
+                {this.state.isUserLogin ? (
+                  <Link className="nav-link my-request-link" to="/myrequests">
+                    درخواستهای من
+                  </Link>
+                ) : (
+                  <button className="nav-link login" onClick={this.openLogin}>
+                    ورود
+                    <FontAwesomeIcon
+                      icon={faLockOpen}
+                      pull="right"
+                      size="sm"
+                      color="black"
+                      className="icon-lock-open"
+                    />
+                    <FontAwesomeIcon
+                      icon={faLock}
+                      pull="right"
+                      size="sm"
+                      color="black"
+                      className="icon-lock-close"
+                    />
+                  </button>
+                )}
               </NavItem>
             </Nav>
           </Col>
@@ -252,9 +265,15 @@ class Navigation extends Component {
                 </Link>
               </li>
               <li>
-                <Link className="nav-link" to="" onClick={this.Login}>
-                  ورود
-                </Link>
+                {this.state.isUserLogin ? (
+                  <span className="nav-link login" onClick={this.openLogin}>
+                    ورود
+                  </span>
+                ) : (
+                  <Link className="nav-link" to="/myrequests">
+                    درخواستهای من
+                  </Link>
+                )}
               </li>
             </ul>
           </div>

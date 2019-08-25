@@ -76,7 +76,6 @@ class PartnerShip extends React.PureComponent {
       homepage: ["url"]
     };
   }
-
   checkFormValidation = () => {
     const fields = this.state.form.fields;
     let boolean = true;
@@ -97,7 +96,7 @@ class PartnerShip extends React.PureComponent {
     const checkBoxValuesArr = [];
     let name = "";
     if (data.length > 1) {
-      data.map(val => {
+      data.forEach(val => {
         name = val.name;
         checkBoxValuesArr.push(val.value);
       });

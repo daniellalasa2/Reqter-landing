@@ -6,9 +6,10 @@ let _api = {
     spaceid: Config.SPACEID,
     authorization: Config.AUTH
   },
-  submitForm: Config.BASE_URL_CONTENT + Config.URLS.submit_form,
-  Upload: Config.BASE_URL_UPLOAD + Config.URLS.upload,
-  FilterContents: Config.BASE_URL_CONTENT + Config.URLS.filter_contents
+  SubmitForm: Config.BASE_URL_CONTENT + Config.URLs.submit_form,
+  Upload: Config.BASE_URL_UPLOAD + Config.URLs.upload,
+  FilterContents: Config.BASE_URL_CONTENT + Config.URLs.filter_contents,
+  Login: Config.BASE_URL_PANEL + Config.URLs.login
 };
 
 function errorHandler(statusCode) {
@@ -42,7 +43,7 @@ function errorHandler(statusCode) {
 
 function SubmitForm(formName, data, callback) {
   axios({
-    url: _api.submitForm,
+    url: _api.SubmitForm,
     method: "POST",
     headers: _api.header,
     data: {
@@ -134,7 +135,21 @@ function SafeValue(data, field, type, defaultValue) {
 }
 
 //User Login
-function LoginRequest() {
-  return null;
+function LoginRequest(phonenumber, callback) {
+  axios({
+    url: _api.Login,
+    method: "POST",
+    headers: _api.header,
+    data: {
+      phonenumber: phonenumber
+    }
+  })
+    .then(res => {
+      const result = errorHandler(res.status);
+      return callback({ success_result: result, data: res.data });
+    })
+    .catch(err => {
+      return errorHandler(0);
+    });
 }
 export { SubmitForm, FilterContents, Upload, SafeValue, LoginRequest };

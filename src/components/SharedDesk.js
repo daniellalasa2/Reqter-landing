@@ -15,7 +15,6 @@ import {
 import LoadingSpinner from "../assets/images/spinner.svg";
 import Validator from "./Validator/Validator";
 import "../assets/styles/Coworking.scss";
-
 class SharedDesk extends React.PureComponent {
   constructor(props) {
     super(props);
