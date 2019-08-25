@@ -47,7 +47,11 @@ function SpecList(props) {
 function Btn(props) {
   return (
     <Button
-      style={{ backgroundColor: props.color }}
+      style={{
+        backgroundColor: props.color,
+        minHeight: "50px",
+        minWidth: "170px"
+      }}
       className={classnames(props.classNames)}
       onClick={props.onClick}
     >
