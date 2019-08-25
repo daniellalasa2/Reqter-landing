@@ -1,14 +1,14 @@
 import axios from "axios";
-import config from "./config";
+import Config from "./Config";
 let _api = {
   header: {
     "Content-Type": "application/json",
-    spaceid: config.SPACEID,
-    authorization: config.AUTH
+    spaceid: Config.SPACEID,
+    authorization: Config.AUTH
   },
-  submitForm: config.BASE_URL_CONTENT + config.URLS.submit_form,
-  Upload: config.BASE_URL_UPLOAD + config.URLS.upload,
-  FilterContents: config.BASE_URL_CONTENT + config.URLS.filter_contents
+  submitForm: Config.BASE_URL_CONTENT + Config.URLS.submit_form,
+  Upload: Config.BASE_URL_UPLOAD + Config.URLS.upload,
+  FilterContents: Config.BASE_URL_CONTENT + Config.URLS.filter_contents
 };
 
 function errorHandler(statusCode) {
@@ -46,7 +46,7 @@ function SubmitForm(formName, data, callback) {
     method: "POST",
     headers: _api.header,
     data: {
-      contentType: config.CONTENT_TYPE_ID[formName],
+      contentType: Config.CONTENT_TYPE_ID[formName],
       fields: data
     }
   })
@@ -70,7 +70,7 @@ function FilterContents(type, callback) {
     method: "GET",
     headers: _api.header,
     params: {
-      contentType: config.CONTENT_TYPE_ID[type]
+      contentType: Config.CONTENT_TYPE_ID[type]
     }
   })
     .then(res => {

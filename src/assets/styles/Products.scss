@@ -37,12 +37,15 @@
       padding-top: 100px;
     }
     .default-header-content {
+      h2 {
+        margin-top: 50px;
+      }
       span.choose-a-product {
-        margin: 161px auto 0;
+        position: relative !important;
+        margin: 133px auto 0;
         display: block;
-        width: 90vw;
+        width: 80vw;
         max-width: 780px;
-        position: relative;
         text-align: right;
       }
     }

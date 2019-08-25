@@ -115,15 +115,15 @@ class Products extends Component {
                       <Row>
                         <Col sm="12">
                           <section className="default-header-content">
-                            <br />
-                            <br />
                             <h2>
-                              <strong>موفقیت را فرا بخوان</strong>
+                              <strong>
+                                تامین فضای کاری استارت آپ ها و فریلنسر ها
+                              </strong>
                             </h2>
-                            <h5>
-                              استارتاپ اسپیس پلتفرم جامع نیازمندیهای استارتاپی
-                              کشور
-                            </h5>
+                            <br />
+                            <h4>
+                              درخواست بدهید ، پیشنهاد بگیرید و انتخاب کنید
+                            </h4>
                             <span className="choose-a-product">
                               <strong>: یک محصول را انتخاب کنید </strong>
                             </span>
@@ -143,9 +143,7 @@ class Products extends Component {
                                   onClick={() =>
                                     this.props.history.push({
                                       pathname: `/apply/shareddesk`,
-                                      search: `?city=${
-                                        this.state.selectedCity
-                                      }&seats=${this.state.neededSeats}`
+                                      search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
                                     })
                                   }
                                 >
@@ -185,9 +183,7 @@ class Products extends Component {
                                   onClick={() =>
                                     this.props.history.push({
                                       pathname: `/apply/privatedesk`,
-                                      search: `?city=${
-                                        this.state.selectedCity
-                                      }&seats=${this.state.neededSeats}`
+                                      search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
                                     })
                                   }
                                 >
@@ -227,9 +223,7 @@ class Products extends Component {
                                   onClick={() =>
                                     this.props.history.push({
                                       pathname: `/apply/dedicatedoffice`,
-                                      search: `?city=${
-                                        this.state.selectedCity
-                                      }&seats=${this.state.neededSeats}`
+                                      search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
                                     })
                                   }
                                 >
@@ -269,9 +263,7 @@ class Products extends Component {
                                   onClick={() =>
                                     this.props.history.push({
                                       pathname: `/apply/sessionroom`,
-                                      search: `?city=${
-                                        this.state.selectedCity
-                                      }&seats=${this.state.neededSeats}`
+                                      search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
                                     })
                                   }
                                 >

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
 import { SubmitForm, Upload, FilterContents } from "./ApiHandlers/ApiHandler";
+import Config from "./ApiHandlers/Config";
 import Skeleton from "react-loading-skeleton";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,15 +19,11 @@ class PrivateDesk extends React.PureComponent {
   constructor(props) {
     super(props);
     this.urlParams = this.urlParser(this.props.location.search);
-    this.src = this.urlParams.src ? this.urlParams.src : "direct";
     this.state = {
       form: {
         isValid: false,
         submitted: false,
         isSubmitting: false,
-        backgroundData: {
-          src: this.src
-        },
         fields: {
           name: {
             value: "",
@@ -74,6 +71,10 @@ class PrivateDesk extends React.PureComponent {
             error: "",
             isValid: false
           }
+        },
+        backgroundData: {
+          src: this.urlParams.src ? this.urlParams.src : "direct",
+          product: Config.CONTENT_TYPE_ID.private_desk
         }
       },
       combo: {
@@ -183,6 +184,7 @@ class PrivateDesk extends React.PureComponent {
     const inputs = this.state.form.fields;
     let _isValid = true;
     const _fields = {};
+    const _backgroundData = this.state.form.backgroundData;
     let _formObjectGoingToSubmit = {};
     let _validation = {};
     for (let index in inputs) {
@@ -211,8 +213,8 @@ class PrivateDesk extends React.PureComponent {
     if (_isValid) {
       // fetch additional background data state to final api object if form was valid
       _formObjectGoingToSubmit = {
-        ...this.state.form.backgroundData,
-        ..._formObjectGoingToSubmit
+        ..._formObjectGoingToSubmit,
+        ..._backgroundData
       };
 
       this.setState(
@@ -223,7 +225,7 @@ class PrivateDesk extends React.PureComponent {
           }
         },
         () => {
-          SubmitForm("private_desk", _formObjectGoingToSubmit, res => {
+          SubmitForm("coworking", _formObjectGoingToSubmit, res => {
             if (res.code === 200) {
               this.setState({
                 form: {

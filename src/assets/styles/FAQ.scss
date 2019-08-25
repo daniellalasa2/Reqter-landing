@@ -1,7 +1,10 @@
 //-----------------------------------------//
 //               FAQ styles                //
 //-----------------------------------------//
+
 #FAQ-accordion {
+  min-height: calc(100vh - 297px);
+  background-color: white;
   background-color: whitesmoke !important;
   direction: rtl;
   width: 100%;
@@ -68,8 +71,10 @@
 //               Responsive                //
 //-----------------------------------------//
 //Small devices (portrait phone )
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   #FAQ-accordion {
+    min-height: calc(100vh - 89px);
+
     .questions-wrapper {
       width: 100% !important;
       padding: 12px !important;

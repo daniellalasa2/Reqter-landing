@@ -29,15 +29,11 @@ class SessionRoom extends React.PureComponent {
   constructor(props) {
     super(props);
     this.urlParams = this.urlParser(this.props.location.search);
-    this.src = this.urlParams.src ? this.urlParams.src : "direct";
     this.state = {
       form: {
         isValid: false,
         submitted: false,
         isSubmitting: false,
-        backgroundData: {
-          src: this.src
-        },
         fields: {
           name: {
             value: "",
@@ -89,6 +85,9 @@ class SessionRoom extends React.PureComponent {
             error: "",
             isValid: false
           }
+        },
+        backgroundData: {
+          src: this.urlParams.src ? this.urlParams.src : "direct"
         }
       },
       combo: {
@@ -237,6 +236,7 @@ class SessionRoom extends React.PureComponent {
     const inputs = this.state.form.fields;
     let _isValid = true;
     const _fields = {};
+    const _backgroundData = this.state.form.backgroundData;
     let _formObjectGoingToSubmit = {};
     let _validation = {};
     for (let index in inputs) {
@@ -265,8 +265,8 @@ class SessionRoom extends React.PureComponent {
     if (_isValid) {
       // fetch additional background data state to final api object if form was valid
       _formObjectGoingToSubmit = {
-        ...this.state.form.backgroundData,
-        ..._formObjectGoingToSubmit
+        ..._formObjectGoingToSubmit,
+        ..._backgroundData
       };
 
       this.setState(

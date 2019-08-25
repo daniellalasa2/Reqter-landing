@@ -168,10 +168,8 @@ class Home extends React.Component {
           </ProductSpecs>
         </section>
         <section className="contact-info">
-          <h1 style={{ paddingTop: "90px", fontWeight: 400 }}>
-            تیم موفقیت مشتریان ما همیشه همراه شماست .
-          </h1>
-          <p style={{ fontSize: "25px", paddingTop: "10px" }}>
+          <h1>تیم موفقیت مشتریان ما همیشه همراه شماست</h1>
+          <p>
             سوالی دارید؟ فاصله ما با شما یک ایمیل یا تلفن میباشد . با ما در تماس
             باشید
           </p>

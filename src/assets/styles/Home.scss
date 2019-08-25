@@ -58,6 +58,14 @@
   direction: rtl;
   color: white;
   height: 356px;
+  h1 {
+    padding-top: 90px;
+    font-weight: 400;
+  }
+  p {
+    font-size: 25px;
+    padding-top: 10px;
+  }
   .contact-button-box {
     button {
       background-color: transparent;
@@ -93,39 +101,7 @@
   .crooked-divider {
     display: none;
   }
-  .products-box {
-    margin-top: 45px !important;
-    .products {
-      flex-direction: column;
-      align-items: center;
-      .active {
-        border: 2px solid #b8a4e6;
-      }
-      li {
-        flex-direction: row-reverse;
-        align-items: center;
-        width: 75%;
-        height: 50px;
-        box-shadow: none;
-        top: 0;
-        border-radius: 0;
-        border: 1px solid lightgrey;
-        .product-icons {
-          width: 40px;
-        }
-        &:first-child {
-          border-radius: 5px 5px 0 0;
-        }
-        &:last-child {
-          border-radius: 0 0 5px 5px;
-        }
-      }
-      li:hover {
-        top: 0;
-        width: 80%;
-      }
-    }
-  }
+
   .tab-content {
     .choose-a-product {
       margin-top: 100px !important;
@@ -145,6 +121,12 @@
 
 //tablets and up
 @media (min-width: 768px) {
+  .contact-info {
+    padding: 5px;
+    h1 {
+      padding-top: 40px !important;
+    }
+  }
   .facilities-description {
     padding: 7% 2%;
     li {
