@@ -136,37 +136,43 @@ class Products extends Component {
                     <TabPane tabId="2">
                       <Row>
                         <Col sm="12">
-                          <div className="product-request-form-box">
-                            <InputGroup size="lg">
-                              <InputGroupAddon addonType="prepend">
-                                <Button
-                                  onClick={() =>
-                                    this.props.history.push({
-                                      pathname: `/apply/shareddesk`,
-                                      search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
-                                    })
-                                  }
+                          <div className="product-inline-form-wrapper">
+                            <h4>
+                              با انتخاب شهر و تعداد نفرات درخواست خود را شروع
+                              کنید
+                            </h4>
+                            <div className="product-request-form-box">
+                              <InputGroup size="lg">
+                                <InputGroupAddon addonType="prepend">
+                                  <Button
+                                    onClick={() =>
+                                      this.props.history.push({
+                                        pathname: `/apply/shareddesk`,
+                                        search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
+                                      })
+                                    }
+                                  >
+                                    شروع درخواست
+                                  </Button>
+                                </InputGroupAddon>
+                                <Input
+                                  type="number"
+                                  min="1"
+                                  placeholder="تعداد نفرات"
+                                  name="neededSeats"
+                                  onChange={this.formStateHandler}
+                                />
+                                {/* Combo box */}
+                                <Input
+                                  name="selectedCity"
+                                  type="select"
+                                  onChange={this.formStateHandler}
                                 >
-                                  شروع درخواست
-                                </Button>
-                              </InputGroupAddon>
-                              <Input
-                                type="number"
-                                min="1"
-                                placeholder="تعداد"
-                                name="neededSeats"
-                                onChange={this.formStateHandler}
-                              />
-                              {/* Combo box */}
-                              <Input
-                                name="selectedCity"
-                                type="select"
-                                onChange={this.formStateHandler}
-                              >
-                                <option>شهر</option>
-                                {this.fillCombo(this.state.combo.city)}
-                              </Input>
-                            </InputGroup>
+                                  <option>شهر</option>
+                                  {this.fillCombo(this.state.combo.city)}
+                                </Input>
+                              </InputGroup>
+                            </div>
                           </div>
                         </Col>
                       </Row>
@@ -176,37 +182,43 @@ class Products extends Component {
                     <TabPane tabId="3">
                       <Row>
                         <Col sm="12">
-                          <div className="product-request-form-box">
-                            <InputGroup size="lg">
-                              <InputGroupAddon addonType="prepend">
-                                <Button
-                                  onClick={() =>
-                                    this.props.history.push({
-                                      pathname: `/apply/privatedesk`,
-                                      search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
-                                    })
-                                  }
+                          <div className="product-inline-form-wrapper">
+                            <h4>
+                              با انتخاب شهر و تعداد نفرات درخواست خود را شروع
+                              کنید
+                            </h4>
+                            <div className="product-request-form-box">
+                              <InputGroup size="lg">
+                                <InputGroupAddon addonType="prepend">
+                                  <Button
+                                    onClick={() =>
+                                      this.props.history.push({
+                                        pathname: `/apply/privatedesk`,
+                                        search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
+                                      })
+                                    }
+                                  >
+                                    شروع درخواست
+                                  </Button>
+                                </InputGroupAddon>
+                                <Input
+                                  type="number"
+                                  name="neededSeats"
+                                  min="1"
+                                  placeholder="تعداد نفرات"
+                                  onChange={this.formStateHandler}
+                                />
+                                {/* Combo box */}
+                                <Input
+                                  name="selectedCity"
+                                  type="select"
+                                  onChange={this.formStateHandler}
                                 >
-                                  شروع درخواست
-                                </Button>
-                              </InputGroupAddon>
-                              <Input
-                                type="number"
-                                name="neededSeats"
-                                min="1"
-                                placeholder="تعداد"
-                                onChange={this.formStateHandler}
-                              />
-                              {/* Combo box */}
-                              <Input
-                                name="selectedCity"
-                                type="select"
-                                onChange={this.formStateHandler}
-                              >
-                                <option>شهر</option>
-                                {this.fillCombo(this.state.combo.city)}
-                              </Input>
-                            </InputGroup>
+                                  <option>شهر</option>
+                                  {this.fillCombo(this.state.combo.city)}
+                                </Input>
+                              </InputGroup>
+                            </div>
                           </div>
                         </Col>
                       </Row>
@@ -215,7 +227,11 @@ class Products extends Component {
                     {/* dedicated Office */}
                     <TabPane tabId="4">
                       <Row>
-                        <Col sm="12">
+                        <Col sm="12" className="product-inline-form-wrapper">
+                          <h4>
+                            با انتخاب شهر و تعداد اعضای تیمتان درخواست خود را
+                            شروع کنید
+                          </h4>
                           <div className="product-request-form-box">
                             <InputGroup size="lg">
                               <InputGroupAddon addonType="prepend">
@@ -234,7 +250,7 @@ class Products extends Component {
                                 type="number"
                                 name="neededSeats"
                                 min="1"
-                                placeholder="تعداد"
+                                placeholder="تعداد اعضای تیم"
                                 onChange={this.formStateHandler}
                               />
                               {/* Combo box */}
@@ -255,7 +271,11 @@ class Products extends Component {
                     {/* session room */}
                     <TabPane tabId="5">
                       <Row>
-                        <Col sm="12">
+                        <Col sm="12" className="product-inline-form-wrapper">
+                          <h4>
+                            با انتخاب شهر و ظرفیت مد نظرتان درخواست خود را شروع
+                            کنید
+                          </h4>
                           <div className="product-request-form-box">
                             <InputGroup size="lg">
                               <InputGroupAddon addonType="prepend">
