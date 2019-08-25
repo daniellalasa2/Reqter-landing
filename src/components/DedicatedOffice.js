@@ -137,6 +137,7 @@ class DedicatedOffice extends React.PureComponent {
     this.setState(
       {
         form: {
+          ...this.state.form,
           fields: {
             ...this.state.form.fields,
             [name]: {

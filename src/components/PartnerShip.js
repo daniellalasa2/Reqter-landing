@@ -3,34 +3,27 @@
 // Card transition stuffs is ready but not modified
 // scroll bug after component update
 import React from "react";
-import {
-  Button,
-  CardFooter,
-  Card,
-  CardHeader,
-  CardBody,
-  Input
-} from "reactstrap";
+import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
 import Skeleton from "react-loading-skeleton";
 import { SubmitForm, FilterContents } from "./ApiHandlers/ApiHandler";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../assets/images/spinner.svg";
+
 // import { InlineCheckBox, CheckBoxRow } from "./CustomCheckbox/CustomCheckbox";
-import {
-  FlatInlineSelect,
-  FlatImageSelect,
-  FlatInput
-} from "./FlatForm/FlatForm";
+import { FlatInlineSelect, FlatInput } from "./FlatForm/FlatForm";
 import "../assets/styles/FlatForm.scss";
 import Validator from "./Validator/Validator";
 class PartnerShip extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.urlParams = this.urlParser(this.props.location.search);
     this.state = {
       form: {
         isValid: false,
-        isSubmit: false,
+        submitted: false,
+        isSubmitting: false,
         fields: {
           name: {
             value: "",
@@ -63,17 +56,12 @@ class PartnerShip extends React.PureComponent {
             isValid: false
           }
         },
-        api: {
-          name: "",
-          primarycontact: "",
-          collaborationtypes: "",
-          phonenumber: "",
-          email: "",
-          homepage: ""
+        backgroundData: {
+          src: this.urlParams.src ? this.urlParams.src : "direct"
         }
       },
       combo: {
-        startup: {
+        partnership_working_fields: {
           hasLoaded: false,
           childs: {}
         }
@@ -105,13 +93,18 @@ class PartnerShip extends React.PureComponent {
       }
     });
   };
-  checkboxStateHandler = (data, e) => {
+  checkboxStateHandler = data => {
     const checkBoxValuesArr = [];
     let name = "";
-    data.forEach(val => {
-      name = val.name;
-      checkBoxValuesArr.push(val.value);
-    });
+    if (data.length > 1) {
+      data.map(val => {
+        name = val.name;
+        checkBoxValuesArr.push(val.value);
+      });
+    } else {
+      name = data.name;
+      checkBoxValuesArr.push(data.value);
+    }
     const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
     let toBeAssignObject = {
       error: validation.message,
@@ -124,21 +117,17 @@ class PartnerShip extends React.PureComponent {
     this.setState(
       {
         form: {
+          ...this.state.form,
           fields: {
             ...this.state.form.fields,
             [name]: {
               ...this.state.form.fields[name],
               ...toBeAssignObject
             }
-          },
-          api: {
-            ...this.state.form.api,
-            [name]: checkBoxValuesArr
           }
         }
       },
       () => {
-        console.log(this.state.form.fields.collaborationtypes);
         this.checkFormValidation();
       }
     );
@@ -148,61 +137,39 @@ class PartnerShip extends React.PureComponent {
     const name = _this.name;
     const value = _this.value;
     const validation = Validator(value, this.validationRules[name]);
-    if (!validation.valid) {
-      _this.classList.add("error-input");
-      this.setState(
-        {
-          form: {
-            ...this.state.form,
-            fields: {
-              ...this.state.form.fields,
-              [name]: {
-                value: value,
-                error: validation.message,
-                isValid: validation.valid
-              }
+    this.setState(
+      {
+        form: {
+          ...this.state.form,
+          fields: {
+            ...this.state.form.fields,
+            [name]: {
+              ...this.state.form.fields[name],
+              value: value,
+              error: validation.message,
+              isValid: validation.valid
             }
           }
-        },
-        () => this.checkFormValidation()
-      );
-    } else {
-      _this.classList.remove("error-input");
-      this.setState(
-        {
-          form: {
-            fields: {
-              ...this.state.form.fields,
-              [name]: {
-                value: value,
-                error: validation.message,
-                isValid: validation.valid
-              }
-            },
-            api: {
-              ...this.state.form.api,
-              [name]: value
-            }
-          }
-        },
-        () => {
-          this.checkFormValidation();
         }
-      );
-    }
+      },
+      () => this.checkFormValidation()
+    );
   };
   submitForm = () => {
     const inputs = this.state.form.fields;
     let _isValid = true;
-    const fields = {};
-    let validation = {};
+    const _fields = {};
+    const _backgroundData = this.state.form.backgroundData;
+    let _formObjectGoingToSubmit = {};
+    let _validation = {};
     for (let index in inputs) {
-      validation = Validator(inputs[index].value, this.validationRules[index]);
-      if (!validation.valid) {
+      _formObjectGoingToSubmit[index] = inputs[index].value;
+      _validation = Validator(inputs[index].value, this.validationRules[index]);
+      if (!_validation.valid) {
         _isValid = false;
-        fields[index] = {
+        _fields[index] = {
           value: inputs[index].value,
-          error: validation.message,
+          error: _validation.message,
           isValid: false
         };
       }
@@ -213,54 +180,84 @@ class PartnerShip extends React.PureComponent {
         isValid: _isValid,
         fields: {
           ...this.state.form.fields,
-          ...fields
+          ..._fields
         }
       }
     });
-    //if the form was valid then active form submit button
+    // if the form was valid then submit it
     if (_isValid) {
-      //submit api call
-      SubmitForm("partnership", this.state.form.api, res => {
-        if (res.code === 200) {
-          this.setState({
-            form: {
-              ...this.state.form,
-              isSubmit: true
+      // fetch additional background data state to final api object if form was valid
+      _formObjectGoingToSubmit = {
+        ..._formObjectGoingToSubmit,
+        ..._backgroundData
+      };
+      this.setState(
+        {
+          form: {
+            ...this.state.form,
+            isSubmitting: true
+          }
+        },
+        () => {
+          SubmitForm("partnership", _formObjectGoingToSubmit, res => {
+            if (res.code === 200) {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  submitted: true
+                }
+              });
+            } else {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  isSubmitting: false
+                }
+              });
             }
           });
         }
-      });
+      );
     }
   };
-  PartnershipWorkingFields = () => {
-    FilterContents("partnership_working_fields", res => {
-      if (res.success_result.code === 200) {
-        const arr = [];
-        res.data.map((val, key) => {
-          arr.push({
-            title: val.fields.name.fa,
-            key: val._id,
-            boxValue: key + 1,
-            dir: "rtl",
-            value: val._id
-          });
-          return null;
+  urlParser = url => {
+    let regex = /[?&]([^=#]+)=([^&#]*)/g,
+      params = {},
+      match;
+    while ((match = regex.exec(url))) {
+      params[match[1]] = match[2];
+    }
+    return params;
+  };
+
+  generateCheckboxDataFromApi = (name, defaultChecked) => {
+    FilterContents(name, res => {
+      const arr = [];
+      res.data.map((val, key) => {
+        arr.push({
+          title: val.fields.name.fa,
+          key: val._id,
+          boxValue: key + 1,
+          dir: "rtl",
+          value: val._id,
+          defaultChecked: defaultChecked && defaultChecked === val._id
         });
-        this.setState({
-          combo: {
-            startup: {
-              hasLoaded: true,
-              items: arr
-            }
+        return null;
+      });
+      this.setState({
+        combo: {
+          ...this.state.combo,
+          [name]: {
+            hasLoaded: true,
+            items: arr
           }
-        });
-      }
+        }
+      });
     });
   };
   componentDidMount() {
-    this.PartnershipWorkingFields();
+    this.generateCheckboxDataFromApi("partnership_working_fields");
   }
-
   render() {
     return (
       <section
@@ -271,7 +268,7 @@ class PartnerShip extends React.PureComponent {
           flexWrap: "wrap"
         }}
       >
-        {this.state.form.isSubmit ? (
+        {this.state.form.submitted ? (
           <Card className="form-card">
             <SuccessSubmit />
           </Card>
@@ -317,10 +314,12 @@ class PartnerShip extends React.PureComponent {
                     <span className="field-title">زمینه همکاری</span>
 
                     {/* fill checkboxes */}
-                    {this.state.combo.startup.hasLoaded ? (
+                    {this.state.combo.partnership_working_fields.hasLoaded ? (
                       <FlatInlineSelect
                         type="checkbox"
-                        items={this.state.combo.startup.items}
+                        items={
+                          this.state.combo.partnership_working_fields.items
+                        }
                         onChange={this.checkboxStateHandler}
                         dir="rtl"
                         name="collaborationtypes"
@@ -364,9 +363,17 @@ class PartnerShip extends React.PureComponent {
               <CardFooter>
                 <Button
                   className="navigation-button submit"
-                  onClick={this.submitForm}
+                  onClick={() => this.submitForm()}
                 >
-                  ثبت
+                  {this.state.form.isSubmitting ? (
+                    <img
+                      src={LoadingSpinner}
+                      alt=""
+                      style={{ margin: "-12px 16px" }}
+                    />
+                  ) : (
+                    "ثبت و ارسال "
+                  )}
                 </Button>
               </CardFooter>
             </Card>

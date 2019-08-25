@@ -165,7 +165,7 @@ class Navigation extends Component {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link className="nav-link login" onClick={Login}>
+                <Link className="nav-link login" to="" onClick={Login}>
                   ورود
                   <FontAwesomeIcon
                     icon={faLockOpen}
@@ -252,7 +252,7 @@ class Navigation extends Component {
                 </Link>
               </li>
               <li>
-                <Link className="nav-link" onClick={this.Login}>
+                <Link className="nav-link" to="" onClick={this.Login}>
                   ورود
                 </Link>
               </li>

@@ -3,6 +3,7 @@ import { Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../../assets/styles/SuccessSubmit.scss";
 function SuccessSubmit() {
+  window.scrollTo(0, 0);
   return (
     <Row>
       <Col xs="12" className="success-section">

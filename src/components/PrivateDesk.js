@@ -91,7 +91,7 @@ class PrivateDesk extends React.PureComponent {
     this.validationRules = {
       name: ["required"],
       birthyear: ["required", "number"],
-      educationfield: ["required"],
+      workingfield: ["required"],
       phonenumber: ["required", "phonenumber"],
       city: ["required"],
       seats: ["required", "number"],
@@ -139,16 +139,13 @@ class PrivateDesk extends React.PureComponent {
     this.setState(
       {
         form: {
+          ...this.state.form,
           fields: {
             ...this.state.form.fields,
             [name]: {
               ...this.state.form.fields[name],
               ...toBeAssignObject
             }
-          },
-          api: {
-            ...this.state.form.api,
-            [name]: checkBoxValuesArr
           }
         }
       },
@@ -216,7 +213,6 @@ class PrivateDesk extends React.PureComponent {
         ..._formObjectGoingToSubmit,
         ..._backgroundData
       };
-
       this.setState(
         {
           form: {
