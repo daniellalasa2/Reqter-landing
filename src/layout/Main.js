@@ -40,9 +40,7 @@ class Layout extends Component {
                     <React.Fragment>
                       {this.gtagUpdater(this.props.history, route.name)}
                       <Navigation transform={route.navTransform} {...props} />
-                      <div className="pageWrapper">
-                        <route.component {...props} />
-                      </div>
+                      <route.component {...props} />
                     </React.Fragment>
                   )}
                 />

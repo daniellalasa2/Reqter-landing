@@ -33,9 +33,9 @@ class FAQ extends React.PureComponent {
                 this.state.FAQCollapse === "question1" ? "activeHeader" : ""
               }
             >
-              رسالت اصلی استارتاپ اسپیس چیست؟
               <FontAwesomeIcon icon={faPlus} color="#6d8ae0" />
               <FontAwesomeIcon icon={faMinus} color="#6d8ae0" />
+              رسالت اصلی استارتاپ اسپیس چیست؟
             </CardHeader>
             <Collapse isOpen={this.state.FAQCollapse === "question1"}>
               <CardBody>
@@ -55,10 +55,10 @@ class FAQ extends React.PureComponent {
                 this.state.FAQCollapse === "question2" ? "activeHeader" : ""
               }
             >
-              تفاوت استارتاپ اسپیس با سایر سرویسهای موجود که در این حوزه کار
-              میکنند چیست؟
               <FontAwesomeIcon icon={faPlus} color="#6d8ae0" />
               <FontAwesomeIcon icon={faMinus} color="#6d8ae0" />
+              تفاوت استارتاپ اسپیس با سایر سرویسهای موجود که در این حوزه کار
+              میکنند چیست؟
             </CardHeader>
             <Collapse isOpen={this.state.FAQCollapse === "question2"}>
               <CardBody>

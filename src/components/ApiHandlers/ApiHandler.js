@@ -133,4 +133,8 @@ function SafeValue(data, field, type, defaultValue) {
   }
 }
 
-export { SubmitForm, FilterContents, Upload, SafeValue };
+//User Login
+function LoginRequest() {
+  return null;
+}
+export { SubmitForm, FilterContents, Upload, SafeValue, LoginRequest };

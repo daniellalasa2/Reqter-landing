@@ -10,6 +10,7 @@ import {
   Row,
   Col
 } from "reactstrap";
+import Login from "../components/Login";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -68,7 +69,6 @@ class Navigation extends Component {
       });
     }
   };
-
   dropDownToggler = mode => {
     this.setState({
       dropdownOpen: {
@@ -103,9 +103,11 @@ class Navigation extends Component {
         throw new Error("section scroll identifier is not valid");
     }
   };
+  Login = () => {};
   render() {
     return (
       <React.Fragment>
+        {/* <Login isLogin={false} /> */}
         <Row className="nav-main-container" id="nav-main-container">
           <Col xs="8" lg="2" md="2" className="nav-logo-container-col">
             <img
@@ -163,7 +165,7 @@ class Navigation extends Component {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link className="nav-link login" to="/comingsoon">
+                <Link className="nav-link login" onClick={Login}>
                   ورود
                   <FontAwesomeIcon
                     icon={faLockOpen}
@@ -250,7 +252,7 @@ class Navigation extends Component {
                 </Link>
               </li>
               <li>
-                <Link className="nav-link" to="/comingsoon">
+                <Link className="nav-link" onClick={this.Login}>
                   ورود
                 </Link>
               </li>
