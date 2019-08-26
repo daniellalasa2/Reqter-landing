@@ -7,7 +7,6 @@ import { SetCookie } from "../components/CookieHandler/CookieHandler";
 
 export default class Login extends React.Component {
   constructor(props) {
-    console.log("component called");
     super(props);
     this.state = {
       modal: props.openModal,
