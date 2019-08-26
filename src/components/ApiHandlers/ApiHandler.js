@@ -9,7 +9,8 @@ let _api = {
   SubmitForm: Config.BASE_URL_CONTENT + Config.URLs.submit_form,
   Upload: Config.BASE_URL_UPLOAD + Config.URLs.upload,
   FilterContents: Config.BASE_URL_CONTENT + Config.URLs.filter_contents,
-  Login: Config.BASE_URL_PANEL + Config.URLs.login
+  Login: Config.BASE_URL_PANEL + Config.URLs.login,
+  VerifyCode: Config.BASE_URL_PANEL + Config.URLs.verify_code
 };
 
 function errorHandler(statusCode) {
@@ -152,4 +153,28 @@ function LoginRequest(phonenumber, callback) {
       return errorHandler(0);
     });
 }
-export { SubmitForm, FilterContents, Upload, SafeValue, LoginRequest };
+
+//User Verify Code
+function VerifyCode(data, callback) {
+  axios({
+    url: _api.VerifyCode,
+    method: "POST",
+    headers: _api.header,
+    data: data
+  })
+    .then(res => {
+      const result = errorHandler(res.status);
+      return callback({ success_result: result, data: res.data });
+    })
+    .catch(err => {
+      return errorHandler(0);
+    });
+}
+export {
+  SubmitForm,
+  FilterContents,
+  Upload,
+  SafeValue,
+  LoginRequest,
+  VerifyCode
+};

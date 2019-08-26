@@ -3,11 +3,14 @@ import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { FlatInput } from "./FlatForm/FlatForm";
 import { LoginRequest } from "./ApiHandlers/ApiHandler";
 import Validator from "./Validator/Validator";
-export default class Login extends React.PureComponent {
+import { SetCookie } from "../components/CookieHandler/CookieHandler";
+
+export default class Login extends React.Component {
   constructor(props) {
+    console.log("component called");
     super(props);
     this.state = {
-      modal: props.isLogin,
+      modal: props.openModal,
       loginStep: 1,
       form: {
         isValid: false,
@@ -32,9 +35,19 @@ export default class Login extends React.PureComponent {
       phonenumber: ["phonenumber"]
     };
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextProps, nextState);
+    return true;
+  }
+  componentDidMount() {
+    this.setState({
+      modal: this.props.openModal
+    });
+  }
   LoginRequest = () => {
-    LoginRequest(this.state.form.phonenumber.value, () => {
-      alert("sent");
+    LoginRequest(this.state.form.phonenumber.value, res => {
+      console.log(res);
+      // SetCookie("SSUSERAUTH");
       this.setState({
         loginStep: 2
       });

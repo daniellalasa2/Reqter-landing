@@ -10,7 +10,8 @@ var Config = {
     submit_form: "contents/add",
     filter_contents: "contents/filter",
     upload: "asset/upload",
-    login: "api/v1/customers/requestcode"
+    login: "api/v1/customers/requestcode",
+    verify_code: "api/v1/customers/verifycode"
   },
   CONTENT_TYPE_ID: {
     partnership: "5d358ebc8e6e9a0017c28fc9",

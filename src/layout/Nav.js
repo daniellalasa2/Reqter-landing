@@ -10,7 +10,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-import Login from "../components/Login";
+
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,6 +23,7 @@ import {
   faLock
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/images/logo.jpg";
+import Login from "../components/Login";
 import { GetCookie } from "../components/CookieHandler/CookieHandler";
 import "../assets/styles/Nav.scss";
 
@@ -30,7 +31,8 @@ class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isUserLogin: false,
+      isUserLogin: GetCookie("SSUSERAUTH") ? true : false,
+      showLogin: false,
       dropdownOpen: {
         mobile: false,
         normal: false
@@ -107,14 +109,13 @@ class Navigation extends Component {
   };
   openLogin = () => {
     this.setState({
-      isUserLogin: GetCookie("SSUSERAUTH") ? true : false
+      showLogin: this.state.isUserLogin ? false : true
     });
   };
   render() {
     return (
       <React.Fragment>
-        <Login isLogin={this.state.isUserLogin} />
-        {/* <Login isLogin={false} /> */}
+        <Login openModal={this.state.showLogin} />
         <Row className="nav-main-container" id="nav-main-container">
           <Col xs="8" lg="2" md="2" className="nav-logo-container-col">
             <img
