@@ -17,6 +17,10 @@
   ul {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
   }
   li {
     display: inline-block;
@@ -30,6 +34,8 @@
       font-weight: 600;
       text-align: center;
       margin: auto;
+      display: block;
+      min-height: 55px;
     }
     p {
       color: #8d8d8d;
@@ -84,6 +90,14 @@
 //-----------------------------------------//
 //               Responsive                //
 //-----------------------------------------//
+//custom mobile screen
+@media (max-width: 620px) {
+  .facilities-description {
+    ul {
+      flex-direction: column-reverse;
+    }
+  }
+}
 //Small devices (portrait phone )
 @media (max-width: 767px) {
   .facilities-description {
