@@ -58,7 +58,8 @@ function SubmitForm(formName, data, callback) {
       return 0;
     })
     .catch(err => {
-      return errorHandler(0);
+      const result = errorHandler(err.response.status);
+      return callback({ success_result: result, data: err.response.data });
     });
 }
 
@@ -80,7 +81,8 @@ function FilterContents(type, callback) {
       return callback({ success_result: result, data: res.data });
     })
     .catch(err => {
-      return errorHandler(0);
+      const result = errorHandler(err.response.status);
+      return callback({ success_result: result, data: err.response.data });
     });
 }
 
@@ -119,7 +121,8 @@ function Upload(file, callback, progress) {
       return 0;
     })
     .catch(err => {
-      return errorHandler(0);
+      const result = errorHandler(err.response.status);
+      return callback({ success_result: result, data: err.response.data });
     });
 }
 //return safe value
@@ -136,13 +139,13 @@ function SafeValue(data, field, type, defaultValue) {
 }
 
 //User Login
-function LoginRequest(phonenumber, callback) {
+function LoginRequest(phoneNumber, callback) {
   axios({
     url: _api.Login,
     method: "POST",
     headers: _api.header,
     data: {
-      phonenumber: phonenumber
+      phoneNumber: phoneNumber
     }
   })
     .then(res => {
@@ -150,7 +153,8 @@ function LoginRequest(phonenumber, callback) {
       return callback({ success_result: result, data: res.data });
     })
     .catch(err => {
-      return errorHandler(0);
+      const result = errorHandler(err.response.status);
+      return callback({ success_result: result, data: err.response.data });
     });
 }
 
@@ -167,7 +171,8 @@ function VerifyCode(data, callback) {
       return callback({ success_result: result, data: res.data });
     })
     .catch(err => {
-      return errorHandler(0);
+      const result = errorHandler(err.response.status);
+      return callback({ success_result: result, data: err.response.data });
     });
 }
 export {

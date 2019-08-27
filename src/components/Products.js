@@ -80,14 +80,14 @@ class Products extends Component {
   getCitiesList = () => {
     const obj = {};
     FilterContents("list_of_cities", res => {
-      res.data.forEach(val => {
-        obj[val._id] = val.fields.name.fa;
-      });
-      this.setState({
-        combo: {
-          city: obj
-        }
-      });
+      if (res.data.success) {
+        res.data.map(val => (obj[val._id] = val.fields.name.fa));
+        this.setState({
+          combo: {
+            city: obj
+          }
+        });
+      }
     });
   };
   componentDidMount() {

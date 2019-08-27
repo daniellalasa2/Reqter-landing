@@ -1,0 +1,38 @@
+.modal-open {
+  padding-right: 0 !important;
+}
+.login-modal {
+  display: flex !important;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  direction: rtl;
+  text-align: right;
+  font-family: "Samim", sans-serif;
+  button {
+    float: left;
+    margin: 15px 10px;
+  }
+  .success-login {
+    text-align: center;
+    button {
+      float: none;
+      margin: auto;
+    }
+  }
+  .field-row {
+    input {
+      text-align: left;
+    }
+    margin-top: 20px;
+  }
+  .input-error {
+    text-align: right !important;
+  }
+  .login-modal-header {
+    .close {
+      margin-left: 0;
+    }
+  }
+}

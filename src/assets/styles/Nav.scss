@@ -46,9 +46,10 @@
     text-decoration: none;
     font-weight: 600;
     letter-spacing: 1px;
-    &.login {
+    &.login,
+    &.my-requests-link {
       outline: none;
-      width: 77px;
+      width: auto;
       display: flex;
       align-items: center;
       font-size: 15px;
@@ -58,18 +59,28 @@
       background-color: rgba(255, 255, 255, 0.2);
       text-decoration: none;
       color: white;
+      .icon-myrequests {
+        width: 16px;
+        display: block;
+        color: white;
+        margin-top: -2px;
+        font-size: 20px;
+      }
       .icon-lock-open {
         display: none;
         color: white;
+        width: 14px;
       }
       .icon-lock-close {
+        width: 14px;
         display: block;
         color: white;
       }
       &:hover {
         color: #222;
         background-color: rgba(255, 255, 255, 1);
-        .icon-lock-open {
+        .icon-lock-open,
+        .icon-myrequests {
           display: block;
           color: #222;
         }
@@ -114,19 +125,22 @@
     width: 50px;
   }
   .nav-link {
-    &.login {
+    &.login,
+    &.my-requests-link {
       outline: none;
       opacity: 0.8;
       border: 1px solid rgb(20, 20, 20);
       .icon-lock-open,
-      .icon-lock-close {
+      .icon-lock-close,
+      .icon-myrequests {
         color: rgb(20, 20, 20);
       }
       &:hover {
         color: white !important;
         background-color: rgba(20, 20, 20, 1);
         .icon-lock-open,
-        .icon-lock-close {
+        .icon-lock-close,
+        .icon-myrequests {
           color: white !important;
         }
         .icon-lock-close {

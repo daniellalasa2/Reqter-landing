@@ -36,13 +36,15 @@ class Layout extends Component {
                   path={route.path}
                   exact={route.exact}
                   name={route.name}
-                  render={props => (
-                    <React.Fragment>
-                      {this.gtagUpdater(this.props.history, route.name)}
-                      <Navigation transform={route.navTransform} {...props} />
-                      <route.component {...props} />
-                    </React.Fragment>
-                  )}
+                  render={props =>
+                    !route.role || route.role === window.AUTHROLE ? (
+                      <React.Fragment>
+                        {this.gtagUpdater(this.props.history, route.name)}
+                        <Navigation transform={route.navTransform} {...props} />
+                        <route.component {...props} />
+                      </React.Fragment>
+                    ) : null
+                  }
                 />
               ) : null;
             })}

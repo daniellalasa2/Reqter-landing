@@ -20,7 +20,8 @@ import {
   faAngleDown,
   faAngleUp,
   faLockOpen,
-  faLock
+  faLock,
+  faListAlt
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/images/logo.jpg";
 import Login from "../components/Login";
@@ -107,15 +108,21 @@ class Navigation extends Component {
         throw new Error("section scroll identifier is not valid");
     }
   };
-  openLogin = () => {
-    this.setState({
-      showLogin: this.state.isUserLogin ? false : true
-    });
+  toggleLogin = () => {
+    this.setState(prevState => ({
+      showLogin: !prevState.showLogin
+    }));
   };
   render() {
     return (
       <React.Fragment>
-        <Login openModal={this.state.showLogin} />
+        <Login
+          openModal={this.state.showLogin}
+          {...this.props}
+          toggle={this.toggleLogin}
+          userLoggedIn={() => this.setState({ isUserLogin: true })}
+        />
+
         <Row className="nav-main-container" id="nav-main-container">
           <Col xs="8" lg="2" md="2" className="nav-logo-container-col">
             <img
@@ -174,11 +181,20 @@ class Navigation extends Component {
               </NavItem>
               <NavItem>
                 {this.state.isUserLogin ? (
-                  <Link className="nav-link my-request-link" to="/myrequests">
+                  <button
+                    className="nav-link my-requests-link"
+                    onClick={() => this.props.history.push("/user/myrequests")}
+                  >
                     درخواستهای من
-                  </Link>
+                    <FontAwesomeIcon
+                      icon={faListAlt}
+                      pull="right"
+                      color="black"
+                      className="icon-myrequests"
+                    />
+                  </button>
                 ) : (
-                  <button className="nav-link login" onClick={this.openLogin}>
+                  <button className="nav-link login" onClick={this.toggleLogin}>
                     ورود
                     <FontAwesomeIcon
                       icon={faLockOpen}
@@ -267,13 +283,16 @@ class Navigation extends Component {
               </li>
               <li>
                 {this.state.isUserLogin ? (
-                  <span className="nav-link login" onClick={this.openLogin}>
-                    ورود
+                  <span
+                    className="nav-link my-requests-link"
+                    onClick={() => this.props.history.push("/user/myrequests")}
+                  >
+                    درخواستهای من
                   </span>
                 ) : (
-                  <Link className="nav-link" to="/myrequests">
-                    درخواستهای من
-                  </Link>
+                  <span className="nav-link login" onClick={this.toggleLogin}>
+                    ورود
+                  </span>
                 )}
               </li>
             </ul>

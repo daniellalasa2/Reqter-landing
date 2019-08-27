@@ -18,14 +18,19 @@ const ContactUs = React.lazy(() => import("./components/ContactUs"));
 const Careers = React.lazy(() => import("./components/Careers"));
 const PartnerShip = React.lazy(() => import("./components/PartnerShip"));
 const Security = React.lazy(() => import("./components/Security"));
-
+const MyRequests = React.lazy(() => import("./components/User/MyRequests"));
+const NotFound = React.lazy(() => import("./components/Auth/NotFound"));
 //temporary
-const ComingSoon = React.lazy(() =>
-  import("./components/DefaultInnerLinks.js")
-);
+const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
 
 const routes = [
   { path: "/", exact: true, name: "Home", component: Home, navTransform: true },
+  {
+    path: "/auth/404",
+    exact: true,
+    name: "Not Found",
+    component: NotFound
+  },
   {
     path: "/comingsoon",
     exact: true,
@@ -121,6 +126,12 @@ const routes = [
     exact: true,
     name: "Security",
     component: Security
+  },
+  {
+    path: "/user/myrequests",
+    exact: true,
+    name: "My Requests",
+    component: MyRequests
   }
 ];
 
