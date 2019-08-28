@@ -12,8 +12,8 @@ import apply from "../assets/images/service-icons/apply.png";
 import offer from "../assets/images/service-icons/offer.png";
 
 //Import icons
-
 const Products = React.lazy(() => import("./Products"));
+
 class Home extends React.Component {
   constructor(props) {
     super(props);

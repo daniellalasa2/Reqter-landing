@@ -131,7 +131,8 @@ const routes = [
     path: "/user/myrequests",
     exact: true,
     name: "My Requests",
-    component: MyRequests
+    component: MyRequests,
+    auth: true
   }
 ];
 

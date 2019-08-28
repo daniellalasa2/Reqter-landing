@@ -10,9 +10,30 @@
   direction: rtl;
   text-align: right;
   font-family: "Samim", sans-serif;
-  button {
-    float: left;
-    margin: 15px 10px;
+  border-radius: 0.3rem;
+  .modal-content {
+    width: 80%;
+  }
+  .modal-body {
+    text-align: center;
+    .buttons-wrapper {
+      display: flex;
+      direction: ltr;
+    }
+    button {
+      float: left;
+      margin: 15px 10px;
+      padding: 12px 48px;
+      background-color: #727fdd;
+      float: none;
+      margin: 1.55rem auto auto;
+      width: auto;
+      height: auto;
+      border-radius: 0.3rem;
+      font-size: 16px;
+      font-weight: bold;
+      outline: none;
+    }
   }
   .success-login {
     text-align: center;
@@ -21,9 +42,42 @@
       margin: auto;
     }
   }
+  .resend-code-link {
+    color: grey;
+    margin-top: 25px;
+    margin-bottom: 0;
+    display: block;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+    &:hover {
+      color: #727fdd;
+    }
+  }
   .field-row {
     input {
-      text-align: left;
+      text-align: center;
+      font-size: 20px;
+      width: 200px;
+      min-width: auto;
+      font-weight: bold;
+      margin: auto;
+      border-width: 0 0 2px 0 !important;
+      letter-spacing: 3px;
+      margin-top: 14px;
+      margin-bottom: 0;
+      &#code {
+        margin-bottom: 0;
+        font-size: 25px;
+        letter-spacing: 10px;
+      }
+    }
+
+    .error-message {
+      text-align: center;
+      float: none !important;
+      margin: auto;
     }
     margin-top: 20px;
   }
@@ -31,8 +85,17 @@
     text-align: right !important;
   }
   .login-modal-header {
+    background-color: whitesmoke;
+    h5 {
+      font-weight: bold;
+      text-align: center;
+    }
     .close {
       margin-left: 0;
+      width: auto;
+      padding: 0;
+      font-size: 30px;
+      margin: -0.6rem -1rem -1rem 0.5rem !important;
     }
   }
 }

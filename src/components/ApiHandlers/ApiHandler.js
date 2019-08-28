@@ -54,8 +54,7 @@ function SubmitForm(formName, data, callback) {
   })
     .then(res => {
       const result = errorHandler(res.status);
-      callback(result);
-      return 0;
+      return callback(result);
     })
     .catch(err => {
       const result = errorHandler(err.response.status);
@@ -77,12 +76,22 @@ function FilterContents(type, callback) {
     }
   })
     .then(res => {
-      const result = errorHandler(res.status);
-      return callback({ success_result: result, data: res.data });
+      const result = errorHandler(
+        SafeValue(res.response, "status", "number", null)
+      );
+      return callback({
+        success_result: result,
+        data: SafeValue(res, "data", "object", {})
+      });
     })
     .catch(err => {
-      const result = errorHandler(err.response.status);
-      return callback({ success_result: result, data: err.response.data });
+      const result = errorHandler(
+        SafeValue(err.response, "status", "number", 0)
+      );
+      return callback({
+        success_result: result,
+        data: SafeValue(err.response, "data", "object", {})
+      });
     });
 }
 
@@ -116,26 +125,23 @@ function Upload(file, callback, progress) {
     }
   })
     .then(res => {
-      const result = errorHandler(res.status);
-      callback({ success_result: result, data: res.data });
-      return 0;
+      const result = errorHandler(
+        SafeValue(res.response, "status", "number", null)
+      );
+      return callback({
+        success_result: result,
+        data: SafeValue(res, "data", "object", {})
+      });
     })
     .catch(err => {
-      const result = errorHandler(err.response.status);
-      return callback({ success_result: result, data: err.response.data });
+      const result = errorHandler(
+        SafeValue(err.response, "status", "number", 0)
+      );
+      return callback({
+        success_result: result,
+        data: SafeValue(err.response, "data", "object", {})
+      });
     });
-}
-//return safe value
-function SafeValue(data, field, type, defaultValue) {
-  if (data[field]) {
-    if (typeof data[field] === type) {
-      return data[field];
-    } else {
-      return defaultValue;
-    }
-  } else {
-    return defaultValue;
-  }
 }
 
 //User Login
@@ -149,12 +155,22 @@ function LoginRequest(phoneNumber, callback) {
     }
   })
     .then(res => {
-      const result = errorHandler(res.status);
-      return callback({ success_result: result, data: res.data });
+      const result = errorHandler(
+        SafeValue(res.response, "status", "number", null)
+      );
+      return callback({
+        success_result: result,
+        data: SafeValue(res, "data", "object", {})
+      });
     })
     .catch(err => {
-      const result = errorHandler(err.response.status);
-      return callback({ success_result: result, data: err.response.data });
+      const result = errorHandler(
+        SafeValue(err.response, "status", "number", 0)
+      );
+      return callback({
+        success_result: result,
+        data: SafeValue(err.response, "data", "object", {})
+      });
     });
 }
 
@@ -167,14 +183,41 @@ function VerifyCode(data, callback) {
     data: data
   })
     .then(res => {
-      const result = errorHandler(res.status);
-      return callback({ success_result: result, data: res.data });
+      const result = errorHandler(
+        SafeValue(res.response, "status", "number", null)
+      );
+      return callback({
+        success_result: result,
+        data: SafeValue(res, "data", "object", {})
+      });
     })
     .catch(err => {
-      const result = errorHandler(err.response.status);
-      return callback({ success_result: result, data: err.response.data });
+      const result = errorHandler(
+        SafeValue(err.response, "status", "number", 0)
+      );
+      return callback({
+        success_result: result,
+        data: SafeValue(err.response, "data", "object", {})
+      });
     });
 }
+//return safe value
+function SafeValue(data, field, type, defaultValue) {
+  try {
+    if (data[field]) {
+      if (typeof data[field] === type) {
+        return data[field];
+      } else {
+        return defaultValue;
+      }
+    } else {
+      return defaultValue;
+    }
+  } catch (err) {
+    return defaultValue;
+  }
+}
+
 export {
   SubmitForm,
   FilterContents,

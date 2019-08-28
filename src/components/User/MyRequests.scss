@@ -9,7 +9,7 @@
   .filter-section {
     height: auto;
     border: 2px solid lightgrey;
-    border-radius: 8px;
+    border-radius: 0.3rem;
     width: 160px;
     box-sizing: border-box;
     .filter-title {
@@ -68,9 +68,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    // justify-content: center;
-    // align-content: center;
-
     .no-content {
       color: grey;
       font-size: 16px;
@@ -85,7 +82,7 @@
     margin: 10px;
     padding: 5px;
     box-shadow: 0 0 10px 0 lightgrey;
-    border-radius: 40px;
+    border-radius: 0.3rem;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -109,7 +106,7 @@
       img {
         padding: 10px;
 
-        border-radius: 20px;
+        border-radius: 0.3rem;
         background-color: rgba(0, 0, 0, 0.2);
         box-shadow: 0 0 8px -1px lightgrey;
       }
@@ -138,7 +135,7 @@
       button {
         outline: none;
         padding: 5px 10px;
-        border-radius: 20px;
+        border-radius: 0.3rem;
         border: 2px solid rgb(44, 186, 58);
         background-color: rgba(44, 186, 58, 0.3);
         &:hover {

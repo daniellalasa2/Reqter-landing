@@ -290,14 +290,16 @@ const FlatInput = ({
   label,
   error,
   defaultValue,
-  minlength,
-  maxlength,
+  minLength,
+  maxLength,
   pattern,
   min,
   max,
   name,
   id,
-  className
+  className,
+  style,
+  autoFocus
 }) => {
   return (
     <div className="field-row">
@@ -312,9 +314,11 @@ const FlatInput = ({
         min={min}
         max={max}
         pattern={pattern}
-        minLength={minlength}
-        maxLength={maxlength}
+        minLength={minLength}
+        maxLength={maxLength}
         id={id}
+        style={style}
+        autoFocus={autoFocus}
         className={classnames(className, error && "error-input")}
       />
       <span className="error-message">{error}</span>

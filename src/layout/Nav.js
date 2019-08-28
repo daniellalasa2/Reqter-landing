@@ -27,12 +27,16 @@ import logo from "../assets/images/logo.jpg";
 import Login from "../components/Login";
 import { GetCookie } from "../components/CookieHandler/CookieHandler";
 import "../assets/styles/Nav.scss";
+import ContextApi, {
+  ContextConsumer
+} from "../components/ContextApi/ContextApi";
+// import ContextApi from "../components/ContextApi/ContextApi";
 
 class Navigation extends Component {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.state = {
-      isUserLogin: GetCookie("SSUSERAUTH") ? true : false,
       showLogin: false,
       dropdownOpen: {
         mobile: false,
@@ -51,7 +55,7 @@ class Navigation extends Component {
       navMainContainer.classList.add("scrolledNav");
     }
   }
-
+  //WARNING! To be deprecated in React v17. Use componentDidMount instead.
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
@@ -116,13 +120,16 @@ class Navigation extends Component {
   render() {
     return (
       <React.Fragment>
-        <Login
-          openModal={this.state.showLogin}
-          {...this.props}
-          toggle={this.toggleLogin}
-          userLoggedIn={() => this.setState({ isUserLogin: true })}
-        />
-
+        <ContextConsumer>
+          {ctx => (
+            <Login
+              openModal={this.state.showLogin}
+              {...this.props}
+              toggle={this.toggleLogin}
+              updateAuth={ctx.updateAuth}
+            />
+          )}
+        </ContextConsumer>
         <Row className="nav-main-container" id="nav-main-container">
           <Col xs="8" lg="2" md="2" className="nav-logo-container-col">
             <img
@@ -180,7 +187,7 @@ class Navigation extends Component {
                 </Link>
               </NavItem>
               <NavItem>
-                {this.state.isUserLogin ? (
+                {this.context.auth ? (
                   <button
                     className="nav-link my-requests-link"
                     onClick={() => this.props.history.push("/user/myrequests")}
@@ -282,7 +289,7 @@ class Navigation extends Component {
                 </Link>
               </li>
               <li>
-                {this.state.isUserLogin ? (
+                {this.context.auth ? (
                   <span
                     className="nav-link my-requests-link"
                     onClick={() => this.props.history.push("/user/myrequests")}

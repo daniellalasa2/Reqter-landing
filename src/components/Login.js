@@ -4,8 +4,11 @@ import { FlatInput } from "./FlatForm/FlatForm";
 import { LoginRequest, VerifyCode } from "./ApiHandlers/ApiHandler";
 import Validator from "./Validator/Validator";
 import { SetCookie } from "../components/CookieHandler/CookieHandler";
+import ContextApi from "./ContextApi/ContextApi";
 import "../assets/styles/Login.scss";
+import LoadingSpinner from "../assets/images/spinner.svg";
 export default class Login extends React.Component {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.state = {
@@ -48,13 +51,14 @@ export default class Login extends React.Component {
         modal: nextProps.openModal
       });
       return true;
-    } else {
-      return true;
     }
+    return true;
   }
   LoginRequest = () => {
     const _this = this;
+    this.PendingForm(true);
     LoginRequest(this.state.form.fields.phoneNumber.value, res => {
+      _this.PendingForm(false);
       if (res.data.success) {
         _this.setState({
           loginStep: 2,
@@ -70,6 +74,32 @@ export default class Login extends React.Component {
             }
           }
         });
+      } else {
+        _this.setState({
+          form: {
+            ...this.state.form,
+            fields: {
+              ...this.state.form.fields,
+              code: {
+                ...this.state.form.fields.code,
+                isValid: false,
+                error: ""
+              },
+              phoneNumber: {
+                ...this.state.form.fields.phoneNumber,
+                error: "مشکل در ارسال کد"
+              }
+            }
+          }
+        });
+      }
+    });
+  };
+  PendingForm = status => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        isSubmitting: status
       }
     });
   };
@@ -78,32 +108,22 @@ export default class Login extends React.Component {
     const data = {};
     data["phoneNumber"] = this.state.form.fields.phoneNumber.value;
     data["code"] = this.state.form.fields.code.value;
+    this.PendingForm(true);
     VerifyCode(data, res => {
+      _this.PendingForm(false);
       if (res.data.success) {
-        _this.setState(
-          {
-            loginStep: 3,
-            form: {
-              ...this.state.form,
-              fields: {
-                ...this.state.form.fields,
-                code: {
-                  ...this.state.form.fields.code,
-                  isValid: true,
-                  error: ""
-                }
-              }
-            }
-          },
-          () => {
+        //change user auth to true , means user is login already
+        _this.props.updateAuth(true, success => {
+          console.log(success);
+          if (success) {
             SetCookie(
               "SSUSERAUTH",
               res.data.access_token,
               parseInt(res.data.expiresIn) / (60 * 60 * 24)
             );
-            _this.props.userLoggedIn();
+            _this.props.history.push("/user/myrequests");
           }
-        );
+        });
       } else {
         _this.setState({
           form: {
@@ -174,26 +194,35 @@ export default class Login extends React.Component {
           className="login-modal"
         >
           <ModalHeader className="login-modal-header" toggle={this.toggle}>
-            ورود به استارتاپ اسپیس
+            ورود
           </ModalHeader>
           {/* Get number */}
           {this.state.loginStep === 1 && (
             <ModalBody>
               <FlatInput
-                label="شماره تماس"
+                label="شماره تماس خود را وارد کنید"
                 type="tel"
-                placeholder="شماره تماس خود را وارد کنید"
+                defaultValue={this.state.form.fields.phoneNumber.value}
                 name="phoneNumber"
                 id="phoneNumber"
                 onChange={this.formStateHandler}
                 error={this.state.form.fields.phoneNumber.error}
+                autoFocus={true}
               />
               <Button
                 color="info"
                 onClick={this.LoginRequest}
                 disabled={!this.state.form.fields.phoneNumber.isValid}
               >
-                دریافت کد تایید
+                {this.state.form.isSubmitting ? (
+                  <img
+                    src={LoadingSpinner}
+                    alt=""
+                    style={{ margin: "-12px 20px" }}
+                  />
+                ) : (
+                  "دریافت کد تایید"
+                )}
               </Button>
             </ModalBody>
           )}
@@ -201,36 +230,35 @@ export default class Login extends React.Component {
           {this.state.loginStep === 2 && (
             <ModalBody>
               <FlatInput
-                label="تایید شماره تماس"
+                label="کد تایید ارسال شده را وارد کنید"
                 type="tel"
-                placeholder="کد ارسال شده را وارد کنید"
                 name="code"
                 id="code"
+                maxLength="4"
+                autoFocus={true}
+                slyle={{ letterSpacing: "7px", marginTop: "14px" }}
                 onChange={this.formStateHandler}
                 error={this.state.form.fields.code.error}
               />
-              <Button color="success" onClick={this.CheckCode}>
-                تایید و ورود
-              </Button>
-              <Button color="warning" onClick={this.LoginRequest}>
-                ارسال مجدد کد
-              </Button>
-              <Button color="info" onClick={this.ResetPhonenumber}>
-                ویرایش شماره
-              </Button>
-            </ModalBody>
-          )}
-          {this.state.loginStep === 3 && (
-            <ModalBody className="success-login">
-              <h3 style={{ color: "green", padding: "2rem" }}>
-                با موفقیت وارد شدید.
-              </h3>
-              <Button
-                color="info"
-                onClick={() => this.props.history.push("user/myrequests")}
+              <span
+                className="resend-code-link"
+                onClick={this.ResetPhonenumber}
               >
-                ورود به پنل
-              </Button>
+                ارسال مجدد کد
+              </span>
+              <div className="buttons-wrapper">
+                <Button color="success" onClick={this.CheckCode}>
+                  {this.state.form.isSubmitting ? (
+                    <img
+                      src={LoadingSpinner}
+                      alt=""
+                      style={{ margin: "-12px 16px" }}
+                    />
+                  ) : (
+                    "تایید و ورود"
+                  )}
+                </Button>
+              </div>
             </ModalBody>
           )}
         </Modal>

@@ -160,11 +160,11 @@
   top: 8px;
 }
 .mobile-menu-wrapper {
-  display: flex;
+  display: none;
   position: fixed;
   height: 100%;
   width: 100%;
-  bottom: 100%;
+  bottom: -100%;
   background-color: rgba(0, 0, 0, 0.95);
   z-index: 6;
   opacity: 0;
@@ -173,6 +173,7 @@
   -webkit-transition: all 0.5s ease-out;
   -o-transition: all 0.5s ease-out;
   ._container {
+    overflow-y: scroll;
     padding-top: 20px;
     position: absolute;
     width: 100%;
@@ -270,6 +271,7 @@
   }
 
   .mobile-menu-wrapper {
+    display: flex;
     &.open {
       bottom: 0;
       opacity: 1;

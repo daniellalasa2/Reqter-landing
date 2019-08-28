@@ -15,6 +15,7 @@ class App extends React.Component {
       </span>
     </div>
   );
+  //WARNING! To be deprecated in React v17. Use componentDidMount instead.
 
   render() {
     return (
