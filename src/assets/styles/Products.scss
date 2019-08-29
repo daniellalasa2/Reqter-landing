@@ -75,6 +75,7 @@
         }
         input {
           direction: rtl;
+          border-width: 1px !important;
           &::placeholder {
             /* Chrome, Firefox, Opera, Safari 10.1+ */
 

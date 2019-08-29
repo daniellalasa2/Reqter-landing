@@ -55,8 +55,8 @@ export default class Login extends React.Component {
     return true;
   }
   LoginRequest = () => {
-    const _this = this;
     this.PendingForm(true);
+    const _this = this;
     LoginRequest(this.state.form.fields.phoneNumber.value, res => {
       _this.PendingForm(false);
       if (res.data.success) {
@@ -104,17 +104,16 @@ export default class Login extends React.Component {
     });
   };
   CheckCode = () => {
+    this.PendingForm(true);
     const _this = this;
     const data = {};
     data["phoneNumber"] = this.state.form.fields.phoneNumber.value;
     data["code"] = this.state.form.fields.code.value;
-    this.PendingForm(true);
     VerifyCode(data, res => {
       _this.PendingForm(false);
       if (res.data.success) {
         //change user auth to true , means user is login already
         _this.props.updateAuth(true, success => {
-          console.log(success);
           if (success) {
             SetCookie(
               "SSUSERAUTH",

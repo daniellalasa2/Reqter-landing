@@ -13,15 +13,15 @@ class Layout extends Component {
     this.state = {
       userAuth: Boolean(GetCookie("SSUSERAUTH"))
     };
-    this.userLoggedIn = {
-      auth: this.state.userAuth,
-      updateAuth: (status, callback) =>
-        this.setState(
-          {
-            userAuth: status ? status : Boolean(GetCookie("SSUSERAUTH"))
-          },
-          () => callback(this.state.userAuth)
-        )
+    this.updateAuth = (status, callback) => {
+      this.setState(
+        {
+          userAuth: status ? status : Boolean(GetCookie("SSUSERAUTH"))
+        },
+        () => {
+          callback(this.state.userAuth);
+        }
+      );
     };
   }
   //google tag manager handler
@@ -56,10 +56,15 @@ class Layout extends Component {
                   exact={route.exact}
                   name={route.name}
                   render={props =>
-                    !route.auth || route.auth === this.userLoggedIn.auth ? (
+                    !route.auth || route.auth === this.state.userAuth ? (
                       <React.Fragment>
                         {this.gtagUpdater(this.props.history, route.name)}
-                        <ContextApi.Provider value={this.userLoggedIn}>
+                        <ContextApi.Provider
+                          value={{
+                            auth: this.state.userAuth,
+                            updateAuth: this.updateAuth
+                          }}
+                        >
                           <React.Fragment>
                             <Navigation
                               transform={route.navTransform}

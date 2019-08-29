@@ -80,7 +80,7 @@ class Products extends Component {
   getCitiesList = () => {
     const obj = {};
     FilterContents("list_of_cities", res => {
-      if (res.data.success) {
+      if (res.success_result.code === 200) {
         res.data.map(val => (obj[val._id] = val.fields.name.fa));
         this.setState({
           combo: {

@@ -73,6 +73,9 @@
   margin: 0;
   height: 478px;
   width: 620px;
+  max-width: 100vw;
+  background-size: contain !important;
+  max-height: 77vw;
 }
 
 .product-specs-rtl {

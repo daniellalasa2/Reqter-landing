@@ -28,7 +28,6 @@ import {
   faSyncAlt,
   faDownload
 } from "@fortawesome/free-solid-svg-icons";
-import { GetCookie } from "../CookieHandler/CookieHandler";
 import "./MyRequests.scss";
 import deskImg from "../../assets/images/products-icons/002-desk.png";
 export default class MyRequests extends Component {
@@ -60,19 +59,19 @@ export default class MyRequests extends Component {
             </div>
             <ul className="filter-list">
               <li
-                className={this.state.activeTab === 1 && "active"}
+                className={this.state.activeTab === 1 ? "active" : null}
                 onClick={() => this.tabChanger(1)}
               >
                 دارای پیشنهاد
               </li>
               <li
-                className={this.state.activeTab === 2 && "active"}
+                className={this.state.activeTab === 2 ? "active" : null}
                 onClick={() => this.tabChanger(2)}
               >
                 بدون پیشنهاد
               </li>
               <li
-                className={this.state.activeTab === 3 && "active"}
+                className={this.state.activeTab === 3 ? "active" : null}
                 onClick={() => this.tabChanger(3)}
               >
                 بسته شده

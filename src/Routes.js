@@ -9,7 +9,6 @@ const DedicatedOffice = React.lazy(() =>
   import("./components/DedicatedOffice")
 );
 const SessionRoom = React.lazy(() => import("./components/SessionRoom"));
-const Startup = React.lazy(() => import("./components/Startup"));
 const PrivacyPolicy = React.lazy(() => import("./components/PrivacyPolicy"));
 const TermsOfUse = React.lazy(() => import("./components/TermsOfUse"));
 const Blog = React.lazy(() => import("./components/Blog"));
@@ -73,12 +72,6 @@ const routes = [
     component: SharedDesk
   },
 
-  {
-    path: "/apply/startup",
-    exact: true,
-    name: "Startup",
-    component: Startup
-  },
   {
     path: "/privacypolicy",
     exact: true,

@@ -76,9 +76,7 @@ function FilterContents(type, callback) {
     }
   })
     .then(res => {
-      const result = errorHandler(
-        SafeValue(res.response, "status", "number", null)
-      );
+      const result = errorHandler(SafeValue(res, "status", "number", null));
       return callback({
         success_result: result,
         data: SafeValue(res, "data", "object", {})
