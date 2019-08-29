@@ -201,11 +201,7 @@ class Navigation extends Component {
                     />
                   </button>
                 ) : (
-                  <button
-                    className="nav-link login"
-                    // onClick={this.toggleLogin}
-                    onClick={() => this.props.history.push("/comingsoon")}
-                  >
+                  <button className="nav-link login" onClick={this.toggleLogin}>
                     ورود
                     <FontAwesomeIcon
                       icon={faLockOpen}
@@ -301,11 +297,7 @@ class Navigation extends Component {
                     درخواستهای من
                   </span>
                 ) : (
-                  <span
-                    className="nav-link login"
-                    // onClick={this.toggleLogin}
-                    onClick={() => this.props.history.push("/comingsoon")}
-                  >
+                  <span className="nav-link login" onClick={this.toggleLogin}>
                     ورود
                   </span>
                 )}

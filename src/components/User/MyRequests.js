@@ -45,7 +45,7 @@ export default class MyRequests extends Component {
   render() {
     return (
       <section
-        className="form-section rtl-layout"
+        className="my-requests-section form-section rtl-layout"
         style={{
           backgroundColor: "whitesmoke",
           display: "flex",
@@ -102,11 +102,14 @@ export default class MyRequests extends Component {
                   <div className="request-card">
                     <div className="request-card-image">
                       <img src={deskImg} alt="Desk" />
+                      <strong className="product-title">صندلی اشتراکی</strong>
                     </div>
                     <div className="request-card-details">
                       <ul>
-                        <li>
-                          <strong>صندلی اشتراکی</strong>
+                        <li className="product-title-wrapper">
+                          <strong className="product-title">
+                            صندلی اشتراکی
+                          </strong>
                         </li>
                         <li>تعداد :‌ ۷</li>
                         <li>تاریخ :‌۱۳۹۸-۰۷-۰۳</li>
