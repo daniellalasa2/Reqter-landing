@@ -62,29 +62,24 @@
       border-radius: 7px;
       background-color: whitesmoke;
       margin-top: 30px;
+
       .input-group {
-        & > input,
-        & > button,
+        outline: none !important;
+        border-radius: 0;
         & > select {
-          border-radius: 0;
-          &:first-child {
-            border-radius: 5px 0 0 5px !important;
-          }
-          &:last-child {
-            border-radius: 0 5px 5px 0 !important;
-          }
+          border-radius: 0 5px 5px 0 !important;
+          direction: rtl;
+        }
+        & > .input-group-prepend button {
+          border-radius: 5px 0 0 5px !important;
+          background-color: #879cdd;
         }
         width: 100%;
         padding: 5px;
         direction: ltr;
         text-align: right;
-        button {
-          background-color: #879cdd;
-        }
-        select {
-          direction: rtl;
-        }
-        input {
+
+        & > input {
           direction: rtl;
           border-width: 1px !important;
           &::placeholder {
@@ -185,15 +180,6 @@
 }
 //Small devices (portrait phone )
 @media (max-width: 576px) {
-  .header-content {
-    font-size: 1rem !important;
-    .product-inline-form-wrapper {
-      margin-top: 0 !important;
-    }
-    .product-request-form-box {
-      margin-top: 5px !important;
-    }
-  }
   .crooked-divider {
     display: none;
   }
@@ -217,7 +203,7 @@
         height: 50px;
         box-shadow: none;
         top: 0;
-        border-radius: 0;
+        border-radius: 0 !important;
         border: 1px solid lightgrey;
         .product-icons {
           width: 40px;
@@ -228,10 +214,10 @@
           text-align: right;
         }
         &:first-child {
-          border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0 !important;
         }
         &:last-child {
-          border-radius: 0 0 5px 5px;
+          border-radius: 0 0 5px 5px !important;
         }
       }
       li:hover {
@@ -251,26 +237,35 @@
   }
   .head-container {
     .header-content {
+      font-size: 1rem !important;
+      .product-inline-form-wrapper {
+        margin-top: 0 !important;
+      }
       .product-request-form-box {
-        margin-top: 50px;
+        margin-top: 5px !important;
         min-width: 75%;
         .input-group {
-          & > :first-child {
-            // border-radius: 5px 5px 0 0;
-            button {
-              width: 100%;
-              border-radius: 0 0 5px 5px;
-              margin: 0;
-            }
-          }
-          & > :last-child {
-            border-bottom: none;
-            border-radius: 5px 5px 0 0 !important;
-          }
           display: flex;
           flex-direction: column-reverse;
           align-items: center;
           justify-content: space-between;
+          & > input {
+            min-width: 100%;
+            width: 100%;
+          }
+          & > .input-group-prepend button {
+            min-width: 100%;
+            width: 100%;
+            border-radius: 0 0 5px 5px !important;
+            margin: 0;
+          }
+
+          & > select {
+            min-width: 100%;
+            width: 100%;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0 !important;
+          }
         }
         .input-group-prepend {
           width: 100%;
