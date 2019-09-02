@@ -1,6 +1,11 @@
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
-import { SubmitForm, Upload, FilterContents } from "./ApiHandlers/ApiHandler";
+import {
+  SafeValue,
+  SubmitForm,
+  Upload,
+  FilterContents
+} from "./ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,8 +18,10 @@ import {
 } from "./FlatForm/FlatForm";
 import LoadingSpinner from "../assets/images/spinner.svg";
 import Validator from "./Validator/Validator";
+import ContextApi from "./ContextApi/ContextApi";
 import "../assets/styles/Coworking.scss";
 class DedicatedOffice extends React.PureComponent {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.urlParams = this.urlParser(this.props.location.search);
@@ -179,6 +186,13 @@ class DedicatedOffice extends React.PureComponent {
       () => this.checkFormValidation()
     );
   };
+  doSubmit = () => {
+    if (this.context.userAuth) {
+      this.submitForm();
+    } else {
+      this.context.toggleLoginModal();
+    }
+  };
   submitForm = () => {
     const inputs = this.state.form.fields;
     let _isValid = true;
@@ -308,7 +322,7 @@ class DedicatedOffice extends React.PureComponent {
   generateCheckboxDataFromApi = (name, defaultChecked) => {
     FilterContents(name, res => {
       const arr = [];
-      res.data.map((val, key) => {
+      SafeValue(res, "data", "object", []).map((val, key) => {
         arr.push({
           title: val.fields.name.fa,
           key: val._id,
@@ -492,7 +506,7 @@ class DedicatedOffice extends React.PureComponent {
               <CardFooter>
                 <Button
                   className="navigation-button submit"
-                  onClick={() => this.submitForm()}
+                  onClick={() => this.doSubmit()}
                 >
                   {this.state.form.isSubmitting ? (
                     <img

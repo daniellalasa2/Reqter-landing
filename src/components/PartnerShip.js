@@ -5,17 +5,22 @@
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
 import Skeleton from "react-loading-skeleton";
-import { SubmitForm, FilterContents } from "./ApiHandlers/ApiHandler";
+import {
+  SubmitForm,
+  FilterContents,
+  SafeValue
+} from "./ApiHandlers/ApiHandler";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "../assets/images/spinner.svg";
-
+import ContextApi from "./ContextApi/ContextApi";
 // import { InlineCheckBox, CheckBoxRow } from "./CustomCheckbox/CustomCheckbox";
 import { FlatInlineSelect, FlatInput } from "./FlatForm/FlatForm";
 import "../assets/styles/FlatForm.scss";
 import Validator from "./Validator/Validator";
 class PartnerShip extends React.PureComponent {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.urlParams = this.urlParser(this.props.location.search);
@@ -154,6 +159,13 @@ class PartnerShip extends React.PureComponent {
       () => this.checkFormValidation()
     );
   };
+  doSubmit = () => {
+    if (this.context.userAuth) {
+      this.submitForm();
+    } else {
+      this.context.toggleLoginModal();
+    }
+  };
   submitForm = () => {
     const inputs = this.state.form.fields;
     let _isValid = true;
@@ -232,7 +244,7 @@ class PartnerShip extends React.PureComponent {
   generateCheckboxDataFromApi = (name, defaultChecked) => {
     FilterContents(name, res => {
       const arr = [];
-      res.data.map((val, key) => {
+      SafeValue(res, "data", "object", []).map((val, key) => {
         arr.push({
           title: val.fields.name.fa,
           key: val._id,
@@ -362,7 +374,7 @@ class PartnerShip extends React.PureComponent {
               <CardFooter>
                 <Button
                   className="navigation-button submit"
-                  onClick={() => this.submitForm()}
+                  onClick={() => this.doSubmit()}
                 >
                   {this.state.form.isSubmitting ? (
                     <img

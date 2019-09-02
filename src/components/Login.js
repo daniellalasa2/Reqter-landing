@@ -4,11 +4,9 @@ import { FlatInput } from "./FlatForm/FlatForm";
 import { LoginRequest, VerifyCode } from "./ApiHandlers/ApiHandler";
 import Validator from "./Validator/Validator";
 import { SetCookie } from "../components/CookieHandler/CookieHandler";
-import ContextApi from "./ContextApi/ContextApi";
 import "../assets/styles/Login.scss";
 import LoadingSpinner from "../assets/images/spinner.svg";
 export default class Login extends React.Component {
-  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.state = {
@@ -117,10 +115,13 @@ export default class Login extends React.Component {
           if (success) {
             SetCookie(
               "SSUSERAUTH",
-              res.data.access_token,
+              {
+                TOKEN: res.data.access_token,
+                ID: this.state.form.fields.phoneNumber.value
+              },
               parseInt(res.data.expiresIn) / (60 * 60 * 24)
             );
-            _this.props.history.push("/user/myrequests");
+            // _this.props.history.push("/user/myrequests");
           }
         });
       } else {
@@ -193,7 +194,7 @@ export default class Login extends React.Component {
           className="login-modal"
         >
           <ModalHeader className="login-modal-header" toggle={this.toggle}>
-            ورود
+            {this.props.modalTitle}
           </ModalHeader>
           {/* Get number */}
           {this.state.loginStep === 1 && (
@@ -207,6 +208,7 @@ export default class Login extends React.Component {
                 onChange={this.formStateHandler}
                 error={this.state.form.fields.phoneNumber.error}
                 autoFocus={true}
+                defaultValue={this.props.defaultPhoneNumber}
               />
               <Button
                 color="info"

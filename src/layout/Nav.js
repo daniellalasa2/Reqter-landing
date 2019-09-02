@@ -30,14 +30,12 @@ import "../assets/styles/Nav.scss";
 import ContextApi, {
   ContextConsumer
 } from "../components/ContextApi/ContextApi";
-// import ContextApi from "../components/ContextApi/ContextApi";
 
 class Navigation extends Component {
   static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.state = {
-      showLogin: false,
       dropdownOpen: {
         mobile: false,
         normal: false
@@ -113,9 +111,7 @@ class Navigation extends Component {
     }
   };
   toggleLogin = () => {
-    this.setState(prevState => ({
-      showLogin: !prevState.showLogin
-    }));
+    this.context.toggleLoginModal();
   };
   render() {
     return (
@@ -123,10 +119,11 @@ class Navigation extends Component {
         <ContextConsumer>
           {ctx => (
             <Login
-              openModal={this.state.showLogin}
-              {...this.props}
+              openModal={ctx.displayLoginModal}
               toggle={this.toggleLogin}
               updateAuth={ctx.updateAuth}
+              modalTitle={ctx.loginModalTitle}
+              defaultPhoneNumber={ctx.defaultPhoneNumber}
             />
           )}
         </ContextConsumer>

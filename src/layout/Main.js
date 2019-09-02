@@ -11,7 +11,20 @@ class Layout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userAuth: Boolean(GetCookie("SSUSERAUTH"))
+      userAuth: Boolean(GetCookie("SSUSERAUTH")),
+      displayLoginModal: false,
+      loginModalTitle: "ورود",
+      defaultPhoneNumber: GetCookie("SSUSERAUTH")
+        ? GetCookie("SSUSERAUTH").ID
+        : null
+    };
+    this.toggleLoginModal = (status, modalTitle, defaultPhoneNumber) => {
+      this.setState({
+        displayLoginModal:
+          typeof status === "boolean" ? status : !this.state.displayLoginModal,
+        loginModalTitle: modalTitle ? modalTitle : "ورود",
+        defaultPhoneNumber: defaultPhoneNumber
+      });
     };
     this.updateAuth = (status, callback) => {
       this.setState(
@@ -62,7 +75,11 @@ class Layout extends Component {
                         <ContextApi.Provider
                           value={{
                             auth: this.state.userAuth,
-                            updateAuth: this.updateAuth
+                            updateAuth: this.updateAuth,
+                            displayLoginModal: this.state.displayLoginModal,
+                            toggleLoginModal: this.toggleLoginModal,
+                            loginModalTitle: this.state.loginModalTitle,
+                            defaultPhoneNumber: this.state.defaultPhoneNumber
                           }}
                         >
                           <React.Fragment>

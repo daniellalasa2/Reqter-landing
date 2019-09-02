@@ -38,7 +38,7 @@ var Configuration = {
 function CheckAuthToken() {
   return new Promise((resolve, reject) => {
     if (GetCookie("SSUSERAUTH")) {
-      resolve(GetCookie("SSUSERAUTH"));
+      resolve(GetCookie("SSUSERAUTH").TOKEN);
     } else if (GetCookie("SSGUESTAUTH")) {
       resolve(GetCookie("SSGUESTAUTH"));
     } else {

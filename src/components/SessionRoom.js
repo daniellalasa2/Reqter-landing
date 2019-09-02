@@ -24,8 +24,10 @@ import moment from "jalali-moment";
 import LoadingSpinner from "../assets/images/spinner.svg";
 import NumberFormat from "react-number-format";
 import Validator from "./Validator/Validator";
+import ContextApi from "./ContextApi/ContextApi";
 import "../assets/styles/Coworking.scss";
 class SessionRoom extends React.PureComponent {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.urlParams = this.urlParser(this.props.location.search);
@@ -233,6 +235,20 @@ class SessionRoom extends React.PureComponent {
       () => this.checkFormValidation()
     );
   };
+  validatePhoneNumber = callback => {
+    if (
+      this.context.userAuth &&
+      this.context.userAuth.ID === this.state.form.fields.phonenumber.value
+    ) {
+      callback();
+    } else {
+      this.context.toggleLoginModal(
+        true,
+        "تایید شماره تماس",
+        this.state.form.fields.phonenumber.value
+      );
+    }
+  };
   submitForm = () => {
     const inputs = this.state.form.fields;
     let _isValid = true;
@@ -264,39 +280,41 @@ class SessionRoom extends React.PureComponent {
     });
     // if the form was valid then submit it
     if (_isValid) {
-      // fetch additional background data state to final api object if form was valid
-      _formObjectGoingToSubmit = {
-        ..._formObjectGoingToSubmit,
-        ..._backgroundData
-      };
+      this.validatePhoneNumber(() => {
+        // fetch additional background data state to final api object if form was valid
+        _formObjectGoingToSubmit = {
+          ..._formObjectGoingToSubmit,
+          ..._backgroundData
+        };
 
-      this.setState(
-        {
-          form: {
-            ...this.state.form,
-            isSubmitting: true
-          }
-        },
-        () => {
-          SubmitForm("session_room", _formObjectGoingToSubmit, res => {
-            if (res.code === 201) {
-              this.setState({
-                form: {
-                  ...this.state.form,
-                  submitted: true
-                }
-              });
-            } else {
-              this.setState({
-                form: {
-                  ...this.state.form,
-                  isSubmitting: false
-                }
-              });
+        this.setState(
+          {
+            form: {
+              ...this.state.form,
+              isSubmitting: true
             }
-          });
-        }
-      );
+          },
+          () => {
+            SubmitForm("session_room", _formObjectGoingToSubmit, res => {
+              if (res.code === 201) {
+                this.setState({
+                  form: {
+                    ...this.state.form,
+                    submitted: true
+                  }
+                });
+              } else {
+                this.setState({
+                  form: {
+                    ...this.state.form,
+                    isSubmitting: false
+                  }
+                });
+              }
+            });
+          }
+        );
+      });
     }
   };
   uploadFile = e => {
@@ -362,7 +380,7 @@ class SessionRoom extends React.PureComponent {
   generateCheckboxDataFromApi = (name, defaultChecked) => {
     FilterContents(name, res => {
       const arr = [];
-      res.data.map((val, key) => {
+      SafeValue(res, "data", "object", []).map((val, key) => {
         arr.push({
           title: val.fields.name.fa
             ? SafeValue(val.fields.name, "fa", "string", "")
