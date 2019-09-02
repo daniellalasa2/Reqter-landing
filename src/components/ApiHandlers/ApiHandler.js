@@ -6,8 +6,7 @@ Config.Auth().then(tok => {
 });
 let _api = {
   header: {
-    "Content-Type": "application/json",
-    spaceid: Config.CLIENT_ID
+    "Content-Type": "application/json"
   },
   SubmitForm: Config.BASE_URL_CONTENT + Config.URLs.submit_form,
   Upload: Config.BASE_URL_UPLOAD + Config.URLs.upload,
@@ -157,56 +156,68 @@ var Upload = (file, callback, progress) => {
 
 //User Login
 var LoginRequest = (phoneNumber, callback) => {
-  axios({
-    url: _api.Login,
-    method: "POST",
-    headers: _api.header,
-    data: {
-      phoneNumber: phoneNumber
-    }
-  })
-    .then(res => {
-      const result = errorHandler(SafeValue(res, "status", "number", null));
-      return callback({
-        success_result: result,
-        data: SafeValue(res, "data", "object", {})
-      });
+  Config.Auth().then(token => {
+    axios({
+      url: _api.Login,
+      method: "POST",
+      headers: {
+        ..._api.header,
+        authorization: token,
+        clientid: Config.CLIENT_ID
+      },
+      data: {
+        phoneNumber: phoneNumber
+      }
     })
-    .catch(err => {
-      const result = errorHandler(
-        SafeValue(err.response, "status", "number", 0)
-      );
-      return callback({
-        success_result: result,
-        data: SafeValue(err.response, "data", "object", {})
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        return callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", {})
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        return callback({
+          success_result: result,
+          data: SafeValue(err.response, "data", "object", {})
+        });
       });
-    });
+  });
 };
 
 //User Verify Code
 var VerifyCode = (data, callback) => {
-  axios({
-    url: _api.VerifyCode,
-    method: "POST",
-    headers: _api.header,
-    data: data
-  })
-    .then(res => {
-      const result = errorHandler(SafeValue(res, "status", "number", null));
-      return callback({
-        success_result: result,
-        data: SafeValue(res, "data", "object", [])
-      });
+  Config.Auth().then(token => {
+    axios({
+      url: _api.VerifyCode,
+      method: "POST",
+      headers: {
+        ..._api.header,
+        authorization: token,
+        clientid: Config.CLIENT_ID
+      },
+      data: data
     })
-    .catch(err => {
-      const result = errorHandler(
-        SafeValue(err.response, "status", "number", 0)
-      );
-      return callback({
-        success_result: result,
-        data: SafeValue(err.response, "data", "object", [])
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        return callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        return callback({
+          success_result: result,
+          data: SafeValue(err.response, "data", "object", [])
+        });
       });
-    });
+  });
 };
 var GetRequestsList = callback => {
   Config.Auth().then(token => {

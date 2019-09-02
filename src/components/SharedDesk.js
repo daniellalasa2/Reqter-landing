@@ -227,7 +227,7 @@ class SharedDesk extends React.PureComponent {
         },
         () => {
           SubmitForm("coworking", _formObjectGoingToSubmit, res => {
-            if (res.code === 200) {
+            if (res.code === 201) {
               this.setState({
                 form: {
                   ...this.state.form,
