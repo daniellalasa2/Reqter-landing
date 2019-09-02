@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
 import { SubmitForm, Upload, FilterContents } from "./ApiHandlers/ApiHandler";
-import Config from "./ApiHandlers/Config";
+import { Config } from "./ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

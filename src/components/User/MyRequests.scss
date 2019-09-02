@@ -53,6 +53,11 @@
     .request-card-status {
       strong {
         color: rgb(44, 186, 58);
+        color: white;
+        background-color: rgb(44, 186, 58);
+        border-radius: 0.3rem;
+        padding: 5px;
+        cursor: default;
       }
       button {
         border: 2px solid rgb(114, 127, 221);
@@ -70,11 +75,35 @@
         background-color: #e8e855 !important;
       }
     }
+    .card-body {
+      .request-card-status {
+        strong {
+          color: white;
+          background-color: rgb(214, 214, 62);
+          border-radius: 0.3rem;
+          padding: 5px;
+          cursor: wait;
+          font-size: 1.2rem;
+        }
+      }
+    }
   }
   .closed-requests-section {
     .card-header {
       .fa-layers {
         background-color: #dd4242 !important;
+      }
+    }
+    .card-body {
+      .request-card-status {
+        strong {
+          color: white;
+          background-color: #dd4242;
+          border-radius: 0.3rem;
+          padding: 5px;
+          cursor: not-allowed;
+          font-size: 1.1rem;
+        }
       }
     }
   }
@@ -149,7 +178,7 @@
       align-items: center;
       width: 30%;
       strong {
-        font-size: 1.65rem;
+        font-size: 1.2rem;
       }
       button {
         font-size: 16px;

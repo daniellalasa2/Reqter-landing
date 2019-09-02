@@ -1,25 +1,9 @@
 import React, { Component } from "react";
-import {
-  Nav,
-  NavItem,
-  Dropdown,
-  DropdownItem,
-  DropdownToggle,
-  DropdownMenu,
-  Collapse,
-  Row,
-  Col
-} from "reactstrap";
 
 import { Link } from "react-router-dom";
 import classnames from "classnames";
-import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
-import {
-  SubmitForm,
-  Upload,
-  FilterContents,
-  SafeValue
-} from "../ApiHandlers/ApiHandler";
+import { Card, CardHeader, CardBody } from "reactstrap";
+import { GetRequestsList } from "../ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -37,6 +21,12 @@ export default class MyRequests extends Component {
       activeTab: 1
     };
   }
+  componentDidMount() {
+    GetRequestsList(data => {
+      console.log(data);
+    });
+  }
+
   tabChanger = tab => {
     this.setState({
       activeTab: tab
@@ -235,9 +225,40 @@ export default class MyRequests extends Component {
                   </span>
                 </CardHeader>
                 <CardBody>
-                  <span className="no-content">
+                  {/* <span className="no-content">
                     درخواستی برای نمایش وجود ندارد
-                  </span>
+                  </span> */}
+                  <div className="request-card">
+                    <div className="request-card-image">
+                      <img src={deskImg} alt="Desk" />
+                      <strong className="product-title">صندلی اختصاصی</strong>
+                    </div>
+                    <div className="request-card-details">
+                      <ul>
+                        <li className="product-title-wrapper">
+                          <strong className="product-title">
+                            صندلی اشتراکی
+                          </strong>
+                        </li>
+                        <li>تعداد :‌ ۷</li>
+                        <li>تاریخ :‌۱۳۹۸-۰۷-۰۳</li>
+                        <li>شهر : تهران</li>
+                        <li>
+                          <span> رزومه :‌</span>
+                          <a href="#">
+                            <FontAwesomeIcon
+                              icon={faDownload}
+                              size="lg"
+                              color="black"
+                            />
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="request-card-status">
+                      <strong>در انتظار بررسی</strong>
+                    </div>
+                  </div>
                 </CardBody>
               </section>
             )}
@@ -258,9 +279,41 @@ export default class MyRequests extends Component {
                   </span>
                 </CardHeader>
                 <CardBody>
-                  <span className="no-content">
+                  {/* <span className="no-content">
                     درخواستی برای نمایش وجود ندارد
-                  </span>
+                  </span> */}
+
+                  <div className="request-card">
+                    <div className="request-card-image">
+                      <img src={deskImg} alt="Desk" />
+                      <strong className="product-title">صندلی اختصاصی</strong>
+                    </div>
+                    <div className="request-card-details">
+                      <ul>
+                        <li className="product-title-wrapper">
+                          <strong className="product-title">
+                            صندلی اشتراکی
+                          </strong>
+                        </li>
+                        <li>تعداد :‌ ۷</li>
+                        <li>تاریخ :‌۱۳۹۸-۰۷-۰۳</li>
+                        <li>شهر : تهران</li>
+                        <li>
+                          <span> رزومه :‌</span>
+                          <a href="#">
+                            <FontAwesomeIcon
+                              icon={faDownload}
+                              size="lg"
+                              color="black"
+                            />
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="request-card-status">
+                      <strong>درخواست بسته شده</strong>
+                    </div>
+                  </div>
                 </CardBody>
               </section>
             )}
