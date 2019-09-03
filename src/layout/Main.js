@@ -3,7 +3,10 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import routes from "../Routes";
 import "./Main.scss";
 import ContextApi from "../components/ContextApi/ContextApi";
-import { GetCookie } from "../components/CookieHandler/CookieHandler";
+import {
+  GetCookie,
+  SetCookie
+} from "../components/CookieHandler/CookieHandler";
 const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
 

@@ -29,6 +29,7 @@ import "../assets/styles/Nav.scss";
 import ContextApi, {
   ContextConsumer
 } from "../components/ContextApi/ContextApi";
+import { SetCookie } from "../components/CookieHandler/CookieHandler";
 
 class Navigation extends Component {
   static contextType = ContextApi;
@@ -81,6 +82,10 @@ class Navigation extends Component {
         [mode]: !this.state.dropdownOpen[mode]
       }
     });
+  };
+  logOut = () => {
+    SetCookie("SSUSERAUTH", "", 0);
+    this.context.updateAuth(() => this.props.history.push("/"));
   };
   toggleMenu = action => {
     switch (action) {
@@ -149,6 +154,13 @@ class Navigation extends Component {
               onClick={() => this.toggleMenu("open")}
             />
             <Nav className="nav-links-container">
+              {/* {this.context.auth.ROLE === "user" && (
+                <NavItem>
+                  <Link>
+                    <button onClick={() => this.logOut()}>خروج</button>
+                  </Link>
+                </NavItem>
+              )} */}
               <Dropdown
                 nav
                 isOpen={this.state.dropdownOpen.normal}
@@ -238,6 +250,20 @@ class Navigation extends Component {
             </div>
             <ul className="items-container">
               <li>
+                {this.context.auth.ROLE === "user" ? (
+                  <span
+                    className="nav-link my-requests-link"
+                    onClick={() => this.props.history.push("/user/myrequests")}
+                  >
+                    درخواستهای من
+                  </span>
+                ) : (
+                  <span className="nav-link login" onClick={this.toggleLogin}>
+                    ورود
+                  </span>
+                )}
+              </li>
+              <li>
                 <span onClick={() => (window.location.href = "/")}>خانه</span>
               </li>
               <li>
@@ -283,20 +309,11 @@ class Navigation extends Component {
                   سوالات متداول
                 </Link>
               </li>
-              <li>
-                {this.context.auth.ROLE === "user" ? (
-                  <span
-                    className="nav-link my-requests-link"
-                    onClick={() => this.props.history.push("/user/myrequests")}
-                  >
-                    درخواستهای من
-                  </span>
-                ) : (
-                  <span className="nav-link login" onClick={this.toggleLogin}>
-                    ورود
-                  </span>
-                )}
-              </li>
+              {/* {this.context.auth.ROLE === "user" && (
+                <li className="nav-link">
+                  <span onClick={() => this.logOut()}>خروج</span>
+                </li>
+              )} */}
             </ul>
           </div>
         </div>

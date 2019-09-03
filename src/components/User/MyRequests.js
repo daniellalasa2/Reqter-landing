@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { GetRequestsList } from "../ApiHandlers/ApiHandler";
+import { SafeValue, GetRequestsList } from "../ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,20 +18,179 @@ export default class MyRequests extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 1
+      activeTab: 1,
+      requestsList: []
     };
   }
-  componentDidMount() {
-    GetRequestsList(data => {
-      console.log(data);
+  updateRequestList = () => {
+    const _this = this;
+    GetRequestsList(requests_list => {
+      const SAFE_requests_list = SafeValue(requests_list, "data", "object", []);
+      const filtered_requests_list = {
+        pending: [],
+        approved: [],
+        closed: [],
+        _draft: []
+      };
+      SAFE_requests_list.forEach(request => {
+        //approved
+        if (request.fields.quotes && request.fields.quotes.length > 0)
+          filtered_requests_list.approved.push(request);
+        //pending
+        else if (
+          !request.fields.quotes ||
+          !Boolean(request.fields.quotes) ||
+          request.fields.quotes.length === 0
+        )
+          filtered_requests_list.pending.push(request);
+        else if (request.fields.quotes)
+          filtered_requests_list.closed.push(request);
+        else filtered_requests_list._draft.push(request);
+      });
+      _this.setState({
+        requestsList: filtered_requests_list
+      });
     });
-  }
+  };
+  generateRequestsElements = stage => {
+    let generatedElements = [];
+    const targetList = SafeValue(this.state.requestsList, stage, "object", []);
+    console.log(this.state.requestsList);
+    if (targetList.length > 0) {
+      switch (stage) {
+        case "approved":
+          generatedElements = this.state.requestsList["approved"].map(item => (
+            <div className="request-card" key={item._id}>
+              <div className="request-card-image">
+                <img src={deskImg} alt="Desk" />
+                <strong className="product-title">{item.fields.name}</strong>
+              </div>
+              <div className="request-card-details">
+                <ul>
+                  <li className="product-title-wrapper">
+                    <strong className="product-title">
+                      {item.fields.name}
+                    </strong>
+                  </li>
+                  <li>تعداد :‌ {item.fields.seats}</li>
+                  <li>تاریخ : {item.fields.date}</li>
+                  <li>شهر : {item.fields.city}</li>
+                  {item.fields.resume && (
+                    <li>
+                      <span>رزومه :‌ </span>
+                      <a href={item.fields.resume}>
+                        <FontAwesomeIcon
+                          icon={faDownload}
+                          size="lg"
+                          color="black"
+                        />
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+              <div className="request-card-status">
+                <strong>{item.fields.quotes.lengt} پیشنهاد</strong>
+                <button onClick={() => null}>مشاهده پیشنهاد ها</button>
+              </div>
+            </div>
+          ));
+          break;
+        case "pending":
+          generatedElements = this.state.requestsList["pending"].map(item => (
+            <div className="request-card" key={item._id}>
+              <div className="request-card-image">
+                <img src={deskImg} alt="Desk" />
+                <strong className="product-title">{item.fields.name}</strong>
+              </div>
+              <div className="request-card-details">
+                <ul>
+                  <li className="product-title-wrapper">
+                    <strong className="product-title">
+                      {item.fields.name}
+                    </strong>
+                  </li>
+                  <li>تعداد :‌ {item.fields.seats}</li>
+                  <li>تاریخ : {item.fields.date}</li>
+                  <li>شهر : {item.fields.city}</li>
+                  {item.fields.resume && (
+                    <li>
+                      <span>رزومه :‌ </span>
+                      <a href={item.fields.resume}>
+                        <FontAwesomeIcon
+                          icon={faDownload}
+                          size="lg"
+                          color="black"
+                        />
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+              <div className="request-card-status">
+                <strong>در انتظار بررسی</strong>
+              </div>
+            </div>
+          ));
+          break;
+        case "closed":
+          generatedElements = this.state.requestsList["pending"].map(item => (
+            <div className="request-card" key={item._id}>
+              <div className="request-card-image">
+                <img src={deskImg} alt="Desk" />
+                <strong className="product-title">{item.fields.name}</strong>
+              </div>
+              <div className="request-card-details">
+                <ul>
+                  <li className="product-title-wrapper">
+                    <strong className="product-title">
+                      {item.fields.name}
+                    </strong>
+                  </li>
+                  <li>تعداد :‌ {item.fields.seats}</li>
+                  <li>تاریخ : {item.fields.date}</li>
+                  <li>شهر : {item.fields.city}</li>
+                  {item.fields.resume && (
+                    <li>
+                      <span>رزومه :‌ </span>
+                      <a href={item.fields.resume}>
+                        <FontAwesomeIcon
+                          icon={faDownload}
+                          size="lg"
+                          color="black"
+                        />
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+              <div className="request-card-status">
+                <strong>درخواست بسته شده</strong>
+              </div>
+            </div>
+          ));
+          break;
+        default:
+          break;
+      }
+    } else {
+      generatedElements = (
+        <span className="no-content">درخواستی برای نمایش وجود ندارد</span>
+      );
+    }
+    return generatedElements;
+  };
 
   tabChanger = tab => {
     this.setState({
       activeTab: tab
     });
   };
+  componentDidMount() {
+    // setInterval(() => {
+    this.updateRequestList();
+    // }, 10000);
+  }
   render() {
     return (
       <section
@@ -85,127 +244,7 @@ export default class MyRequests extends Component {
                     <strong>درخواستهای دارای پیشنهاد</strong>
                   </span>
                 </CardHeader>
-                <CardBody>
-                  {/* <span className="no-content">
-                    درخواستی برای نمایش وجود ندارد
-                  </span> */}
-                  <div className="request-card">
-                    <div className="request-card-image">
-                      <img src={deskImg} alt="Desk" />
-                      <strong className="product-title">صندلی اشتراکی</strong>
-                    </div>
-                    <div className="request-card-details">
-                      <ul>
-                        <li className="product-title-wrapper">
-                          <strong className="product-title">
-                            صندلی اشتراکی
-                          </strong>
-                        </li>
-                        <li>تعداد :‌ ۷</li>
-                        <li>تاریخ :‌۱۳۹۸-۰۷-۰۳</li>
-                        <li>شهر : تهران</li>
-                        <li>
-                          <span> رزومه :‌</span>
-                          <a href="#">
-                            <FontAwesomeIcon
-                              icon={faDownload}
-                              size="lg"
-                              color="black"
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="request-card-status">
-                      <strong>۲ پیشنهاد</strong>
-                      <button>مشاهده پیشنهاد ها</button>
-                    </div>
-                  </div>
-
-                  <div className="request-card">
-                    <div className="request-card-image">
-                      <img src={deskImg} alt="Desk" />
-                    </div>
-                    <div className="request-card-details">
-                      <ul>
-                        <li>
-                          <strong>صندلی اختصاصی</strong>
-                        </li>
-                        <li>تعداد :‌ ۷</li>
-                        <li>تاریخ :‌۱۳۹۸-۰۷-۰۳</li>
-                        <li>شهر : تهران</li>
-                        <li>
-                          <span> رزومه :‌</span>
-                          <FontAwesomeIcon
-                            icon={faDownload}
-                            size="lg"
-                            color="black"
-                          />
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="request-card-status">
-                      <strong>۱ پیشنهاد</strong>
-                      <button>مشاهده پیشنهاد ها</button>
-                    </div>
-                  </div>
-
-                  <div className="request-card">
-                    <div className="request-card-image">
-                      <img src={deskImg} alt="Desk" />
-                    </div>
-                    <div className="request-card-details">
-                      <ul>
-                        <li>
-                          <strong>اتاق کار اختصاصی</strong>
-                        </li>
-                        <li>تعداد :‌ ۷</li>
-                        <li>تاریخ :‌۱۳۹۸-۰۷-۰۳</li>
-                        <li>شهر : تهران</li>
-                        <li>
-                          <span> رزومه :‌</span>
-                          <FontAwesomeIcon
-                            icon={faDownload}
-                            size="lg"
-                            color="black"
-                          />
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="request-card-status">
-                      <strong>۹ پیشنهاد</strong>
-                      <button>مشاهده پیشنهاد ها</button>
-                    </div>
-                  </div>
-
-                  <div className="request-card">
-                    <div className="request-card-image">
-                      <img src={deskImg} alt="Desk" />
-                    </div>
-                    <div className="request-card-details">
-                      <ul>
-                        <li>
-                          <strong>صندلی اشتراکی</strong>
-                        </li>
-                        <li>تعداد :‌ ۷</li>
-                        <li>تاریخ :‌۱۳۹۸-۰۷-۰۳</li>
-                        <li>شهر : تهران</li>
-                        <li>
-                          <span> رزومه :‌</span>
-                          <FontAwesomeIcon
-                            icon={faDownload}
-                            size="lg"
-                            color="black"
-                          />
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="request-card-status">
-                      <strong>۵ پیشنهاد</strong>
-                      <button>مشاهده پیشنهاد ها</button>
-                    </div>
-                  </div>
-                </CardBody>
+                <CardBody>{this.generateRequestsElements("approved")}</CardBody>
               </section>
             )}
             {/* Pending Requests */}
@@ -224,42 +263,7 @@ export default class MyRequests extends Component {
                     <strong>درخواستهای بدون پیشنهاد</strong>
                   </span>
                 </CardHeader>
-                <CardBody>
-                  {/* <span className="no-content">
-                    درخواستی برای نمایش وجود ندارد
-                  </span> */}
-                  <div className="request-card">
-                    <div className="request-card-image">
-                      <img src={deskImg} alt="Desk" />
-                      <strong className="product-title">صندلی اختصاصی</strong>
-                    </div>
-                    <div className="request-card-details">
-                      <ul>
-                        <li className="product-title-wrapper">
-                          <strong className="product-title">
-                            صندلی اشتراکی
-                          </strong>
-                        </li>
-                        <li>تعداد :‌ ۷</li>
-                        <li>تاریخ :‌۱۳۹۸-۰۷-۰۳</li>
-                        <li>شهر : تهران</li>
-                        <li>
-                          <span> رزومه :‌</span>
-                          <a href="#">
-                            <FontAwesomeIcon
-                              icon={faDownload}
-                              size="lg"
-                              color="black"
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="request-card-status">
-                      <strong>در انتظار بررسی</strong>
-                    </div>
-                  </div>
-                </CardBody>
+                <CardBody>{this.generateRequestsElements("pending")}</CardBody>
               </section>
             )}
             {/* Closed Requests */}
@@ -278,43 +282,7 @@ export default class MyRequests extends Component {
                     <strong>درخواستهای بسته شده</strong>
                   </span>
                 </CardHeader>
-                <CardBody>
-                  {/* <span className="no-content">
-                    درخواستی برای نمایش وجود ندارد
-                  </span> */}
-
-                  <div className="request-card">
-                    <div className="request-card-image">
-                      <img src={deskImg} alt="Desk" />
-                      <strong className="product-title">صندلی اختصاصی</strong>
-                    </div>
-                    <div className="request-card-details">
-                      <ul>
-                        <li className="product-title-wrapper">
-                          <strong className="product-title">
-                            صندلی اشتراکی
-                          </strong>
-                        </li>
-                        <li>تعداد :‌ ۷</li>
-                        <li>تاریخ :‌۱۳۹۸-۰۷-۰۳</li>
-                        <li>شهر : تهران</li>
-                        <li>
-                          <span> رزومه :‌</span>
-                          <a href="#">
-                            <FontAwesomeIcon
-                              icon={faDownload}
-                              size="lg"
-                              color="black"
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="request-card-status">
-                      <strong>درخواست بسته شده</strong>
-                    </div>
-                  </div>
-                </CardBody>
+                <CardBody>{this.generateRequestsElements("closed")}</CardBody>
               </section>
             )}
           </Card>

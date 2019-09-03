@@ -14,7 +14,7 @@ var Configuration = {
     upload: "asset/upload",
     login: "api/v1/customers/requestcode",
     verify_code: "api/v1/customers/verifycode",
-    my_requests: "api/v1/requests/myrequests",
+    all_requests: "api/v1/requests/all",
     get_initial_token: "api/v1/auth/token"
   },
   CONTENT_TYPE_ID: {
@@ -30,7 +30,6 @@ var Configuration = {
     list_of_cities: "5d35e6fa8e6e9a0017c28fce",
     sessionroom_equipments: "5d5bcb6eed9a82001737c751",
     contact_us: "5d3e97363a65540017a90f11",
-    requests_list: "5d26e7e9375e9b001745e84e",
     request_stages: "5d6b5d205b60dc0017c95118"
   }
 };

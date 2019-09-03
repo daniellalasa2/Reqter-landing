@@ -10,7 +10,7 @@ let _api = {
   FilterContents: Config.BASE_URL_CONTENT + Config.URLs.filter_contents,
   Login: Config.BASE_URL_PANEL + Config.URLs.login,
   VerifyCode: Config.BASE_URL_PANEL + Config.URLs.verify_code,
-  GetRequestsList: Config.BASE_URL_PANEL + Config.URLs.my_requests
+  GetRequestsList: Config.BASE_URL_PANEL + Config.URLs.all_requests
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode };
@@ -227,9 +227,6 @@ var GetRequestsList = callback => {
       headers: {
         ..._api.header,
         authorization: token
-      },
-      params: {
-        contentType: Config.CONTENT_TYPE_ID["requests_list"]
       }
     })
       .then(res => {
@@ -264,6 +261,7 @@ var SafeValue = (data, field, type, defaultValue) => {
       return defaultValue;
     }
   } catch (err) {
+    console.warn("Value is not safe: ",err);
     return defaultValue;
   }
 };
