@@ -125,7 +125,7 @@ const routes = [
     exact: true,
     name: "My Requests",
     component: MyRequests,
-    auth: true
+    auth: "user"
   }
 ];
 

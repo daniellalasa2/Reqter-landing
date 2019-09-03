@@ -127,7 +127,7 @@ class PrivateDesk extends React.PureComponent {
     const checkBoxValuesArr = [];
     let name = "";
     if (data.length > 1) {
-      data.map(val => {
+      data.forEach(val => {
         name = val.name;
         checkBoxValuesArr.push(val.value);
       });
@@ -185,11 +185,18 @@ class PrivateDesk extends React.PureComponent {
       () => this.checkFormValidation()
     );
   };
-  doSubmit = () => {
-    if (this.context.userAuth) {
-      this.submitForm();
+  validatePhoneNumber = callback => {
+    if (
+      this.context.auth &&
+      this.context.auth.ID === this.state.form.fields.phonenumber.value
+    ) {
+      callback && typeof callback === "function" && callback();
     } else {
-      this.context.toggleLoginModal();
+      this.context.toggleLoginModal(
+        true,
+        "تایید شماره تماس",
+        this.state.form.fields.phonenumber.value
+      );
     }
   };
   submitForm = () => {
@@ -223,38 +230,41 @@ class PrivateDesk extends React.PureComponent {
     });
     // if the form was valid then submit it
     if (_isValid) {
-      // fetch additional background data state to final api object if form was valid
-      _formObjectGoingToSubmit = {
-        ..._formObjectGoingToSubmit,
-        ..._backgroundData
-      };
-      this.setState(
-        {
-          form: {
-            ...this.state.form,
-            isSubmitting: true
-          }
-        },
-        () => {
-          SubmitForm("coworking", _formObjectGoingToSubmit, res => {
-            if (res.code === 201) {
-              this.setState({
-                form: {
-                  ...this.state.form,
-                  submitted: true
-                }
-              });
-            } else {
-              this.setState({
-                form: {
-                  ...this.state.form,
-                  isSubmitting: false
-                }
-              });
+      this.validatePhoneNumber(() => {
+        // fetch additional background data state to final api object if form was valid
+        _formObjectGoingToSubmit = {
+          ..._formObjectGoingToSubmit,
+          ..._backgroundData
+        };
+
+        this.setState(
+          {
+            form: {
+              ...this.state.form,
+              isSubmitting: true
             }
-          });
-        }
-      );
+          },
+          () => {
+            SubmitForm("session_room", _formObjectGoingToSubmit, res => {
+              if (res.code === 201) {
+                this.setState({
+                  form: {
+                    ...this.state.form,
+                    submitted: true
+                  }
+                });
+              } else {
+                this.setState({
+                  form: {
+                    ...this.state.form,
+                    isSubmitting: false
+                  }
+                });
+              }
+            });
+          }
+        );
+      });
     }
   };
   uploadFile = e => {
@@ -503,7 +513,7 @@ class PrivateDesk extends React.PureComponent {
               <CardFooter>
                 <Button
                   className="navigation-button submit"
-                  onClick={() => this.doSubmit()}
+                  onClick={() => this.submitForm()}
                 >
                   {this.state.form.isSubmitting ? (
                     <img

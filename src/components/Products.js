@@ -12,8 +12,6 @@ import {
 } from "reactstrap";
 import { FilterContents } from "./ApiHandlers/ApiHandler";
 import classnames from "classnames";
-import NumberFormat from "react-number-format";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronCircleLeft,

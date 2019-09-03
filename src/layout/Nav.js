@@ -25,7 +25,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/images/logo.jpg";
 import Login from "../components/Login";
-import { GetCookie } from "../components/CookieHandler/CookieHandler";
 import "../assets/styles/Nav.scss";
 import ContextApi, {
   ContextConsumer
@@ -57,7 +56,6 @@ class Navigation extends Component {
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   }
-
   handleScroll = event => {
     let scrollTop = window.scrollY;
     const navMainContainer = document.getElementById("nav-main-container");
@@ -184,7 +182,7 @@ class Navigation extends Component {
                 </Link>
               </NavItem>
               <NavItem>
-                {this.context.auth ? (
+                {this.context.auth.ROLE === "user" ? (
                   <button
                     className="nav-link my-requests-link"
                     onClick={() => this.props.history.push("/user/myrequests")}
@@ -286,7 +284,7 @@ class Navigation extends Component {
                 </Link>
               </li>
               <li>
-                {this.context.auth ? (
+                {this.context.auth.ROLE === "user" ? (
                   <span
                     className="nav-link my-requests-link"
                     onClick={() => this.props.history.push("/user/myrequests")}

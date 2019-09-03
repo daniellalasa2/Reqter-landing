@@ -10,13 +10,20 @@ const Footer = React.lazy(() => import("./Footer"));
 class Layout extends Component {
   constructor(props) {
     super(props);
+    this.authObj = GetCookie("SSUSERAUTH")
+      ? JSON.parse(GetCookie("SSUSERAUTH"))
+      : GetCookie("SSGUESTAUTH")
+      ? JSON.parse(GetCookie("SSGUESTAUTH"))
+      : {};
     this.state = {
-      userAuth: Boolean(GetCookie("SSUSERAUTH")),
+      userAuth: {
+        ROLE: this.authObj ? this.authObj.ROLE : "newcomer",
+        ID: this.authObj.ID ? this.authObj.ID : "",
+        TOKEN: this.authObj ? this.authObj.TOKEN : ""
+      },
       displayLoginModal: false,
       loginModalTitle: "ورود",
-      defaultPhoneNumber: GetCookie("SSUSERAUTH")
-        ? GetCookie("SSUSERAUTH").ID
-        : null
+      defaultPhoneNumber: this.authObj ? this.authObj.ID : ""
     };
     this.toggleLoginModal = (status, modalTitle, defaultPhoneNumber) => {
       this.setState({
@@ -26,13 +33,17 @@ class Layout extends Component {
         defaultPhoneNumber: defaultPhoneNumber
       });
     };
-    this.updateAuth = (status, callback) => {
+    //if any argument sent then set incoming argument else update user authentication based on set cookie
+    this.updateAuth = callback => {
       this.setState(
         {
-          userAuth: status ? status : Boolean(GetCookie("SSUSERAUTH"))
+          userAuth: JSON.parse(GetCookie("SSUSERAUTH")), //DO NOT REPLACE THIS WITH this.authObj
+          displayLoginModal: false
         },
         () => {
-          callback(this.state.userAuth);
+          callback &&
+            typeof callback === "function" &&
+            callback(this.state.userAuth);
         }
       );
     };
@@ -69,7 +80,7 @@ class Layout extends Component {
                   exact={route.exact}
                   name={route.name}
                   render={props =>
-                    !route.auth || route.auth === this.state.userAuth ? (
+                    !route.auth || route.auth === this.state.userAuth.ROLE ? (
                       <React.Fragment>
                         {this.gtagUpdater(this.props.history, route.name)}
                         <ContextApi.Provider

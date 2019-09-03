@@ -1,4 +1,3 @@
-import React from "react";
 import { GetCookie, SetCookie } from "../CookieHandler/CookieHandler";
 import axios from "axios";
 
@@ -38,9 +37,9 @@ var Configuration = {
 function CheckAuthToken() {
   return new Promise((resolve, reject) => {
     if (GetCookie("SSUSERAUTH")) {
-      resolve(GetCookie("SSUSERAUTH").TOKEN);
+      resolve(JSON.parse(GetCookie("SSUSERAUTH")).TOKEN);
     } else if (GetCookie("SSGUESTAUTH")) {
-      resolve(GetCookie("SSGUESTAUTH"));
+      resolve(JSON.parse(GetCookie("SSGUESTAUTH")).TOKEN);
     } else {
       GetInitialToken(token => {
         if (token) {
@@ -65,7 +64,11 @@ function GetInitialToken(callback) {
       if (res.data.success) {
         SetCookie(
           "SSGUESTAUTH",
-          res.data.access_token,
+          JSON.stringify({
+            ROLE: "guest",
+            TOKEN: res.data.access_token,
+            ID: ""
+          }),
           res.data.expiresIn / (1000 * 60 * 60 * 24)
         );
         callback(res.data.access_token);

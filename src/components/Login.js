@@ -43,16 +43,27 @@ export default class Login extends React.Component {
       phoneNumber: ["phonenumber"]
     };
   }
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (this.props.openModal !== nextProps.openModal) {
       this.setState({
-        modal: nextProps.openModal
+        modal: nextProps.openModal,
+        form: {
+          ...this.state.form,
+          fields: {
+            ...this.state.form.fields,
+            phoneNumber: {
+              ...this.state.form.fields.phoneNumber,
+              value: nextProps.defaultPhoneNumber,
+              isValid: true
+            }
+          }
+        }
       });
       return true;
     }
     return true;
   }
-  LoginRequest = () => {
+  Login = () => {
     this.PendingForm(true);
     const _this = this;
     LoginRequest(this.state.form.fields.phoneNumber.value, res => {
@@ -68,6 +79,24 @@ export default class Login extends React.Component {
                 ...this.state.form.fields.code,
                 isValid: false,
                 error: ""
+              }
+            }
+          }
+        });
+      } else if (res.success_result.code === 400) {
+        _this.setState({
+          form: {
+            ...this.state.form,
+            fields: {
+              ...this.state.form.fields,
+              code: {
+                ...this.state.form.fields.code,
+                isValid: false,
+                error: ""
+              },
+              phoneNumber: {
+                ...this.state.form.fields.phoneNumber,
+                error: "شماره نامعتبر"
               }
             }
           }
@@ -110,20 +139,17 @@ export default class Login extends React.Component {
     VerifyCode(data, res => {
       _this.PendingForm(false);
       if (res.data.success) {
-        //change user auth to true , means user is login already
-        _this.props.updateAuth(true, success => {
-          if (success) {
-            SetCookie(
-              "SSUSERAUTH",
-              {
-                TOKEN: res.data.access_token,
-                ID: this.state.form.fields.phoneNumber.value
-              },
-              parseInt(res.data.expiresIn) / (60 * 60 * 24)
-            );
-            // _this.props.history.push("/user/myrequests");
-          }
-        });
+        //set cookie then update program Cookie authentication
+        SetCookie(
+          "SSUSERAUTH",
+          JSON.stringify({
+            ROLE: "user",
+            TOKEN: res.data.access_token,
+            ID: this.state.form.fields.phoneNumber.value
+          }),
+          parseInt(res.data.expiresIn) / (60 * 60 * 24)
+        );
+        _this.props.updateAuth();
       } else {
         _this.setState({
           form: {
@@ -146,6 +172,28 @@ export default class Login extends React.Component {
       loginStep: 1
     });
   };
+  // checkFieldValidation = fieldName => {
+  //   const field = this.state.form.fields[fieldName];
+  //   const validation = Validator(field.value, this.validationRules[fieldName]);
+  //   const fieldContent = {
+  //     error: validation.message,
+  //     isValid: validation.valid
+  //   };
+  //   console.log(field);
+  //   console.log(this.state.form);
+  //   this.setState({
+  //     form: {
+  //       ...this.state.form,
+  //       fields: {
+  //         ...this.state.form.fields,
+  //         [field]: {
+  //           ...[field],
+  //           ...fieldContent
+  //         }
+  //       }
+  //     }
+  //   });
+  // };
   checkFormValidation = () => {
     const fields = this.state.form.fields;
     let boolean = true;
@@ -202,7 +250,6 @@ export default class Login extends React.Component {
               <FlatInput
                 label="شماره تماس خود را وارد کنید"
                 type="tel"
-                defaultValue={this.state.form.fields.phoneNumber.value}
                 name="phoneNumber"
                 id="phoneNumber"
                 onChange={this.formStateHandler}
@@ -212,7 +259,7 @@ export default class Login extends React.Component {
               />
               <Button
                 color="info"
-                onClick={this.LoginRequest}
+                onClick={this.Login}
                 disabled={!this.state.form.fields.phoneNumber.isValid}
               >
                 {this.state.form.isSubmitting ? (

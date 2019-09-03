@@ -12,14 +12,7 @@ import Skeleton from "react-loading-skeleton";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import {
-  FlatInput,
-  FlatUploader,
-  FlatNumberSet,
-  FlatInlineSelect,
-  FlatTimePicker,
-  FlatDatePicker
-} from "./FlatForm/FlatForm";
+import { FlatInput, FlatInlineSelect } from "./FlatForm/FlatForm";
 import moment from "jalali-moment";
 import LoadingSpinner from "../assets/images/spinner.svg";
 import NumberFormat from "react-number-format";
@@ -237,10 +230,10 @@ class SessionRoom extends React.PureComponent {
   };
   validatePhoneNumber = callback => {
     if (
-      this.context.userAuth &&
-      this.context.userAuth.ID === this.state.form.fields.phonenumber.value
+      this.context.auth &&
+      this.context.auth.ID === this.state.form.fields.phonenumber.value
     ) {
-      callback();
+      callback && typeof callback === "function" && callback();
     } else {
       this.context.toggleLoginModal(
         true,

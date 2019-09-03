@@ -601,12 +601,12 @@ const FlatDatePicker = ({ onChange, name }) => {
 };
 
 // Helper Functions
-const removeClass = (e, nameOfClass) => {
-  e.target.classList.remove(nameOfClass);
-};
-const addClass = (e, nameOfClass) => {
-  e.target.classList.add(nameOfClass);
-};
+// const removeClass = (e, nameOfClass) => {
+//   e.target.classList.remove(nameOfClass);
+// };
+// const addClass = (e, nameOfClass) => {
+//   e.target.classList.add(nameOfClass);
+// };
 export {
   ImageSelect,
   InlineSelect,

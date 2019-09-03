@@ -1,9 +1,6 @@
 import axios from "axios";
 import Configuration from "./Configuration";
 var Config = Configuration;
-Config.Auth().then(tok => {
-  console.log("tok: ", tok);
-});
 let _api = {
   header: {
     "Content-Type": "application/json"
@@ -36,6 +33,9 @@ var errorHandler = statusCode => {
       break;
     case 401:
       result.message = "مشکل امنیتی رخ داده است . لطفا بعدا امتحان کنید";
+      break;
+    case 403:
+      result.message = "توکن منقضی شده";
       break;
     default:
       result.message = "مشکل ناشناخته ای رخ داده است .";
@@ -85,7 +85,7 @@ var FilterContents = (type, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        return callback({
+        callback({
           success_result: result,
           data: SafeValue(res, "data", "object", [])
         });
@@ -94,9 +94,9 @@ var FilterContents = (type, callback) => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        return callback({
+        callback({
           success_result: result,
-          data: SafeValue(err.response, "data", "object", [])
+          data: []
         });
       });
   });
@@ -148,7 +148,7 @@ var Upload = (file, callback, progress) => {
         );
         return callback({
           success_result: result,
-          data: SafeValue(err.response, "data", "object", {})
+          data: []
         });
       });
   });
@@ -182,7 +182,7 @@ var LoginRequest = (phoneNumber, callback) => {
         );
         return callback({
           success_result: result,
-          data: SafeValue(err.response, "data", "object", {})
+          data: []
         });
       });
   });
@@ -214,7 +214,7 @@ var VerifyCode = (data, callback) => {
         );
         return callback({
           success_result: result,
-          data: SafeValue(err.response, "data", "object", [])
+          data: []
         });
       });
   });
@@ -245,7 +245,7 @@ var GetRequestsList = callback => {
         );
         return callback({
           success_result: result,
-          data: SafeValue(err.response, "data", "object", [])
+          data: []
         });
       });
   });
