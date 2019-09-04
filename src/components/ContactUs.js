@@ -15,7 +15,7 @@ import "../assets/styles/ContactUs.scss";
 class ContactUs extends React.PureComponent {
   constructor(props) {
     super(props);
-
+    this.contentTypeName = "contact_us";
     this.state = {
       form: {
         isValid: false,
@@ -102,6 +102,7 @@ class ContactUs extends React.PureComponent {
       if (!_validation.valid) {
         _isValid = false;
         _fields[index] = {
+          ...inputs[index],
           value: inputs[index].value,
           error: _validation.message,
           isValid: false
@@ -121,11 +122,11 @@ class ContactUs extends React.PureComponent {
     // if the form was valid then submit it
     if (_isValid) {
       // fetch additional background data state to final api object if form was valid
+      const { value, code } = this.state.form.fields.phonenumber;
       _formObjectGoingToSubmit = {
         ...this.state.form.backgroundData,
         ..._formObjectGoingToSubmit
       };
-
       this.setState(
         {
           form: {
@@ -134,8 +135,8 @@ class ContactUs extends React.PureComponent {
           }
         },
         () => {
-          SubmitForm("contact_us", _formObjectGoingToSubmit, res => {
-            if (res.code === 200) {
+          SubmitForm(this.contentTypeName, _formObjectGoingToSubmit, res => {
+            if (res.success) {
               window.scrollTo(0, 0);
               this.setState({
                 form: {
@@ -180,7 +181,8 @@ class ContactUs extends React.PureComponent {
             />
             <FlatInput
               placeholder="شماره تماس"
-              type="tel"
+              type="number"
+              maxLength="14"
               name="phonenumber"
               onChange={this.formStateHandler}
               error={this.state.form.fields.phonenumber.error}

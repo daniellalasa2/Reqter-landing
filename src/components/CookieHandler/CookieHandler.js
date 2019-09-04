@@ -19,4 +19,18 @@ function GetCookie(cname) {
   }
   return "";
 }
-export { SetCookie, GetCookie };
+function JsonToString(obj) {
+  try {
+    return JSON.stringify(obj);
+  } catch (err) {
+    return '{TOKEN:"",ID:"",ROLE:"newcomer"}';
+  }
+}
+function JsonParser(JSONstring) {
+  try {
+    return JSON.parse(JSONstring);
+  } catch (err) {
+    return { TOKEN: "", ROLE: "newcomer", ID: "" };
+  }
+}
+export { SetCookie, GetCookie, JsonToString, JsonParser };

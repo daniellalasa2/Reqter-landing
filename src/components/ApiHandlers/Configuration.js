@@ -1,4 +1,9 @@
-import { GetCookie, SetCookie } from "../CookieHandler/CookieHandler";
+import {
+  GetCookie,
+  SetCookie,
+  JsonParser,
+  JsonToString
+} from "../CookieHandler/CookieHandler";
 import axios from "axios";
 
 var Configuration = {
@@ -36,9 +41,9 @@ var Configuration = {
 function CheckAuthToken() {
   return new Promise((resolve, reject) => {
     if (GetCookie("SSUSERAUTH")) {
-      resolve(JSON.parse(GetCookie("SSUSERAUTH")).TOKEN);
+      resolve(JsonParser(GetCookie("SSUSERAUTH")).TOKEN);
     } else if (GetCookie("SSGUESTAUTH")) {
-      resolve(JSON.parse(GetCookie("SSGUESTAUTH")).TOKEN);
+      resolve(JsonParser(GetCookie("SSGUESTAUTH")).TOKEN);
     } else {
       GetInitialToken(token => {
         if (token) {
@@ -63,7 +68,7 @@ function GetInitialToken(callback) {
       if (res.data.success) {
         SetCookie(
           "SSGUESTAUTH",
-          JSON.stringify({
+          JsonToString({
             ROLE: "guest",
             TOKEN: res.data.access_token,
             ID: ""

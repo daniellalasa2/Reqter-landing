@@ -30,7 +30,18 @@ input {
   &:hover {
     border-color: #6caff7;
   }
+  //disable spin count buttons for number inputs
+  &[type="number"]::-webkit-outer-spin-button,
+  &[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  &[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
 }
+
 input:focus {
   outline: 0px !important;
   -webkit-appearance: none;
@@ -112,9 +123,34 @@ input:focus {
     float: left;
     padding: 3px 10px;
     font-weight: bold;
+    min-height: 24px;
   }
   .error-input {
     border-color: lightcoral;
+  }
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    min-height: 50px;
+  }
+  .flatinput-prefix {
+    max-height: calc(1.5em + 0.75rem + 2px);
+    line-height: 1.5;
+    margin-right: -42px;
+    width: auto;
+    max-width: 51px;
+    min-width: 42px;
+    padding: 6px;
+    text-align: center;
+    background-color: rgb(230, 230, 230);
+    border-radius: 1px;
+    font-weight: bold;
+    z-index: 1;
+  }
+  .has-prefix {
+    padding-left: 47px;
   }
 }
 label.checkboxContainer {

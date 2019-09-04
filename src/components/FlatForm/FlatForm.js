@@ -299,28 +299,36 @@ const FlatInput = ({
   id,
   className,
   style,
-  autoFocus
+  autoFocus,
+  prefix
 }) => {
   return (
     <div className="field-row">
       {label && <span className="field-title">{label}</span>}
-      <input
-        type={type}
-        placeholder={placeholder}
-        onClick={onClick}
-        onChange={onChange}
-        name={name}
-        defaultValue={defaultValue}
-        min={min}
-        max={max}
-        pattern={pattern}
-        minLength={minLength}
-        maxLength={maxLength}
-        id={id}
-        style={style}
-        autoFocus={autoFocus}
-        className={classnames(className, error && "error-input")}
-      />
+      <div className="input-wrapper" style={{ direction: "ltr" }}>
+        {prefix && <span className="flatinput-prefix">{prefix}</span>}
+        <input
+          type={type}
+          placeholder={placeholder}
+          onClick={onClick}
+          onChange={onChange}
+          name={name}
+          defaultValue={defaultValue}
+          min={min}
+          max={max}
+          pattern={pattern}
+          minLength={minLength}
+          maxLength={maxLength}
+          id={id}
+          style={style}
+          autoFocus={autoFocus}
+          className={classnames(
+            className,
+            error && "error-input",
+            prefix && "has-prefix"
+          )}
+        />
+      </div>
       <span className="error-message">{error}</span>
     </div>
   );
@@ -376,11 +384,18 @@ const FlatInlineSelect = ({ items, onChange, dir, type, name }) => {
       />
     );
   });
-  const _select = (
-    <SelectRow onChange={onChange} dir={dir} type={type}>
-      {_options}
-    </SelectRow>
-  );
+  const _select =
+    items.length > 0 ? (
+      <SelectRow onChange={onChange} dir={dir} type={type}>
+        {_options}
+      </SelectRow>
+    ) : (
+      <React.Fragment>
+        <br />
+        <br />
+        <strong style={{ color: "grey" }}>.گزینه ای موجود نیست</strong>
+      </React.Fragment>
+    );
   return _select;
 };
 
@@ -414,11 +429,18 @@ const FlatImageSelect = ({ items, onChange, dir, type, name }) => {
       />
     );
   });
-  const _select = (
-    <SelectRow onChange={onChange} dir={dir} type={type}>
-      {_options}
-    </SelectRow>
-  );
+  const _select =
+    items.length > 0 ? (
+      <SelectRow onChange={onChange} dir={dir} type={type}>
+        {_options}
+      </SelectRow>
+    ) : (
+      <React.Fragment>
+        <br />
+        <br />
+        <strong style={{ color: "grey" }}>.گزینه ای موجود نیست</strong>
+      </React.Fragment>
+    );
   return _select;
 };
 

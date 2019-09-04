@@ -5,7 +5,8 @@ import "./Main.scss";
 import ContextApi from "../components/ContextApi/ContextApi";
 import {
   GetCookie,
-  SetCookie
+  SetCookie,
+  JsonParser
 } from "../components/CookieHandler/CookieHandler";
 const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
@@ -14,9 +15,9 @@ class Layout extends Component {
   constructor(props) {
     super(props);
     this.authObj = GetCookie("SSUSERAUTH")
-      ? JSON.parse(GetCookie("SSUSERAUTH"))
+      ? JsonParser(GetCookie("SSUSERAUTH"))
       : GetCookie("SSGUESTAUTH")
-      ? JSON.parse(GetCookie("SSGUESTAUTH"))
+      ? JsonParser(GetCookie("SSGUESTAUTH"))
       : {};
     this.state = {
       userAuth: {
@@ -40,7 +41,7 @@ class Layout extends Component {
     this.updateAuth = callback => {
       this.setState(
         {
-          userAuth: JSON.parse(GetCookie("SSUSERAUTH")), //DO NOT REPLACE THIS WITH this.authObj
+          userAuth: JsonParser(GetCookie("SSUSERAUTH")), //DO NOT REPLACE THIS WITH this.authObj
           displayLoginModal: false
         },
         () => {

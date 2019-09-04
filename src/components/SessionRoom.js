@@ -24,6 +24,7 @@ class SessionRoom extends React.PureComponent {
   constructor(props) {
     super(props);
     this.urlParams = this.urlParser(this.props.location.search);
+    this.contentTypeName = "session_room";
     this.state = {
       form: {
         isValid: false,
@@ -41,6 +42,7 @@ class SessionRoom extends React.PureComponent {
             isValid: false
           },
           phonenumber: {
+            code: "+98",
             value: "",
             error: "",
             isValid: false
@@ -229,17 +231,12 @@ class SessionRoom extends React.PureComponent {
     );
   };
   validatePhoneNumber = callback => {
-    if (
-      this.context.auth &&
-      this.context.auth.ID === this.state.form.fields.phonenumber.value
-    ) {
+    const { value, code } = this.state.form.fields.phonenumber;
+    const phonenumber = code + value;
+    if (this.context.auth && this.context.auth.ID === phonenumber) {
       callback && typeof callback === "function" && callback();
     } else {
-      this.context.toggleLoginModal(
-        true,
-        "تایید شماره تماس",
-        this.state.form.fields.phonenumber.value
-      );
+      this.context.toggleLoginModal(true, "تایید شماره تماس", value);
     }
   };
   submitForm = () => {
@@ -249,12 +246,14 @@ class SessionRoom extends React.PureComponent {
     const _backgroundData = this.state.form.backgroundData;
     let _formObjectGoingToSubmit = {};
     let _validation = {};
+    const _this = this;
     for (let index in inputs) {
       _formObjectGoingToSubmit[index] = inputs[index].value;
       _validation = Validator(inputs[index].value, this.validationRules[index]);
       if (!_validation.valid) {
         _isValid = false;
         _fields[index] = {
+          ...inputs[index],
           value: inputs[index].value,
           error: _validation.message,
           isValid: false
@@ -275,6 +274,7 @@ class SessionRoom extends React.PureComponent {
     if (_isValid) {
       this.validatePhoneNumber(() => {
         // fetch additional background data state to final api object if form was valid
+
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
@@ -288,8 +288,8 @@ class SessionRoom extends React.PureComponent {
             }
           },
           () => {
-            SubmitForm("session_room", _formObjectGoingToSubmit, res => {
-              if (res.code === 201) {
+            SubmitForm(_this.contentTypeName, _formObjectGoingToSubmit, res => {
+              if (res.success) {
                 this.setState({
                   form: {
                     ...this.state.form,
@@ -311,8 +311,26 @@ class SessionRoom extends React.PureComponent {
     }
   };
   uploadFile = e => {
+    let file = "";
+    try {
+      file = e.target.files[0];
+    } catch (err) {
+      this.setState({
+        form: {
+          ...this.state.form,
+          fields: {
+            ...this.state.form.fields,
+            resume: {
+              ...this.state.form.fields.resume,
+              error: "امکان انتخاب فایل وجود ندارد لطفا دوباره امتحان کنید"
+            }
+          }
+        }
+      });
+      return 0;
+    }
     Upload(
-      e.target.files[0],
+      file,
       res => {
         if (res.data.success) {
           this.setState({
@@ -536,9 +554,12 @@ class SessionRoom extends React.PureComponent {
                     <FlatInput
                       label="شماره تماس"
                       type="text"
-                      placeholder="شماره تماس خود را وارد کنید"
+                      prefix={this.state.form.fields.phonenumber.code}
+                      placeholder="9123456789"
                       name="phonenumber"
                       id="phonenumber"
+                      maxLength="10"
+                      style={{ direction: "ltr" }}
                       onChange={this.formStateHandler}
                       error={this.state.form.fields.phonenumber.error}
                     />

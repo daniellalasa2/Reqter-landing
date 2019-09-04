@@ -4,7 +4,7 @@
 const Validator = (value, rules, chars) => {
   let regexPatterns = {
     email: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    phonenumber: /^(\+98|0)?[1-9]\d{9}$/,
+    phonenumber: /^9\d{9}$/,
     url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
   };
   let validationObj = { message: "", valid: true };
@@ -48,6 +48,11 @@ const Validator = (value, rules, chars) => {
           break;
         case "phonenumber":
           if (value.length > 0) {
+            if (value[0] === "0") {
+              validationObj.message = "شماره نباید با صفر شروع شود";
+              validationObj.valid = false;
+              return validationObj;
+            }
             const phonenumber = regexPatterns.phonenumber.test(
               String(value).toLowerCase()
             );

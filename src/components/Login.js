@@ -3,7 +3,10 @@ import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { FlatInput } from "./FlatForm/FlatForm";
 import { LoginRequest, VerifyCode } from "./ApiHandlers/ApiHandler";
 import Validator from "./Validator/Validator";
-import { SetCookie } from "../components/CookieHandler/CookieHandler";
+import {
+  SetCookie,
+  JsonToString
+} from "../components/CookieHandler/CookieHandler";
 import "../assets/styles/Login.scss";
 import LoadingSpinner from "../assets/images/spinner.svg";
 export default class Login extends React.Component {
@@ -18,6 +21,7 @@ export default class Login extends React.Component {
         isSubmitting: false,
         fields: {
           phoneNumber: {
+            code: "+98",
             value: "",
             isValid: false,
             error: ""
@@ -66,7 +70,9 @@ export default class Login extends React.Component {
   Login = () => {
     this.PendingForm(true);
     const _this = this;
-    LoginRequest(this.state.form.fields.phoneNumber.value, res => {
+    const { value, code } = this.state.form.fields.phoneNumber;
+    const phonenumber = code + value;
+    LoginRequest(phonenumber, res => {
       _this.PendingForm(false);
       if (res.data.success) {
         _this.setState({
@@ -134,7 +140,9 @@ export default class Login extends React.Component {
     this.PendingForm(true);
     const _this = this;
     const data = {};
-    data["phoneNumber"] = this.state.form.fields.phoneNumber.value;
+    const { value, code } = this.state.form.fields.phoneNumber;
+    const phonenumber = code + value;
+    data["phoneNumber"] = phonenumber;
     data["code"] = this.state.form.fields.code.value;
     VerifyCode(data, res => {
       _this.PendingForm(false);
@@ -142,10 +150,10 @@ export default class Login extends React.Component {
         //set cookie then update program Cookie authentication
         SetCookie(
           "SSUSERAUTH",
-          JSON.stringify({
+          JsonToString({
             ROLE: "user",
             TOKEN: res.data.access_token,
-            ID: this.state.form.fields.phoneNumber.value
+            ID: phonenumber
           }),
           parseInt(res.data.expiresIn) / (60 * 60 * 24)
         );
@@ -213,7 +221,7 @@ export default class Login extends React.Component {
   formStateHandler = e => {
     let _this = e.target;
     const name = _this.name;
-    const value = _this.value;
+    let value = _this.value;
     const validation = Validator(value, this.validationRules[name]);
     this.setState(
       {
@@ -252,6 +260,8 @@ export default class Login extends React.Component {
                 type="tel"
                 name="phoneNumber"
                 id="phoneNumber"
+                prefix={this.state.form.fields.phoneNumber.code}
+                placeholder="9123456789"
                 onChange={this.formStateHandler}
                 error={this.state.form.fields.phoneNumber.error}
                 autoFocus={true}

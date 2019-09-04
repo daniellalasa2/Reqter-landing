@@ -13,13 +13,19 @@ let _api = {
   GetRequestsList: Config.BASE_URL_PANEL + Config.URLs.all_requests
 };
 var errorHandler = statusCode => {
-  const result = { message: "", code: statusCode };
+  const result = { message: "", code: statusCode, success: false };
   switch (statusCode) {
     case 200:
       result.message = " با موفقیت انجام شد .";
+      result.success = true;
       break;
     case 201:
       result.message = " با موفقیت ساخته شد .";
+      result.success = true;
+      break;
+    case 204:
+      result.message = " با موفقیت انجام شد .";
+      result.success = true;
       break;
     case 404:
       result.message = "نتیجه ای یافت نشد .";
@@ -261,7 +267,7 @@ var SafeValue = (data, field, type, defaultValue) => {
       return defaultValue;
     }
   } catch (err) {
-    console.warn("Value is not safe: ",err);
+    console.warn("Value is not safe: ", err);
     return defaultValue;
   }
 };
