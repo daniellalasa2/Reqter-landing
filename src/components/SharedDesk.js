@@ -104,10 +104,12 @@ class SharedDesk extends React.PureComponent {
       birthyear: ["required", "number"],
       educationfield: ["required"],
       phonenumber: ["required", "phonenumber"],
-      city: ["required"],
+      city: [this.state.combo.list_of_cities.items.length && "required"],
       seats: ["required", "number"],
       email: ["email"],
-      workingfield: ["required"],
+      workingfield: [
+        this.state.combo.coworking_working_field.items.length && "required"
+      ],
       resume: ["upload"]
     };
   }
@@ -200,16 +202,19 @@ class SharedDesk extends React.PureComponent {
         };
       }
     }
-    this.setState({
-      form: {
-        ...this.state.form,
-        isValid: _formIsValid,
-        fields: {
-          ...this.state.form.fields,
-          ..._fields
+    this.setState(
+      {
+        form: {
+          ...this.state.form,
+          isValid: _formIsValid,
+          fields: {
+            ...this.state.form.fields,
+            ..._fields
+          }
         }
-      }
-    });
+      },
+      () => console.log(this.state.combo)
+    );
     return _formIsValid;
   };
   submitForm = () => {

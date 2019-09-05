@@ -8,6 +8,9 @@ const Validator = (value, rules, additional) => {
     url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
   };
   let validationObj = { message: "", valid: true };
+  rules = rules.filter(val => {
+    return val !== null && val.length > 0 && val !== undefined;
+  });
   let numberOfValidations = rules ? rules.length : 0;
   if (numberOfValidations !== 0) {
     for (let rule of rules) {
@@ -115,7 +118,7 @@ const Validator = (value, rules, additional) => {
           }
           break;
         default:
-          throw new Error("ّInvalid validation rule");
+          throw new Error("Invalid validation rule");
       }
       //If everythings is valid and the loop is on the last child of array then return validationObj
       if (numberOfValidations === 1 && validationObj.valid) {
