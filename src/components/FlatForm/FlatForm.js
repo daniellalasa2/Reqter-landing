@@ -13,7 +13,7 @@ import "./FlatForm.scss";
 
 */
 //HOC select wrapper
-class SelectRow extends React.PureComponent {
+class SelectRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,56 +30,54 @@ class SelectRow extends React.PureComponent {
     });
     return array;
   };
+
   selectionHandler = data => {
     const type = this.props.type || "checkbox";
+    let arr = [];
+    let stateGoingToUpdate = {};
     switch (type) {
       case "checkbox":
-        var arr = this.state.checkedElements;
+        arr = this.state.checkedElements;
         if (data.checked) {
           arr.push(data);
-          this.setState(
-            {
-              checkedElements: arr
-            },
-            (...restArgs) => {
-              this.props.onChange(this.state.checkedElements);
-            }
-          );
         } else {
+          //if value checkbox unchecked then remove unchecked item from list
           arr = this.removeObjByKey(arr, data, "value");
-          this.setState(
-            {
-              checkedElements: arr
-            },
-            () => {
-              this.props.onChange(this.state.checkedElements);
-            }
-          );
         }
+        stateGoingToUpdate = {
+          checkedElements: arr
+        };
         break;
       case "radio":
-        const newChilds = React.Children.map(this.props.children, child => {
-          return React.cloneElement(child, {
-            width: `${this.childWidth}px`,
-            onChange: this.selectionHandler,
-            checked: child.value === data.value
-          });
-        });
-        this.setState(
-          {
-            checkedElements: data,
-            renderedChildren: newChilds
-          },
-          () => {
-            this.props.onChange(this.state.checkedElements);
+        const newChilds = React.Children.map(
+          this.state.renderedChildren,
+          child => {
+            return React.cloneElement(child, {
+              width: `${this.childWidth}px`,
+              onChange: this.selectionHandler,
+              checked: child.props.val === data.value
+            });
           }
         );
-        break;
+        arr.push(data);
+        stateGoingToUpdate = {
+          checkedElements: arr,
+          renderedChildren: newChilds
+        };
 
+        break;
       default:
-        console.warn('CheckBoxRow component expected a "type" property .');
+        console.error('CheckBoxRow component expected a "type" property !');
         break;
     }
+    this.setState(
+      {
+        ...stateGoingToUpdate
+      },
+      () => {
+        this.props.onChange(this.state.checkedElements);
+      }
+    );
   };
   childRenderer = newProps => {
     return React.Children.map(this.props.children, child =>

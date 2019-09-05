@@ -127,6 +127,7 @@ class SessionRoom extends React.PureComponent {
     });
   };
   checkboxStateHandler = data => {
+    console.log(data);
     let checkBoxValuesArr = [];
     let name = "";
     if (data.length) {
