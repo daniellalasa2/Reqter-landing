@@ -10,7 +10,7 @@ import "./FlatForm.scss";
     3- Alphabetic value box for image and inline select components
     4- set proptypes for props of each component
     5- make an appropriate behavior for Flat date and time picker components it must behave as a normal input
-
+    6- Use input with radio and checkbox type to handle inlineCheckbox component behavior
 */
 //HOC select wrapper
 class SelectRow extends React.Component {
@@ -31,7 +31,9 @@ class SelectRow extends React.Component {
     return array;
   };
 
-  selectionHandler = data => {
+  selectionHandler = (...restArgs) => {
+    let name = restArgs[0];
+    let data = restArgs[1];
     const type = this.props.type || "checkbox";
     let arr = [];
     let stateGoingToUpdate = {};
@@ -75,7 +77,7 @@ class SelectRow extends React.Component {
         ...stateGoingToUpdate
       },
       () => {
-        this.props.onChange(this.state.checkedElements);
+        this.props.onChange(name, this.state.checkedElements);
       }
     );
   };
@@ -135,7 +137,7 @@ const ImageSelect = ({
     checked = !checked;
     if (checked) checkbox.current.classList.add("checked");
     else checkbox.current.classList.remove("checked");
-    onChange({ title: title, value: val, checked: checked, name: name });
+    onChange(name, { title: title, value: val, checked: checked, name: name });
   };
   return (
     <React.Fragment>
@@ -193,7 +195,7 @@ const InlineSelect = ({
     checked = !checked;
     if (checked) checkbox.current.classList.add("checked");
     else checkbox.current.classList.remove("checked");
-    onChange({ title: title, value: val, checked: checked, name: name });
+    onChange(name, { title: title, value: val, checked: checked, name: name });
   };
   return (
     <React.Fragment>

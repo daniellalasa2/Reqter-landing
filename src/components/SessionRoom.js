@@ -31,7 +31,7 @@ class SessionRoom extends React.PureComponent {
         submitted: false,
         isSubmitting: false,
         fields: {
-          name: {
+          fullname: {
             value: "",
             error: "",
             isValid: false
@@ -80,11 +80,12 @@ class SessionRoom extends React.PureComponent {
           country: {
             value: "5d35e8288e6e9a0017c28fcf",
             error: "",
-            isValid: false
+            isValid: true
           }
         },
         backgroundData: {
-          src: this.urlParams.src ? this.urlParams.src : "direct"
+          src: this.urlParams.src ? this.urlParams.src : "direct",
+          name: "" //request name
         }
       },
       combo: {
@@ -99,7 +100,7 @@ class SessionRoom extends React.PureComponent {
       }
     };
     this.validationRules = {
-      name: ["required"],
+      fullname: ["required"],
       subject: ["required"],
       phonenumber: ["required", "phonenumber"],
       city: ["required"],
@@ -111,64 +112,69 @@ class SessionRoom extends React.PureComponent {
   }
 
   checkFormValidation = () => {
-    const fields = this.state.form.fields;
-    let boolean = true;
-    for (let key in fields) {
-      if (!fields[key].isValid) {
-        boolean = false;
-        break;
+    const inputs = this.state.form.fields;
+    const _fields = {};
+    let _formIsValid = true;
+    let _validation = {};
+    for (let index in inputs) {
+      _validation = Validator(
+        inputs[index].value,
+        SafeValue(this.validationRules, index, "object", []),
+        index === "resume" && {
+          uploading: this.state.form.fields.resume.uploading
+        }
+      );
+
+      if (!_validation.valid) {
+        //if form is valid value could change to false else value is unchangable
+        _formIsValid = _formIsValid && false;
+        _fields[index] = {
+          ...inputs[index],
+          value: inputs[index].value,
+          error: _validation.message,
+          isValid: false
+        };
       }
     }
     this.setState({
       form: {
         ...this.state.form,
-        isValid: boolean
+        isValid: _formIsValid,
+        fields: {
+          ...this.state.form.fields,
+          ..._fields
+        }
       }
     });
+    return _formIsValid;
   };
-  checkboxStateHandler = data => {
-    console.log(data);
+  checkboxStateHandler = (name, data) => {
     let checkBoxValuesArr = [];
-    let name = "";
     if (data.length) {
-      data.forEach(val => {
-        name = val.name;
-        checkBoxValuesArr.push(val.value);
+      data.forEach(obj => {
+        checkBoxValuesArr.push(SafeValue(obj, "value", "string", ""));
       });
     } else {
-      name = data.name;
       checkBoxValuesArr = SafeValue(data, "value", "string", []);
     }
     const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
     let toBeAssignObject = {
+      value: checkBoxValuesArr,
       error: validation.message,
       isValid: validation.valid
     };
-    //if value is valid then assign value to form state
-    if (validation.valid) {
-      toBeAssignObject.value = checkBoxValuesArr;
-    }
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            [name]: {
-              ...this.state.form.fields[name],
-              ...toBeAssignObject
-            }
-          },
-          api: {
-            ...this.state.form.api,
-            [name]: checkBoxValuesArr
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          [name]: {
+            ...this.state.form.fields[name],
+            ...toBeAssignObject
           }
         }
-      },
-      () => {
-        this.checkFormValidation();
       }
-    );
+    });
   };
   formStateHandler = e => {
     let _this = e.target ? e.target : e;
@@ -213,69 +219,55 @@ class SessionRoom extends React.PureComponent {
       value = _this.value;
       validation = Validator(value, this.validationRules[name]);
     }
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            [name]: {
-              ...this.state.form.fields[name],
-              value: value,
-              error: validation.message,
-              isValid: validation.valid
-            }
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          [name]: {
+            ...this.state.form.fields[name],
+            value: value,
+            error: validation.message,
+            isValid: validation.valid
           }
         }
-      },
-      () => this.checkFormValidation()
-    );
+      }
+    });
   };
-  validatePhoneNumber = callback => {
+  validatePhoneNumber = (doLogin, callback) => {
     const { value, code } = this.state.form.fields.phonenumber;
     const phonenumber = code + value;
     if (this.context.auth && this.context.auth.ID === phonenumber) {
       callback && typeof callback === "function" && callback();
+      return true;
     } else {
-      this.context.toggleLoginModal(true, "تایید شماره تماس", value);
+      //if phone validation needs login action then start login flow
+      doLogin && this.context.toggleLoginModal(true, "تایید شماره تماس", value);
+      return false;
     }
   };
   submitForm = () => {
+    const _this = this;
     const inputs = this.state.form.fields;
-    let _isValid = true;
-    const _fields = {};
+    let _isValid = this.checkFormValidation();
     const _backgroundData = this.state.form.backgroundData;
     let _formObjectGoingToSubmit = {};
-    let _validation = {};
-    const _this = this;
-    for (let index in inputs) {
-      _formObjectGoingToSubmit[index] = inputs[index].value;
-      _validation = Validator(inputs[index].value, this.validationRules[index]);
-      if (!_validation.valid) {
-        _isValid = false;
-        _fields[index] = {
-          ...inputs[index],
-          value: inputs[index].value,
-          error: _validation.message,
-          isValid: false
-        };
-      }
-    }
-    this.setState({
-      form: {
-        ...this.state.form,
-        isValid: _isValid,
-        fields: {
-          ...this.state.form.fields,
-          ..._fields
-        }
-      }
-    });
+    //if form was valid then convert state form to api form
     // if the form was valid then submit it
     if (_isValid) {
-      this.validatePhoneNumber(() => {
+      for (let index in inputs) {
+        _formObjectGoingToSubmit[index] = inputs[index].value;
+      }
+      this.validatePhoneNumber(true, () => {
         // fetch additional background data state to final api object if form was valid
+        const { seats, city } = _formObjectGoingToSubmit;
+        const cityname = this.state.combo.list_of_cities.items.map(
+          curr => (curr.value === city && curr.title) || "ایران"
+        )[0];
 
+        _formObjectGoingToSubmit[
+          "name"
+        ] = `درخواست اتاق جلسه با ظرفیت ${seats} نفر در ${cityname}`;
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
@@ -311,74 +303,6 @@ class SessionRoom extends React.PureComponent {
       });
     }
   };
-  uploadFile = e => {
-    let file = "";
-    try {
-      file = e.target.files[0];
-    } catch (err) {
-      this.setState({
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            resume: {
-              ...this.state.form.fields.resume,
-              error: "امکان انتخاب فایل وجود ندارد لطفا دوباره امتحان کنید"
-            }
-          }
-        }
-      });
-      return 0;
-    }
-    Upload(
-      file,
-      res => {
-        if (res.data.success) {
-          this.setState({
-            form: {
-              ...this.state.form,
-              fields: {
-                ...this.state.form.fields,
-                resume: {
-                  ...this.state.form.fields.resume,
-                  isValid: true,
-                  value: [{ en: res.data.file.url, fa: res.data.file.url }]
-                }
-              }
-            }
-          });
-        } else {
-          this.setState({
-            form: {
-              ...this.state.form,
-              fields: {
-                ...this.state.form.fields,
-                resume: {
-                  ...this.state.form.fields.resume,
-                  error: res.success_result.message
-                }
-              }
-            }
-          });
-        }
-      },
-      res => {
-        this.setState({
-          form: {
-            ...this.state.form,
-            fields: {
-              ...this.state.form.fields,
-              resume: {
-                ...this.state.form.fields.resume,
-                uploadProgress: res.progress
-              }
-            }
-          }
-        });
-      }
-    );
-  };
-
   urlParser = url => {
     let regex = /[?&]([^=#]+)=([^&#]*)/g,
       params = {},
@@ -478,11 +402,11 @@ class SessionRoom extends React.PureComponent {
                     label="نام درخواست کننده"
                     type="text"
                     placeholder="نام خود را وارد کنید"
-                    name="name"
-                    id="name"
+                    name="fullname"
+                    id="fullname"
                     autoFocus
                     onChange={this.formStateHandler}
-                    error={this.state.form.fields.name.error}
+                    error={this.state.form.fields.fullname.error}
                   />
                   <FlatInput
                     label="موضوع جلسه"
@@ -618,8 +542,10 @@ class SessionRoom extends React.PureComponent {
                       alt=""
                       style={{ margin: "-12px 16px" }}
                     />
-                  ) : (
+                  ) : this.validatePhoneNumber() ? (
                     "ثبت و ارسال "
+                  ) : (
+                    "تایید شماره تماس"
                   )}
                 </Button>
               </CardFooter>

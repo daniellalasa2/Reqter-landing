@@ -1,7 +1,7 @@
 //TODO:
 //    min and max validator bug
 
-const Validator = (value, rules, chars) => {
+const Validator = (value, rules, additional) => {
   let regexPatterns = {
     email: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     phonenumber: /^9\d{9}$/,
@@ -22,16 +22,16 @@ const Validator = (value, rules, chars) => {
           break;
         case "minCharecters":
           value = value.replace(/\s/g, "");
-          if (value.length < parseInt(chars)) {
-            validationObj.message = "حداقل ۳ کاراکتر";
+          if (value.length < parseInt(additional.charsCount)) {
+            validationObj.message = `حداقل ${additional.charsCount} کاراکتر`;
             validationObj.valid = false;
             return validationObj;
           }
           break;
         case "maxCharecters":
           value = value.replace(/\s/g, "");
-          if (value.length > parseInt(chars)) {
-            validationObj.message = "حداقل ۳ کاراکتر";
+          if (value.length > parseInt(additional.charsCount)) {
+            validationObj.message = `حداقل ${additional.charsCount} کاراکتر`;
             validationObj.valid = false;
             return validationObj;
           }
@@ -80,6 +80,13 @@ const Validator = (value, rules, chars) => {
               validationObj.valid = false;
               return validationObj;
             }
+          }
+          break;
+        case "upload":
+          if (additional && additional.uploading) {
+            validationObj.message = "در حال آپلود فایل لطفا منتظر بمانید";
+            validationObj.valid = false;
+            return validationObj;
           }
           break;
         case "date":

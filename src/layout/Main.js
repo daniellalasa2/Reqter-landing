@@ -5,7 +5,6 @@ import "./Main.scss";
 import ContextApi from "../components/ContextApi/ContextApi";
 import {
   GetCookie,
-  SetCookie,
   JsonParser
 } from "../components/CookieHandler/CookieHandler";
 const Navigation = React.lazy(() => import("./Nav"));

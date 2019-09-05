@@ -34,7 +34,7 @@ class SharedDesk extends React.PureComponent {
         submitted: false,
         isSubmitting: false,
         fields: {
-          name: {
+          fullname: {
             value: "",
             error: "",
             isValid: false
@@ -61,7 +61,7 @@ class SharedDesk extends React.PureComponent {
             isValid: false
           },
           seats: {
-            value: "",
+            value: 1,
             error: "",
             isValid: false
           },
@@ -71,6 +71,7 @@ class SharedDesk extends React.PureComponent {
             isValid: false
           },
           resume: {
+            uploading: false,
             uploadProgress: 0,
             value: "",
             error: "",
@@ -99,120 +100,98 @@ class SharedDesk extends React.PureComponent {
       }
     };
     this.validationRules = {
-      name: ["required"],
+      fullname: ["required"],
       birthyear: ["required", "number"],
       educationfield: ["required"],
       phonenumber: ["required", "phonenumber"],
       city: ["required"],
       seats: ["required", "number"],
-      email: ["email"]
+      email: ["email"],
+      workingfield: ["required"],
+      resume: ["upload"]
     };
   }
 
-  checkFormValidation = () => {
-    const fields = this.state.form.fields;
-    let boolean = true;
-    for (let key in fields) {
-      if (!fields[key].isValid) {
-        boolean = false;
-        break;
-      }
-    }
-    this.setState({
-      form: {
-        ...this.state.form,
-        isValid: boolean
-      }
-    });
-  };
-  checkboxStateHandler = data => {
-    const checkBoxValuesArr = [];
-    let name = "";
-    if (data.length > 1) {
-      data.forEach(val => {
-        name = val.name;
-        checkBoxValuesArr.push(val.value);
+  checkboxStateHandler = (name, data) => {
+    let checkBoxValuesArr = [];
+    if (data.length) {
+      data.forEach(obj => {
+        checkBoxValuesArr.push(SafeValue(obj, "value", "string", ""));
       });
     } else {
-      name = data.name;
-      checkBoxValuesArr.push(data.value);
+      checkBoxValuesArr = SafeValue(data, "value", "string", []);
     }
     const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
     let toBeAssignObject = {
+      value: checkBoxValuesArr,
       error: validation.message,
       isValid: validation.valid
     };
-    //if value is valid then assign value to form state
-    if (validation.valid) {
-      toBeAssignObject.value = checkBoxValuesArr;
-    }
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            [name]: {
-              ...this.state.form.fields[name],
-              ...toBeAssignObject
-            }
-          },
-          api: {
-            ...this.state.form.api,
-            [name]: checkBoxValuesArr
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          [name]: {
+            ...this.state.form.fields[name],
+            ...toBeAssignObject
           }
         }
-      },
-      () => {
-        this.checkFormValidation();
       }
-    );
+    });
   };
   formStateHandler = e => {
     let _this = e.target;
     const name = _this.name;
     const value = _this.value;
-    const validation = Validator(value, this.validationRules[name]);
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            [name]: {
-              ...this.state.form.fields[name],
-              value: value,
-              error: validation.message,
-              isValid: validation.valid
-            }
+    const validation = Validator(
+      value,
+      SafeValue(this.validationRules, name, "object", [])
+    );
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          [name]: {
+            ...this.state.form.fields[name],
+            value: value,
+            error: validation.message,
+            isValid: validation.valid
           }
         }
-      },
-      () => this.checkFormValidation()
-    );
+      }
+    });
   };
-  validatePhoneNumber = callback => {
+  validatePhoneNumber = (doLogin, callback) => {
     const { value, code } = this.state.form.fields.phonenumber;
     const phonenumber = code + value;
     if (this.context.auth && this.context.auth.ID === phonenumber) {
       callback && typeof callback === "function" && callback();
+      return true;
     } else {
-      this.context.toggleLoginModal(true, "تایید شماره تماس", value);
+      //if phone validation needs login action then start login flow
+      doLogin && this.context.toggleLoginModal(true, "تایید شماره تماس", value);
+      return false;
     }
   };
-  submitForm = () => {
+  checkFormValidation = () => {
     const inputs = this.state.form.fields;
-    let _isValid = true;
     const _fields = {};
-    const _backgroundData = this.state.form.backgroundData;
-    let _formObjectGoingToSubmit = {};
+    let _formIsValid = true;
     let _validation = {};
-    const _this = this;
     for (let index in inputs) {
-      _formObjectGoingToSubmit[index] = inputs[index].value;
-      _validation = Validator(inputs[index].value, this.validationRules[index]);
+      _validation = Validator(
+        inputs[index].value,
+        SafeValue(this.validationRules, index, "object", []),
+        index === "resume" && {
+          uploading: this.state.form.fields.resume.uploading
+        }
+      );
+
       if (!_validation.valid) {
-        _isValid = false;
+        //if form is valid value could change to false else value is unchangable
+        _formIsValid = _formIsValid && false;
         _fields[index] = {
           ...inputs[index],
           value: inputs[index].value,
@@ -224,22 +203,40 @@ class SharedDesk extends React.PureComponent {
     this.setState({
       form: {
         ...this.state.form,
-        isValid: _isValid,
+        isValid: _formIsValid,
         fields: {
           ...this.state.form.fields,
           ..._fields
         }
       }
     });
+    return _formIsValid;
+  };
+  submitForm = () => {
+    const _this = this;
+    const inputs = this.state.form.fields;
+    let _isValid = this.checkFormValidation();
+    const _backgroundData = this.state.form.backgroundData;
+    let _formObjectGoingToSubmit = {};
+    //if form was valid then convert state form to api form
     // if the form was valid then submit it
     if (_isValid) {
-      this.validatePhoneNumber(() => {
+      for (let index in inputs) {
+        _formObjectGoingToSubmit[index] = inputs[index].value;
+      }
+      this.validatePhoneNumber(true, () => {
         // fetch additional background data state to final api object if form was valid
+        const { seats, city } = _formObjectGoingToSubmit;
+        const cityname = this.state.combo.list_of_cities.items.map(
+          curr => (curr.value === city && curr.title) || "ایران"
+        )[0];
+        _formObjectGoingToSubmit[
+          "name"
+        ] = `درخواست میزکار اشتراکی به تعداد ${seats} نفر در ${cityname}`;
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
         };
-
         this.setState(
           {
             form: {
@@ -289,51 +286,70 @@ class SharedDesk extends React.PureComponent {
       });
       return 0;
     }
-    Upload(
-      file,
-      res => {
-        if (res.data.success) {
-          this.setState({
-            form: {
-              ...this.state.form,
-              fields: {
-                ...this.state.form.fields,
-                resume: {
-                  ...this.state.form.fields.resume,
-                  isValid: true,
-                  value: [{ en: res.data.file.url, fa: res.data.file.url }]
-                }
-              }
-            }
-          });
-        } else {
-          this.setState({
-            form: {
-              ...this.state.form,
-              fields: {
-                ...this.state.form.fields,
-                resume: {
-                  ...this.state.form.fields.resume,
-                  error: res.success_result.message
-                }
-              }
-            }
-          });
-        }
-      },
-      res => {
-        this.setState({
-          form: {
-            ...this.state.form,
-            fields: {
-              ...this.state.form.fields,
-              resume: {
-                ...this.state.form.fields.resume,
-                uploadProgress: res.progress
-              }
+    this.setState(
+      {
+        form: {
+          ...this.state.form,
+          fields: {
+            ...this.state.form.fields,
+            resume: {
+              ...this.state.form.fields.resume,
+              uploading: true
             }
           }
-        });
+        }
+      },
+      () => {
+        Upload(
+          file,
+          res => {
+            if (res.data.success) {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  fields: {
+                    ...this.state.form.fields,
+                    resume: {
+                      ...this.state.form.fields.resume,
+                      isValid: true,
+                      value: [{ en: res.data.file.url, fa: res.data.file.url }],
+                      uploading: false,
+                      error: ""
+                    }
+                  }
+                }
+              });
+            } else {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  fields: {
+                    ...this.state.form.fields,
+                    resume: {
+                      ...this.state.form.fields.resume,
+                      error: res.success_result.message,
+                      uploading: false
+                    }
+                  }
+                }
+              });
+            }
+          },
+          uploadDetail => {
+            this.setState({
+              form: {
+                ...this.state.form,
+                fields: {
+                  ...this.state.form.fields,
+                  resume: {
+                    ...this.state.form.fields.resume,
+                    uploadProgress: uploadDetail.progress
+                  }
+                }
+              }
+            });
+          }
+        );
       }
     );
   };
@@ -384,7 +400,7 @@ class SharedDesk extends React.PureComponent {
           ...this.state.form.fields,
           seats: {
             ...this.state.form.fields.seats,
-            value: !isNaN(Number(neededSeats)) && neededSeats,
+            value: Number(neededSeats) ? Number(neededSeats) : "1",
             isValid: !isNaN(Number(neededSeats))
           },
           city: {
@@ -395,6 +411,7 @@ class SharedDesk extends React.PureComponent {
         }
       }
     });
+
     this.generateCheckboxDataFromApi("list_of_cities", selectedCity);
     this.generateCheckboxDataFromApi("coworking_working_field");
   }
@@ -434,11 +451,11 @@ class SharedDesk extends React.PureComponent {
                     label="نام و نام خانوادگی"
                     type="text"
                     placeholder="نام و نام خانوادگی را وارد کنید"
-                    name="name"
-                    id="name"
+                    name="fullname"
+                    id="fullname"
                     autoFocus
                     onChange={this.formStateHandler}
-                    error={this.state.form.fields.name.error}
+                    error={this.state.form.fields.fullname.error}
                   />
 
                   <FlatInput
@@ -547,8 +564,10 @@ class SharedDesk extends React.PureComponent {
                       alt=""
                       style={{ margin: "-12px 16px" }}
                     />
-                  ) : (
+                  ) : this.validatePhoneNumber() ? (
                     "ثبت و ارسال "
+                  ) : (
+                    "تایید شماره تماس"
                   )}
                 </Button>
               </CardFooter>

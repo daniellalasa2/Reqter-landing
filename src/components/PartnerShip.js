@@ -31,7 +31,7 @@ class PartnerShip extends React.PureComponent {
         submitted: false,
         isSubmitting: false,
         fields: {
-          name: {
+          fullname: {
             value: "",
             error: "",
             isValid: false
@@ -75,7 +75,7 @@ class PartnerShip extends React.PureComponent {
       }
     };
     this.validationRules = {
-      name: ["required"],
+      fullname: ["required"],
       primarycontact: ["required"],
       collaborationtypes: ["required"],
       phonenumber: ["required", "phonenumber"],
@@ -84,105 +84,22 @@ class PartnerShip extends React.PureComponent {
     };
   }
   checkFormValidation = () => {
-    const fields = this.state.form.fields;
-    let boolean = true;
-    for (let key in fields) {
-      if (!fields[key].isValid) {
-        boolean = false;
-        break;
-      }
-    }
-    this.setState({
-      form: {
-        ...this.state.form,
-        isValid: boolean
-      }
-    });
-  };
-  checkboxStateHandler = data => {
-    const checkBoxValuesArr = [];
-    let name = "";
-    if (data.length > 1) {
-      data.forEach(val => {
-        name = val.name;
-        checkBoxValuesArr.push(val.value);
-      });
-    } else {
-      name = data.name;
-      checkBoxValuesArr.push(data.value);
-    }
-    const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
-    let toBeAssignObject = {
-      error: validation.message,
-      isValid: validation.valid
-    };
-    //if value is valid then assign value to form state
-    if (validation.valid) {
-      toBeAssignObject.value = checkBoxValuesArr;
-    }
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            [name]: {
-              ...this.state.form.fields[name],
-              ...toBeAssignObject
-            }
-          }
-        }
-      },
-      () => {
-        this.checkFormValidation();
-      }
-    );
-  };
-  formStateHandler = e => {
-    let _this = e.target;
-    const name = _this.name;
-    const value = _this.value;
-    const validation = Validator(value, this.validationRules[name]);
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            [name]: {
-              ...this.state.form.fields[name],
-              value: value,
-              error: validation.message,
-              isValid: validation.valid
-            }
-          }
-        }
-      },
-      () => this.checkFormValidation()
-    );
-  };
-  validatePhoneNumber = callback => {
-    const { value, code } = this.state.form.fields.phonenumber;
-    const phonenumber = code + value;
-    if (this.context.auth && this.context.auth.ID === phonenumber) {
-      callback && typeof callback === "function" && callback();
-    } else {
-      this.context.toggleLoginModal(true, "تایید شماره تماس", value);
-    }
-  };
-  submitForm = () => {
     const inputs = this.state.form.fields;
-    let _isValid = true;
     const _fields = {};
-    const _backgroundData = this.state.form.backgroundData;
-    let _formObjectGoingToSubmit = {};
+    let _formIsValid = true;
     let _validation = {};
-    const _this = this;
     for (let index in inputs) {
-      _formObjectGoingToSubmit[index] = inputs[index].value;
-      _validation = Validator(inputs[index].value, this.validationRules[index]);
+      _validation = Validator(
+        inputs[index].value,
+        SafeValue(this.validationRules, index, "object", []),
+        index === "resume" && {
+          uploading: this.state.form.fields.resume.uploading
+        }
+      );
+
       if (!_validation.valid) {
-        _isValid = false;
+        //if form is valid value could change to false else value is unchangable
+        _formIsValid = _formIsValid && false;
         _fields[index] = {
           ...inputs[index],
           value: inputs[index].value,
@@ -194,21 +111,97 @@ class PartnerShip extends React.PureComponent {
     this.setState({
       form: {
         ...this.state.form,
-        isValid: _isValid,
+        isValid: _formIsValid,
         fields: {
           ...this.state.form.fields,
           ..._fields
         }
       }
     });
+    return _formIsValid;
+  };
+  checkboxStateHandler = (name, data) => {
+    let checkBoxValuesArr = [];
+    if (data.length) {
+      data.forEach(obj => {
+        checkBoxValuesArr.push(SafeValue(obj, "value", "string", ""));
+      });
+    } else {
+      checkBoxValuesArr = SafeValue(data, "value", "string", []);
+    }
+    const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
+    let toBeAssignObject = {
+      value: checkBoxValuesArr,
+      error: validation.message,
+      isValid: validation.valid
+    };
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          [name]: {
+            ...this.state.form.fields[name],
+            ...toBeAssignObject
+          }
+        }
+      }
+    });
+  };
+  formStateHandler = e => {
+    let _this = e.target;
+    const name = _this.name;
+    const value = _this.value;
+    const validation = Validator(
+      value,
+      SafeValue(this.validationRules, name, "object", [])
+    );
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          [name]: {
+            ...this.state.form.fields[name],
+            value: value,
+            error: validation.message,
+            isValid: validation.valid
+          }
+        }
+      }
+    });
+  };
+  validatePhoneNumber = (doLogin, callback) => {
+    const { value, code } = this.state.form.fields.phonenumber;
+    const phonenumber = code + value;
+    if (this.context.auth && this.context.auth.ID === phonenumber) {
+      callback && typeof callback === "function" && callback();
+      return true;
+    } else {
+      //if phone validation needs login action then start login flow
+      doLogin && this.context.toggleLoginModal(true, "تایید شماره تماس", value);
+      return false;
+    }
+  };
+  submitForm = () => {
+    const _this = this;
+    const inputs = this.state.form.fields;
+    let _isValid = this.checkFormValidation();
+    const _backgroundData = this.state.form.backgroundData;
+    let _formObjectGoingToSubmit = {};
+    //if form was valid then convert state form to api form
     // if the form was valid then submit it
     if (_isValid) {
-      this.validatePhoneNumber(() => {
+      for (let index in inputs) {
+        _formObjectGoingToSubmit[index] = inputs[index].value;
+      }
+      this.validatePhoneNumber(true, () => {
         // fetch additional background data state to final api object if form was valid
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
         };
+
         this.setState(
           {
             form: {
@@ -313,11 +306,11 @@ class PartnerShip extends React.PureComponent {
                     label="نام شرکت یا سازمان"
                     type="text"
                     placeholder="نام شرکت یا سازمان را وارد کنید"
-                    name="name"
-                    id="name"
+                    name="fullname"
+                    id="fullname"
                     autoFocus
                     onChange={this.formStateHandler}
-                    error={this.state.form.fields.name.error}
+                    error={this.state.form.fields.fullname.error}
                   />
 
                   <FlatInput
@@ -393,8 +386,10 @@ class PartnerShip extends React.PureComponent {
                       alt=""
                       style={{ margin: "-12px 16px" }}
                     />
-                  ) : (
+                  ) : this.validatePhoneNumber() ? (
                     "ثبت و ارسال "
+                  ) : (
+                    "تایید شماره تماس"
                   )}
                 </Button>
               </CardFooter>
