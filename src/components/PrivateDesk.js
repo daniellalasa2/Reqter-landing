@@ -228,11 +228,12 @@ class PrivateDesk extends React.PureComponent {
       }
       this.validatePhoneNumber(true, () => {
         // fetch additional background data state to final api object if form was valid
-        const { seats, city } = _formObjectGoingToSubmit;
+        const { seats, city, phonenumber } = _formObjectGoingToSubmit;
+        _formObjectGoingToSubmit["phonenumber"] =
+          this.state.form.fields.phonenumber.code + phonenumber;
         const cityname = this.state.combo.list_of_cities.items.map(
           curr => (curr.value === city && curr.title) || "ایران"
         )[0];
-
         _formObjectGoingToSubmit[
           "name"
         ] = `درخواست میزکار اختصاصی به تعداد ${seats} در ${cityname}`;

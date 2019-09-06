@@ -61,9 +61,9 @@ class SelectRow extends React.Component {
             });
           }
         );
-        arr.push(data);
+
         stateGoingToUpdate = {
-          checkedElements: arr,
+          checkedElements: data,
           renderedChildren: newChilds
         };
 

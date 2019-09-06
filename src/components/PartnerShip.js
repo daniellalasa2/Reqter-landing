@@ -197,6 +197,9 @@ class PartnerShip extends React.PureComponent {
       }
       this.validatePhoneNumber(true, () => {
         // fetch additional background data state to final api object if form was valid
+        const { phonenumber } = _formObjectGoingToSubmit;
+        _formObjectGoingToSubmit["phonenumber"] =
+          this.state.form.fields.phonenumber.code + phonenumber;
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData

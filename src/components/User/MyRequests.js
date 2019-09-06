@@ -5,6 +5,7 @@ import classnames from "classnames";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { SafeValue, GetRequestsList } from "../ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
+import moment from "jalali-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBan,
@@ -55,7 +56,6 @@ export default class MyRequests extends Component {
   generateRequestsElements = stage => {
     let generatedElements = [];
     const targetList = SafeValue(this.state.requestsList, stage, "object", []);
-    console.log(this.state.requestsList);
     if (targetList.length > 0) {
       switch (stage) {
         case "approved":
@@ -98,43 +98,69 @@ export default class MyRequests extends Component {
           break;
         case "pending":
           generatedElements = this.state.requestsList["pending"].map(item => (
-            <div className="request-card" key={item._id}>
-              <div className="request-card-image">
-                <img src={deskImg} alt="Desk" />
-                <strong className="product-title">{item.fields.name}</strong>
-              </div>
-              <div className="request-card-details">
-                <ul>
-                  <li className="product-title-wrapper">
-                    <strong className="product-title">
-                      {item.fields.name}
-                    </strong>
-                  </li>
-                  <li>تعداد :‌ {item.fields.seats}</li>
-                  <li>تاریخ : {item.fields.date}</li>
-                  <li>شهر : {item.fields.city}</li>
-                  {item.fields.resume && (
-                    <li>
-                      <span>رزومه :‌ </span>
-                      <a href={item.fields.resume}>
-                        <FontAwesomeIcon
-                          icon={faDownload}
-                          size="lg"
-                          color="black"
-                        />
-                      </a>
+            <React.Fragment key={item._id}>
+              <div className="request-card" key={item._id}>
+                <div className="request-card-image">
+                  <img src={deskImg} alt="Desk" />
+                  <strong className="product-title">
+                    {SafeValue(
+                      item.fields,
+                      "product.fields.name.fa",
+                      "string",
+                      ""
+                    )}
+                  </strong>
+                </div>
+                <div className="request-card-details">
+                  <ul>
+                    <li className="product-title-wrapper">
+                      <strong className="product-title">
+                        {SafeValue(
+                          item,
+                          "fields.product.fields.name.fa",
+                          "string",
+                          ""
+                        )}
+                      </strong>
                     </li>
-                  )}
-                </ul>
+                    <li>
+                      تعداد :‌ {SafeValue(item, "fields.seats", "string", "fa")}
+                    </li>
+                    <li>تاریخ : {moment(item.sys.issueDate)}</li>
+                    <li>
+                      شهر :{" "}
+                      {SafeValue(
+                        item,
+                        "fields.city.0.fields.name.fa",
+                        "string",
+                        ""
+                      )}
+                    </li>
+                    {item.fields.resume && (
+                      <li>
+                        <span>رزومه :‌ </span>
+                        <a
+                          href={SafeValue(item, "fields.resume", "string", "")}
+                        >
+                          <FontAwesomeIcon
+                            icon={faDownload}
+                            size="lg"
+                            color="black"
+                          />
+                        </a>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+                <div className="request-card-status">
+                  <strong>در انتظار بررسی</strong>
+                </div>
               </div>
-              <div className="request-card-status">
-                <strong>در انتظار بررسی</strong>
-              </div>
-            </div>
+            </React.Fragment>
           ));
           break;
         case "closed":
-          generatedElements = this.state.requestsList["pending"].map(item => (
+          generatedElements = this.state.requestsList["closed"].map(item => (
             <div className="request-card" key={item._id}>
               <div className="request-card-image">
                 <img src={deskImg} alt="Desk" />
@@ -148,7 +174,7 @@ export default class MyRequests extends Component {
                     </strong>
                   </li>
                   <li>تعداد :‌ {item.fields.seats}</li>
-                  <li>تاریخ : {item.fields.date}</li>
+                  <li>تاریخ : {moment(item.fields.date)}</li>
                   <li>شهر : {item.fields.city}</li>
                   {item.fields.resume && (
                     <li>

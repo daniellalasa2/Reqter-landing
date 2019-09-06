@@ -202,19 +202,16 @@ class SharedDesk extends React.PureComponent {
         };
       }
     }
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          isValid: _formIsValid,
-          fields: {
-            ...this.state.form.fields,
-            ..._fields
-          }
+    this.setState({
+      form: {
+        ...this.state.form,
+        isValid: _formIsValid,
+        fields: {
+          ...this.state.form.fields,
+          ..._fields
         }
-      },
-      () => console.log(this.state.combo)
-    );
+      }
+    });
     return _formIsValid;
   };
   submitForm = () => {
@@ -231,7 +228,9 @@ class SharedDesk extends React.PureComponent {
       }
       this.validatePhoneNumber(true, () => {
         // fetch additional background data state to final api object if form was valid
-        const { seats, city } = _formObjectGoingToSubmit;
+        const { seats, city, phonenumber } = _formObjectGoingToSubmit;
+        _formObjectGoingToSubmit["phonenumber"] =
+          this.state.form.fields.phonenumber.code + phonenumber;
         const cityname = this.state.combo.list_of_cities.items.map(
           curr => (curr.value === city && curr.title) || "ایران"
         )[0];
@@ -405,7 +404,7 @@ class SharedDesk extends React.PureComponent {
           ...this.state.form.fields,
           seats: {
             ...this.state.form.fields.seats,
-            value: Number(neededSeats) ? Number(neededSeats) : "1",
+            value: Number(neededSeats) ? Number(neededSeats) : 1,
             isValid: !isNaN(Number(neededSeats))
           },
           city: {

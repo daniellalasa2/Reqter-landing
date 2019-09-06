@@ -257,14 +257,23 @@ var GetRequestsList = callback => {
 //return safe value
 var SafeValue = (data, field, type, defaultValue) => {
   try {
-    if (data[field]) {
-      if (typeof data[field] === type) {
-        return data[field];
+    if (data === undefined) {
+      return defaultValue;
+    }
+    let index = field.split(".");
+    const cnt = index.length;
+    for (let i; i <= cnt - 1; i++) {
+      let val = index[i];
+      data = data[val];
+      if (data && i === cnt) {
+        if (typeof data === type) {
+          return data;
+        } else {
+          return defaultValue;
+        }
       } else {
         return defaultValue;
       }
-    } else {
-      return defaultValue;
     }
   } catch (err) {
     console.warn("Value is not safe: ", err);

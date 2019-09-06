@@ -84,8 +84,7 @@ class SessionRoom extends React.PureComponent {
           }
         },
         backgroundData: {
-          src: this.urlParams.src ? this.urlParams.src : "direct",
-          name: "" //request name
+          src: this.urlParams.src ? this.urlParams.src : "direct"
         }
       },
       combo: {
@@ -183,10 +182,14 @@ class SessionRoom extends React.PureComponent {
     let validation = {};
     if (name === "startdate") {
       const enddate = this.state.form.fields.enddate.value;
-      value = moment
-        .from(_this.value, "fa", "YYYY/MM/DD HH:mm")
-        .format("MM/DD/YYYY HH:mm"); //convert shamsi date to georgian date
-      value = new Date(value).getTime();
+      try {
+        value = moment
+          .from(_this.value, "fa", "YYYY/MM/DD HH:mm")
+          .format("MM/DD/YYYY HH:mm"); //convert shamsi date to georgian date
+        value = new Date(value).getTime();
+      } catch (err) {
+        value = 0;
+      }
       validation = Validator(value, this.validationRules[name]);
       validation = validation.valid
         ? {
@@ -200,10 +203,14 @@ class SessionRoom extends React.PureComponent {
         : validation;
     } else if (name === "enddate") {
       const startdate = this.state.form.fields.startdate.value;
-      value = moment
-        .from(_this.value, "fa", "YYYY/MM/DD HH:mm")
-        .format("MM/DD/YYYY HH:mm"); //convert shamsi date to georgian date
-      value = new Date(value).getTime();
+      try {
+        value = moment
+          .from(_this.value, "fa", "YYYY/MM/DD HH:mm")
+          .format("MM/DD/YYYY HH:mm"); //convert shamsi date to georgian date
+        value = new Date(value).getTime();
+      } catch (err) {
+        value = 0;
+      }
       validation = Validator(value, this.validationRules[name]);
       validation = validation.valid
         ? {
@@ -260,11 +267,12 @@ class SessionRoom extends React.PureComponent {
       }
       this.validatePhoneNumber(true, () => {
         // fetch additional background data state to final api object if form was valid
-        const { seats, city } = _formObjectGoingToSubmit;
+        const { seats, city, phonenumber } = _formObjectGoingToSubmit;
+        _formObjectGoingToSubmit["phonenumber"] =
+          this.state.form.fields.phonenumber.code + phonenumber;
         const cityname = this.state.combo.list_of_cities.items.map(
           curr => (curr.value === city && curr.title) || "ایران"
         )[0];
-
         _formObjectGoingToSubmit[
           "name"
         ] = `درخواست اتاق جلسه با ظرفیت ${seats} نفر در ${cityname}`;
@@ -272,7 +280,6 @@ class SessionRoom extends React.PureComponent {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
         };
-
         this.setState(
           {
             form: {

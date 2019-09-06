@@ -193,7 +193,7 @@ class Navigation extends Component {
                   خانه
                 </Link>
               </NavItem>
-              <NavItem>
+              {/* <NavItem>
                 {this.context.auth.ROLE === "user" ? (
                   <button
                     className="nav-link my-requests-link"
@@ -226,7 +226,7 @@ class Navigation extends Component {
                     />
                   </button>
                 )}
-              </NavItem>
+              </NavItem> */}
             </Nav>
           </Col>
         </Row>
@@ -249,7 +249,7 @@ class Navigation extends Component {
               />
             </div>
             <ul className="items-container">
-              <li>
+              {/* <li>
                 {this.context.auth.ROLE === "user" ? (
                   <span
                     className="nav-link my-requests-link"
@@ -262,7 +262,7 @@ class Navigation extends Component {
                     ورود
                   </span>
                 )}
-              </li>
+              </li> */}
               <li>
                 <span onClick={() => (window.location.href = "/")}>خانه</span>
               </li>
