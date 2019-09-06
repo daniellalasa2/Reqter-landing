@@ -257,6 +257,22 @@ var GetRequestsList = callback => {
 //return safe value
 var SafeValue = (data, field, type, defaultValue) => {
   try {
+    if (data[field]) {
+      if (typeof data[field] === type) {
+        return data[field];
+      } else {
+        return defaultValue;
+      }
+    } else {
+      return defaultValue;
+    }
+  } catch (err) {
+    console.warn("Value is not safe: ", err);
+    return defaultValue;
+  }
+};
+var SafeDeepObjectValue = (data, field, type, defaultValue) => {
+  try {
     if (data === undefined) {
       return defaultValue;
     }
