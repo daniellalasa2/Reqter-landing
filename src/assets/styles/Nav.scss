@@ -200,7 +200,7 @@
       width: 100%;
       text-align: center;
       color: white;
-      font-size: 23px;
+      font-size: 1.3rem;
       & > li {
         margin-top: 15px;
         a {
@@ -231,6 +231,23 @@
     }
   }
 }
+//custom break point to avoid menu items break and getting in 2 lines
+@media (max-width: 950px) {
+  .nav-main-container {
+    padding: auto 5px;
+    li > a {
+      margin-left: 0;
+    }
+  }
+  .nav-links-container {
+    .nav-link {
+      letter-spacing: 0;
+      font-size: 1rem;
+      padding: 0.5rem 0.7rem;
+    }
+  }
+}
+
 //responsive section
 @media (max-width: 768px) {
   .nav-main-container {

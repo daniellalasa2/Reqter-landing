@@ -22,6 +22,7 @@ export default class MyRequests extends Component {
       activeTab: 1,
       requestsList: []
     };
+    this.updateRequestList();
   }
   updateRequestList = () => {
     const _this = this;
@@ -56,58 +57,20 @@ export default class MyRequests extends Component {
   generateRequestsElements = stage => {
     let generatedElements = [];
     const targetList = SafeValue(this.state.requestsList, stage, "object", []);
-    if (targetList.length > 0) {
-      switch (stage) {
-        case "approved":
-          generatedElements = this.state.requestsList["approved"].map(item => (
-            <div className="request-card" key={item._id}>
-              <div className="request-card-image">
-                <img src={deskImg} alt="Desk" />
-                <strong className="product-title">{item.fields.name}</strong>
-              </div>
-              <div className="request-card-details">
-                <ul>
-                  <li className="product-title-wrapper">
-                    <strong className="product-title">
-                      {item.fields.name}
-                    </strong>
-                  </li>
-                  <li>تعداد :‌ {item.fields.seats}</li>
-                  <li>تاریخ : {item.fields.date}</li>
-                  <li>شهر : {item.fields.city}</li>
-                  {item.fields.resume && (
-                    <li>
-                      <span>رزومه :‌ </span>
-                      <a href={item.fields.resume}>
-                        <FontAwesomeIcon
-                          icon={faDownload}
-                          size="lg"
-                          color="black"
-                        />
-                      </a>
-                    </li>
-                  )}
-                </ul>
-              </div>
-              <div className="request-card-status">
-                <strong>{item.fields.quotes.lengt} پیشنهاد</strong>
-                <button onClick={() => null}>مشاهده پیشنهاد ها</button>
-              </div>
-            </div>
-          ));
-          break;
-        case "pending":
-          generatedElements = this.state.requestsList["pending"].map(item => (
-            <React.Fragment key={item._id}>
+    try {
+      if (targetList.length > 0) {
+        switch (stage) {
+          case "approved":
+            generatedElements = targetList.map(item => (
               <div className="request-card" key={item._id}>
                 <div className="request-card-image">
                   <img src={deskImg} alt="Desk" />
                   <strong className="product-title">
                     {SafeValue(
-                      item.fields,
-                      "product.fields.name.fa",
+                      item,
+                      "fields.product.fields.name.fa",
                       "string",
-                      ""
+                      item.contentType.title.fa
                     )}
                   </strong>
                 </div>
@@ -119,19 +82,91 @@ export default class MyRequests extends Component {
                           item,
                           "fields.product.fields.name.fa",
                           "string",
-                          ""
+                          item.contentType.title.fa
                         )}
                       </strong>
                     </li>
                     <li>
                       تعداد :‌ {SafeValue(item, "fields.seats", "string", "fa")}
                     </li>
-                    <li>تاریخ : {moment(item.sys.issueDate)}</li>
+                    <li>
+                      تاریخ :{" "}
+                      {SafeValue(item, "sys.issueDate", "string", null)
+                        .replace(/T/, " ")
+                        .replace(/\..+/, "")}
+                    </li>
                     <li>
                       شهر :{" "}
                       {SafeValue(
                         item,
-                        "fields.city.0.fields.name.fa",
+                        "fields.city.fields.name.fa",
+                        "string",
+                        ""
+                      )}
+                    </li>
+                    {item.fields.resume && (
+                      <li>
+                        <span>رزومه :‌ </span>
+                        <a
+                          href={SafeValue(item, "fields.resume", "string", "")}
+                        >
+                          <FontAwesomeIcon
+                            icon={faDownload}
+                            size="lg"
+                            color="black"
+                          />
+                        </a>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+                <div className="request-card-status">
+                  <strong>{item.fields.quotes.lengt} پیشنهاد</strong>
+                  <button onClick={() => null}>مشاهده پیشنهاد ها</button>
+                </div>
+              </div>
+            ));
+            break;
+          case "pending":
+            generatedElements = targetList.map(item => (
+              <div className="request-card" key={item._id}>
+                <div className="request-card-image">
+                  <img src={deskImg} alt="Desk" />
+                  <strong className="product-title">
+                    {SafeValue(
+                      item,
+                      "fields.product.fields.name.fa",
+                      "string",
+                      item.contentType.title.fa
+                    )}
+                  </strong>
+                </div>
+                <div className="request-card-details">
+                  <ul>
+                    <li className="product-title-wrapper">
+                      <strong className="product-title">
+                        {SafeValue(
+                          item,
+                          "fields.product.fields.name.fa",
+                          "string",
+                          item.contentType.title.fa
+                        )}
+                      </strong>
+                    </li>
+                    <li>
+                      تعداد :‌ {SafeValue(item, "fields.seats", "string", "fa")}
+                    </li>
+                    <li>
+                      تاریخ :{" "}
+                      {SafeValue(item, "sys.issueDate", "string", null)
+                        .replace(/T/, " ")
+                        .replace(/\..+/, "")}
+                    </li>
+                    <li>
+                      شهر :{" "}
+                      {SafeValue(
+                        item,
+                        "fields.city.fields.name.fa",
                         "string",
                         ""
                       )}
@@ -156,50 +191,79 @@ export default class MyRequests extends Component {
                   <strong>در انتظار بررسی</strong>
                 </div>
               </div>
-            </React.Fragment>
-          ));
-          break;
-        case "closed":
-          generatedElements = this.state.requestsList["closed"].map(item => (
-            <div className="request-card" key={item._id}>
-              <div className="request-card-image">
-                <img src={deskImg} alt="Desk" />
-                <strong className="product-title">{item.fields.name}</strong>
-              </div>
-              <div className="request-card-details">
-                <ul>
-                  <li className="product-title-wrapper">
-                    <strong className="product-title">
-                      {item.fields.name}
-                    </strong>
-                  </li>
-                  <li>تعداد :‌ {item.fields.seats}</li>
-                  <li>تاریخ : {moment(item.fields.date)}</li>
-                  <li>شهر : {item.fields.city}</li>
-                  {item.fields.resume && (
-                    <li>
-                      <span>رزومه :‌ </span>
-                      <a href={item.fields.resume}>
-                        <FontAwesomeIcon
-                          icon={faDownload}
-                          size="lg"
-                          color="black"
-                        />
-                      </a>
+            ));
+            break;
+          case "closed":
+            generatedElements = targetList.map(item => (
+              <div className="request-card" key={item._id}>
+                <div className="request-card-image">
+                  <img src={deskImg} alt="Desk" />
+                  <strong className="product-title">
+                    {SafeValue(
+                      item,
+                      "fields.product.fields.name.fa",
+                      "string",
+                      item.contentType.title.fa
+                    )}
+                  </strong>
+                </div>
+                <div className="request-card-details">
+                  <ul>
+                    <li className="product-title-wrapper">
+                      <strong className="product-title">
+                        {SafeValue(
+                          item,
+                          "fields.product.fields.name.fa",
+                          "string",
+                          item.contentType.title.fa
+                        )}
+                      </strong>
                     </li>
-                  )}
-                </ul>
+                    <li>
+                      تعداد :‌ {SafeValue(item, "fields.seats", "string", "fa")}
+                    </li>
+                    <li>
+                      تاریخ :{" "}
+                      {SafeValue(item, "sys.issueDate", "string", null)
+                        .replace(/T/, " ")
+                        .replace(/\..+/, "")}
+                    </li>
+                    <li>
+                      شهر :{" "}
+                      {SafeValue(
+                        item,
+                        "fields.city.fields.name.fa",
+                        "string",
+                        ""
+                      )}
+                    </li>
+                    {item.fields.resume && (
+                      <li>
+                        <span>رزومه :‌ </span>
+                        <a
+                          href={SafeValue(item, "fields.resume", "string", "")}
+                        >
+                          <FontAwesomeIcon
+                            icon={faDownload}
+                            size="lg"
+                            color="black"
+                          />
+                        </a>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+                <div className="request-card-status">
+                  <strong>درخواست بسته شده</strong>
+                </div>
               </div>
-              <div className="request-card-status">
-                <strong>درخواست بسته شده</strong>
-              </div>
-            </div>
-          ));
-          break;
-        default:
-          break;
+            ));
+            break;
+          default:
+            break;
+        }
       }
-    } else {
+    } catch (err) {
       generatedElements = (
         <span className="no-content">درخواستی برای نمایش وجود ندارد</span>
       );
@@ -212,11 +276,6 @@ export default class MyRequests extends Component {
       activeTab: tab
     });
   };
-  componentDidMount() {
-    // setInterval(() => {
-    this.updateRequestList();
-    // }, 10000);
-  }
   render() {
     return (
       <section

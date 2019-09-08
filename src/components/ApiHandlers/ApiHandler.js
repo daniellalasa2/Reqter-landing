@@ -255,40 +255,45 @@ var GetRequestsList = callback => {
 };
 
 //return safe value
-var SafeValue = (data, field, type, defaultValue) => {
+//data: the data which you are going to search field through it
+//field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
+//
+var SafeValue = (data, index, type, defaultValue) => {
   try {
-    if (data[field]) {
-      if (typeof data[field] === type) {
-        return data[field];
+    if (!Boolean(data)) {
+      return defaultValue;
+    }
+    index = index.toString().replace(" ", "");
+    index = parseInt(index) == index ? parseInt(index) : index;
+    //if index was empty string then just check validation of data
+    if (index === "") {
+      if (
+        data !== null &&
+        data !== undefined &&
+        !isNaN(data) &&
+        typeof data === type
+      ) {
+        return data;
       } else {
         return defaultValue;
       }
-    } else {
-      return defaultValue;
     }
-  } catch (err) {
-    console.warn("Value is not safe: ", err);
-    return defaultValue;
-  }
-};
-var SafeDeepObjectValue = (data, field, type, defaultValue) => {
-  try {
-    if (data === undefined) {
-      return defaultValue;
-    }
-    let index = field.split(".");
-    const cnt = index.length;
-    for (let i; i <= cnt - 1; i++) {
-      let val = index[i];
+    let indexArr = typeof index === "string" ? index.split(".") : index;
+    const cnt = indexArr.length;
+    let val = "";
+    for (let i = 0; i <= cnt - 1; i++) {
+      val = indexArr[i];
+      if (!Boolean(data)) {
+        return defaultValue;
+      }
       data = data[val];
-      if (data && i === cnt) {
-        if (typeof data === type) {
+      if (i === cnt - 1) {
+        if (data !== null && data !== undefined && typeof data === type) {
           return data;
         } else {
+          // console.warn(`index ${val} is not valid.`, `${val} : ${data}`);
           return defaultValue;
         }
-      } else {
-        return defaultValue;
       }
     }
   } catch (err) {
