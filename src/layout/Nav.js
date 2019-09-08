@@ -156,8 +156,12 @@ class Navigation extends Component {
             <Nav className="nav-links-container">
               {this.context.auth.ROLE === "user" && (
                 <NavItem>
-                  <Link to="">
-                    <button onClick={() => this.logOut()}>خروج</button>
+                  <Link
+                    to=""
+                    onClick={() => this.logOut()}
+                    className="nav-link"
+                  >
+                    خروج
                   </Link>
                 </NavItem>
               )}
