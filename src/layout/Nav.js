@@ -154,13 +154,13 @@ class Navigation extends Component {
               onClick={() => this.toggleMenu("open")}
             />
             <Nav className="nav-links-container">
-              {/* {this.context.auth.ROLE === "user" && (
+              {this.context.auth.ROLE === "user" && (
                 <NavItem>
-                  <Link>
+                  <Link to="">
                     <button onClick={() => this.logOut()}>خروج</button>
                   </Link>
                 </NavItem>
-              )} */}
+              )}
               <Dropdown
                 nav
                 isOpen={this.state.dropdownOpen.normal}
@@ -193,7 +193,7 @@ class Navigation extends Component {
                   خانه
                 </Link>
               </NavItem>
-              {/* <NavItem>
+              <NavItem>
                 {this.context.auth.ROLE === "user" ? (
                   <button
                     className="nav-link my-requests-link"
@@ -226,7 +226,7 @@ class Navigation extends Component {
                     />
                   </button>
                 )}
-              </NavItem> */}
+              </NavItem>
             </Nav>
           </Col>
         </Row>
@@ -249,7 +249,7 @@ class Navigation extends Component {
               />
             </div>
             <ul className="items-container">
-              {/* <li>
+              <li>
                 {this.context.auth.ROLE === "user" ? (
                   <span
                     className="nav-link my-requests-link"
@@ -262,7 +262,7 @@ class Navigation extends Component {
                     ورود
                   </span>
                 )}
-              </li> */}
+              </li>
               <li>
                 <span onClick={() => (window.location.href = "/")}>خانه</span>
               </li>
@@ -309,11 +309,11 @@ class Navigation extends Component {
                   سوالات متداول
                 </Link>
               </li>
-              {/* {this.context.auth.ROLE === "user" && (
+              {this.context.auth.ROLE === "user" && (
                 <li className="nav-link">
                   <span onClick={() => this.logOut()}>خروج</span>
                 </li>
-              )} */}
+              )}
             </ul>
           </div>
         </div>

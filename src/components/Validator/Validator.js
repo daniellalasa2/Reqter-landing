@@ -15,14 +15,18 @@ const Validator = (value, rules, additional) => {
     });
   let numberOfValidations = rules ? rules.length : 0;
   if (numberOfValidations !== 0) {
+    let ruleSplitter = "";
+    let property = "";
     for (let rule of rules) {
+      ruleSplitter = rule.split(".");
+      rule = ruleSplitter[0];
+      property = Boolean(ruleSplitter[1]) && ruleSplitter[1];
       switch (rule) {
         case "required":
           if (typeof value === "string") value = value.replace(/\s/g, "");
           if (!value.length) {
             validationObj.message = "فیلد الزامی";
             validationObj.valid = false;
-            return validationObj;
           }
           break;
         case "minCharecters":
@@ -30,7 +34,6 @@ const Validator = (value, rules, additional) => {
           if (value.length < parseInt(additional.charsCount)) {
             validationObj.message = `حداقل ${additional.charsCount} کاراکتر`;
             validationObj.valid = false;
-            return validationObj;
           }
           break;
         case "maxCharecters":
@@ -38,7 +41,6 @@ const Validator = (value, rules, additional) => {
           if (value.length > parseInt(additional.charsCount)) {
             validationObj.message = `حداقل ${additional.charsCount} کاراکتر`;
             validationObj.valid = false;
-            return validationObj;
           }
           break;
         case "email":
@@ -47,24 +49,20 @@ const Validator = (value, rules, additional) => {
             if (!email) {
               validationObj.message = "ایمیل نامعتبر است";
               validationObj.valid = false;
-              return validationObj;
             }
           }
           break;
         case "phonenumber":
           if (value.length > 0) {
-            if (value[0] === "0") {
-              validationObj.message = "شماره نباید با صفر شروع شود";
-              validationObj.valid = false;
-              return validationObj;
-            }
             const phonenumber = regexPatterns.phonenumber.test(
               String(value).toLowerCase()
             );
-            if (!phonenumber) {
+            if (value[0] === "0") {
+              validationObj.message = "شماره نباید با صفر شروع شود";
+              validationObj.valid = false;
+            } else if (!phonenumber) {
               validationObj.message = "شماره وارد شده صحیح نیست";
               validationObj.valid = false;
-              return validationObj;
             }
           }
           break;
@@ -74,7 +72,6 @@ const Validator = (value, rules, additional) => {
             if (!url) {
               validationObj.message = "فرمت آدرس وبسایت وارد شده نامعتبر است";
               validationObj.valid = false;
-              return validationObj;
             }
           }
           break;
@@ -83,7 +80,6 @@ const Validator = (value, rules, additional) => {
             if (isNaN(Number(value))) {
               validationObj.message = "لطفا مقدار عددی صحیح وارد کنید";
               validationObj.valid = false;
-              return validationObj;
             }
           }
           break;
@@ -91,7 +87,6 @@ const Validator = (value, rules, additional) => {
           if (additional && additional.uploading) {
             validationObj.message = "در حال آپلود فایل لطفا منتظر بمانید";
             validationObj.valid = false;
-            return validationObj;
           }
           break;
         case "date":
@@ -109,18 +104,24 @@ const Validator = (value, rules, additional) => {
             if (!Boolean(value)) {
               validationObj.message = "لطفا تاریخ و زمان صحیح وارد کنید";
               validationObj.valid = false;
-              return validationObj;
-            }
-            //if Value is not NaN but is past
-            if (value < beginningOfToday) {
+            } else if (value < beginningOfToday) {
+              //if Value is not NaN but is past
               validationObj.message = "تاریخ و زمان نباید از الان به قبل باشد";
               validationObj.valid = false;
-              return validationObj;
             }
           }
           break;
         default:
           throw new Error("Invalid validation rule");
+      }
+      if (!validationObj.valid) {
+        switch (property) {
+          case "NOMESSAGE":
+            validationObj.message = "";
+            return validationObj;
+          default:
+            return validationObj;
+        }
       }
       //If everythings is valid and the loop is on the last child of array then return validationObj
       if (numberOfValidations === 1 && validationObj.valid) {

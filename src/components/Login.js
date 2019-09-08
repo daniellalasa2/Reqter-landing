@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { FlatInput } from "./FlatForm/FlatForm";
-import { LoginRequest, VerifyCode } from "./ApiHandlers/ApiHandler";
+import { LoginRequest, VerifyCode, SafeValue } from "./ApiHandlers/ApiHandler";
 import Validator from "./Validator/Validator";
 import {
   SetCookie,
@@ -44,7 +44,7 @@ export default class Login extends React.Component {
       );
     };
     this.validationRules = {
-      phoneNumber: ["phonenumber"]
+      phoneNumber: ["phonenumber", "required.NOMESSAGE"]
     };
   }
   shouldComponentUpdate(nextProps) {
@@ -57,8 +57,11 @@ export default class Login extends React.Component {
             ...this.state.form.fields,
             phoneNumber: {
               ...this.state.form.fields.phoneNumber,
-              value: nextProps.defaultPhoneNumber,
-              isValid: true
+              value: SafeValue(nextProps, "defaultPhoneNumber", "string", ""),
+              isValid: Validator(
+                SafeValue(nextProps, "defaultPhoneNumber", "string", ""),
+                this.validationRules.phoneNumber
+              ).valid
             }
           }
         }
@@ -180,28 +183,26 @@ export default class Login extends React.Component {
       loginStep: 1
     });
   };
-  // checkFieldValidation = fieldName => {
-  //   const field = this.state.form.fields[fieldName];
-  //   const validation = Validator(field.value, this.validationRules[fieldName]);
-  //   const fieldContent = {
-  //     error: validation.message,
-  //     isValid: validation.valid
-  //   };
-  //   console.log(field);
-  //   console.log(this.state.form);
-  //   this.setState({
-  //     form: {
-  //       ...this.state.form,
-  //       fields: {
-  //         ...this.state.form.fields,
-  //         [field]: {
-  //           ...[field],
-  //           ...fieldContent
-  //         }
-  //       }
-  //     }
-  //   });
-  // };
+  checkFieldValidation = fieldName => {
+    const field = this.state.form.fields[fieldName];
+    const validation = Validator(field.value, this.validationRules[fieldName]);
+    const fieldContent = {
+      error: validation.message,
+      isValid: validation.valid
+    };
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          [field]: {
+            ...[field],
+            ...fieldContent
+          }
+        }
+      }
+    });
+  };
   checkFormValidation = () => {
     const fields = this.state.form.fields;
     let boolean = true;
@@ -219,9 +220,15 @@ export default class Login extends React.Component {
     });
   };
   formStateHandler = e => {
+    console.log("phone: ", this.state.form.fields.phoneNumber.isValid);
+    console.log("form:  ", this.state.form.isValid);
     let _this = e.target;
     const name = _this.name;
     let value = _this.value;
+    console.log(
+      this.validationRules[name],
+      Validator("", this.validationRules[name])
+    );
     const validation = Validator(value, this.validationRules[name]);
     this.setState(
       {
@@ -241,6 +248,11 @@ export default class Login extends React.Component {
       () => this.checkFormValidation()
     );
   };
+  componentDidMount() {
+    console.log("phone: ", this.state.form.fields.phoneNumber.isValid);
+    console.log("form:  ", this.state.form.isValid);
+  }
+
   render() {
     return (
       <div>
