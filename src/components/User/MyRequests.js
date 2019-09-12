@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { SafeValue, GetRequestsList } from "../ApiHandlers/ApiHandler";
-import Skeleton from "react-loading-skeleton";
 import moment from "jalali-moment";
+import PersianNumber from "../PersianNumber/PersianNumber";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBan,
@@ -56,7 +56,7 @@ export default class MyRequests extends Component {
   };
   generateRequestsElements = stage => {
     let generatedElements = [];
-    const targetList = SafeValue(this.state.requestsList, stage, "object", []);
+    const targetList = SafeValue(this.state.requestsList, stage, "object", "");
     try {
       if (targetList.length > 0) {
         switch (stage) {
@@ -121,8 +121,20 @@ export default class MyRequests extends Component {
                   </ul>
                 </div>
                 <div className="request-card-status">
-                  <strong>{item.fields.quotes.lengt} پیشنهاد</strong>
-                  <button onClick={() => null}>مشاهده پیشنهاد ها</button>
+                  <strong>
+                    {PersianNumber(
+                      SafeValue(item, "fields.quotes", "object", "").length
+                    )}{" "}
+                    پیشنهاد
+                  </strong>
+                  <Link
+                    to={{
+                      pathname: "/user/offerlist",
+                      state: { requestId: "itemId" }
+                    }}
+                  >
+                    <button>مشاهده پیشنهاد ها</button>
+                  </Link>
                 </div>
               </div>
             ));
@@ -262,6 +274,14 @@ export default class MyRequests extends Component {
           default:
             break;
         }
+      } else if (targetList === "") {
+        generatedElements = (
+          <span className="no-content">...در حال دریافت لیست</span>
+        );
+      } else {
+        generatedElements = (
+          <span className="no-content">درخواستی برای نمایش وجود ندارد</span>
+        );
       }
     } catch (err) {
       generatedElements = (

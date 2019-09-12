@@ -10,7 +10,8 @@ let _api = {
   FilterContents: Config.BASE_URL_CONTENT + Config.URLs.filter_contents,
   Login: Config.BASE_URL_PANEL + Config.URLs.login,
   VerifyCode: Config.BASE_URL_PANEL + Config.URLs.verify_code,
-  GetRequestsList: Config.BASE_URL_PANEL + Config.URLs.all_requests
+  GetRequestsList: Config.BASE_URL_PANEL + Config.URLs.all_requests,
+  GetOfferList: Config.BASE_URL_PANEL + Config.URLs.all_offers
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -254,6 +255,35 @@ var GetRequestsList = callback => {
   });
 };
 
+var GetOfferList = callback => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.GetOfferList,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        return callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        return callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
+
 //return safe value
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
@@ -309,5 +339,6 @@ export {
   LoginRequest,
   VerifyCode,
   GetRequestsList,
+  GetOfferList,
   Config
 };

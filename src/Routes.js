@@ -18,6 +18,7 @@ const Careers = React.lazy(() => import("./components/Careers"));
 const PartnerShip = React.lazy(() => import("./components/PartnerShip"));
 const Security = React.lazy(() => import("./components/Security"));
 const MyRequests = React.lazy(() => import("./components/User/MyRequests"));
+const OfferList = React.lazy(() => import("./components/User/OfferList"));
 const NotFound = React.lazy(() => import("./components/Auth/NotFound"));
 //temporary
 const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
@@ -125,6 +126,13 @@ const routes = [
     exact: true,
     name: "My Requests",
     component: MyRequests,
+    auth: "user"
+  },
+  {
+    path: "/user/offerlist",
+    exact: true,
+    name: "Offer List",
+    component: OfferList,
     auth: "user"
   }
 ];

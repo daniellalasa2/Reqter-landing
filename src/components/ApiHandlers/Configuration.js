@@ -20,6 +20,7 @@ var Configuration = {
     login: "api/v1/customers/requestcode",
     verify_code: "api/v1/customers/verifycode",
     all_requests: "api/v1/requests/all",
+    all_offers: "/api/v1/requests/offers/all",
     get_initial_token: "api/v1/auth/token"
   },
   CONTENT_TYPE_ID: {
