@@ -67,12 +67,13 @@
       width: 100%;
       .partner-img {
         width: 18%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         img {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          max-width: 80px;
+          width: 80px;
           max-height: 80px;
+          max-width: 90%;
         }
       }
       .partner-title {
@@ -223,6 +224,14 @@
       }
     }
     .offer-card-details {
+      .product-header {
+        flex-direction: column;
+        .partner-img,
+        .partner-title {
+          width: 100%;
+        }
+      }
+
       ul {
         li.product-title-wrapper {
           display: none;

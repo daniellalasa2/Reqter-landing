@@ -137,7 +137,7 @@ export default class MyRequests extends Component {
                   <button
                     onClick={() =>
                       this.props.history.push(
-                        `/user/offerlist/?rid=${item._id}&ct=${item.contentType._id}`
+                        `/user/offerlist/?rid=${item._id}`
                       )
                     }
                   >

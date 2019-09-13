@@ -7,6 +7,7 @@ import {
   FilterContents
 } from "./ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
+import { Config } from "./ApiHandlers/ApiHandler";
 import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -82,7 +83,8 @@ class DedicatedOffice extends React.PureComponent {
           }
         },
         backgroundData: {
-          src: this.urlParams.src ? this.urlParams.src : "direct"
+          src: this.urlParams.src ? this.urlParams.src : "direct",
+          product: Config.CONTENT_TYPE_ID.dedicated_office
         }
       },
       combo: {

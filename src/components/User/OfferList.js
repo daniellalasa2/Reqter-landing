@@ -26,11 +26,11 @@ export default class MyRequests extends Component {
       offerList: [],
       moreDetailCollapse: null
     };
-    this.getAndFilterOfferList(this.urlParams.rid, this.urlParams.ct);
+    this.getAndFilterOfferList(this.urlParams.rid);
   }
-  getAndFilterOfferList = (reqId, contentType) => {
+  getAndFilterOfferList = reqId => {
     const _this = this;
-    GetOfferList(reqId, contentType, offer_list => {
+    GetOfferList(reqId, offer_list => {
       const SAFE_offer_list = SafeValue(offer_list, "data", "object", []);
       _this.setState({
         offerList: SAFE_offer_list
@@ -65,8 +65,7 @@ export default class MyRequests extends Component {
   };
   generateOfferList = () => {
     let generatedElements = [];
-    let targetList = tj; // SafeValue(this.state.offerList, "", "object", []);
-    console.log(targetList);
+    let targetList = SafeValue(this.state.offerList, "", "object", []);
     if (targetList.length > 0) {
       generatedElements = targetList.map(item => (
         <div className="offer-card" key={item._id}>
