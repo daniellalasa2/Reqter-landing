@@ -130,7 +130,6 @@ const routes = [
   },
   {
     path: "/user/offerlist",
-    exact: true,
     name: "Offer List",
     component: OfferList,
     auth: "user"

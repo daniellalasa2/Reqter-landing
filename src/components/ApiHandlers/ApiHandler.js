@@ -255,7 +255,7 @@ var GetRequestsList = callback => {
   });
 };
 
-var GetOfferList = callback => {
+var GetOfferList = (requestId, contentType, callback) => {
   Config.Auth().then(token => {
     axios({
       url: _api.GetOfferList,
@@ -263,6 +263,10 @@ var GetOfferList = callback => {
       headers: {
         ..._api.header,
         authorization: token
+      },
+      params: {
+        contentType: contentType,
+        requestId: requestId
       }
     })
       .then(res => {

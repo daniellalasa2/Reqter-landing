@@ -104,11 +104,17 @@ export default class MyRequests extends Component {
                         ""
                       )}
                     </li>
-                    {item.fields.resume && (
+                    {console.log("resume: ", item.fields.resume)}
+                    {item.fields.resume && item.fields.resume.length !== 0 && (
                       <li>
                         <span>رزومه :‌ </span>
                         <a
-                          href={SafeValue(item, "fields.resume", "string", "")}
+                          href={SafeValue(
+                            item,
+                            "fields.resume.0.fa",
+                            "string",
+                            ""
+                          )}
                         >
                           <FontAwesomeIcon
                             icon={faDownload}
@@ -127,14 +133,16 @@ export default class MyRequests extends Component {
                     )}{" "}
                     پیشنهاد
                   </strong>
-                  <Link
-                    to={{
-                      pathname: "/user/offerlist",
-                      state: { requestId: "itemId" }
-                    }}
+
+                  <button
+                    onClick={() =>
+                      this.props.history.push(
+                        `/user/offerlist/?rid=${item._id}&ct=${item.contentType._id}`
+                      )
+                    }
                   >
-                    <button>مشاهده پیشنهاد ها</button>
-                  </Link>
+                    مشاهده پیشنهاد ها
+                  </button>
                 </div>
               </div>
             ));
@@ -183,11 +191,16 @@ export default class MyRequests extends Component {
                         ""
                       )}
                     </li>
-                    {item.fields.resume && (
+                    {item.fields.resume && item.fields.resume.length !== 0 && (
                       <li>
                         <span>رزومه :‌ </span>
                         <a
-                          href={SafeValue(item, "fields.resume", "string", "")}
+                          href={SafeValue(
+                            item,
+                            "fields.resume.0.fa",
+                            "string",
+                            ""
+                          )}
                         >
                           <FontAwesomeIcon
                             icon={faDownload}
@@ -249,7 +262,7 @@ export default class MyRequests extends Component {
                         ""
                       )}
                     </li>
-                    {item.fields.resume && (
+                    {item.fields.resume && item.fields.resume.length !== 0 && (
                       <li>
                         <span>رزومه :‌ </span>
                         <a
