@@ -17,6 +17,7 @@ import {
   faChevronUp
 } from "@fortawesome/free-solid-svg-icons";
 import "./OfferList.scss";
+import verifiedIcon from "../../assets/images/sample-icon/verified.png";
 export default class MyRequests extends Component {
   constructor(props) {
     super(props);
@@ -65,27 +66,41 @@ export default class MyRequests extends Component {
   generateOfferList = () => {
     let generatedElements = [];
     let targetList = tj; // SafeValue(this.state.offerList, "", "object", []);
+    console.log(targetList);
     if (targetList.length > 0) {
       generatedElements = targetList.map(item => (
         <div className="offer-card" key={item._id}>
           <div className="offer-card-details">
-            <h5>
-              <strong className="product-title-wrapper">
-                <strong className="product-title">
-                  {SafeValue(item, "fields.name", "string", "")}
-                </strong>
-              </strong>
-            </h5>
-            <h6>
-              <strong>
-                {SafeValue(
-                  item,
-                  "fields.partnerid.fields.name",
-                  "string",
-                  "همکار در استارتاپ اسپیس"
-                )}
-              </strong>
-            </h6>
+            <div className="product-header">
+              {item.fields.partnerid.fields.logo[0].en && (
+                <div className="partner-img">
+                  <img src={item.fields.partnerid.fields.logo[0].en} alt="" />
+                </div>
+              )}
+              <div className="partner-title">
+                <h5>
+                  <strong className="product-title-wrapper">
+                    <strong className="product-title">
+                      {SafeValue(item, "fields.name", "string", "")}
+                    </strong>
+                  </strong>
+                </h5>
+                <h6>
+                  <strong>
+                    {SafeValue(
+                      item,
+                      "fields.partnerid.fields.name",
+                      "string",
+                      "همکار در استارتاپ اسپیس"
+                    )}{" "}
+                    {item.fields.partnerid.fields.verified && (
+                      <img src={verifiedIcon} alt="verified" width="23" />
+                    )}
+                  </strong>
+                </h6>
+              </div>
+            </div>
+
             <br />
             <ul>
               <li>
@@ -199,13 +214,13 @@ export default class MyRequests extends Component {
                       </strong>
                     </li>
                     <li>
-                      آدرس :‌
+                      ایمیل :‌
                       <br />
                       <strong>
                         {PersianNumber(
                           SafeValue(
                             item,
-                            "fields.partnerid.fields.address",
+                            "fields.partnerid.fields.email",
                             "string",
                             "ندارد"
                           )
@@ -235,15 +250,6 @@ export default class MyRequests extends Component {
                         </a>
                       </strong>
                     </li>
-                    <li>
-                      هویت همکار :‌
-                      <br />
-                      {item.fields.partnerid.fields.verified ? (
-                        <strong style={{ color: "green" }}>تایید شده</strong>
-                      ) : (
-                        <strong style={{ color: "red" }}>تایید نشده</strong>
-                      )}
-                    </li>{" "}
                     <li>
                       توضیحات درباره همکار :‌
                       <br />
