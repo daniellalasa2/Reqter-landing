@@ -102,7 +102,7 @@ class SessionRoom extends React.PureComponent {
       fullname: ["required"],
       subject: ["required"],
       phonenumber: ["required", "phonenumber"],
-      city: [this.state.combo.list_of_cities.items.length && "required"],
+      city: ["required"],
       seats: ["required", "number"],
       email: ["email"],
       startdate: ["date"],

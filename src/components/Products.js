@@ -17,6 +17,7 @@ import {
   faChevronCircleLeft,
   faChevronCircleRight
 } from "@fortawesome/free-solid-svg-icons";
+import Validator from "./Validator/Validator";
 //icons
 import privateOffice from "../assets/images/products-icons/004-meet.png";
 import cowork from "../assets/images/products-icons/005-coworking.png";
@@ -34,8 +35,14 @@ class Products extends Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      selectedCity: "",
-      neededSeats: 0,
+      form: {
+        isValid: false,
+        error: "",
+        fields: {
+          selectedCity: "",
+          neededSeats: ""
+        }
+      },
       activeTab: "1",
       bgImg: {
         "1": defaultBgImg,
@@ -48,18 +55,64 @@ class Products extends Component {
         city: []
       }
     };
+    this.validationRules = {
+      neededSeats: ["required"],
+      selectedCity: ["required"]
+    };
   }
+  checkFormValidation = () => {
+    const inputs = this.state.form.fields;
+    const _fields = {};
+    let _formIsValid = true;
+    let _validation = {};
+    for (let index in inputs) {
+      _validation = Validator(inputs[index], this.validationRules[index]);
+      if (!_validation.valid) {
+        //if form is valid value could change to false else value is unchangable
+        _formIsValid = _formIsValid && false;
+        _fields[index] = inputs[index];
+        break;
+      }
+    }
+    this.setState({
+      form: {
+        ...this.state.form,
+        error: _validation.message,
+        isValid: _formIsValid,
+        fields: {
+          ...this.state.form.fields,
+          ..._fields
+        }
+      }
+    });
+    return _formIsValid;
+  };
   formStateHandler = e => {
     const name = e.target.name;
     const value = e.target.value;
     this.setState({
-      [name]: value
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          [name]: value
+        }
+      }
     });
   };
   toggle = tab => {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
+        activeTab: tab,
+        form: {
+          isValid: false,
+          error: "",
+          fields: {
+            ...this.state.form.fields,
+            neededSeats: "",
+            selectedCity: ""
+          }
+        }
       });
     }
   };
@@ -74,7 +127,6 @@ class Products extends Component {
       }
     }
   };
-
   getCitiesList = () => {
     const obj = {};
     FilterContents("list_of_cities", res => {
@@ -129,7 +181,6 @@ class Products extends Component {
                         </Col>
                       </Row>
                     </TabPane>
-
                     {/* shared desk */}
                     <TabPane tabId="2">
                       <Row>
@@ -143,7 +194,9 @@ class Products extends Component {
                               <InputGroup size="lg">
                                 <InputGroupAddon addonType="prepend">
                                   <Button
+                                    disabled={this.state.form.isValid}
                                     onClick={() =>
+                                      this.checkFormValidation() &&
                                       this.props.history.push({
                                         pathname: `/apply/shareddesk`,
                                         search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
@@ -159,12 +212,18 @@ class Products extends Component {
                                   placeholder="تعداد نفرات"
                                   name="neededSeats"
                                   onChange={this.formStateHandler}
+                                  defaultValue={
+                                    this.state.form.fields.neededSeats
+                                  }
                                 />
                                 {/* Combo box */}
                                 <Input
                                   name="selectedCity"
                                   type="select"
                                   onChange={this.formStateHandler}
+                                  defaultValue={
+                                    this.state.form.fields.selectedCity
+                                  }
                                 >
                                   <option>شهر</option>
                                   {this.fillCombo(this.state.combo.city)}
@@ -175,7 +234,6 @@ class Products extends Component {
                         </Col>
                       </Row>
                     </TabPane>
-
                     {/* private desk */}
                     <TabPane tabId="3">
                       <Row>
@@ -189,7 +247,9 @@ class Products extends Component {
                               <InputGroup size="lg">
                                 <InputGroupAddon addonType="prepend">
                                   <Button
+                                    disabled={this.state.form.isValid}
                                     onClick={() =>
+                                      this.checkFormValidation() &&
                                       this.props.history.push({
                                         pathname: `/apply/privatedesk`,
                                         search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
@@ -205,12 +265,18 @@ class Products extends Component {
                                   min="1"
                                   placeholder="تعداد نفرات"
                                   onChange={this.formStateHandler}
+                                  defaultValue={
+                                    this.state.form.fields.neededSeats
+                                  }
                                 />
                                 {/* Combo box */}
                                 <Input
                                   name="selectedCity"
                                   type="select"
                                   onChange={this.formStateHandler}
+                                  defaultValue={
+                                    this.state.form.fields.selectedCity
+                                  }
                                 >
                                   <option>شهر</option>
                                   {this.fillCombo(this.state.combo.city)}
@@ -221,7 +287,6 @@ class Products extends Component {
                         </Col>
                       </Row>
                     </TabPane>
-
                     {/* dedicated Office */}
                     <TabPane tabId="4">
                       <Row>
@@ -234,7 +299,9 @@ class Products extends Component {
                             <InputGroup size="lg">
                               <InputGroupAddon addonType="prepend">
                                 <Button
+                                  disabled={this.state.form.isValid}
                                   onClick={() =>
+                                    this.checkFormValidation() &&
                                     this.props.history.push({
                                       pathname: `/apply/dedicatedoffice`,
                                       search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
@@ -250,12 +317,18 @@ class Products extends Component {
                                 min="1"
                                 placeholder="تعداد اعضای تیم"
                                 onChange={this.formStateHandler}
+                                defaultValue={
+                                  this.state.form.fields.neededSeats
+                                }
                               />
                               {/* Combo box */}
                               <Input
                                 type="select"
                                 name="selectedCity"
                                 onChange={this.formStateHandler}
+                                defaultValue={
+                                  this.state.form.fields.selectedCity
+                                }
                               >
                                 <option>شهر</option>
                                 {this.fillCombo(this.state.combo.city)}
@@ -265,7 +338,6 @@ class Products extends Component {
                         </Col>
                       </Row>
                     </TabPane>
-
                     {/* session room */}
                     <TabPane tabId="5">
                       <Row>
@@ -278,7 +350,9 @@ class Products extends Component {
                             <InputGroup size="lg">
                               <InputGroupAddon addonType="prepend">
                                 <Button
+                                  disabled={this.state.form.isValid}
                                   onClick={() =>
+                                    this.checkFormValidation() &&
                                     this.props.history.push({
                                       pathname: `/apply/sessionroom`,
                                       search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
@@ -294,11 +368,17 @@ class Products extends Component {
                                 min="1"
                                 placeholder="ظرفیت"
                                 onChange={this.formStateHandler}
+                                defaultValue={
+                                  this.state.form.fields.neededSeats
+                                }
                               />
                               <Input
                                 type="select"
                                 name="selectedCity"
                                 onChange={this.formStateHandler}
+                                defaultValue={
+                                  this.state.form.fields.selectedCity
+                                }
                               >
                                 <option>شهر</option>
                                 {this.fillCombo(this.state.combo.city)}
