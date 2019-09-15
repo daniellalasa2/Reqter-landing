@@ -12,7 +12,6 @@ import Skeleton from "react-loading-skeleton";
 import moment from "jalali-moment";
 import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import tj from "./t.json";
 import {
   faArrowRight,
   faCheckCircle,
@@ -64,8 +63,8 @@ export default class MyRequests extends Component {
   };
   generateOfferList = () => {
     let generatedElements = [];
-    let targetList = tj; //SafeValue(this.state.offerList, "", "object", []);
-    console.log(tj);
+    let targetList = SafeValue(this.state.offerList, "", "object", []);
+
     if (targetList.length >= 0) {
       generatedElements = targetList.map(item => (
         <div className="offer-card" key={item._id}>
