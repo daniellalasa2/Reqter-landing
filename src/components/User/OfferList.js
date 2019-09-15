@@ -65,6 +65,7 @@ export default class MyRequests extends Component {
   generateOfferList = () => {
     let generatedElements = [];
     let targetList = tj; //SafeValue(this.state.offerList, "", "object", []);
+    console.log(tj);
     if (targetList.length >= 0) {
       generatedElements = targetList.map(item => (
         <div className="offer-card" key={item._id}>
@@ -102,7 +103,8 @@ export default class MyRequests extends Component {
             <br />
             <ul>
               <li>
-                تعداد :<br />
+                تعداد:
+                <br />
                 <strong>
                   {PersianNumber(
                     SafeValue(
@@ -115,7 +117,8 @@ export default class MyRequests extends Component {
                 </strong>
               </li>
               <li>
-                شهر :<br />
+                شهر:
+                <br />
                 <strong>
                   {SafeValue(item, "fields.city.fields.name.fa", "string", "")}
                 </strong>
@@ -192,11 +195,25 @@ export default class MyRequests extends Component {
                   </strong>
                 </li>
               )}
+              {item.fields.description && (
+                <li style={{ display: "contents" }}>
+                  توضیح همکار درباره درخواست:
+                  <br />
+                  <strong>
+                    {SafeValue(
+                      item,
+                      "fields.description",
+                      "string",
+                      "توضیح خاصی وجود ندارد"
+                    )}
+                  </strong>
+                </li>
+              )}
             </ul>
             <div className="more-details">
               <Collapse isOpen={this.state.moreDetailCollapse === item._id}>
                 <div className="more-details-description">
-                  <ul>
+                  <ul style={{ marginTop: "20px" }}>
                     <li>
                       ظرفیت کل :‌
                       <br />

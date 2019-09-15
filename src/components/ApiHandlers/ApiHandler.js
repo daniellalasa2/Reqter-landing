@@ -12,7 +12,7 @@ let _api = {
   VerifyCode: Config.BASE_URL_PANEL + Config.URLs.verify_code,
   GetRequestsList: Config.BASE_URL_PANEL + Config.URLs.all_requests,
   GetOfferList: Config.BASE_URL_PANEL + Config.URLs.all_offers,
-  SelectOfferStage: Config.BASE_URL_PANEL + Config.URLs.accept_offer
+  SelectOfferStage: Config.BASE_URL_PANEL + Config.URLs.select_offer_stage
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -296,15 +296,13 @@ var SelectOfferStage = (stage, callback) => {
   };
   Config.Auth().then(token => {
     axios({
-      url: _api.SelectOfferStage,
+      url: _api.SelectOfferStage + Config.CONTENT_TYPE_ID.select_offer_stage,
       method: "PUT",
       headers: {
         ..._api.header,
         authorization: token
       },
-      params: {
-        contentType: Config.CONTENT_TYPE_ID.select_offer_stage
-      },
+
       body: {
         fields: { stage: stageIds[stage] }
       }
