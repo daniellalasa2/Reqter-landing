@@ -21,7 +21,8 @@ var Configuration = {
     verify_code: "api/v1/customers/verifycode",
     all_requests: "api/v1/requests/all",
     all_offers: "api/v1/requests/offers/all",
-    get_initial_token: "api/v1/auth/token"
+    get_initial_token: "api/v1/auth/token",
+    select_offer_stage: "api/v1/quotes/accept/"
   },
   CONTENT_TYPE_ID: {
     partnership: "5d358ebc8e6e9a0017c28fc9",
@@ -37,7 +38,8 @@ var Configuration = {
     sessionroom_equipments: "5d5bcb6eed9a82001737c751",
     contact_us: "5d3e97363a65540017a90f11",
     request_stages: "5d6b5d205b60dc0017c95118",
-    get_offer: "5d35adc68e6e9a0017c28fcb"
+    get_offer: "5d35adc68e6e9a0017c28fcb",
+    select_offer_stage: "5d791a0a1a2cda0017099c63"
   }
 };
 function CheckAuthToken() {

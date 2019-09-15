@@ -11,7 +11,8 @@ let _api = {
   Login: Config.BASE_URL_PANEL + Config.URLs.login,
   VerifyCode: Config.BASE_URL_PANEL + Config.URLs.verify_code,
   GetRequestsList: Config.BASE_URL_PANEL + Config.URLs.all_requests,
-  GetOfferList: Config.BASE_URL_PANEL + Config.URLs.all_offers
+  GetOfferList: Config.BASE_URL_PANEL + Config.URLs.all_offers,
+  SelectOfferStage: Config.BASE_URL_PANEL + Config.URLs.accept_offer
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -288,6 +289,44 @@ var GetOfferList = (requestId, callback) => {
   });
 };
 
+var SelectOfferStage = (stage, callback) => {
+  const stageIds = {
+    accept: "5d7b969c18a6400017ee1515",
+    reject: "5d7b96a018a6400017ee1516"
+  };
+  Config.Auth().then(token => {
+    axios({
+      url: _api.SelectOfferStage,
+      method: "PUT",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      params: {
+        contentType: Config.CONTENT_TYPE_ID.select_offer_stage
+      },
+      body: {
+        fields: { stage: stageIds[stage] }
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        return callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        return callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
 //return safe value
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
@@ -344,5 +383,6 @@ export {
   VerifyCode,
   GetRequestsList,
   GetOfferList,
+  SelectOfferStage,
   Config
 };

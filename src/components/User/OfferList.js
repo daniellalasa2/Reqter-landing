@@ -3,7 +3,11 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { Card, CardHeader, CardBody, Collapse } from "reactstrap";
-import { SafeValue, GetOfferList } from "../ApiHandlers/ApiHandler";
+import {
+  SafeValue,
+  GetOfferList,
+  SelectOfferStage
+} from "../ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
 import moment from "jalali-moment";
 import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
@@ -44,15 +48,10 @@ export default class MyRequests extends Component {
       moreDetailCollapse: toggleId
     });
   };
-  acceptState = state => {
-    switch (state) {
-      case "accept":
-        break;
-      case "deny":
-        break;
-      default:
-        break;
-    }
+  offerStage = stage => {
+    SelectOfferStage(stage, res => {
+      console.log("accept offer result: ", res);
+    });
   };
   urlParser = url => {
     let regex = /[?&]([^=#]+)=([^&#]*)/g,
@@ -65,8 +64,8 @@ export default class MyRequests extends Component {
   };
   generateOfferList = () => {
     let generatedElements = [];
-    let targetList = SafeValue(this.state.offerList, "", "object", []);
-    if (targetList.length > 0) {
+    let targetList = tj; //SafeValue(this.state.offerList, "", "object", []);
+    if (targetList.length >= 0) {
       generatedElements = targetList.map(item => (
         <div className="offer-card" key={item._id}>
           <div className="offer-card-details">
@@ -93,7 +92,7 @@ export default class MyRequests extends Component {
                       "همکار در استارتاپ اسپیس"
                     )}{" "}
                     {item.fields.partnerid.fields.verified && (
-                      <img src={verifiedIcon} alt="verified" width="23" />
+                      <img src={verifiedIcon} alt="verified" width="20" />
                     )}
                   </strong>
                 </h6>
@@ -288,7 +287,7 @@ export default class MyRequests extends Component {
           <div className="offer-choose-state-wrapper">
             <div
               className="accept-state"
-              onClick={() => this.acceptState("accept")}
+              onClick={() => this.offerStage("accept")}
             >
               <span>
                 <strong>قبول</strong>
@@ -302,7 +301,7 @@ export default class MyRequests extends Component {
             </div>
             <div
               className="deny-state"
-              onClick={() => this.acceptState("deny")}
+              onClick={() => this.offerStage("reject")}
             >
               <span>
                 <strong>رد</strong>
@@ -318,7 +317,7 @@ export default class MyRequests extends Component {
         </div>
       ));
     } else {
-      generatedElements = ["پیشنهادی موجود نیست"];
+      generatedElements = "<strong>پیشنهادری موجود نیست</strong>";
     }
     return generatedElements;
   };
