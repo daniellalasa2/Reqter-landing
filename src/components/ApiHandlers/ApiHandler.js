@@ -267,7 +267,7 @@ var GetOfferList = (requestId, callback) => {
       },
       params: {
         contentType: Config.CONTENT_TYPE_ID.get_offer,
-        requestId: requestId
+        "fields.requestid": requestId
       }
     })
       .then(res => {
@@ -338,12 +338,7 @@ var SafeValue = (data, index, type, defaultValue) => {
     index = parseInt(index) == index ? parseInt(index) : index;
     //if index was empty string then just check validation of data
     if (index === "") {
-      if (
-        data !== null &&
-        data !== undefined &&
-        !isNaN(data) &&
-        typeof data === type
-      ) {
+      if (data !== null && data !== undefined && typeof data === type) {
         return data;
       } else {
         return defaultValue;

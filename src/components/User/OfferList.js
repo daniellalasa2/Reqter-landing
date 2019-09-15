@@ -64,8 +64,7 @@ export default class MyRequests extends Component {
   generateOfferList = () => {
     let generatedElements = [];
     let targetList = SafeValue(this.state.offerList, "", "object", []);
-
-    if (targetList.length >= 0) {
+    if (targetList.length > 0) {
       generatedElements = targetList.map(item => (
         <div className="offer-card" key={item._id}>
           <div className="offer-card-details">
@@ -333,7 +332,18 @@ export default class MyRequests extends Component {
         </div>
       ));
     } else {
-      generatedElements = "<strong>پیشنهادری موجود نیست</strong>";
+      generatedElements = (
+        <strong
+          style={{
+            display: "block",
+            color: "grey",
+            width: "100%",
+            textAlign: "center"
+          }}
+        >
+          ... در حال دریافت پیشنهادات
+        </strong>
+      );
     }
     return generatedElements;
   };
