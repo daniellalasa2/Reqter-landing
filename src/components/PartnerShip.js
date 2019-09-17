@@ -31,7 +31,7 @@ class PartnerShip extends React.PureComponent {
         submitted: false,
         isSubmitting: false,
         fields: {
-          fullname: {
+          name: {
             value: "",
             error: "",
             isValid: false
@@ -171,18 +171,6 @@ class PartnerShip extends React.PureComponent {
       }
     });
   };
-  validatePhoneNumber = (doLogin, callback) => {
-    const { value, code } = this.state.form.fields.phonenumber;
-    const phonenumber = code + value;
-    if (this.context.auth && this.context.auth.ID === phonenumber) {
-      callback && typeof callback === "function" && callback();
-      return true;
-    } else {
-      //if phone validation needs login action then start login flow
-      doLogin && this.context.toggleLoginModal(true, "تایید شماره تماس", value);
-      return false;
-    }
-  };
   submitForm = () => {
     const _this = this;
     const inputs = this.state.form.fields;
@@ -195,44 +183,43 @@ class PartnerShip extends React.PureComponent {
       for (let index in inputs) {
         _formObjectGoingToSubmit[index] = inputs[index].value;
       }
-      this.validatePhoneNumber(true, () => {
-        // fetch additional background data state to final api object if form was valid
-        const { phonenumber } = _formObjectGoingToSubmit;
-        _formObjectGoingToSubmit["phonenumber"] =
-          this.state.form.fields.phonenumber.code + phonenumber;
-        _formObjectGoingToSubmit = {
-          ..._formObjectGoingToSubmit,
-          ..._backgroundData
-        };
 
-        this.setState(
-          {
-            form: {
-              ...this.state.form,
-              isSubmitting: true
-            }
-          },
-          () => {
-            SubmitForm(_this.contentTypeName, _formObjectGoingToSubmit, res => {
-              if (res.success) {
-                this.setState({
-                  form: {
-                    ...this.state.form,
-                    submitted: true
-                  }
-                });
-              } else {
-                this.setState({
-                  form: {
-                    ...this.state.form,
-                    isSubmitting: false
-                  }
-                });
-              }
-            });
+      // fetch additional background data state to final api object if form was valid
+      const { phonenumber } = _formObjectGoingToSubmit;
+      _formObjectGoingToSubmit["phonenumber"] =
+        this.state.form.fields.phonenumber.code + phonenumber;
+      _formObjectGoingToSubmit = {
+        ..._formObjectGoingToSubmit,
+        ..._backgroundData
+      };
+
+      this.setState(
+        {
+          form: {
+            ...this.state.form,
+            isSubmitting: true
           }
-        );
-      });
+        },
+        () => {
+          SubmitForm(_this.contentTypeName, _formObjectGoingToSubmit, res => {
+            if (res.success) {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  submitted: true
+                }
+              });
+            } else {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  isSubmitting: false
+                }
+              });
+            }
+          });
+        }
+      );
     }
   };
   urlParser = url => {
@@ -309,11 +296,11 @@ class PartnerShip extends React.PureComponent {
                     label="نام شرکت یا سازمان"
                     type="text"
                     placeholder="نام شرکت یا سازمان را وارد کنید"
-                    name="fullname"
-                    id="fullname"
+                    name="name"
+                    id="name"
                     autoFocus
                     onChange={this.formStateHandler}
-                    error={this.state.form.fields.fullname.error}
+                    error={this.state.form.fields.name.error}
                   />
 
                   <FlatInput
