@@ -84,7 +84,8 @@ class DedicatedOffice extends React.PureComponent {
         },
         backgroundData: {
           src: this.urlParams.src ? this.urlParams.src : "direct",
-          product: Config.CONTENT_TYPE_ID.dedicated_office
+          product: Config.CONTENT_TYPE_ID.dedicated_office,
+          stage: "5d6b5da15b60dc0017c95119"
         }
       },
       combo: {

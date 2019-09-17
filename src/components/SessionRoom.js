@@ -84,7 +84,8 @@ class SessionRoom extends React.PureComponent {
           }
         },
         backgroundData: {
-          src: this.urlParams.src ? this.urlParams.src : "direct"
+          src: this.urlParams.src ? this.urlParams.src : "direct",
+          stage: "5d6b5da15b60dc0017c95119"
         }
       },
       combo: {
