@@ -4,7 +4,6 @@ import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
 import {
   SubmitForm,
-  Upload,
   FilterContents,
   SafeValue
 } from "./ApiHandlers/ApiHandler";
@@ -84,7 +83,7 @@ class SessionRoom extends React.PureComponent {
           }
         },
         backgroundData: {
-          src: this.urlParams.src ? this.urlParams.src : "direct",
+          src: window.src,
           stage: "5d6b5da15b60dc0017c95119"
         }
       },
@@ -351,8 +350,8 @@ class SessionRoom extends React.PureComponent {
     });
   };
   componentDidMount() {
-    const selectedCity = this.urlParams.city,
-      neededSeats = this.urlParams.seats;
+    const selectedCity = SafeValue(this.urlParams, "city", "string", ""),
+      neededSeats = SafeValue(this.urlParams, "seats", "string", "1");
     this.setState({
       form: {
         ...this.state.form,
@@ -360,7 +359,7 @@ class SessionRoom extends React.PureComponent {
           ...this.state.form.fields,
           seats: {
             ...this.state.form.fields.seats,
-            value: !isNaN(Number(neededSeats)) && neededSeats,
+            value: neededSeats,
             isValid: !isNaN(Number(neededSeats))
           },
           city: {

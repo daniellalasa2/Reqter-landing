@@ -7,8 +7,8 @@ import {
 import axios from "axios";
 
 var Configuration = {
-  BASE_URL_CONTENT: "https://app-rpanel.herokuapp.com/",
-  BASE_URL_PANEL: "https://app-rpanel.herokuapp.com/",
+  BASE_URL_CASEER: "https://app-ipanel.herokuapp.com/",
+  BASE_URL_REQTER: "https://app-rpanel.herokuapp.com/",
   BASE_URL_UPLOAD: "https://app-spanel.herokuapp.com/",
   CLIENT_ID: "1d42c55e-0f44-4613-adba-a5bbbca878e1",
   SPACE_ID: "5cf3883dcce4de00174d48cf",
@@ -22,7 +22,8 @@ var Configuration = {
     all_requests: "api/v1/requests/all",
     all_offers: "api/v1/requests/offers/all",
     get_initial_token: "api/v1/auth/token",
-    select_offer_stage: "api/v1/quotes/accept/"
+    select_offer_stage: "api/v1/quotes/accept/",
+    add_content: "contents/add"
   },
   CONTENT_TYPE_ID: {
     partnership: "5d358ebc8e6e9a0017c28fc9",
@@ -61,7 +62,7 @@ function CheckAuthToken() {
 }
 function GetInitialToken(callback) {
   return axios({
-    url: Configuration.BASE_URL_PANEL + Configuration.URLs.get_initial_token,
+    url: Configuration.BASE_URL_REQTER + Configuration.URLs.get_initial_token,
     method: "POST",
     headers: {
       "Content-Type": "application/json",

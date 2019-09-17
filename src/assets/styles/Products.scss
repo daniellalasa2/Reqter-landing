@@ -162,7 +162,10 @@
     }
   }
 }
-
+.has-error {
+  border: 1px solid crimson;
+  z-index: 3;
+}
 //responsive
 
 //smart watches and extra small devices

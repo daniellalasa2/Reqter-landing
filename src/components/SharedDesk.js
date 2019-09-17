@@ -84,7 +84,7 @@ class SharedDesk extends React.PureComponent {
           }
         },
         backgroundData: {
-          src: this.urlParams.src ? this.urlParams.src : "direct",
+          src: window.src,
           product: Config.CONTENT_TYPE_ID.shared_desk,
           stage: "5d6b5da15b60dc0017c95119"
         }
@@ -102,15 +102,13 @@ class SharedDesk extends React.PureComponent {
     };
     this.validationRules = {
       fullname: ["required"],
-      birthyear: ["required", "number"],
+      birthyear: ["required", "birthyear_shamsi"],
       educationfield: ["required"],
       phonenumber: ["required", "phonenumber"],
-      city: [this.state.combo.list_of_cities.items.length && "required"],
+      city: ["required"],
       seats: ["required", "number"],
       email: ["email"],
-      workingfield: [
-        this.state.combo.coworking_working_field.items.length && "required"
-      ],
+      workingfield: ["required"],
       resume: ["upload"]
     };
   }
@@ -396,8 +394,8 @@ class SharedDesk extends React.PureComponent {
   };
   componentDidMount() {
     const exportedUrlParams = this.urlParser(this.props.location.search);
-    const selectedCity = exportedUrlParams.city,
-      neededSeats = exportedUrlParams.seats;
+    const selectedCity = SafeValue(exportedUrlParams, "city", "string", ""),
+      neededSeats = SafeValue(exportedUrlParams, "seats", "string", "1");
     this.setState({
       form: {
         ...this.state.form,
@@ -405,7 +403,7 @@ class SharedDesk extends React.PureComponent {
           ...this.state.form.fields,
           seats: {
             ...this.state.form.fields.seats,
-            value: Number(neededSeats) ? Number(neededSeats) : 1,
+            value: neededSeats,
             isValid: !isNaN(Number(neededSeats))
           },
           city: {

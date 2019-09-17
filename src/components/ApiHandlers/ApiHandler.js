@@ -5,14 +5,15 @@ let _api = {
   header: {
     "Content-Type": "application/json"
   },
-  SubmitForm: Config.BASE_URL_CONTENT + Config.URLs.submit_form,
+  SubmitForm: Config.BASE_URL_REQTER + Config.URLs.submit_form,
+  AddContent: Config.BASE_URL_CASEER + Config.URLs.add_content,
   Upload: Config.BASE_URL_UPLOAD + Config.URLs.upload,
-  FilterContents: Config.BASE_URL_CONTENT + Config.URLs.filter_contents,
-  Login: Config.BASE_URL_PANEL + Config.URLs.login,
-  VerifyCode: Config.BASE_URL_PANEL + Config.URLs.verify_code,
-  GetRequestsList: Config.BASE_URL_PANEL + Config.URLs.all_requests,
-  GetOfferList: Config.BASE_URL_PANEL + Config.URLs.all_offers,
-  SelectOfferStage: Config.BASE_URL_PANEL + Config.URLs.select_offer_stage
+  FilterContents: Config.BASE_URL_REQTER + Config.URLs.filter_contents,
+  Login: Config.BASE_URL_REQTER + Config.URLs.login,
+  VerifyCode: Config.BASE_URL_REQTER + Config.URLs.verify_code,
+  GetRequestsList: Config.BASE_URL_REQTER + Config.URLs.all_requests,
+  GetOfferList: Config.BASE_URL_REQTER + Config.URLs.all_offers,
+  SelectOfferStage: Config.BASE_URL_REQTER + Config.URLs.select_offer_stage
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -367,6 +368,31 @@ var SafeValue = (data, index, type, defaultValue) => {
     return defaultValue;
   }
 };
+var AddContent = (formName, data, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.AddContent,
+      method: "POST",
+      headers: {
+        ..._api.header,
+        authorization: token,
+        spaceId: Config.SPACE_ID
+      },
+      data: {
+        contentType: Config.CONTENT_TYPE_ID[formName],
+        fields: data
+      }
+    })
+      .then(res => {
+        const result = errorHandler(res.status);
+        return callback(result);
+      })
+      .catch(err => {
+        const result = errorHandler(err.response.status);
+        return callback({ success_result: result, data: err.response.data });
+      });
+  });
+};
 export {
   SubmitForm,
   FilterContents,
@@ -377,5 +403,6 @@ export {
   GetRequestsList,
   GetOfferList,
   SelectOfferStage,
+  AddContent,
   Config
 };

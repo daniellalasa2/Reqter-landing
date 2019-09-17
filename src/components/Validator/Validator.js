@@ -5,7 +5,8 @@ const Validator = (value, rules, additional) => {
   let regexPatterns = {
     email: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     phonenumber: /^9\d{9}$/,
-    url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+    url: /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/,
+    birthyear_shamsi: /([1][3][0-9][0-9])/
   };
   let validationObj = { message: "", valid: true };
   rules =
@@ -79,6 +80,16 @@ const Validator = (value, rules, additional) => {
           if (value.length > 0) {
             if (isNaN(Number(value))) {
               validationObj.message = "لطفا مقدار عددی صحیح وارد کنید";
+              validationObj.valid = false;
+            }
+          }
+          break;
+        case "birthyear_shamsi":
+          if (value.length > 0) {
+            value = String(value);
+            const birthyear = regexPatterns.birthyear_shamsi.test(value);
+            if (!birthyear || value.length > 4) {
+              validationObj.message = "تاریخ تولد صحیح نیست";
               validationObj.valid = false;
             }
           }

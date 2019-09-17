@@ -4,13 +4,17 @@ import routes from "../Routes";
 import "./Main.scss";
 import ContextApi from "../components/ContextApi/ContextApi";
 import {
+  SetSession,
+  GetSession
+} from "../components/CookieHandler/CookieHandler";
+import {
   GetCookie,
   JsonParser
 } from "../components/CookieHandler/CookieHandler";
 const Navigation = React.lazy(() => import("./Nav"));
 const Footer = React.lazy(() => import("./Footer"));
 
-class Layout extends Component {
+class Main extends Component {
   constructor(props) {
     super(props);
     this.authObj = GetCookie("SSUSERAUTH")
@@ -18,6 +22,17 @@ class Layout extends Component {
       : GetCookie("SSGUESTAUTH")
       ? JsonParser(GetCookie("SSGUESTAUTH"))
       : {};
+    this.parsedUrlObject = this.urlParser(props.location.search);
+    this.src = Boolean(GetSession("src"))
+      ? GetSession("src")
+      : SetSession(
+          "src",
+          Boolean(this.parsedUrlObject.src)
+            ? this.parsedUrlObject.src
+            : "direct"
+        );
+
+    window.src = GetSession("src");
     this.state = {
       userAuth: {
         ROLE: this.authObj ? this.authObj.ROLE : "newcomer",
@@ -28,6 +43,7 @@ class Layout extends Component {
       loginModalTitle: "ورود",
       defaultPhoneNumber: this.authObj ? this.authObj.ID : ""
     };
+
     this.toggleLoginModal = (status, modalTitle, defaultPhoneNumber) => {
       this.setState({
         displayLoginModal:
@@ -51,6 +67,15 @@ class Layout extends Component {
       );
     };
   }
+  urlParser = url => {
+    let regex = /[?&]([^=#]+)=([^&#]*)/g,
+      params = {},
+      match;
+    while ((match = regex.exec(url))) {
+      params[match[1]] = match[2];
+    }
+    return params;
+  };
   //google tag manager handler
   gtagUpdater = (location, pageName) => {
     if (window.gtag) {
@@ -122,4 +147,4 @@ class Layout extends Component {
   }
 }
 
-export default Layout;
+export default Main;

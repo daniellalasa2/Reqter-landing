@@ -1,7 +1,8 @@
 import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
-import Layout from "./layout/Main";
+import Main from "./layout/Main";
+
 import "samim-font/dist/font-face.css";
 
 class App extends React.Component {
@@ -15,8 +16,8 @@ class App extends React.Component {
       </span>
     </div>
   );
-  //WARNING! To be deprecated in React v17. Use componentDidMount instead.
 
+  //WARNING! To be deprecated in React v17. Use componentDidMount instead.
   render() {
     return (
       <div className="App">
@@ -26,7 +27,7 @@ class App extends React.Component {
               <Route
                 path="/"
                 name="Home"
-                render={props => <Layout {...props} />}
+                render={props => <Main {...props} />}
               />
             </Switch>
           </React.Suspense>

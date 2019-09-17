@@ -27,7 +27,11 @@ export default class MyRequests extends Component {
     this.urlParams = this.urlParser(this.props.location.search);
     this.state = {
       offerList: [],
-      moreDetailCollapse: null
+      moreDetailCollapse: null,
+      requestId: this.urlParams.rid
+    };
+    this.offerStageArr = {
+      notDefined: ["5d7b968918a6400017ee1513"]
     };
     this.getAndFilterOfferList(this.urlParams.rid);
   }
@@ -48,8 +52,9 @@ export default class MyRequests extends Component {
     });
   };
   offerStage = stage => {
-    SelectOfferStage(stage, res => {
-      console.log("accept offer result: ", res);
+    const _this = this;
+    SelectOfferStage(stage, () => {
+      _this.getAndFilterOfferList(_this.state.requestId);
     });
   };
   urlParser = url => {
@@ -208,7 +213,7 @@ export default class MyRequests extends Component {
                 </li>
               )}
             </ul>
-            <div className="more-details">
+            {/* <div className="more-details">
               <Collapse isOpen={this.state.moreDetailCollapse === item._id}>
                 <div className="more-details-description">
                   <ul style={{ marginTop: "20px" }}>
@@ -297,37 +302,47 @@ export default class MyRequests extends Component {
                   </React.Fragment>
                 )}
               </span>
-            </div>
+            </div> */}
           </div>
           <div className="offer-choose-state-wrapper">
-            <div
-              className="accept-state"
-              onClick={() => this.offerStage("accept")}
-            >
-              <span>
-                <strong>قبول</strong>
-              </span>
-              <FontAwesomeIcon
-                icon={faCheckCircle}
-                pull="left"
-                size="lg"
-                color="#58d37b"
-              />
-            </div>
-            <div
-              className="deny-state"
-              onClick={() => this.offerStage("reject")}
-            >
-              <span>
-                <strong>رد</strong>
-              </span>
-              <FontAwesomeIcon
-                icon={faTimesCircle}
-                pull="left"
-                size="lg"
-                color="#dd4242"
-              />
-            </div>
+            {console.log(
+              this.offerStageArr.notDefined.indexOf(item.fields.stage._id) > -1
+            )}
+            {this.offerStageArr.notDefined.indexOf(item.fields.stage._id) >
+            -1 ? (
+              <React.Fragment>
+                <div
+                  className="accept-state"
+                  onClick={() => this.offerStage("accept")}
+                >
+                  <span>
+                    <strong>قبول</strong>
+                  </span>
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    pull="left"
+                    size="lg"
+                    color="#58d37b"
+                  />
+                </div>
+                <div
+                  className="deny-state"
+                  onClick={() => this.offerStage("reject")}
+                >
+                  <span>
+                    <strong>رد</strong>
+                  </span>
+                  <FontAwesomeIcon
+                    icon={faTimesCircle}
+                    pull="left"
+                    size="lg"
+                    color="#dd4242"
+                  />
+                </div>
+              </React.Fragment>
+            ) : (
+              <strong>{item.fields.stage.name}</strong>
+            )}
           </div>
         </div>
       ));

@@ -1,26 +1,33 @@
 import React, { Component } from "react";
-
-import { Link } from "react-router-dom";
-import classnames from "classnames";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { SafeValue, GetRequestsList } from "../ApiHandlers/ApiHandler";
 import moment from "jalali-moment";
 import PersianNumber from "../PersianNumber/PersianNumber";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Configuration from "../ApiHandlers/Configuration";
 import {
-  faBan,
-  faCheckCircle,
-  faSyncAlt,
-  faDownload
+  // faBan,
+  // faCheckCircle,
+  // faSyncAlt,
+  faDownload,
+  faList
 } from "@fortawesome/free-solid-svg-icons";
 import "./MyRequests.scss";
 import deskImg from "../../assets/images/products-icons/002-desk.png";
 export default class MyRequests extends Component {
   constructor(props) {
     super(props);
+    this.UPLOAD_BASEURL = Configuration.BASE_URL_UPLOAD;
     this.state = {
       activeTab: 1,
       requestsList: []
+    };
+    this.offerStage = {
+      approved: [
+        "5d6b5dd25b60dc0017c9511c",
+        "5d7e582415586f0017d4836c",
+        "5d7e585915586f0017d4836d"
+      ]
     };
     this.updateRequestList();
   }
@@ -32,9 +39,12 @@ export default class MyRequests extends Component {
         pending: [],
         approved: [],
         closed: [],
+        all: [],
         _draft: []
       };
       SAFE_requests_list.forEach(request => {
+        //all
+        filtered_requests_list.all.push(request);
         //approved
         if (request.fields.quotes && request.fields.quotes.length > 0)
           filtered_requests_list.approved.push(request);
@@ -60,6 +70,110 @@ export default class MyRequests extends Component {
     try {
       if (targetList.length > 0) {
         switch (stage) {
+          case "all":
+            generatedElements = targetList.map(item => (
+              <div className="request-card" key={item._id}>
+                <div className="request-card-image">
+                  <img src={deskImg} alt="Desk" />
+                  <strong className="product-title">
+                    {SafeValue(
+                      item,
+                      "fields.product.fields.name.fa",
+                      "string",
+                      item.contentType.title.fa
+                    )}
+                  </strong>
+                </div>
+                <div className="request-card-details">
+                  <ul>
+                    <li className="product-title-wrapper">
+                      <strong className="product-title">
+                        {SafeValue(
+                          item,
+                          "fields.product.fields.name.fa",
+                          "string",
+                          item.contentType.title.fa
+                        )}
+                      </strong>
+                    </li>
+                    <li>
+                      تعداد :‌ {SafeValue(item, "fields.seats", "string", "fa")}
+                    </li>
+                    <li>
+                      تاریخ :{" "}
+                      {SafeValue(item, "sys.issueDate", "string", null)
+                        .replace(/T/, " ")
+                        .replace(/\..+/, "")}
+                    </li>
+                    <li>
+                      شهر :{" "}
+                      {SafeValue(
+                        item,
+                        "fields.city.fields.name.fa",
+                        "string",
+                        ""
+                      )}
+                    </li>
+                    {console.log("resume: ", item.fields.resume)}
+                    {item.fields.resume && item.fields.resume.length !== 0 && (
+                      <li>
+                        <span>رزومه :‌ </span>
+                        <a
+                          href={
+                            this.UPLOAD_BASEURL +
+                            "asset/download/" +
+                            SafeValue(item, "fields.resume.0.fa", "string", "")
+                          }
+                        >
+                          <FontAwesomeIcon
+                            icon={faDownload}
+                            size="lg"
+                            color="black"
+                          />
+                        </a>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+                <div className="request-card-status">
+                  {this.offerStage.approved.indexOf(item.fields.stage._id) >
+                  -1 ? (
+                    <button
+                      onClick={() =>
+                        this.props.history.push(
+                          `/user/offerlist/?rid=${item._id}`
+                        )
+                      }
+                    >
+                      مشاهده پیشنهاد ها
+                    </button>
+                  ) : (
+                    <div
+                      className="request-card-status"
+                      style={{
+                        width: "auto"
+                      }}
+                    >
+                      <strong
+                        style={{
+                          backgroundColor: "#8ea3e3",
+                          fontSize: "17px",
+                          padding: "5px 15px"
+                        }}
+                      >
+                        {SafeValue(
+                          item,
+                          "fields.stage.fields.name",
+                          "string",
+                          "وضعیتی مشخص نشده"
+                        )}
+                      </strong>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ));
+            break;
           case "approved":
             generatedElements = targetList.map(item => (
               <div className="request-card" key={item._id}>
@@ -320,7 +434,7 @@ export default class MyRequests extends Component {
         }}
       >
         <React.Fragment>
-          <div className="filter-section">
+          {/* <div className="filter-section">
             <div className="filter-title">
               <strong>فیلتر درخواستها</strong>
             </div>
@@ -344,7 +458,7 @@ export default class MyRequests extends Component {
                 بسته شده
               </li>
             </ul>
-          </div>
+          </div> */}
           <Card className="form-card">
             {/* Approved requests */}
             {this.state.activeTab === 1 && (
@@ -352,20 +466,20 @@ export default class MyRequests extends Component {
                 <CardHeader>
                   <span className="fa-layers fa-fw icon">
                     <FontAwesomeIcon
-                      icon={faCheckCircle}
+                      icon={faList}
                       pull="right"
                       size="lg"
                       color="white"
                     />
                   </span>
                   <span className="title">
-                    <strong>درخواستهای دارای پیشنهاد</strong>
+                    <strong>لیست درخواستها</strong>
                   </span>
                 </CardHeader>
-                <CardBody>{this.generateRequestsElements("approved")}</CardBody>
+                <CardBody>{this.generateRequestsElements("all")}</CardBody>
               </section>
             )}
-            {/* Pending Requests */}
+            {/* Pending Requests
             {this.state.activeTab === 2 && (
               <section className="pending-requests-section">
                 <CardHeader>
@@ -384,7 +498,7 @@ export default class MyRequests extends Component {
                 <CardBody>{this.generateRequestsElements("pending")}</CardBody>
               </section>
             )}
-            {/* Closed Requests */}
+            //Closed requests
             {this.state.activeTab === 3 && (
               <section className="closed-requests-section">
                 <CardHeader>
@@ -402,7 +516,8 @@ export default class MyRequests extends Component {
                 </CardHeader>
                 <CardBody>{this.generateRequestsElements("closed")}</CardBody>
               </section>
-            )}
+            )}{" "}
+            */}
           </Card>
         </React.Fragment>
       </section>

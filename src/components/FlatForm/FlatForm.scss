@@ -653,6 +653,7 @@ label.checkboxContainer {
   justify-content: center;
   width: 100%;
   flex-wrap: wrap;
+  direction: rtl;
   .sets {
     appearance: none;
     -webkit-appearance: none;
@@ -670,10 +671,10 @@ label.checkboxContainer {
       color: white;
     }
     &:first-child {
-      border-radius: 0.35vw 0 0 0.35vw !important;
+      border-radius: 0 0.35vw 0.35vw 0 !important;
     }
     &:last-child {
-      border-radius: 0 0.35vw 0.35vw 0 !important;
+      border-radius: 0.35vw 0 0 0.35vw !important;
     }
   }
   .active {

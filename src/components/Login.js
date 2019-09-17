@@ -248,10 +248,6 @@ export default class Login extends React.Component {
       () => this.checkFormValidation()
     );
   };
-  componentDidMount() {
-    console.log("phone: ", this.state.form.fields.phoneNumber.isValid);
-    console.log("form:  ", this.state.form.isValid);
-  }
 
   render() {
     return (

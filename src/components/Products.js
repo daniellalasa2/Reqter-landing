@@ -37,10 +37,9 @@ class Products extends Component {
     this.state = {
       form: {
         isValid: false,
-        error: "",
         fields: {
-          selectedCity: "",
-          neededSeats: ""
+          selectedCity: { value: "", isValid: true },
+          neededSeats: { value: "", isValid: true }
         }
       },
       activeTab: "1",
@@ -56,7 +55,6 @@ class Products extends Component {
       }
     };
     this.validationRules = {
-      neededSeats: ["required"],
       selectedCity: ["required"]
     };
   }
@@ -66,18 +64,20 @@ class Products extends Component {
     let _formIsValid = true;
     let _validation = {};
     for (let index in inputs) {
-      _validation = Validator(inputs[index], this.validationRules[index]);
+      _validation = Validator(inputs[index].value, this.validationRules[index]);
       if (!_validation.valid) {
         //if form is valid value could change to false else value is unchangable
         _formIsValid = _formIsValid && false;
-        _fields[index] = inputs[index];
+        _fields[index] = {
+          value: inputs[index].value,
+          isValid: _validation.valid
+        };
         break;
       }
     }
     this.setState({
       form: {
         ...this.state.form,
-        error: _validation.message,
         isValid: _formIsValid,
         fields: {
           ...this.state.form.fields,
@@ -90,12 +90,18 @@ class Products extends Component {
   formStateHandler = e => {
     const name = e.target.name;
     const value = e.target.value;
+    const validation = Validator(value, this.validationRules[name]);
+    if (validation.valid) {
+      e.target.classList.remove("has-error");
+    } else {
+      e.target.classList.add("has-error");
+    }
     this.setState({
       form: {
         ...this.state.form,
         fields: {
           ...this.state.form.fields,
-          [name]: value
+          [name]: { value: value, isValid: validation.valid }
         }
       }
     });
@@ -106,11 +112,16 @@ class Products extends Component {
         activeTab: tab,
         form: {
           isValid: false,
-          error: "",
           fields: {
             ...this.state.form.fields,
-            neededSeats: "",
-            selectedCity: ""
+            neededSeats: {
+              value: "",
+              isValid: true
+            },
+            selectedCity: {
+              value: "",
+              isValid: true
+            }
           }
         }
       });
@@ -199,7 +210,7 @@ class Products extends Component {
                                       this.checkFormValidation() &&
                                       this.props.history.push({
                                         pathname: `/apply/shareddesk`,
-                                        search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
+                                        search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                       })
                                     }
                                   >
@@ -213,7 +224,7 @@ class Products extends Component {
                                   name="neededSeats"
                                   onChange={this.formStateHandler}
                                   defaultValue={
-                                    this.state.form.fields.neededSeats
+                                    this.state.form.fields.neededSeats.value
                                   }
                                 />
                                 {/* Combo box */}
@@ -222,10 +233,15 @@ class Products extends Component {
                                   type="select"
                                   onChange={this.formStateHandler}
                                   defaultValue={
-                                    this.state.form.fields.selectedCity
+                                    this.state.form.fields.selectedCity.value
+                                  }
+                                  className={
+                                    !this.state.form.fields.selectedCity.isValid
+                                      ? "has-error"
+                                      : ""
                                   }
                                 >
-                                  <option>شهر</option>
+                                  <option value="">شهر</option>
                                   {this.fillCombo(this.state.combo.city)}
                                 </Input>
                               </InputGroup>
@@ -252,7 +268,7 @@ class Products extends Component {
                                       this.checkFormValidation() &&
                                       this.props.history.push({
                                         pathname: `/apply/privatedesk`,
-                                        search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
+                                        search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                       })
                                     }
                                   >
@@ -266,7 +282,7 @@ class Products extends Component {
                                   placeholder="تعداد نفرات"
                                   onChange={this.formStateHandler}
                                   defaultValue={
-                                    this.state.form.fields.neededSeats
+                                    this.state.form.fields.neededSeats.value
                                   }
                                 />
                                 {/* Combo box */}
@@ -275,10 +291,15 @@ class Products extends Component {
                                   type="select"
                                   onChange={this.formStateHandler}
                                   defaultValue={
-                                    this.state.form.fields.selectedCity
+                                    this.state.form.fields.selectedCity.value
+                                  }
+                                  className={
+                                    !this.state.form.fields.selectedCity.isValid
+                                      ? "has-error"
+                                      : ""
                                   }
                                 >
-                                  <option>شهر</option>
+                                  <option value="">شهر</option>
                                   {this.fillCombo(this.state.combo.city)}
                                 </Input>
                               </InputGroup>
@@ -304,7 +325,7 @@ class Products extends Component {
                                     this.checkFormValidation() &&
                                     this.props.history.push({
                                       pathname: `/apply/dedicatedoffice`,
-                                      search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
+                                      search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                     })
                                   }
                                 >
@@ -318,7 +339,7 @@ class Products extends Component {
                                 placeholder="تعداد اعضای تیم"
                                 onChange={this.formStateHandler}
                                 defaultValue={
-                                  this.state.form.fields.neededSeats
+                                  this.state.form.fields.neededSeats.value
                                 }
                               />
                               {/* Combo box */}
@@ -327,10 +348,15 @@ class Products extends Component {
                                 name="selectedCity"
                                 onChange={this.formStateHandler}
                                 defaultValue={
-                                  this.state.form.fields.selectedCity
+                                  this.state.form.fields.selectedCity.value
+                                }
+                                className={
+                                  !this.state.form.fields.selectedCity.isValid
+                                    ? "has-error"
+                                    : ""
                                 }
                               >
-                                <option>شهر</option>
+                                <option value="">شهر</option>
                                 {this.fillCombo(this.state.combo.city)}
                               </Input>
                             </InputGroup>
@@ -355,7 +381,7 @@ class Products extends Component {
                                     this.checkFormValidation() &&
                                     this.props.history.push({
                                       pathname: `/apply/sessionroom`,
-                                      search: `?city=${this.state.selectedCity}&seats=${this.state.neededSeats}`
+                                      search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                     })
                                   }
                                 >
@@ -369,7 +395,7 @@ class Products extends Component {
                                 placeholder="ظرفیت"
                                 onChange={this.formStateHandler}
                                 defaultValue={
-                                  this.state.form.fields.neededSeats
+                                  this.state.form.fields.neededSeats.value
                                 }
                               />
                               <Input
@@ -377,10 +403,15 @@ class Products extends Component {
                                 name="selectedCity"
                                 onChange={this.formStateHandler}
                                 defaultValue={
-                                  this.state.form.fields.selectedCity
+                                  this.state.form.fields.selectedCity.value
+                                }
+                                className={
+                                  !this.state.form.fields.selectedCity.isValid
+                                    ? "has-error"
+                                    : ""
                                 }
                               >
-                                <option>شهر</option>
+                                <option value="">شهر</option>
                                 {this.fillCombo(this.state.combo.city)}
                               </Input>
                             </InputGroup>

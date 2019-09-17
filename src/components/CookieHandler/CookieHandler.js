@@ -19,6 +19,14 @@ function GetCookie(cname) {
   }
   return "";
 }
+function SetSession(sname, svalue) {
+  const extacted = sessionStorage.setItem(sname, svalue);
+  return extacted;
+}
+function GetSession(sname) {
+  const extacted = sessionStorage.getItem(sname);
+  return extacted;
+}
 function JsonToString(obj) {
   try {
     return JSON.stringify(obj);
@@ -33,4 +41,12 @@ function JsonParser(JSONstring) {
     return { TOKEN: "", ROLE: "newcomer", ID: "" };
   }
 }
-export { SetCookie, GetCookie, JsonToString, JsonParser };
+
+export {
+  SetCookie,
+  GetCookie,
+  SetSession,
+  GetSession,
+  JsonToString,
+  JsonParser
+};

@@ -6,7 +6,7 @@ import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
 import Skeleton from "react-loading-skeleton";
 import {
-  SubmitForm,
+  AddContent,
   FilterContents,
   SafeValue
 } from "./ApiHandlers/ApiHandler";
@@ -14,13 +14,10 @@ import SuccessSubmit from "./Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "../assets/images/spinner.svg";
-import ContextApi from "./ContextApi/ContextApi";
-// import { InlineCheckBox, CheckBoxRow } from "./CustomCheckbox/CustomCheckbox";
 import { FlatInlineSelect, FlatInput } from "./FlatForm/FlatForm";
 import "../assets/styles/FlatForm.scss";
 import Validator from "./Validator/Validator";
 class PartnerShip extends React.PureComponent {
-  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.urlParams = this.urlParser(this.props.location.search);
@@ -64,7 +61,7 @@ class PartnerShip extends React.PureComponent {
           }
         },
         backgroundData: {
-          src: this.urlParams.src ? this.urlParams.src : "direct"
+          src: window.src
         }
       },
       combo: {
@@ -201,7 +198,7 @@ class PartnerShip extends React.PureComponent {
           }
         },
         () => {
-          SubmitForm(_this.contentTypeName, _formObjectGoingToSubmit, res => {
+          AddContent(_this.contentTypeName, _formObjectGoingToSubmit, res => {
             if (res.success) {
               this.setState({
                 form: {
@@ -376,10 +373,8 @@ class PartnerShip extends React.PureComponent {
                       alt=""
                       style={{ margin: "-12px 16px" }}
                     />
-                  ) : this.validatePhoneNumber() ? (
-                    "ثبت و ارسال "
                   ) : (
-                    "تایید شماره تماس"
+                    "ثبت و ارسال "
                   )}
                 </Button>
               </CardFooter>
