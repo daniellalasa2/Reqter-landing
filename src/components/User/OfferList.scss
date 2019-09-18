@@ -170,8 +170,11 @@
     box-shadow: 0 1px 2px 0 lightgrey;
     border: 1px solid lightgrey;
     border-top: none;
-    &:hover {
-      cursor: pointer;
+    height: 50px;
+    max-height: 50px;
+    .offer-stage-text {
+      color: rgb(99, 98, 98);
+      cursor: default;
     }
     .accept-state {
       width: 50%;
@@ -181,8 +184,10 @@
       display: flex;
       height: 100%;
       min-height: 50px;
+      color: black;
       &:hover {
         background-color: rgba(88, 211, 123, 0.1);
+        cursor: pointer;
       }
     }
     .deny-state {
@@ -193,8 +198,10 @@
       display: flex;
       height: 100%;
       min-height: 50px;
+      color: black;
       &:hover {
         background-color: rgba(221, 66, 66, 0.1);
+        cursor: pointer;
       }
     }
   }

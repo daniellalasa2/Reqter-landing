@@ -9,7 +9,7 @@ import {
   SelectOfferStage
 } from "../ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
-import moment from "jalali-moment";
+import DateFormat from "../DateFormat/DateFormat";
 import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -178,23 +178,31 @@ export default class MyRequests extends Component {
                     "تعیین نشده"}
                 </strong>
               </li>
-              <li>
-                تاریخ ارسال پیشنهاد:
-                <br />
-                <strong>
-                  {SafeValue(item, "sys.issueDate", "string", null)
-                    .replace(/T/, " ")
-                    .replace(/\..+/, "")}
-                </strong>
-              </li>
-              {item.fields.startdate && (
+              {SafeValue(item, "sys.issueDate", "string", false) && (
+                <li>
+                  تاریخ ارسال پیشنهاد:
+                  <br />
+                  <strong>
+                    {PersianNumber(
+                      DateFormat(
+                        item.sys.issueDate.replace(/T/, " ").replace(/\..+/, "")
+                      ).toPersian()
+                    )}
+                  </strong>
+                </li>
+              )}
+              {SafeValue(item, "fields.startdate", "string", false) && (
                 <li>
                   زمان فعالسازی محصول:
                   <br />
                   <strong>
-                    {SafeValue(item, "fields.startdate", "string", null)
-                      .replace(/T/, " ")
-                      .replace(/\..+/, "")}
+                    {PersianNumber(
+                      DateFormat(
+                        item.fields.startdate
+                          .replace(/T/, " ")
+                          .replace(/\..+/, "")
+                      ).toPersian()
+                    )}
                   </strong>
                 </li>
               )}
@@ -305,9 +313,6 @@ export default class MyRequests extends Component {
             </div> */}
           </div>
           <div className="offer-choose-state-wrapper">
-            {console.log(
-              this.offerStageArr.notDefined.indexOf(item.fields.stage._id) > -1
-            )}
             {this.offerStageArr.notDefined.indexOf(item.fields.stage._id) >
             -1 ? (
               <React.Fragment>
@@ -341,7 +346,9 @@ export default class MyRequests extends Component {
                 </div>
               </React.Fragment>
             ) : (
-              <strong>{item.fields.stage.name}</strong>
+              <strong className="offer-stage-text">
+                {item.fields.stage.fields.name}
+              </strong>
             )}
           </div>
         </div>

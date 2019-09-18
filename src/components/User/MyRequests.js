@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { SafeValue, GetRequestsList } from "../ApiHandlers/ApiHandler";
-import moment from "jalali-moment";
+import DateFormat from "../DateFormat/DateFormat";
 import PersianNumber from "../PersianNumber/PersianNumber";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Configuration from "../ApiHandlers/Configuration";
@@ -97,14 +97,23 @@ export default class MyRequests extends Component {
                       </strong>
                     </li>
                     <li>
-                      تعداد :‌ {SafeValue(item, "fields.seats", "string", "fa")}
+                      تعداد :‌{" "}
+                      {PersianNumber(
+                        SafeValue(item, "fields.seats", "string", "fa")
+                      )}
                     </li>
-                    <li>
-                      تاریخ :{" "}
-                      {SafeValue(item, "sys.issueDate", "string", null)
-                        .replace(/T/, " ")
-                        .replace(/\..+/, "")}
-                    </li>
+                    {SafeValue(item, "sys.issueDate", "string", false) && (
+                      <li>
+                        تاریخ :{" "}
+                        {PersianNumber(
+                          DateFormat(
+                            item.sys.issueDate
+                              .replace(/T/, " ")
+                              .replace(/\..+/, "")
+                          ).toPersian()
+                        )}
+                      </li>
+                    )}
                     <li>
                       شهر :{" "}
                       {SafeValue(
@@ -423,6 +432,7 @@ export default class MyRequests extends Component {
       activeTab: tab
     });
   };
+
   render() {
     return (
       <section
