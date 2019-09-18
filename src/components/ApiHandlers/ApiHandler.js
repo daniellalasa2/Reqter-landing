@@ -13,7 +13,8 @@ let _api = {
   VerifyCode: Config.BASE_URL_REQTER + Config.URLs.verify_code,
   GetRequestsList: Config.BASE_URL_REQTER + Config.URLs.all_requests,
   GetOfferList: Config.BASE_URL_REQTER + Config.URLs.all_offers,
-  SelectOfferStage: Config.BASE_URL_REQTER + Config.URLs.select_offer_stage
+  AcceptOffer: Config.BASE_URL_REQTER + Config.URLs.accept_offer,
+  RejectOffer: Config.BASE_URL_REQTER + Config.URLs.reject_offer
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -290,22 +291,48 @@ var GetOfferList = (requestId, callback) => {
   });
 };
 
-var SelectOfferStage = (stage, callback) => {
-  const stageIds = {
-    accept: "5d7b969c18a6400017ee1515",
-    reject: "5d7b96a018a6400017ee1516"
-  };
+var RejectOffer = (offerId, callback) => {
   Config.Auth().then(token => {
     axios({
-      url: _api.SelectOfferStage + Config.CONTENT_TYPE_ID.select_offer_stage,
+      url: _api.RejectOffer + offerId,
       method: "PUT",
       headers: {
         ..._api.header,
         authorization: token
       },
-
-      body: {
-        fields: { stage: stageIds[stage] }
+      data: {
+        fields: { stage: "5d7b96a018a6400017ee1516" }
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        return callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        return callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
+var AcceptOffer = (offerId, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.AcceptOffer + offerId,
+      method: "PUT",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      data: {
+        fields: { stage: "5d7b969c18a6400017ee1515" }
       }
     })
       .then(res => {
@@ -402,7 +429,8 @@ export {
   VerifyCode,
   GetRequestsList,
   GetOfferList,
-  SelectOfferStage,
+  AcceptOffer,
+  RejectOffer,
   AddContent,
   Config
 };

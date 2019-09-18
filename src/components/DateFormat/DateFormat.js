@@ -23,7 +23,7 @@ dateFormat.prototype.toEnglish = function() {
 
 dateFormat.prototype.toPersianWithHour = function() {
   if (this.isValidDate) {
-    return moment(this.date).format("jYYYY/jMM/jDD hh:mm");
+    return moment(this.date).format("jYYYY/jMM/jDD ساعت HH:mm");
   } else {
     return "مشخص نیست";
   }
@@ -31,7 +31,7 @@ dateFormat.prototype.toPersianWithHour = function() {
 
 dateFormat.prototype.toEnglishWithHour = function() {
   if (this.isValidDate) {
-    return moment(this.date).format("YYYY/MM/DD hh:mm");
+    return moment(this.date).format("YYYY/MM/DD time HH:mm");
   } else {
     return "Not Defined";
   }

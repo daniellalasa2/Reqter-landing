@@ -110,7 +110,7 @@ export default class MyRequests extends Component {
                             item.sys.issueDate
                               .replace(/T/, " ")
                               .replace(/\..+/, "")
-                          ).toPersian()
+                          ).toPersianWithHour()
                         )}
                       </li>
                     )}

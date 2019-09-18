@@ -2,11 +2,21 @@ import React, { Component } from "react";
 
 import { Link } from "react-router-dom";
 import classnames from "classnames";
-import { Card, CardHeader, CardBody, Collapse } from "reactstrap";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Collapse,
+  ModalBody,
+  ModalHeader,
+  Modal,
+  Button
+} from "reactstrap";
 import {
   SafeValue,
   GetOfferList,
-  SelectOfferStage
+  AcceptOffer,
+  RejectOffer
 } from "../ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
 import DateFormat from "../DateFormat/DateFormat";
@@ -28,10 +38,18 @@ export default class MyRequests extends Component {
     this.state = {
       offerList: [],
       moreDetailCollapse: null,
-      requestId: this.urlParams.rid
+      requestId: this.urlParams.rid,
+      openWarningModal: false,
+      currentOfferOperation: {
+        stage: "",
+        offerId: ""
+      }
     };
     this.offerStageArr = {
-      notDefined: ["5d7b968918a6400017ee1513"]
+      validOffers: ["5d7b968918a6400017ee1513", "5d7b969c18a6400017ee1515"],
+      approved: ["5d7b969c18a6400017ee1515"],
+      notDefined: ["5d7b968918a6400017ee1513"],
+      rejected: ["5d7b96b218a6400017ee1518", "5d7b96a018a6400017ee1516"]
     };
     this.getAndFilterOfferList(this.urlParams.rid);
   }
@@ -39,6 +57,10 @@ export default class MyRequests extends Component {
     const _this = this;
     GetOfferList(reqId, offer_list => {
       const SAFE_offer_list = SafeValue(offer_list, "data", "object", []);
+      // const filtered_offer = SAFE_offer_list.filter(
+      //   value =>
+      //     this.offerStageArr.validOffers.indexOf(value.fields.stage._id) > -1
+      // );
       _this.setState({
         offerList: SAFE_offer_list
       });
@@ -51,11 +73,21 @@ export default class MyRequests extends Component {
       moreDetailCollapse: toggleId
     });
   };
-  offerStage = stage => {
+  offerStage = () => {
     const _this = this;
-    SelectOfferStage(stage, () => {
-      _this.getAndFilterOfferList(_this.state.requestId);
-    });
+    const { stage, offerId } = this.state.currentOfferOperation;
+    if (stage === "accept") {
+      AcceptOffer(offerId, () => {
+        _this.toggleWarningModal();
+        _this.getAndFilterOfferList(_this.state.requestId);
+      });
+    }
+    if (stage === "reject") {
+      RejectOffer(offerId, () => {
+        _this.toggleWarningModal();
+        _this.getAndFilterOfferList(_this.state.requestId);
+      });
+    }
   };
   urlParser = url => {
     let regex = /[?&]([^=#]+)=([^&#]*)/g,
@@ -184,9 +216,7 @@ export default class MyRequests extends Component {
                   <br />
                   <strong>
                     {PersianNumber(
-                      DateFormat(
-                        item.sys.issueDate.replace(/T/, " ").replace(/\..+/, "")
-                      ).toPersian()
+                      DateFormat(item.sys.issueDate).toPersianWithHour()
                     )}
                   </strong>
                 </li>
@@ -197,11 +227,7 @@ export default class MyRequests extends Component {
                   <br />
                   <strong>
                     {PersianNumber(
-                      DateFormat(
-                        item.fields.startdate
-                          .replace(/T/, " ")
-                          .replace(/\..+/, "")
-                      ).toPersian()
+                      DateFormat(item.fields.startdate).toPersian()
                     )}
                   </strong>
                 </li>
@@ -318,7 +344,12 @@ export default class MyRequests extends Component {
               <React.Fragment>
                 <div
                   className="accept-state"
-                  onClick={() => this.offerStage("accept")}
+                  onClick={() =>
+                    this.toggleWarningModal({
+                      stage: "accept",
+                      offerId: item._id
+                    })
+                  }
                 >
                   <span>
                     <strong>قبول</strong>
@@ -332,7 +363,12 @@ export default class MyRequests extends Component {
                 </div>
                 <div
                   className="deny-state"
-                  onClick={() => this.offerStage("reject")}
+                  onClick={() =>
+                    this.toggleWarningModal({
+                      stage: "reject",
+                      offerId: item._id
+                    })
+                  }
                 >
                   <span>
                     <strong>رد</strong>
@@ -346,9 +382,31 @@ export default class MyRequests extends Component {
                 </div>
               </React.Fragment>
             ) : (
-              <strong className="offer-stage-text">
-                {item.fields.stage.fields.name}
-              </strong>
+              <React.Fragment>
+                {this.offerStageArr.approved.indexOf(item.fields.stage._id) >
+                  -1 && (
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    pull="right"
+                    size="lg"
+                    color="#58d37b"
+                  />
+                )}
+                {this.offerStageArr.rejected.indexOf(item.fields.stage._id) >
+                  -1 && (
+                  <FontAwesomeIcon
+                    icon={faTimesCircle}
+                    pull="right"
+                    size="lg"
+                    color="#dd4242"
+                  />
+                )}
+                <span>
+                  <strong className="offer-stage-text">
+                    {item.fields.stage.fields.name}
+                  </strong>
+                </span>
+              </React.Fragment>
             )}
           </div>
         </div>
@@ -369,7 +427,22 @@ export default class MyRequests extends Component {
     }
     return generatedElements;
   };
-  componentDidMount() {}
+  toggleWarningModal = currentOfferOperation => {
+    var goingToAttachObject = {};
+    if (currentOfferOperation) {
+      goingToAttachObject = currentOfferOperation;
+    }
+    this.setState({
+      openWarningModal: !this.state.openWarningModal,
+      currentOfferOperation: {
+        ...this.state.currentOfferOperation,
+        ...goingToAttachObject
+      }
+    });
+  };
+  // shouldComponentUpdate(nextProps, nextState) {
+
+  // }
   render() {
     return (
       <section
@@ -381,6 +454,47 @@ export default class MyRequests extends Component {
         }}
       >
         <React.Fragment>
+          <Modal
+            isOpen={this.state.openWarningModal}
+            toggle={this.toggleWarningModal}
+            className="login-modal"
+          >
+            <ModalHeader
+              className="login-modal-header"
+              toggle={this.toggleWarningModal}
+            >
+              هشدار
+            </ModalHeader>
+            <ModalBody>
+              <span>
+                در صورت قبول یا رد پیشنهاد امکان تغییر وضعیت پیشنهاد دیگر امکان
+                پذیر نیست
+                <br />
+                <br />
+                <strong style={{ fontSize: "20px" }}>
+                  آیا اطمینان دارید ؟
+                </strong>
+              </span>
+              <br />
+              <Button
+                pull="right"
+                color="primary"
+                style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                onClick={() => this.offerStage()}
+              >
+                بله
+              </Button>
+
+              <Button
+                pull="right "
+                color="primary"
+                style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                onClick={this.toggleWarningModal}
+              >
+                خیر
+              </Button>
+            </ModalBody>
+          </Modal>
           <Card className="form-card">
             <section className="offer-list-section">
               <CardHeader>

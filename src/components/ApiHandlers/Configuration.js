@@ -22,7 +22,8 @@ var Configuration = {
     all_requests: "api/v1/requests/all",
     all_offers: "api/v1/requests/offers/all",
     get_initial_token: "api/v1/auth/token",
-    select_offer_stage: "api/v1/quotes/accept/",
+    accept_offer: "api/v1/quotes/accept/",
+    reject_offer: "api/v1/quotes/reject/",
     add_content: "contents/add"
   },
   CONTENT_TYPE_ID: {
