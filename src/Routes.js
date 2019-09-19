@@ -8,6 +8,9 @@ const SharedDesk = React.lazy(() => import("./components/SharedDesk"));
 const DedicatedOffice = React.lazy(() =>
   import("./components/DedicatedOffice")
 );
+const PartnerProfile = React.lazy(() =>
+  import("./components/User/PartnerProfile")
+);
 const SessionRoom = React.lazy(() => import("./components/SessionRoom"));
 const PrivacyPolicy = React.lazy(() => import("./components/PrivacyPolicy"));
 const TermsOfUse = React.lazy(() => import("./components/TermsOfUse"));
@@ -133,6 +136,13 @@ const routes = [
     name: "Offer List",
     component: OfferList,
     auth: "user"
+  },
+  {
+    path: "/user/partnerprofile",
+    name: "Partner Profile",
+    component: PartnerProfile,
+    auth: "user",
+    navTransform: true
   }
 ];
 

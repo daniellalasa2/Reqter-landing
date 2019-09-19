@@ -220,15 +220,9 @@ export default class Login extends React.Component {
     });
   };
   formStateHandler = e => {
-    console.log("phone: ", this.state.form.fields.phoneNumber.isValid);
-    console.log("form:  ", this.state.form.isValid);
     let _this = e.target;
     const name = _this.name;
     let value = _this.value;
-    console.log(
-      this.validationRules[name],
-      Validator("", this.validationRules[name])
-    );
     const validation = Validator(value, this.validationRules[name]);
     this.setState(
       {
@@ -279,6 +273,7 @@ export default class Login extends React.Component {
                 color="info"
                 onClick={this.Login}
                 disabled={!this.state.form.fields.phoneNumber.isValid}
+                // onKeyUp={e => console.log("this: ", e)}
               >
                 {this.state.form.isSubmitting ? (
                   <img

@@ -1,0 +1,106 @@
+.partner-profile {
+  width: 100vw;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 700px;
+  margin: 0;
+  background-color: white;
+  & .carousel {
+    & .carousel-inner {
+      img {
+        width: 100%;
+        height: 500px;
+      }
+    }
+  }
+  & .partner-information {
+    display: flex;
+    flex-direction: column;
+    width: 79%;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    align-self: center;
+    justify-content: flex-start;
+    text-align: right;
+    direction: rtl;
+    & .title {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    & .verified {
+      padding: 10px 5px 0 0;
+      width: 130px;
+      font-weight: bold;
+      font-size: 16px;
+      direction: rtl;
+      color: #58d37b;
+    }
+    & .address {
+      color: rgb(100, 100, 100);
+      padding: 10px 5px 0 0;
+      width: fit-content;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+  & .overview {
+    font-size: 17px;
+    margin-top: 15px;
+    width: 79%;
+    align-self: center;
+    padding: 10px 25px;
+    direction: rtl;
+    text-align: right;
+    color: rgb(100, 100, 100);
+  }
+  & .content-navigator {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    align-self: center;
+    padding: 20px;
+    margin-top: 20px;
+    direction: rtl;
+    & .tab {
+      border: 1px solid rgb(170, 170, 170);
+      border-right: 0;
+      transition: all 0.15s ease-in;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+      height: 40px;
+      max-height: 40px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: rgb(100, 100, 100);
+      padding: 25px 40px;
+      border-width: 1px 0 1px 0;
+      -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+      -moz-box-sizing: border-box; /* Firefox, other Gecko */
+      box-sizing: border-box;
+      &:last-child {
+        border-radius: 5px 0 0 5px;
+        border-width: 1px 0 1px 1px;
+      }
+      &:first-child {
+        border-width: 1px 1px 1px 0px !important;
+        border: 1px solid rgb(170, 170, 170);
+        border-radius: 0 5px 5px 0;
+      }
+      &:hover {
+        cursor: pointer;
+        border-bottom-width: 8px !important;
+        border-bottom-color: #58d37b;
+        padding-bottom: 18px;
+      }
+    }
+  }
+}

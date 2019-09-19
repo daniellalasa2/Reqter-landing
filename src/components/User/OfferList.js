@@ -138,20 +138,6 @@ export default class MyRequests extends Component {
             <br />
             <ul>
               <li>
-                تعداد:
-                <br />
-                <strong>
-                  {PersianNumber(
-                    SafeValue(
-                      item,
-                      "fields.productid.fields.count",
-                      "string",
-                      ""
-                    )
-                  )}
-                </strong>
-              </li>
-              <li>
                 شهر:
                 <br />
                 <strong>
@@ -217,17 +203,6 @@ export default class MyRequests extends Component {
                   <strong>
                     {PersianNumber(
                       DateFormat(item.sys.issueDate).toPersianWithHour()
-                    )}
-                  </strong>
-                </li>
-              )}
-              {SafeValue(item, "fields.startdate", "string", false) && (
-                <li>
-                  زمان فعالسازی محصول:
-                  <br />
-                  <strong>
-                    {PersianNumber(
-                      DateFormat(item.fields.startdate).toPersian()
                     )}
                   </strong>
                 </li>
@@ -375,7 +350,7 @@ export default class MyRequests extends Component {
                   </span>
                   <FontAwesomeIcon
                     icon={faTimesCircle}
-                    pull="left"
+                    pull="right"
                     size="lg"
                     color="#dd4242"
                   />
