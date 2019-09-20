@@ -5,18 +5,25 @@ import {
   CarouselItem,
   CarouselControl,
   CarouselIndicators,
-  CarouselCaption
+  CarouselCaption,
+  Table
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
-  faMapMarkerAlt
+  faMapMarkerAlt,
+  faBoxOpen,
+  faHeart,
+  faClock,
+  faMapPin
 } from "@fortawesome/free-solid-svg-icons";
+import SimpleMap from "../SimpleMap/SimpleMap";
 export default class PartnerProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeSlideIndex: 0,
+      isContentNavigatorFixed: false,
       slideItems: [
         {
           src:
@@ -84,6 +91,78 @@ export default class PartnerProfile extends React.Component {
     ));
     return slides;
   };
+  contentNavigatorScrollTrigger = () => {
+    const sectionPositions = [
+      {
+        scrollPosition: this.getElementOffest("overview-section"),
+        linkedNavId: "overview-section-navigator"
+      },
+      {
+        scrollPosition: this.getElementOffest("products-section"),
+        linkedNavId: "products-section-navigator"
+      },
+      {
+        scrollPosition: this.getElementOffest("facilities-section"),
+        linkedNavId: "facilities-section-navigator"
+      },
+      {
+        scrollPosition: this.getElementOffest("address-section"),
+        linkedNavId: "map-section-navigator"
+      }
+    ];
+    const windowY = window.scrollY;
+    const websiteNavHeight = document.getElementById("items-wrapper")
+      .offsetHeight;
+    const contentNavigator = document.getElementById("content-navigator");
+    const contentNavigatorItemsWrapper = document.getElementById(
+      "items-wrapper"
+    );
+    const pixelsFromTop = contentNavigator.offsetTop - websiteNavHeight;
+    const windowSectionPositionName = sectionPositions.filter(
+      item =>
+        item.scrollPosition.from < windowY && windowY < item.scrollPosition.to
+    );
+    if (windowY > pixelsFromTop) {
+      contentNavigatorItemsWrapper.classList.add("fixed");
+    } else {
+      document.querySelectorAll(".content-navigator .tab").forEach(elem => {
+        elem.classList.remove("active");
+      });
+      contentNavigatorItemsWrapper.classList.remove("fixed");
+    }
+    if (windowSectionPositionName.length > 0) {
+      //first remove all active classes
+      document.querySelectorAll(".content-navigator .tab").forEach(elem => {
+        elem.classList.remove("active");
+      });
+      //then add new active class to the matched element
+      document
+        .getElementById(windowSectionPositionName[0].linkedNavId)
+        .classList.add("active");
+    } else {
+      //else remove disable any active content navigator
+      document.querySelectorAll(".content-navigator .tabs").forEach(elem => {
+        elem.classList.remove("active");
+      });
+    }
+  };
+  getElementOffest = elementId => {
+    const websiteNavHeight = document.getElementById("items-wrapper")
+      .offsetHeight;
+    const contentNavigatorHeight = 120;
+
+    const element = document.getElementById(elementId);
+    return {
+      from: element.offsetTop - websiteNavHeight - contentNavigatorHeight,
+      to: element.offsetTop + element.offsetHeight - contentNavigatorHeight
+    };
+  };
+  componentDidMount() {
+    window.addEventListener("scroll", this.contentNavigatorScrollTrigger);
+  }
+  componetWillUnmount() {
+    window.removeEventListener("scroll", this.contentNavigatorScrollTrigger);
+  }
 
   render() {
     const { activeSlideIndex, slideItems } = this.state;
@@ -132,18 +211,232 @@ export default class PartnerProfile extends React.Component {
             تهران - آجودانیه - باغ بهشت
           </div>
         </section>
-        <section className="content-navigator">
-          <div className="tab">خلاصه</div>
-          <div className="tab">محصولات</div>
-          <div className="tab">امکانات</div>
-          <div className="tab">ساعات کاری</div>
-          <div className="tab">نقشه</div>
+        <section className="content-navigator" id="content-navigator">
+          <div className="items-wrapper" id="items-wrapper">
+            <div className="tab" id="overview-section-navigator">
+              خلاصه
+            </div>
+            <div className="tab" id="products-section-navigator">
+              محصولات
+            </div>
+            <div className="tab" id="facilities-section-navigator">
+              امکانات
+            </div>
+            <div className="tab" id="map-section-navigator">
+              نقشه
+            </div>
+            <div className="tab" id="reviews-section-navigator">
+              نظرات (بزودی)
+            </div>
+          </div>
         </section>
-        <div className="overview">
-          فضای کار اشتراکی (coworking space) به مجموعه‌ای گفته می‌شود که یک فضای
-          کاری را به طور مشترک و اختصاصی دراختیار فریلنسرها و تیم‌های مختلف قرار
-          می‌دهد. به تازگی شرکت‌های بزرگی همچون Apple , Microsoft , Alibaba بخشی
-          از کارکنان خود را در فضاهای کار اشتراکی مستقر کرده‌اند.
+        <div className="overview nav-section" id="overview-section">
+          <p>
+            فضای کار اشتراکی (coworking space) به مجموعه‌ای گفته می‌شود که یک
+            فضای کاری را به طور مشترک و اختصاصی دراختیار فریلنسرها و تیم‌های
+            مختلف قرار می‌دهد. به تازگی شرکت‌های بزرگی همچون Apple , Microsoft ,
+            Alibaba بخشی از کارکنان خود را در فضاهای کار اشتراکی مستقر کرده‌اند.
+            فضای کار اشتراکی (coworking space) به مجموعه‌ای گفته می‌شود که یک
+            فضای کاری را به طور مشترک و اختصاصی دراختیار فریلنسرها و تیم‌های
+            مختلف قرار می‌دهد. به تازگی شرکت‌های بزرگی همچون Apple , Microsoft ,
+            Alibaba بخشی از کارکنان خود را در فضاهای کار اشتراکی مستقر کرده‌اند.
+            فضای کار اشتراکی (coworking space) به مجموعه‌ای گفته می‌شود که یک
+            فضای کاری را به طور مشترک و اختصاصی دراختیار فریلنسرها و تیم‌های
+            مختلف قرار می‌دهد. به تازگی شرکت‌های بزرگی همچون Apple , Microsoft ,
+            Alibaba بخشی از کارکنان خود را در فضاهای کار اشتراکی مستقر کرده‌اند.
+          </p>
+          <div className="working-hours">
+            <ul>
+              <li className="title">
+                <FontAwesomeIcon
+                  icon={faClock}
+                  pull="right"
+                  size="lg"
+                  color="dimgrey"
+                />{" "}
+                ساعات کاری
+              </li>
+              <li>
+                <strong>شنبه - ۴شنبه</strong>
+                <br />
+                <span>۸:۰۰ الی ۲۱:۰۰</span>
+              </li>
+
+              <li>
+                <strong>۵شنبه</strong>
+                <br />
+                <span>۱۰:۰۰ الی ۱۸:۰۰</span>
+              </li>
+              <li>
+                <strong>جمعه</strong>
+                <br />
+                <span>۱۲:۰۰ الی ۱۷:۰۰</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="partner-products nav-section" id="products-section">
+          <div className="section-title">
+            <FontAwesomeIcon
+              icon={faBoxOpen}
+              pull="right"
+              size="lg"
+              color="dimgrey"
+            />{" "}
+            محصولات
+          </div>
+          <Table bordered>
+            <thead>
+              <tr>
+                <th>نام محصول</th>
+                <th>تعداد</th>
+                <th>قیمت ساعتی</th>
+                <th>قیمت هفتگی</th>
+                <th>قیمت ماهانه</th>
+                <th>رزرو</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">صندلی اشتراکی</th>
+                <td>۱ نفره</td>
+                <td>۳۰ هزار تومن</td>
+                <td>۹۰ هزار تومن</td>
+                <td>۲۷۰ هزار تومن</td>
+                <td>
+                  <button className="reserve-button">درخواست</button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">صندلی اختصاصی</th>
+                <td>۱ نفره</td>
+                <td>۴۰ هزار تومن</td>
+                <td>۱۱۰ هزار تومن</td>
+                <td>۴۰۰ هزار تومن</td>
+                <td>
+                  <button className="reserve-button">درخواست</button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">اتاق جلسه</th>
+                <td>۱۰ نفره</td>
+                <td>۹۰ هزار تومن</td>
+                <td>ندارد</td>
+                <td>ندارد</td>
+                <td>
+                  <button className="reserve-button">درخواست</button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">دفتر کار</th>
+                <td>۶ نفره</td>
+                <td>ندارد</td>
+                <td>ندارد</td>
+                <td>۱.۵ میلیون تومان</td>
+                <td>
+                  <button className="reserve-button">درخواست</button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">دفتر کار</th>
+                <td>۱۰ نفره</td>
+                <td>ندارد</td>
+                <td>ندارد</td>
+                <td>۲.۵ میلیون تومان</td>
+                <td>
+                  <button className="reserve-button">درخواست</button>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
+        <div className="partner-facilities nav-section" id="facilities-section">
+          <div className="section-title">
+            <FontAwesomeIcon icon={faHeart} size="lg" color="dimgrey" />
+            امکانات رفاهی
+          </div>
+          <div className="facilities-detail">
+            <ul>
+              <li>
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  size="lg"
+                  color="#58d37b"
+                />
+                چای رایگان
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  size="lg"
+                  color="#58d37b"
+                />
+                قهوه رایگان
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  size="lg"
+                  color="#58d37b"
+                />
+                اینترنت پرسرعت بدون محدودیت
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  size="lg"
+                  color="#58d37b"
+                />
+                صندلی ارگونومی
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  size="lg"
+                  color="#58d37b"
+                />
+                یخچال و فریزر
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  size="lg"
+                  color="#58d37b"
+                />
+                مایکرویو
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  size="lg"
+                  color="#58d37b"
+                />
+                ۲۰٪ تخفیف اسنپ فود
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="partner-address nav-section" id="address-section">
+          <div className="section-title">
+            <FontAwesomeIcon icon={faMapPin} size="lg" color="dimgrey" />
+            <span>
+              <strong> آدرس</strong>
+              <p> تهران - آجودانیه - باغ بهشت - پارادایس هاب</p>
+            </span>
+          </div>
+          <div className="map">
+            <SimpleMap
+              lng={30}
+              lat={50}
+              pinDesc="paradisehub"
+              PinComponent={() => (
+                <FontAwesomeIcon icon={faMapPin} size="lg" color="red" />
+              )}
+              height="100vh"
+              width="100%"
+            />
+          </div>
         </div>
       </section>
     );
