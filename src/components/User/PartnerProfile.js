@@ -37,7 +37,8 @@ export default class PartnerProfile extends React.Component {
           altText: "Slide 2",
           caption: "Slide 2"
         }
-      ]
+      ],
+      height: "mamad"
     };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
@@ -92,24 +93,8 @@ export default class PartnerProfile extends React.Component {
     return slides;
   };
   contentNavigatorScrollTrigger = () => {
-    const sectionPositions = [
-      {
-        scrollPosition: this.getElementOffest("overview-section"),
-        linkedNavId: "overview-section-navigator"
-      },
-      {
-        scrollPosition: this.getElementOffest("products-section"),
-        linkedNavId: "products-section-navigator"
-      },
-      {
-        scrollPosition: this.getElementOffest("facilities-section"),
-        linkedNavId: "facilities-section-navigator"
-      },
-      {
-        scrollPosition: this.getElementOffest("address-section"),
-        linkedNavId: "map-section-navigator"
-      }
-    ];
+    console.log("window scroll:", window.scrollY);
+    const sectionPositions = this.generateSectionPositions();
     const windowY = window.scrollY;
     const websiteNavHeight = document.getElementById("items-wrapper")
       .offsetHeight;
@@ -120,7 +105,7 @@ export default class PartnerProfile extends React.Component {
     const pixelsFromTop = contentNavigator.offsetTop - websiteNavHeight;
     const windowSectionPositionName = sectionPositions.filter(
       item =>
-        item.scrollPosition.from < windowY && windowY < item.scrollPosition.to
+        item.scrollPosition.from <= windowY && windowY < item.scrollPosition.to
     );
     if (windowY > pixelsFromTop) {
       contentNavigatorItemsWrapper.classList.add("fixed");
@@ -146,17 +131,52 @@ export default class PartnerProfile extends React.Component {
       });
     }
   };
-  getElementOffest = elementId => {
-    const websiteNavHeight = document.getElementById("items-wrapper")
-      .offsetHeight;
-    const contentNavigatorHeight = 120;
 
-    const element = document.getElementById(elementId);
-    return {
-      from: element.offsetTop - websiteNavHeight - contentNavigatorHeight,
-      to: element.offsetTop + element.offsetHeight - contentNavigatorHeight
+  generateSectionPositions = () => {
+    const getElementOffest = elementId => {
+      const websiteNavHeight = document.getElementById("items-wrapper")
+        .clientHeight;
+      const contentNavigatorHeight = 90;
+      const element = document.getElementById(elementId);
+      return {
+        from: element.offsetTop - websiteNavHeight - contentNavigatorHeight,
+        to:
+          element.offsetTop -
+          websiteNavHeight +
+          element.clientHeight -
+          contentNavigatorHeight
+      };
     };
+    return [
+      {
+        scrollPosition: getElementOffest("overview-section"),
+        linkedNavId: "overview-section-navigator"
+      },
+      {
+        scrollPosition: getElementOffest("products-section"),
+        linkedNavId: "products-section-navigator"
+      },
+      {
+        scrollPosition: getElementOffest("facilities-section"),
+        linkedNavId: "facilities-section-navigator"
+      },
+      {
+        scrollPosition: getElementOffest("address-section"),
+        linkedNavId: "map-section-navigator"
+      }
+    ];
   };
+  scrollToSection = e => {
+    const sectionPositions = this.generateSectionPositions().filter(
+      item => e.target.id === item.linkedNavId
+    );
+    if (sectionPositions.length > 0) {
+      window.scrollTo({
+        top: sectionPositions[0].scrollPosition.from
+      });
+    }
+  };
+
   componentDidMount() {
     window.addEventListener("scroll", this.contentNavigatorScrollTrigger);
   }
@@ -213,19 +233,39 @@ export default class PartnerProfile extends React.Component {
         </section>
         <section className="content-navigator" id="content-navigator">
           <div className="items-wrapper" id="items-wrapper">
-            <div className="tab" id="overview-section-navigator">
+            <div
+              className="tab"
+              id="overview-section-navigator"
+              onClick={this.scrollToSection}
+            >
               خلاصه
             </div>
-            <div className="tab" id="products-section-navigator">
+            <div
+              className="tab"
+              id="products-section-navigator"
+              onClick={this.scrollToSection}
+            >
               محصولات
             </div>
-            <div className="tab" id="facilities-section-navigator">
+            <div
+              className="tab"
+              id="facilities-section-navigator"
+              onClick={this.scrollToSection}
+            >
               امکانات
             </div>
-            <div className="tab" id="map-section-navigator">
+            <div
+              className="tab"
+              id="map-section-navigator"
+              onClick={this.scrollToSection}
+            >
               نقشه
             </div>
-            <div className="tab" id="reviews-section-navigator">
+            <div
+              className="tab"
+              id="reviews-section-navigator"
+              onClick={this.scrollToSection}
+            >
               نظرات (بزودی)
             </div>
           </div>
