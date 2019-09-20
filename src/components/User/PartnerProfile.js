@@ -177,10 +177,18 @@ export default class PartnerProfile extends React.Component {
   };
 
   componentDidMount() {
-    window.addEventListener("scroll", this.contentNavigatorScrollTrigger);
+    window.addEventListener(
+      "scroll",
+      this.contentNavigatorScrollTrigger,
+      false
+    );
   }
-  componetWillUnmount() {
-    window.removeEventListener("scroll", this.contentNavigatorScrollTrigger);
+  componentWillUnmount() {
+    window.removeEventListener(
+      "scroll",
+      this.contentNavigatorScrollTrigger,
+      false
+    );
   }
 
   render() {
