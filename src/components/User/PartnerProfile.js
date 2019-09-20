@@ -93,7 +93,6 @@ export default class PartnerProfile extends React.Component {
     return slides;
   };
   contentNavigatorScrollTrigger = () => {
-    console.log("window scroll:", window.scrollY);
     const sectionPositions = this.generateSectionPositions();
     const windowY = window.scrollY;
     const websiteNavHeight = document.getElementById("items-wrapper")
@@ -326,7 +325,7 @@ export default class PartnerProfile extends React.Component {
             />{" "}
             محصولات
           </div>
-          <Table bordered>
+          <Table bordered responsive>
             <thead>
               <tr>
                 <th>نام محصول</th>
@@ -473,7 +472,7 @@ export default class PartnerProfile extends React.Component {
               PinComponent={() => (
                 <FontAwesomeIcon icon={faMapPin} size="lg" color="red" />
               )}
-              height="100vh"
+              height="100%"
               width="100%"
             />
           </div>
