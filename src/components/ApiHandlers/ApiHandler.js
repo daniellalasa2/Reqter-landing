@@ -359,7 +359,7 @@ var AcceptOffer = (offerId, callback) => {
       });
   });
 };
-var GetPartnerInfo = (fieldsObj, callback) => {
+var GetPartnerInfo = (params, callback) => {
   Config.Auth().then(token => {
     axios({
       url: _api.GetPartnerInfo,
@@ -371,7 +371,7 @@ var GetPartnerInfo = (fieldsObj, callback) => {
       },
       params: {
         contentType: Config.CONTENT_TYPE_ID.get_partner_info,
-        ...fieldsObj
+        ...params
       }
     })
       .then(res => {
@@ -410,6 +410,38 @@ var AddContent = (formName, data, callback) => {
       .then(res => {
         const result = errorHandler(res.status);
         return callback(result);
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
+var GetPartnerProducts = (params, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url:
+        _api.FilterContents + `/${Config.CONTENT_TYPE_ID.get_partner_products}`,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      params: {
+        ...params
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
       })
       .catch(err => {
         const result = errorHandler(
@@ -477,5 +509,6 @@ export {
   RejectOffer,
   AddContent,
   GetPartnerInfo,
+  GetPartnerProducts,
   Config
 };

@@ -17,8 +17,16 @@ $green: #58d37b;
       border-radius: 50%;
       box-shadow: 0 0 0 10px black;
     }
+    & .carousel-slide {
+      & .carousel-indicators {
+        & li {
+          width: 3vw;
+          max-width: 20px;
+        }
+      }
+    }
     & .carousel-inner {
-      .carousel-item {
+      & .carousel-item {
         max-height: 500px;
         height: 500px;
         overflow: hidden;
@@ -28,13 +36,13 @@ $green: #58d37b;
         justify-content: center;
         align-content: center;
       }
-      .active {
+      &.active {
         display: flex !important;
       }
-      .carousel-item-left {
+      & .carousel-item-left {
         display: flex !important;
       }
-      img {
+      & img {
         width: 100%;
         height: AUTO;
       }
@@ -279,7 +287,13 @@ $green: #58d37b;
     }
   }
 }
-
+@media (max-width: 767.9px) {
+  .partner-profile {
+    & .content-navigator {
+      display: none;
+    }
+  }
+}
 @media (max-width: 768px) {
   .partner-profile {
     margin: 60px 0 0 0;

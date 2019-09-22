@@ -43,7 +43,8 @@ var Configuration = {
     request_stages: "5d6b5d205b60dc0017c95118",
     get_offer: "5d35adc68e6e9a0017c28fcb",
     select_offer_stage: "5d791a0a1a2cda0017099c63",
-    get_partner_info: "5d358ebc8e6e9a0017c28fc9"
+    get_partner_info: "5d358ebc8e6e9a0017c28fc9",
+    get_partner_products: "5d36a6418e6e9a0017c28fd5"
   }
 };
 function CheckAuthToken() {

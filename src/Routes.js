@@ -25,7 +25,6 @@ const OfferList = React.lazy(() => import("./components/User/OfferList"));
 const NotFound = React.lazy(() => import("./components/Auth/NotFound"));
 //temporary
 const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
-
 // const static_routes = [
 const routes = [
   { path: "/", exact: true, name: "Home", component: Home, navTransform: true },

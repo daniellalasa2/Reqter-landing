@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import "./PartnerProfile.scss";
 import {
   Carousel,
@@ -17,9 +18,27 @@ import {
   faClock,
   faMapPin
 } from "@fortawesome/free-solid-svg-icons";
-import { SafeValue, GetPartnerInfo } from "../ApiHandlers/ApiHandler";
+import {
+  SafeValue,
+  GetPartnerInfo,
+  GetPartnerProducts
+} from "../ApiHandlers/ApiHandler";
 import SimpleMap from "../SimpleMap/SimpleMap";
+import ContextApi from "../ContextApi/ContextApi";
+function Loading() {
+  return (
+    <div className="preloader">
+      <div className="ball-rotate">
+        <div />
+      </div>
+      <span className="loading-text">
+        <strong>Startup Space</strong>
+      </span>
+    </div>
+  );
+}
 export default class PartnerProfile extends React.Component {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.partnerKey = props.match.params.slug;
@@ -27,7 +46,9 @@ export default class PartnerProfile extends React.Component {
       activeSlideIndex: 0,
       isContentNavigatorFixed: false,
       partnerInfo: {},
-      slideItems: []
+      partnerProducts: [],
+      slideItems: [],
+      pageLoaded: false
     };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
@@ -36,6 +57,7 @@ export default class PartnerProfile extends React.Component {
     this.onExited = this.onExited.bind(this);
     this.fetchPartnerDetails();
   }
+
   //Image Carousel Functions
   onExiting() {
     this.animating = true;
@@ -122,19 +144,25 @@ export default class PartnerProfile extends React.Component {
   };
 
   generateSectionPositions = () => {
+    const default_obj = { from: 0, to: 0 };
     const getElementOffest = elementId => {
       const websiteNavHeight = document.getElementById("items-wrapper")
         .clientHeight;
       const contentNavigatorHeight = 90;
-      const element = document.getElementById(elementId);
-      return {
-        from: element.offsetTop - websiteNavHeight - contentNavigatorHeight,
-        to:
-          element.offsetTop -
-          websiteNavHeight +
-          element.clientHeight -
-          contentNavigatorHeight
-      };
+      //try to get element by id else return a default scroll behaviour object
+      try {
+        const element = document.getElementById(elementId);
+        return {
+          from: element.offsetTop - websiteNavHeight - contentNavigatorHeight,
+          to:
+            element.offsetTop -
+            websiteNavHeight +
+            element.clientHeight -
+            contentNavigatorHeight
+        };
+      } catch (err) {
+        return default_obj;
+      }
     };
     return [
       {
@@ -157,11 +185,11 @@ export default class PartnerProfile extends React.Component {
   };
   fetchPartnerDetails = () => {
     const _this = this;
-    GetPartnerInfo({ "fields.partnerkey": _this.partnerKey }, partner => {
+    const param = { "fields.partnerkey": _this.partnerKey };
+    GetPartnerInfo(param, partner => {
       if (partner.success_result.success) {
         const images = [];
         const { fields } = partner.data[0];
-
         fields.images.forEach(image => {
           images.push({
             src: image.en,
@@ -173,7 +201,36 @@ export default class PartnerProfile extends React.Component {
           partnerInfo: {
             ...fields
           },
-          slideItems: images
+          slideItems: images,
+          pageLoaded: true
+        });
+      } else {
+        return <Redirect to="/" />;
+      }
+    });
+    GetPartnerProducts(param, products => {
+      if (products.success_result.success) {
+        const productsArr = products.data;
+        const generatedProducts = [];
+        productsArr.forEach((product, index) => {
+          const { name, count, producttype } = product.fields;
+          generatedProducts.push(
+            <tr key={index}>
+              <th scope="row">{SafeValue(name, "fa", "string", "نامشخص")}</th>
+              <td>{SafeValue(count, "", "string", "نامشخص")}</td>
+              <td>ندارد</td>
+              <td>ندارد</td>
+              <td>ندارد</td>
+              {this.context.auth.ROLE !== "user" && (
+                <td>
+                  <button className="reserve-button">درخواست</button>
+                </td>
+              )}
+            </tr>
+          );
+        });
+        this.setState({
+          partnerProducts: generatedProducts
         });
       }
     });
@@ -206,7 +263,12 @@ export default class PartnerProfile extends React.Component {
   }
 
   render() {
-    const { activeSlideIndex, slideItems } = this.state;
+    const {
+      activeSlideIndex,
+      slideItems,
+      partnerProducts,
+      pageLoaded
+    } = this.state;
     const {
       name,
       verified,
@@ -215,306 +277,268 @@ export default class PartnerProfile extends React.Component {
       logo,
       location
     } = this.state.partnerInfo;
-    return (
-      <section className="partner-profile">
-        <Carousel
-          activeIndex={activeSlideIndex}
-          next={this.next}
-          previous={this.previous}
-        >
-          <CarouselIndicators
-            items={slideItems}
+    if (pageLoaded) {
+      return (
+        <section className="partner-profile">
+          <Carousel
             activeIndex={activeSlideIndex}
-            onClickHandler={this.goToIndex}
-          />
-          {this.sliderItemGenerator()}
-          <CarouselControl
-            direction="prev"
-            directionText="Previous"
-            onClickHandler={this.previous}
-          />
-          <CarouselControl
-            direction="next"
-            directionText="Next"
-            onClickHandler={this.next}
-          />
-        </Carousel>
-        <section className="partner-information">
-          {SafeValue(name, "", "string", false) && (
-            <div className="title">{name}</div>
-          )}
-          {SafeValue(verified, "", "boolean", false) && (
-            <div className="verified">
-              <FontAwesomeIcon
-                icon={faCheckCircle}
-                pull="right"
-                size="lg"
-                color="#58d37b"
-              />{" "}
-              تایید شده
+            next={this.next}
+            previous={this.previous}
+          >
+            <CarouselIndicators
+              items={slideItems}
+              activeIndex={activeSlideIndex}
+              onClickHandler={this.goToIndex}
+            />
+            {this.sliderItemGenerator()}
+            <CarouselControl
+              direction="prev"
+              directionText="Previous"
+              onClickHandler={this.previous}
+            />
+            <CarouselControl
+              direction="next"
+              directionText="Next"
+              onClickHandler={this.next}
+            />
+          </Carousel>
+          <section className="partner-information">
+            {SafeValue(name, "", "string", false) && (
+              <div className="title">{name}</div>
+            )}
+            {SafeValue(verified, "", "boolean", false) && (
+              <div className="verified">
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  pull="right"
+                  size="lg"
+                  color="#58d37b"
+                />{" "}
+                تایید شده
+              </div>
+            )}
+            {SafeValue(address, "fa", "string", false) && (
+              <div className="address">
+                <FontAwesomeIcon
+                  icon={faMapMarkerAlt}
+                  pull="right"
+                  size="lg"
+                  color="black"
+                />{" "}
+                {address.fa}
+              </div>
+            )}
+          </section>
+          <section className="content-navigator" id="content-navigator">
+            <div className="items-wrapper" id="items-wrapper">
+              <div
+                className="tab"
+                id="overview-section-navigator"
+                onClick={this.scrollToSection}
+              >
+                معرفی
+              </div>
+              {partnerProducts.length > 0 && (
+                <div
+                  className="tab"
+                  id="products-section-navigator"
+                  onClick={this.scrollToSection}
+                >
+                  محصولات
+                </div>
+              )}
+              <div
+                className="tab"
+                id="facilities-section-navigator"
+                onClick={this.scrollToSection}
+              >
+                امکانات
+              </div>
+              <div
+                className="tab"
+                id="map-section-navigator"
+                onClick={this.scrollToSection}
+              >
+                نقشه
+              </div>
+              <div
+                className="tab"
+                id="reviews-section-navigator"
+                onClick={this.scrollToSection}
+              >
+                نظرات (بزودی)
+              </div>
             </div>
-          )}
-          {SafeValue(address, "fa", "string", false) && (
-            <div className="address">
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                pull="right"
-                size="lg"
-                color="black"
-              />{" "}
-              {address.fa}
-            </div>
-          )}
-        </section>
-        <section className="content-navigator" id="content-navigator">
-          <div className="items-wrapper" id="items-wrapper">
-            <div
-              className="tab"
-              id="overview-section-navigator"
-              onClick={this.scrollToSection}
-            >
-              معرفی
-            </div>
-            <div
-              className="tab"
-              id="products-section-navigator"
-              onClick={this.scrollToSection}
-            >
-              محصولات
-            </div>
-            <div
-              className="tab"
-              id="facilities-section-navigator"
-              onClick={this.scrollToSection}
-            >
-              امکانات
-            </div>
-            <div
-              className="tab"
-              id="map-section-navigator"
-              onClick={this.scrollToSection}
-            >
-              نقشه
-            </div>
-            <div
-              className="tab"
-              id="reviews-section-navigator"
-              onClick={this.scrollToSection}
-            >
-              نظرات (بزودی)
+          </section>
+          <div className="overview nav-section" id="overview-section">
+            {SafeValue(overview, "fa", "string", true) && (
+              <p>{SafeValue(overview, "fa", "string", "متن معرفی خالیست")}</p>
+            )}
+            <div className="working-hours">
+              <ul>
+                <li className="title">
+                  <FontAwesomeIcon
+                    icon={faClock}
+                    pull="right"
+                    size="lg"
+                    color="dimgrey"
+                  />{" "}
+                  ساعات کاری
+                </li>
+                <li>
+                  <strong>شنبه - ۴شنبه</strong>
+                  <br />
+                  <span>۸:۰۰ الی ۲۱:۰۰</span>
+                </li>
+
+                <li>
+                  <strong>۵شنبه</strong>
+                  <br />
+                  <span>۱۰:۰۰ الی ۱۸:۰۰</span>
+                </li>
+                <li>
+                  <strong>جمعه</strong>
+                  <br />
+                  <span>۱۲:۰۰ الی ۱۷:۰۰</span>
+                </li>
+              </ul>
             </div>
           </div>
-        </section>
-        <div className="overview nav-section" id="overview-section">
-          {SafeValue(overview, "fa", "string", true) && (
-            <p>{SafeValue(overview, "fa", "string", "متن معرفی خالیست")}</p>
-          )}
-          <div className="working-hours">
-            <ul>
-              <li className="title">
+
+          {partnerProducts.length > 0 && (
+            <div className="partner-products nav-section" id="products-section">
+              <div className="section-title">
                 <FontAwesomeIcon
-                  icon={faClock}
+                  icon={faBoxOpen}
                   pull="right"
                   size="lg"
                   color="dimgrey"
                 />{" "}
-                ساعات کاری
-              </li>
-              <li>
-                <strong>شنبه - ۴شنبه</strong>
-                <br />
-                <span>۸:۰۰ الی ۲۱:۰۰</span>
-              </li>
-
-              <li>
-                <strong>۵شنبه</strong>
-                <br />
-                <span>۱۰:۰۰ الی ۱۸:۰۰</span>
-              </li>
-              <li>
-                <strong>جمعه</strong>
-                <br />
-                <span>۱۲:۰۰ الی ۱۷:۰۰</span>
-              </li>
-            </ul>
+                محصولات
+              </div>
+              <Table bordered responsive>
+                <thead>
+                  <tr>
+                    <th>نام محصول</th>
+                    <th>تعداد</th>
+                    <th>قیمت ساعتی</th>
+                    <th>قیمت هفتگی</th>
+                    <th>قیمت ماهانه</th>
+                    {this.context.auth.ROLE !== "user" && <th>رزرو</th>}
+                  </tr>
+                </thead>
+                <tbody>{partnerProducts}</tbody>
+              </Table>
+            </div>
+          )}
+          <div
+            className="partner-facilities nav-section"
+            id="facilities-section"
+          >
+            <div className="section-title">
+              <FontAwesomeIcon icon={faHeart} size="lg" color="dimgrey" />
+              امکانات رفاهی
+            </div>
+            <div className="facilities-detail">
+              <ul>
+                <li>
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    size="lg"
+                    color="#58d37b"
+                  />
+                  چای رایگان
+                </li>
+                <li>
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    size="lg"
+                    color="#58d37b"
+                  />
+                  قهوه رایگان
+                </li>
+                <li>
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    size="lg"
+                    color="#58d37b"
+                  />
+                  اینترنت پرسرعت بدون محدودیت
+                </li>
+                <li>
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    size="lg"
+                    color="#58d37b"
+                  />
+                  صندلی ارگونومی
+                </li>
+                <li>
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    size="lg"
+                    color="#58d37b"
+                  />
+                  یخچال و فریزر
+                </li>
+                <li>
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    size="lg"
+                    color="#58d37b"
+                  />
+                  مایکرویو
+                </li>
+                <li>
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    size="lg"
+                    color="#58d37b"
+                  />
+                  ۲۰٪ تخفیف اسنپ فود
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-
-        <div className="partner-products nav-section" id="products-section">
-          <div className="section-title">
-            <FontAwesomeIcon
-              icon={faBoxOpen}
-              pull="right"
-              size="lg"
-              color="dimgrey"
-            />{" "}
-            محصولات
+          <div className="partner-address nav-section" id="address-section">
+            <div className="section-title">
+              <FontAwesomeIcon icon={faMapPin} size="lg" color="dimgrey" />
+              <span>
+                <strong> آدرس</strong>
+                {SafeValue(address, "fa", "string", false) && (
+                  <p>{address.fa}</p>
+                )}
+              </span>
+            </div>
+            <div className="map">
+              <SimpleMap
+                apiKey="AIzaSyCHvdA69xND6716dQPzu24QghfxioYk_d0"
+                lng={
+                  SafeValue(location, "longitude", "number", false) &&
+                  location.longitude
+                }
+                lat={
+                  SafeValue(location, "latitude", "number", false) &&
+                  location.latitude
+                }
+                pinDesc="paradisehub"
+                PinComponent={() => (
+                  <FontAwesomeIcon
+                    icon={faMapPin}
+                    size="lg"
+                    color="dimgrey"
+                    style={{ fontSize: "3em" }}
+                  />
+                )}
+                height="100%"
+                width="100%"
+              />
+            </div>
           </div>
-          <Table bordered responsive>
-            <thead>
-              <tr>
-                <th>نام محصول</th>
-                <th>تعداد</th>
-                <th>قیمت ساعتی</th>
-                <th>قیمت هفتگی</th>
-                <th>قیمت ماهانه</th>
-                <th>رزرو</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">صندلی اشتراکی</th>
-                <td>۱ نفره</td>
-                <td>۳۰ هزار تومن</td>
-                <td>۹۰ هزار تومن</td>
-                <td>۲۷۰ هزار تومن</td>
-                <td>
-                  <button className="reserve-button">درخواست</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">صندلی اختصاصی</th>
-                <td>۱ نفره</td>
-                <td>۴۰ هزار تومن</td>
-                <td>۱۱۰ هزار تومن</td>
-                <td>۴۰۰ هزار تومن</td>
-                <td>
-                  <button className="reserve-button">درخواست</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">اتاق جلسه</th>
-                <td>۱۰ نفره</td>
-                <td>۹۰ هزار تومن</td>
-                <td>ندارد</td>
-                <td>ندارد</td>
-                <td>
-                  <button className="reserve-button">درخواست</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">دفتر کار</th>
-                <td>۶ نفره</td>
-                <td>ندارد</td>
-                <td>ندارد</td>
-                <td>۱.۵ میلیون تومان</td>
-                <td>
-                  <button className="reserve-button">درخواست</button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">دفتر کار</th>
-                <td>۱۰ نفره</td>
-                <td>ندارد</td>
-                <td>ندارد</td>
-                <td>۲.۵ میلیون تومان</td>
-                <td>
-                  <button className="reserve-button">درخواست</button>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-        <div className="partner-facilities nav-section" id="facilities-section">
-          <div className="section-title">
-            <FontAwesomeIcon icon={faHeart} size="lg" color="dimgrey" />
-            امکانات رفاهی
-          </div>
-          <div className="facilities-detail">
-            <ul>
-              <li>
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  size="lg"
-                  color="#58d37b"
-                />
-                چای رایگان
-              </li>
-              <li>
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  size="lg"
-                  color="#58d37b"
-                />
-                قهوه رایگان
-              </li>
-              <li>
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  size="lg"
-                  color="#58d37b"
-                />
-                اینترنت پرسرعت بدون محدودیت
-              </li>
-              <li>
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  size="lg"
-                  color="#58d37b"
-                />
-                صندلی ارگونومی
-              </li>
-              <li>
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  size="lg"
-                  color="#58d37b"
-                />
-                یخچال و فریزر
-              </li>
-              <li>
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  size="lg"
-                  color="#58d37b"
-                />
-                مایکرویو
-              </li>
-              <li>
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  size="lg"
-                  color="#58d37b"
-                />
-                ۲۰٪ تخفیف اسنپ فود
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="partner-address nav-section" id="address-section">
-          <div className="section-title">
-            <FontAwesomeIcon icon={faMapPin} size="lg" color="dimgrey" />
-            <span>
-              <strong> آدرس</strong>
-              {SafeValue(address, "fa", "string", false) && <p>{address.fa}</p>}
-            </span>
-          </div>
-          <div className="map">
-            <SimpleMap
-              apiKey="AIzaSyCHvdA69xND6716dQPzu24QghfxioYk_d0"
-              lng={
-                SafeValue(location, "longitude", "number", false) &&
-                location.longitude
-              }
-              lat={
-                SafeValue(location, "latitude", "number", false) &&
-                location.latitude
-              }
-              pinDesc="paradisehub"
-              PinComponent={() => (
-                <FontAwesomeIcon
-                  icon={faMapPin}
-                  size="lg"
-                  color="dimgrey"
-                  style={{ fontSize: "3em" }}
-                />
-              )}
-              height="100%"
-              width="100%"
-            />
-          </div>
-        </div>
-      </section>
-    );
+        </section>
+      );
+    } else {
+      return <Loading />;
+    }
   }
 }
