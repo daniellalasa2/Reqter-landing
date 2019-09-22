@@ -24,7 +24,8 @@ var Configuration = {
     get_initial_token: "api/v1/auth/token",
     accept_offer: "api/v1/quotes/accept/",
     reject_offer: "api/v1/quotes/reject/",
-    add_content: "contents/add"
+    add_content: "contents/add",
+    get_partner_info: "api/v1/lists/get/fullquery"
   },
   CONTENT_TYPE_ID: {
     partnership: "5d358ebc8e6e9a0017c28fc9",
@@ -41,7 +42,8 @@ var Configuration = {
     contact_us: "5d3e97363a65540017a90f11",
     request_stages: "5d6b5d205b60dc0017c95118",
     get_offer: "5d35adc68e6e9a0017c28fcb",
-    select_offer_stage: "5d791a0a1a2cda0017099c63"
+    select_offer_stage: "5d791a0a1a2cda0017099c63",
+    get_partner_info: "5d358ebc8e6e9a0017c28fc9"
   }
 };
 function CheckAuthToken() {

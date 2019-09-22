@@ -14,7 +14,8 @@ let _api = {
   GetRequestsList: Config.BASE_URL_REQTER + Config.URLs.all_requests,
   GetOfferList: Config.BASE_URL_REQTER + Config.URLs.all_offers,
   AcceptOffer: Config.BASE_URL_REQTER + Config.URLs.accept_offer,
-  RejectOffer: Config.BASE_URL_REQTER + Config.URLs.reject_offer
+  RejectOffer: Config.BASE_URL_REQTER + Config.URLs.reject_offer,
+  GetPartnerInfo: Config.BASE_URL_REQTER + Config.URLs.get_partner_info
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -73,8 +74,13 @@ var SubmitForm = (formName, data, callback) => {
         return callback(result);
       })
       .catch(err => {
-        const result = errorHandler(err.response.status);
-        return callback({ success_result: result, data: err.response.data });
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        callback({
+          success_result: result,
+          data: []
+        });
       });
   });
 };
@@ -353,6 +359,69 @@ var AcceptOffer = (offerId, callback) => {
       });
   });
 };
+var GetPartnerInfo = (fieldsObj, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.GetPartnerInfo,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token,
+        spaceId: Config.SPACE_ID
+      },
+      params: {
+        contentType: Config.CONTENT_TYPE_ID.get_partner_info,
+        ...fieldsObj
+      }
+    })
+      .then(res => {
+        const result = errorHandler(res.status);
+        return callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
+var AddContent = (formName, data, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.AddContent,
+      method: "POST",
+      headers: {
+        ..._api.header,
+        authorization: token,
+        spaceId: Config.SPACE_ID
+      },
+      data: {
+        contentType: Config.CONTENT_TYPE_ID[formName],
+        fields: data
+      }
+    })
+      .then(res => {
+        const result = errorHandler(res.status);
+        return callback(result);
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
 //return safe value
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
@@ -395,31 +464,6 @@ var SafeValue = (data, index, type, defaultValue) => {
     return defaultValue;
   }
 };
-var AddContent = (formName, data, callback) => {
-  Config.Auth().then(token => {
-    axios({
-      url: _api.AddContent,
-      method: "POST",
-      headers: {
-        ..._api.header,
-        authorization: token,
-        spaceId: Config.SPACE_ID
-      },
-      data: {
-        contentType: Config.CONTENT_TYPE_ID[formName],
-        fields: data
-      }
-    })
-      .then(res => {
-        const result = errorHandler(res.status);
-        return callback(result);
-      })
-      .catch(err => {
-        const result = errorHandler(err.response.status);
-        return callback({ success_result: result, data: err.response.data });
-      });
-  });
-};
 export {
   SubmitForm,
   FilterContents,
@@ -432,5 +476,6 @@ export {
   AcceptOffer,
   RejectOffer,
   AddContent,
+  GetPartnerInfo,
   Config
 };

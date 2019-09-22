@@ -8,14 +8,35 @@ $green: #58d37b;
   flex-direction: column;
   height: auto;
   min-height: 700px;
-  margin: 0;
+  margin: 66px 0 0 0;
   background-color: white;
   & .carousel {
+    & .carousel-control-prev span,
+    & .carousel-control-next span {
+      background-color: black;
+      border-radius: 50%;
+      box-shadow: 0 0 0 10px black;
+    }
     & .carousel-inner {
+      .carousel-item {
+        max-height: 500px;
+        height: 500px;
+        overflow: hidden;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+      }
+      .active {
+        display: flex !important;
+      }
+      .carousel-item-left {
+        display: flex;
+      }
       img {
         width: 100%;
-        height: auto;
-        max-height: 500px;
+        height: AUTO;
       }
     }
   }
@@ -235,7 +256,7 @@ $green: #58d37b;
   }
 }
 
-@media (max-width: 1023.8px) {
+@media (max-width: 1024px) {
   .partner-profile {
     & .content-navigator {
       & .tab {
@@ -258,6 +279,15 @@ $green: #58d37b;
 
 @media (max-width: 768px) {
   .partner-profile {
+    margin: 60px 0 0 0;
+    & .carousel {
+      & .carousel-inner {
+        .carousel-item {
+          max-height: 400px;
+          height: 400px;
+        }
+      }
+    }
     & .content-navigator {
       & .tab {
         width: auto !important;
@@ -268,6 +298,14 @@ $green: #58d37b;
 }
 @media (max-width: 576px) {
   .partner-profile {
+    & .carousel {
+      & .carousel-inner {
+        .carousel-item {
+          max-height: 300px;
+          height: 300px;
+        }
+      }
+    }
     & .content-navigator {
       & .tab {
         padding: 25px calc(5vw - 2%) !important;
@@ -305,10 +343,23 @@ $green: #58d37b;
         }
       }
     }
+    & .partner-address {
+      & .map {
+        height: 200px;
+      }
+    }
   }
 }
-@media (max-width: 424.98px) {
+@media (max-width: 425px) {
   .partner-profile {
+    & .carousel {
+      & .carousel-inner {
+        .carousel-item {
+          max-height: 200px;
+          height: 200px;
+        }
+      }
+    }
     & .content-navigator {
       & .tab {
         width: auto !important;

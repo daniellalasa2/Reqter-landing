@@ -12,7 +12,7 @@ class SimpleMap extends Component {
 
   render() {
     const {
-      urlKey,
+      apiKey,
       pinDesc,
       PinComponent,
       width,
@@ -26,7 +26,7 @@ class SimpleMap extends Component {
       // Important! Always set the container height explicitly
       <div style={{ height: height, width: width }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: urlKey }}
+          bootstrapURLKeys={{ key: apiKey }}
           defaultCenter={center}
           defaultZoom={zoom}
         >

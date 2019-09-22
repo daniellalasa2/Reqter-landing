@@ -17,34 +17,24 @@ import {
   faClock,
   faMapPin
 } from "@fortawesome/free-solid-svg-icons";
+import { SafeValue, GetPartnerInfo } from "../ApiHandlers/ApiHandler";
 import SimpleMap from "../SimpleMap/SimpleMap";
 export default class PartnerProfile extends React.Component {
   constructor(props) {
     super(props);
+    this.partnerKey = props.match.params.slug;
     this.state = {
       activeSlideIndex: 0,
       isContentNavigatorFixed: false,
-      slideItems: [
-        {
-          src:
-            "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa1d%20text%20%7B%20fill%3A%23555%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa1d%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22285.921875%22%20y%3D%22218.3%22%3EFirst%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E",
-          altText: "Slide 1",
-          caption: "Slide 1"
-        },
-        {
-          src:
-            "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa20%20text%20%7B%20fill%3A%23444%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa20%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23666%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22247.3203125%22%20y%3D%22218.3%22%3ESecond%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E",
-          altText: "Slide 2",
-          caption: "Slide 2"
-        }
-      ],
-      height: "mamad"
+      partnerInfo: {},
+      slideItems: []
     };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.goToIndex = this.goToIndex.bind(this);
     this.onExiting = this.onExiting.bind(this);
     this.onExited = this.onExited.bind(this);
+    this.fetchPartnerDetails();
   }
   //Image Carousel Functions
   onExiting() {
@@ -77,11 +67,11 @@ export default class PartnerProfile extends React.Component {
   }
   sliderItemGenerator = () => {
     const { slideItems } = this.state;
-    const slides = slideItems.map(item => (
+    const slides = slideItems.map((item, key) => (
       <CarouselItem
         onExiting={this.onExiting}
         onExited={this.onExited}
-        key={item.src}
+        key={key}
       >
         <img src={item.src} alt={item.altText} />
         <CarouselCaption
@@ -165,6 +155,29 @@ export default class PartnerProfile extends React.Component {
       }
     ];
   };
+  fetchPartnerDetails = () => {
+    const _this = this;
+    GetPartnerInfo({ "fields.partnerkey": _this.partnerKey }, partner => {
+      if (partner.success_result.success) {
+        const images = [];
+        const { fields } = partner.data[0];
+
+        fields.images.forEach(image => {
+          images.push({
+            src: image.en,
+            altText: "",
+            caption: ""
+          });
+        });
+        this.setState({
+          partnerInfo: {
+            ...fields
+          },
+          slideItems: images
+        });
+      }
+    });
+  };
   scrollToSection = e => {
     const sectionPositions = this.generateSectionPositions().filter(
       item => e.target.id === item.linkedNavId
@@ -177,6 +190,7 @@ export default class PartnerProfile extends React.Component {
   };
 
   componentDidMount() {
+    this.fetchPartnerDetails();
     window.addEventListener(
       "scroll",
       this.contentNavigatorScrollTrigger,
@@ -193,6 +207,14 @@ export default class PartnerProfile extends React.Component {
 
   render() {
     const { activeSlideIndex, slideItems } = this.state;
+    const {
+      name,
+      verified,
+      address,
+      overview,
+      logo,
+      location
+    } = this.state.partnerInfo;
     return (
       <section className="partner-profile">
         <Carousel
@@ -218,25 +240,31 @@ export default class PartnerProfile extends React.Component {
           />
         </Carousel>
         <section className="partner-information">
-          <div className="title">پارادایس هاب</div>
-          <div className="verified">
-            <FontAwesomeIcon
-              icon={faCheckCircle}
-              pull="right"
-              size="lg"
-              color="#58d37b"
-            />{" "}
-            تایید شده
-          </div>
-          <div className="address">
-            <FontAwesomeIcon
-              icon={faMapMarkerAlt}
-              pull="right"
-              size="lg"
-              color="black"
-            />{" "}
-            تهران - آجودانیه - باغ بهشت
-          </div>
+          {SafeValue(name, "", "string", false) && (
+            <div className="title">{name}</div>
+          )}
+          {SafeValue(verified, "", "boolean", false) && (
+            <div className="verified">
+              <FontAwesomeIcon
+                icon={faCheckCircle}
+                pull="right"
+                size="lg"
+                color="#58d37b"
+              />{" "}
+              تایید شده
+            </div>
+          )}
+          {SafeValue(address, "fa", "string", false) && (
+            <div className="address">
+              <FontAwesomeIcon
+                icon={faMapMarkerAlt}
+                pull="right"
+                size="lg"
+                color="black"
+              />{" "}
+              {address.fa}
+            </div>
+          )}
         </section>
         <section className="content-navigator" id="content-navigator">
           <div className="items-wrapper" id="items-wrapper">
@@ -245,7 +273,7 @@ export default class PartnerProfile extends React.Component {
               id="overview-section-navigator"
               onClick={this.scrollToSection}
             >
-              خلاصه
+              معرفی
             </div>
             <div
               className="tab"
@@ -278,20 +306,9 @@ export default class PartnerProfile extends React.Component {
           </div>
         </section>
         <div className="overview nav-section" id="overview-section">
-          <p>
-            فضای کار اشتراکی (coworking space) به مجموعه‌ای گفته می‌شود که یک
-            فضای کاری را به طور مشترک و اختصاصی دراختیار فریلنسرها و تیم‌های
-            مختلف قرار می‌دهد. به تازگی شرکت‌های بزرگی همچون Apple , Microsoft ,
-            Alibaba بخشی از کارکنان خود را در فضاهای کار اشتراکی مستقر کرده‌اند.
-            فضای کار اشتراکی (coworking space) به مجموعه‌ای گفته می‌شود که یک
-            فضای کاری را به طور مشترک و اختصاصی دراختیار فریلنسرها و تیم‌های
-            مختلف قرار می‌دهد. به تازگی شرکت‌های بزرگی همچون Apple , Microsoft ,
-            Alibaba بخشی از کارکنان خود را در فضاهای کار اشتراکی مستقر کرده‌اند.
-            فضای کار اشتراکی (coworking space) به مجموعه‌ای گفته می‌شود که یک
-            فضای کاری را به طور مشترک و اختصاصی دراختیار فریلنسرها و تیم‌های
-            مختلف قرار می‌دهد. به تازگی شرکت‌های بزرگی همچون Apple , Microsoft ,
-            Alibaba بخشی از کارکنان خود را در فضاهای کار اشتراکی مستقر کرده‌اند.
-          </p>
+          {SafeValue(overview, "fa", "string", true) && (
+            <p>{SafeValue(overview, "fa", "string", "متن معرفی خالیست")}</p>
+          )}
           <div className="working-hours">
             <ul>
               <li className="title">
@@ -469,16 +486,28 @@ export default class PartnerProfile extends React.Component {
             <FontAwesomeIcon icon={faMapPin} size="lg" color="dimgrey" />
             <span>
               <strong> آدرس</strong>
-              <p> تهران - آجودانیه - باغ بهشت - پارادایس هاب</p>
+              {SafeValue(address, "fa", "string", false) && <p>{address.fa}</p>}
             </span>
           </div>
           <div className="map">
             <SimpleMap
-              lng={30}
-              lat={50}
+              apiKey="AIzaSyCHvdA69xND6716dQPzu24QghfxioYk_d0"
+              lng={
+                SafeValue(location, "longitude", "number", false) &&
+                location.longitude
+              }
+              lat={
+                SafeValue(location, "latitude", "number", false) &&
+                location.latitude
+              }
               pinDesc="paradisehub"
               PinComponent={() => (
-                <FontAwesomeIcon icon={faMapPin} size="lg" color="red" />
+                <FontAwesomeIcon
+                  icon={faMapPin}
+                  size="lg"
+                  color="dimgrey"
+                  style={{ fontSize: "3em" }}
+                />
               )}
               height="100%"
               width="100%"
