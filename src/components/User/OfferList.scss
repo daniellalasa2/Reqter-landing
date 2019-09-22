@@ -1,19 +1,25 @@
 .offer-list-section {
-  & .card-header {
+  & > .card-header {
     padding-top: 0;
-    & span.icon {
-      cursor: pointer;
-      padding: 15px;
-      margin-top: 11px;
-      background-color: grey;
-      color: black !important;
-      transition: all 0.2s ease-in;
-      -moz-ransition: all 0.2s ease-in;
-      -webkit-transition: all 0.2s ease-in;
-      -ms-transition: all 0.2s ease-in;
-      &:hover {
-        background-color: rgb(114, 127, 221);
-        color: white;
+    & .back-button-section {
+      width: auto;
+      left: 0;
+      & span {
+        &.icon {
+          cursor: pointer;
+          padding: 15px;
+          margin-top: 11px;
+          background-color: grey;
+          color: black;
+          transition: all 0.2s ease-in;
+          -moz-ransition: all 0.2s ease-in;
+          -webkit-transition: all 0.2s ease-in;
+          -ms-transition: all 0.2s ease-in;
+          &:hover {
+            background-color: rgb(114, 127, 221);
+            color: white;
+          }
+        }
       }
     }
   }
@@ -283,9 +289,9 @@
   }
 }
 @media (max-width: 768px) {
-  .my-offer-section {
-    .card-header {
-      padding: 0.75rem 1.25rem;
+  .offer-list-section {
+    & .card-header {
+      padding: 0 1.25rem 0 !important;
     }
   }
 }

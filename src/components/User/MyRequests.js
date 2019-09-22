@@ -123,7 +123,6 @@ export default class MyRequests extends Component {
                         ""
                       )}
                     </li>
-                    {console.log("resume: ", item.fields.resume)}
                     {item.fields.resume && item.fields.resume.length !== 0 && (
                       <li>
                         <span>رزومه :‌ </span>

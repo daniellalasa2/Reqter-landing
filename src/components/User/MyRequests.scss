@@ -3,10 +3,10 @@
   flex-direction: row-reverse;
   align-items: baseline;
   justify-content: center;
-  .form-card {
+  & .form-card {
     margin: 80px 10px 10px;
   }
-  .filter-section {
+  & .filter-section {
     height: auto;
     border: 2px solid lightgrey;
     border-radius: 8px;
@@ -14,17 +14,17 @@
     align-self: flex-start;
     margin-top: 80px;
     box-sizing: border-box;
-    .filter-title {
+    & .filter-title {
       width: 100%;
       line-height: 3;
       background-color: lightgrey;
     }
-    ul.filter-list {
+    & ul.filter-list {
       padding: 0;
       margin: 0;
       list-style: none;
       text-align: center;
-      li {
+      & li {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -41,17 +41,17 @@
       }
     }
   }
-  .card-header {
+  & .card-header {
     padding-top: 0;
   }
-  .approved-requests-section {
-    .card-header {
-      .fa-layers {
+  & .approved-requests-section {
+    & .card-header {
+      & .fa-layers {
         background-color: #58d37b !important;
       }
     }
-    .request-card-status {
-      strong {
+    & .request-card-status {
+      & strong {
         color: rgb(44, 186, 58);
         color: white;
         background-color: rgb(44, 186, 58);
@@ -59,7 +59,7 @@
         padding: 5px;
         cursor: default;
       }
-      button {
+      & button {
         border: 2px solid rgb(114, 127, 221);
         background-color: rgba(114, 127, 221, 0.4);
         &:hover {
@@ -69,15 +69,15 @@
       }
     }
   }
-  .pending-requests-section {
-    .card-header {
-      .fa-layers {
+  & .pending-requests-section {
+    & .card-header {
+      & .fa-layers {
         background-color: #e8e855 !important;
       }
     }
-    .card-body {
-      .request-card-status {
-        strong {
+    & .card-body {
+      & .request-card-status {
+        & strong {
           color: white;
           background-color: rgb(214, 214, 62);
           border-radius: 0.3rem;
@@ -88,15 +88,15 @@
       }
     }
   }
-  .closed-requests-section {
-    .card-header {
-      .fa-layers {
+  & .closed-requests-section {
+    & .card-header {
+      & .fa-layers {
         background-color: #dd4242 !important;
       }
     }
-    .card-body {
-      .request-card-status {
-        strong {
+    & .card-body {
+      & .request-card-status {
+        & strong {
           color: white;
           background-color: #dd4242;
           border-radius: 0.3rem;
@@ -107,12 +107,12 @@
       }
     }
   }
-  .card-body {
+  & .card-body {
     min-height: 430px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    .no-content {
+    & .no-content {
       color: grey;
       font-size: 16px;
       margin-top: 40px;
@@ -121,7 +121,7 @@
   }
 
   //request cards
-  .request-card {
+  & .request-card {
     width: 100%;
     margin: 10px;
     padding: 5px;
@@ -135,7 +135,7 @@
     direction: rtl;
     height: 190px;
 
-    .request-card-image {
+    & .request-card-image {
       height: 100%;
       width: 15%;
       display: flex;
@@ -148,40 +148,40 @@
         content: "";
         margin-right: 5px;
       }
-      img {
+      & img {
         padding: 10px;
         border-radius: 0.3rem;
         background-color: rgba(0, 0, 0, 0.2);
         box-shadow: 0 0 8px -1px lightgrey;
       }
-      strong {
+      & strong {
         display: none;
       }
     }
-    .request-card-details {
+    & .request-card-details {
       width: 53%;
       padding: 20px;
       line-height: 2;
-      ul {
+      & ul {
         list-style: none;
         padding: 0;
         margin: 0;
-        li.product-title-wrapper {
+        & li.product-title-wrapper {
           display: block;
         }
       }
     }
-    .request-card-status {
+    & .request-card-status {
       display: flex;
       height: 100%;
       flex-direction: column;
       justify-content: space-evenly;
       align-items: center;
       width: 30%;
-      strong {
+      & strong {
         font-size: 1.2rem;
       }
-      button {
+      & button {
         font-size: 16px;
         outline: none;
         padding: 5px 8px;
@@ -191,8 +191,8 @@
   }
 }
 @media (max-width: 576px) {
-  .my-requests-section {
-    .request-card {
+  & .my-requests-section {
+    & .request-card {
       width: 110%;
       & > * {
         width: 100% !important;
@@ -200,7 +200,7 @@
       height: auto;
       padding: 0;
       flex-direction: column;
-      .request-card-image {
+      & .request-card-image {
         height: 20vw;
         max-height: 86px;
         border-radius: 0.3rem 0.3rem 0 0;
@@ -209,28 +209,28 @@
         &::after {
           display: none;
         }
-        img {
+        & img {
           width: 20%;
           max-width: 75px;
         }
-        strong.product-title {
+        & strong.product-title {
           margin: 25px;
           font-size: 18px;
           display: block;
         }
       }
-      .request-card-details {
-        ul {
-          li.product-title-wrapper {
+      & .request-card-details {
+        & ul {
+          & li.product-title-wrapper {
             display: none;
           }
         }
       }
       .request-card-status {
-        strong {
+        & strong {
           margin: 11px;
         }
-        button {
+        & button {
           width: 100%;
           height: 50px;
           border: none;
@@ -242,33 +242,35 @@
 }
 @media (max-width: 768px) {
   .my-requests-section {
-    .card-header {
-      padding: 0.75rem 1.25rem;
+    & .form-card {
+      & .card-header {
+        padding: 0.5rem 1.25rem !important;
+      }
     }
   }
 }
 //custom screen
 @media (max-width: 930px) {
-  .my-requests-section {
+  & .my-requests-section {
     align-content: start;
-    .form-card {
-      margin: 10px 10px 10px;
+    & .form-card {
+      margin: 80px 10px 10px;
     }
-    .filter-section {
+    & .filter-section {
       display: flex;
       flex-direction: row;
       width: 100%;
       margin: 80px 10px 10px;
       justify-content: center;
       max-width: 750px;
-      .filter-title {
+      & .filter-title {
         display: none;
       }
-      ul.filter-list {
+      & ul.filter-list {
         display: inline-flex;
         direction: rtl;
         width: 100%;
-        li {
+        & li {
           width: 33.33%;
         }
       }

@@ -10,20 +10,19 @@ $green: #58d37b;
   min-height: 700px;
   margin: 66px 0 0 0;
   background-color: white;
+
   & .carousel {
+    & .carousel-indicators {
+      & li {
+        width: 3vw;
+        max-width: 20px;
+      }
+    }
     & .carousel-control-prev span,
     & .carousel-control-next span {
       background-color: black;
       border-radius: 50%;
       box-shadow: 0 0 0 10px black;
-    }
-    & .carousel-slide {
-      & .carousel-indicators {
-        & li {
-          width: 3vw;
-          max-width: 20px;
-        }
-      }
     }
     & .carousel-inner {
       & .carousel-item {
@@ -36,12 +35,13 @@ $green: #58d37b;
         justify-content: center;
         align-content: center;
       }
-      &.active {
+
+      & .carousel-item-left,
+      & .carousel-item-right,
+      & .active {
         display: flex !important;
       }
-      & .carousel-item-left {
-        display: flex !important;
-      }
+
       & img {
         width: 100%;
         height: AUTO;
@@ -106,7 +106,7 @@ $green: #58d37b;
         border: 1px solid $border-color;
         border-radius: 0 5px 5px 0;
       }
-      &:hover {
+      &.hoverable:hover {
         cursor: pointer;
         border-bottom-width: 8px !important;
         border-bottom-color: $green;

@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import "./PartnerProfile.scss";
 import {
   Carousel,
@@ -23,6 +22,7 @@ import {
   GetPartnerInfo,
   GetPartnerProducts
 } from "../ApiHandlers/ApiHandler";
+import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
 import SimpleMap from "../SimpleMap/SimpleMap";
 import ContextApi from "../ContextApi/ContextApi";
 function Loading() {
@@ -105,52 +105,57 @@ export default class PartnerProfile extends React.Component {
     return slides;
   };
   contentNavigatorScrollTrigger = () => {
-    const sectionPositions = this.generateSectionPositions();
-    const windowY = window.scrollY;
-    const websiteNavHeight = document.getElementById("items-wrapper")
-      .offsetHeight;
-    const contentNavigator = document.getElementById("content-navigator");
-    const contentNavigatorItemsWrapper = document.getElementById(
-      "items-wrapper"
-    );
-    const pixelsFromTop = contentNavigator.offsetTop - websiteNavHeight;
-    const windowSectionPositionName = sectionPositions.filter(
-      item =>
-        item.scrollPosition.from <= windowY && windowY < item.scrollPosition.to
-    );
-    if (windowY > pixelsFromTop) {
-      contentNavigatorItemsWrapper.classList.add("fixed");
-    } else {
-      document.querySelectorAll(".content-navigator .tab").forEach(elem => {
-        elem.classList.remove("active");
-      });
-      contentNavigatorItemsWrapper.classList.remove("fixed");
-    }
-    if (windowSectionPositionName.length > 0) {
-      //first remove all active classes
-      document.querySelectorAll(".content-navigator .tab").forEach(elem => {
-        elem.classList.remove("active");
-      });
-      //then add new active class to the matched element
-      document
-        .getElementById(windowSectionPositionName[0].linkedNavId)
-        .classList.add("active");
-    } else {
-      //else remove disable any active content navigator
-      document.querySelectorAll(".content-navigator .tabs").forEach(elem => {
-        elem.classList.remove("active");
-      });
+    try {
+      const sectionPositions = this.generateSectionPositions();
+      const windowY = window.scrollY;
+      const websiteNavHeight = document.getElementById("items-wrapper")
+        .clientHeight;
+      const contentNavigator = document.getElementById("content-navigator");
+      const contentNavigatorItemsWrapper = document.getElementById(
+        "items-wrapper"
+      );
+      const pixelsFromTop = contentNavigator.offsetTop - websiteNavHeight;
+      const windowSectionPositionName = sectionPositions.filter(
+        item =>
+          item.scrollPosition.from <= windowY &&
+          windowY < item.scrollPosition.to
+      );
+      if (windowY > pixelsFromTop) {
+        contentNavigatorItemsWrapper.classList.add("fixed");
+      } else {
+        document.querySelectorAll(".content-navigator .tab").forEach(elem => {
+          elem.classList.remove("active");
+        });
+        contentNavigatorItemsWrapper.classList.remove("fixed");
+      }
+      if (windowSectionPositionName.length > 0) {
+        //first remove all active classes
+        document.querySelectorAll(".content-navigator .tab").forEach(elem => {
+          elem.classList.remove("active");
+        });
+        //then add new active class to the matched element
+        document
+          .getElementById(windowSectionPositionName[0].linkedNavId)
+          .classList.add("active");
+      } else {
+        //else remove disable any active content navigator
+        document.querySelectorAll(".content-navigator .tabs").forEach(elem => {
+          elem.classList.remove("active");
+        });
+      }
+    } catch (err) {
+      return null;
     }
   };
 
   generateSectionPositions = () => {
     const default_obj = { from: 0, to: 0 };
     const getElementOffest = elementId => {
-      const websiteNavHeight = document.getElementById("items-wrapper")
-        .clientHeight;
-      const contentNavigatorHeight = 90;
       //try to get element by id else return a default scroll behaviour object
       try {
+        const websiteNavHeight = document.getElementById("items-wrapper")
+          .clientHeight;
+        const contentNavigatorHeight = 90;
         const element = document.getElementById(elementId);
         return {
           from: element.offsetTop - websiteNavHeight - contentNavigatorHeight,
@@ -185,10 +190,10 @@ export default class PartnerProfile extends React.Component {
   };
   fetchPartnerDetails = () => {
     const _this = this;
-    const param = { "fields.partnerkey": _this.partnerKey };
-    GetPartnerInfo(param, partner => {
+    const params = { "fields.partnerkey": _this.partnerKey };
+    const images = [];
+    GetPartnerInfo(params, partner => {
       if (partner.success_result.success) {
-        const images = [];
         const { fields } = partner.data[0];
         fields.images.forEach(image => {
           images.push({
@@ -197,6 +202,7 @@ export default class PartnerProfile extends React.Component {
             caption: ""
           });
         });
+        this.fetchPartnerProducts(fields._id);
         this.setState({
           partnerInfo: {
             ...fields
@@ -205,22 +211,53 @@ export default class PartnerProfile extends React.Component {
           pageLoaded: true
         });
       } else {
-        return <Redirect to="/" />;
+        this.props.history.push("/");
       }
     });
-    GetPartnerProducts(param, products => {
+  };
+  fetchPartnerProducts = partnerid => {
+    const generatedProducts = [];
+    GetPartnerProducts({ "fields.partnerid": partnerid }, products => {
       if (products.success_result.success) {
         const productsArr = products.data;
-        const generatedProducts = [];
+        console.log(products);
         productsArr.forEach((product, index) => {
-          const { name, count, producttype } = product.fields;
+          const {
+            name,
+            count,
+            perhourprice,
+            dailyprice,
+            weeklyprice,
+            monthlyprice
+          } = product.fields;
           generatedProducts.push(
             <tr key={index}>
               <th scope="row">{SafeValue(name, "fa", "string", "نامشخص")}</th>
-              <td>{SafeValue(count, "", "string", "نامشخص")}</td>
-              <td>ندارد</td>
-              <td>ندارد</td>
-              <td>ندارد</td>
+              <td>
+                {PersianNumber(
+                  addCommas(SafeValue(count, "", "string", "نامشخص"))
+                )}
+              </td>
+              <td>
+                {PersianNumber(
+                  addCommas(SafeValue(perhourprice, "", "string", "ندارد"))
+                )}
+              </td>
+              <td>
+                {PersianNumber(
+                  addCommas(SafeValue(dailyprice, "", "string", "ندارد"))
+                )}
+              </td>
+              <td>
+                {PersianNumber(
+                  addCommas(SafeValue(weeklyprice, "", "string", "ندارد"))
+                )}
+              </td>
+              <td>
+                {PersianNumber(
+                  addCommas(SafeValue(monthlyprice, "", "string", "ندارد"))
+                )}
+              </td>
               {this.context.auth.ROLE !== "user" && (
                 <td>
                   <button className="reserve-button">درخواست</button>
@@ -236,6 +273,7 @@ export default class PartnerProfile extends React.Component {
     });
   };
   scrollToSection = e => {
+    e.preventDefault();
     const sectionPositions = this.generateSectionPositions().filter(
       item => e.target.id === item.linkedNavId
     );
@@ -245,7 +283,12 @@ export default class PartnerProfile extends React.Component {
       });
     }
   };
-
+  doTouchJob = e => {
+    e.target.classList.remove("touchable");
+  };
+  doMouseJob = e => {
+    e.target.classList.add("touchable");
+  };
   componentDidMount() {
     this.fetchPartnerDetails();
     window.addEventListener(
@@ -277,6 +320,7 @@ export default class PartnerProfile extends React.Component {
       logo,
       location
     } = this.state.partnerInfo;
+    console.log("pageLoaded", pageLoaded);
     if (pageLoaded) {
       return (
         <section className="partner-profile">
@@ -332,39 +376,49 @@ export default class PartnerProfile extends React.Component {
           <section className="content-navigator" id="content-navigator">
             <div className="items-wrapper" id="items-wrapper">
               <div
-                className="tab"
+                className="tab hoverable"
                 id="overview-section-navigator"
                 onClick={this.scrollToSection}
+                onTouchStart={this.doTouchJob}
+                onMouseDown={this.doMouseJob}
               >
                 معرفی
               </div>
               {partnerProducts.length > 0 && (
                 <div
-                  className="tab"
+                  className="tab hoverable"
                   id="products-section-navigator"
                   onClick={this.scrollToSection}
+                  onTouchStart={this.doTouchJob}
+                  onMouseDown={this.doMouseJob}
                 >
                   محصولات
                 </div>
               )}
               <div
-                className="tab"
+                className="tab hoverable"
                 id="facilities-section-navigator"
                 onClick={this.scrollToSection}
+                onTouchStart={this.doTouchJob}
+                onMouseDown={this.doMouseJob}
               >
                 امکانات
               </div>
               <div
-                className="tab"
+                className="tab hoverable"
                 id="map-section-navigator"
                 onClick={this.scrollToSection}
+                onTouchStart={this.doTouchJob}
+                onMouseDown={this.doMouseJob}
               >
                 نقشه
               </div>
               <div
-                className="tab"
+                className="tab hoverable"
                 id="reviews-section-navigator"
                 onClick={this.scrollToSection}
+                onTouchStart={this.doTouchJob}
+                onMouseDown={this.doMouseJob}
               >
                 نظرات (بزودی)
               </div>
@@ -422,6 +476,7 @@ export default class PartnerProfile extends React.Component {
                     <th>نام محصول</th>
                     <th>تعداد</th>
                     <th>قیمت ساعتی</th>
+                    <th>قیمت روزانه</th>
                     <th>قیمت هفتگی</th>
                     <th>قیمت ماهانه</th>
                     {this.context.auth.ROLE !== "user" && <th>رزرو</th>}

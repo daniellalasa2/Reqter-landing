@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 
 import { Link } from "react-router-dom";
-import classnames from "classnames";
+// import classnames from "classnames";
 import {
   Card,
   CardHeader,
   CardBody,
-  Collapse,
+  // Collapse,
   ModalBody,
   ModalHeader,
   Modal,
@@ -18,16 +18,15 @@ import {
   AcceptOffer,
   RejectOffer
 } from "../ApiHandlers/ApiHandler";
-import Skeleton from "react-loading-skeleton";
 import DateFormat from "../DateFormat/DateFormat";
 import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
   faCheckCircle,
-  faTimesCircle,
-  faChevronDown,
-  faChevronUp
+  faTimesCircle
+  // faChevronDown,
+  // faChevronUp
 } from "@fortawesome/free-solid-svg-icons";
 import "./OfferList.scss";
 import verifiedIcon from "../../assets/images/sample-icon/verified.png";
@@ -473,20 +472,22 @@ export default class MyRequests extends Component {
           <Card className="form-card">
             <section className="offer-list-section">
               <CardHeader>
-                <span
-                  className="fa-layers fa-fw icon"
-                  onClick={() => this.props.history.push("/user/myrequests")}
-                >
-                  <FontAwesomeIcon
-                    icon={faArrowRight}
-                    pull="right"
-                    size="lg"
-                    color="white"
-                  />
-                </span>
-                <span className="title">
-                  <strong>بازگشت</strong>
-                </span>
+                <div className="back-button-section">
+                  <span
+                    className="fa-layers fa-fw icon "
+                    onClick={() => this.props.history.push("/user/myrequests")}
+                  >
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      pull="right"
+                      size="lg"
+                      color="white"
+                    />
+                  </span>
+                  <span className="title">
+                    <strong>بازگشت</strong>
+                  </span>
+                </div>
               </CardHeader>
               <CardBody>{this.generateOfferList()}</CardBody>
             </section>
