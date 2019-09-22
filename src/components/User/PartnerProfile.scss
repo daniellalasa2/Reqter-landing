@@ -32,7 +32,7 @@ $green: #58d37b;
         display: flex !important;
       }
       .carousel-item-left {
-        display: flex;
+        display: flex !important;
       }
       img {
         width: 100%;
@@ -148,11 +148,15 @@ $green: #58d37b;
     font-size: 17px;
     margin-top: 15px;
     width: 1024px;
+    min-width: 100%;
     align-self: center;
-    padding: 10px 35px;
+    padding: 10px 12%;
     direction: rtl;
     text-align: right;
     color: $default-text-color;
+    &:nth-child(2n + 1) {
+      background-color: whitesmoke;
+    }
     & .section-title {
       font-weight: bold;
       font-size: 18px;
@@ -169,7 +173,6 @@ $green: #58d37b;
     }
   }
   & .overview {
-    text-align: justify;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
