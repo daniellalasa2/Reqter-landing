@@ -204,6 +204,14 @@ export default class PartnerProfile extends React.Component {
               <span>{item.body}</span>
             </li>
           ));
+        fields.amenities =
+          SafeValue(fields, "amenities", "object", null) &&
+          fields.amenities.map(item => (
+            <li>
+              <FontAwesomeIcon icon={faCheckCircle} size="lg" color="#58d37b" />
+              {SafeValue(item, "fields.name.fa", "string", " - ")}
+            </li>
+          ));
         fields.images.forEach(image => {
           images.push({
             src: image.en,
@@ -230,7 +238,6 @@ export default class PartnerProfile extends React.Component {
     GetPartnerProducts({ "fields.partnerid": partnerid }, products => {
       if (products.success_result.success) {
         const productsArr = products.data;
-        console.log(products);
         productsArr.forEach((product, index) => {
           const {
             name,
@@ -327,9 +334,9 @@ export default class PartnerProfile extends React.Component {
       verified,
       address,
       overview,
-      logo,
       location,
-      workinghours
+      workinghours,
+      amenities
     } = this.state.partnerInfo;
     if (pageLoaded) {
       return (
@@ -483,75 +490,20 @@ export default class PartnerProfile extends React.Component {
               </Table>
             </div>
           )}
-          <div
-            className="partner-facilities nav-section"
-            id="facilities-section"
-          >
-            <div className="section-title">
-              <FontAwesomeIcon icon={faHeart} size="lg" color="dimgrey" />
-              امکانات رفاهی
+          {amenities && (
+            <div
+              className="partner-facilities nav-section"
+              id="facilities-section"
+            >
+              <div className="section-title">
+                <FontAwesomeIcon icon={faHeart} size="lg" color="dimgrey" />
+                امکانات رفاهی
+              </div>
+              <div className="facilities-detail">
+                <ul>{amenities}</ul>
+              </div>
             </div>
-            <div className="facilities-detail">
-              <ul>
-                <li>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    size="lg"
-                    color="#58d37b"
-                  />
-                  چای رایگان
-                </li>
-                <li>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    size="lg"
-                    color="#58d37b"
-                  />
-                  قهوه رایگان
-                </li>
-                <li>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    size="lg"
-                    color="#58d37b"
-                  />
-                  اینترنت پرسرعت بدون محدودیت
-                </li>
-                <li>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    size="lg"
-                    color="#58d37b"
-                  />
-                  صندلی ارگونومی
-                </li>
-                <li>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    size="lg"
-                    color="#58d37b"
-                  />
-                  یخچال و فریزر
-                </li>
-                <li>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    size="lg"
-                    color="#58d37b"
-                  />
-                  مایکرویو
-                </li>
-                <li>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    size="lg"
-                    color="#58d37b"
-                  />
-                  ۲۰٪ تخفیف اسنپ فود
-                </li>
-              </ul>
-            </div>
-          </div>
+          )}
           <div className="partner-address nav-section" id="address-section">
             <div className="section-title">
               <FontAwesomeIcon icon={faMapPin} size="lg" color="dimgrey" />

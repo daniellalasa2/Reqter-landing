@@ -122,15 +122,16 @@ export default class MyRequests extends Component {
             <div className="product-header">
               {item.fields.partnerid.fields.logo[0].en && (
                 <div className="partner-img">
-                  <img
-                    src={item.fields.partnerid.fields.logo[0].en}
-                    alt=""
-                    onClick={() =>
-                      this.props.history.push(
-                        `/p/${item.fields.partnerid.fields.partnerkey}`
-                      )
-                    }
-                  />
+                  <a
+                    href={`/#/p/${item.fields.partnerid.fields.partnerkey}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={item.fields.partnerid.fields.logo[0].en}
+                      alt={item.fields.partnerid.fields.partnerkey}
+                    />
+                  </a>
                 </div>
               )}
               <div className="partner-title">

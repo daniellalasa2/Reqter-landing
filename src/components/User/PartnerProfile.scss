@@ -155,10 +155,9 @@ $green: #58d37b;
   & .nav-section {
     font-size: 17px;
     margin-top: 15px;
-    width: 1024px;
-    min-width: 100%;
+    width: 100%;
     align-self: center;
-    padding: 10px 12%;
+    padding: 10px calc((100% - 1024px) / 2);
     direction: rtl;
     text-align: right;
     color: $default-text-color;
@@ -238,8 +237,16 @@ $green: #58d37b;
         padding: 0;
         margin: 0;
         list-style: none;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
         li {
-          padding: 10px 20px;
+          padding: 15px 15px;
+          width: auto;
+          flex-grow: 1;
+          width: 33%;
+          max-width: 33%;
+          display: inherit;
           svg {
             padding: 0 5px;
             box-sizing: initial;
@@ -297,6 +304,16 @@ $green: #58d37b;
 @media (max-width: 768px) {
   .partner-profile {
     margin: 60px 0 0 0;
+    & .partner-facilities {
+      & .facilities-detail {
+        & ul {
+          & li {
+            width: 50%;
+            max-width: 50%;
+          }
+        }
+      }
+    }
     & .carousel {
       & .carousel-inner {
         .carousel-item {
@@ -315,6 +332,16 @@ $green: #58d37b;
 }
 @media (max-width: 576px) {
   .partner-profile {
+    & .partner-facilities {
+      & .facilities-detail {
+        & ul {
+          & li {
+            width: 100%;
+            max-width: 100%;
+          }
+        }
+      }
+    }
     & .carousel {
       & .carousel-inner {
         .carousel-item {
