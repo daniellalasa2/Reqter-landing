@@ -195,6 +195,15 @@ export default class PartnerProfile extends React.Component {
     GetPartnerInfo(params, partner => {
       if (partner.success_result.success) {
         const { fields } = partner.data[0];
+        fields.workinghours =
+          SafeValue(fields, "workinghours", "string", null) &&
+          JSON.parse(fields.workinghours).map((item, key) => (
+            <li key={key}>
+              <strong>{item.header}</strong>
+              <br />
+              <span>{item.body}</span>
+            </li>
+          ));
         fields.images.forEach(image => {
           images.push({
             src: image.en,
@@ -202,6 +211,7 @@ export default class PartnerProfile extends React.Component {
             caption: ""
           });
         });
+
         this.fetchPartnerProducts(fields._id);
         this.setState({
           partnerInfo: {
@@ -318,7 +328,8 @@ export default class PartnerProfile extends React.Component {
       address,
       overview,
       logo,
-      location
+      location,
+      workinghours
     } = this.state.partnerInfo;
     console.log("pageLoaded", pageLoaded);
     if (pageLoaded) {
@@ -428,35 +439,22 @@ export default class PartnerProfile extends React.Component {
             {SafeValue(overview, "fa", "string", true) && (
               <p>{SafeValue(overview, "fa", "string", "متن معرفی خالیست")}</p>
             )}
-            <div className="working-hours">
-              <ul>
-                <li className="title">
-                  <FontAwesomeIcon
-                    icon={faClock}
-                    pull="right"
-                    size="lg"
-                    color="dimgrey"
-                  />{" "}
-                  ساعات کاری
-                </li>
-                <li>
-                  <strong>شنبه - ۴شنبه</strong>
-                  <br />
-                  <span>۸:۰۰ الی ۲۱:۰۰</span>
-                </li>
-
-                <li>
-                  <strong>۵شنبه</strong>
-                  <br />
-                  <span>۱۰:۰۰ الی ۱۸:۰۰</span>
-                </li>
-                <li>
-                  <strong>جمعه</strong>
-                  <br />
-                  <span>۱۲:۰۰ الی ۱۷:۰۰</span>
-                </li>
-              </ul>
-            </div>
+            {workinghours && (
+              <div className="working-hours">
+                <ul>
+                  <li className="title">
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      pull="right"
+                      size="lg"
+                      color="dimgrey"
+                    />{" "}
+                    ساعات کاری
+                  </li>
+                  {workinghours}
+                </ul>
+              </div>
+            )}
           </div>
 
           {partnerProducts.length > 0 && (
