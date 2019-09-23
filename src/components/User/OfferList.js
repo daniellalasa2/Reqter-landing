@@ -55,11 +55,26 @@ export default class MyRequests extends Component {
   getAndFilterOfferList = reqId => {
     const _this = this;
     GetOfferList(reqId, offer_list => {
-      const SAFE_offer_list = SafeValue(offer_list, "data", "object", []);
+      const SAFE_offer_list =
+        SafeValue(offer_list, "data", "object", []).length > 0
+          ? SafeValue(offer_list, "data", "object", [])
+          : [
+              <strong
+                style={{
+                  display: "block",
+                  color: "grey",
+                  width: "100%",
+                  textAlign: "center"
+                }}
+              >
+                پیشنهادی برای این درخواست وجود ندارد
+              </strong>
+            ];
       // const filtered_offer = SAFE_offer_list.filter(
       //   value =>
       //     this.offerStageArr.validOffers.indexOf(value.fields.stage._id) > -1
       // );
+
       _this.setState({
         offerList: SAFE_offer_list
       });
@@ -107,7 +122,15 @@ export default class MyRequests extends Component {
             <div className="product-header">
               {item.fields.partnerid.fields.logo[0].en && (
                 <div className="partner-img">
-                  <img src={item.fields.partnerid.fields.logo[0].en} alt="" />
+                  <img
+                    src={item.fields.partnerid.fields.logo[0].en}
+                    alt=""
+                    onClick={() =>
+                      this.props.history.push(
+                        `/p/${item.fields.partnerid.fields.partnerkey}`
+                      )
+                    }
+                  />
                 </div>
               )}
               <div className="partner-title">
@@ -349,7 +372,7 @@ export default class MyRequests extends Component {
                   </span>
                   <FontAwesomeIcon
                     icon={faTimesCircle}
-                    pull="right"
+                    pull="left"
                     size="lg"
                     color="#dd4242"
                   />

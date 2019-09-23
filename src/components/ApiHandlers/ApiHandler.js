@@ -483,8 +483,18 @@ var SafeValue = (data, index, type, defaultValue) => {
       }
       data = data[val];
       if (i === cnt - 1) {
-        if (data !== null && data !== undefined && typeof data === type) {
-          return data;
+        if (data !== null && data !== undefined) {
+          //special type checkings mention here
+          switch (type) {
+            case typeof data:
+              return data;
+            case "json":
+              type = typeof JSON.parse(data);
+              if (type === "object") return data;
+              else return defaultValue;
+            default:
+              return defaultValue;
+          }
         } else {
           // console.warn(`index ${val} is not valid.`, `${val} : ${data}`);
           return defaultValue;

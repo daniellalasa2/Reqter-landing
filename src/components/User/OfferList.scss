@@ -83,6 +83,9 @@
           max-height: 80px;
           max-width: 90%;
         }
+        &:hover {
+          cursor: pointer;
+        }
       }
       .partner-title {
         widows: 82%;

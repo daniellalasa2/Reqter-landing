@@ -196,7 +196,7 @@ export default class PartnerProfile extends React.Component {
       if (partner.success_result.success) {
         const { fields } = partner.data[0];
         fields.workinghours =
-          SafeValue(fields, "workinghours", "string", null) &&
+          SafeValue(fields, "workinghours", "json", null) &&
           JSON.parse(fields.workinghours).map((item, key) => (
             <li key={key}>
               <strong>{item.header}</strong>
@@ -331,7 +331,6 @@ export default class PartnerProfile extends React.Component {
       location,
       workinghours
     } = this.state.partnerInfo;
-    console.log("pageLoaded", pageLoaded);
     if (pageLoaded) {
       return (
         <section className="partner-profile">
