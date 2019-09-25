@@ -120,16 +120,36 @@ export default class MyRequests extends Component {
         <div className="offer-card" key={item._id}>
           <div className="offer-card-details">
             <div className="product-header">
-              {item.fields.partnerid.fields.logo[0].en && (
+              {SafeValue(
+                item.fields.partnerid.fields.logo[0],
+                "en",
+                "string",
+                null
+              ) && (
                 <div className="partner-img">
                   <a
-                    href={`/#/p/${item.fields.partnerid.fields.partnerkey}`}
+                    href={`/#/p/${SafeValue(
+                      item,
+                      "fields.partnerid.fields.partnerkey",
+                      "string",
+                      ""
+                    )}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <img
-                      src={item.fields.partnerid.fields.logo[0].en}
-                      alt={item.fields.partnerid.fields.partnerkey}
+                      src={SafeValue(
+                        item.fields.partnerid.fields.logo[0],
+                        "en",
+                        "string",
+                        ""
+                      )}
+                      alt={SafeValue(
+                        item,
+                        "fields.partnerid.fields.partnerkey",
+                        "string",
+                        ""
+                      )}
                     />
                   </a>
                 </div>
@@ -150,9 +170,12 @@ export default class MyRequests extends Component {
                       "string",
                       "همکار در استارتاپ اسپیس"
                     )}{" "}
-                    {item.fields.partnerid.fields.verified && (
-                      <img src={verifiedIcon} alt="verified" width="20" />
-                    )}
+                    {SafeValue(
+                      item,
+                      "fields.partnerid.fields.verified",
+                      "string",
+                      null
+                    ) && <img src={verifiedIcon} alt="verified" width="20" />}
                   </strong>
                 </h6>
               </div>
