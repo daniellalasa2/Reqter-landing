@@ -48,6 +48,7 @@ class Navigation extends Component {
   }
 
   componentDidMount() {
+    console.log("lang", this.context.lang);
     if (Boolean(this.props.transform)) {
       window.addEventListener("scroll", this.handleScroll);
     } else {
@@ -249,10 +250,10 @@ class Navigation extends Component {
                   />
                 </DropdownToggle>
                 <DropdownMenu className="rtl">
-                  <DropdownItem onClick={() => this.props.history.push("/fa")}>
+                  <DropdownItem onClick={() => this.context.langTrigger("fa")}>
                     فارسی
                   </DropdownItem>
-                  <DropdownItem onClick={() => this.props.history.push("/en")}>
+                  <DropdownItem onClick={() => this.context.langTrigger("en")}>
                     English
                   </DropdownItem>
                 </DropdownMenu>

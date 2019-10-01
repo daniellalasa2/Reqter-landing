@@ -34,6 +34,7 @@ class Main extends Component {
 
     window.src = GetSession("src");
     this.state = {
+      lang: this.parsedUrlObject.lang ? this.parsedUrlObject.lang : "fa",
       userAuth: {
         ROLE: this.authObj ? this.authObj.ROLE : "newcomer",
         ID: this.authObj.ID ? this.authObj.ID : "",
@@ -43,30 +44,40 @@ class Main extends Component {
       loginModalTitle: "ورود",
       defaultPhoneNumber: this.authObj ? this.authObj.ID : ""
     };
-
-    this.toggleLoginModal = (status, modalTitle, defaultPhoneNumber) => {
-      this.setState({
-        displayLoginModal:
-          typeof status === "boolean" ? status : !this.state.displayLoginModal,
-        loginModalTitle: modalTitle ? modalTitle : "ورود",
-        defaultPhoneNumber: defaultPhoneNumber
-      });
-    };
-    //if any argument sent then set incoming argument else update user authentication based on set cookie
-    this.updateAuth = callback => {
-      this.setState(
-        {
-          userAuth: JsonParser(GetCookie("SSUSERAUTH")), //DO NOT REPLACE THIS WITH this.authObj
-          displayLoginModal: false
-        },
-        () => {
-          callback &&
-            typeof callback === "function" &&
-            callback(this.state.userAuth);
-        }
-      );
-    };
   }
+  toggleLoginModal = (status, modalTitle, defaultPhoneNumber) => {
+    this.setState({
+      displayLoginModal:
+        typeof status === "boolean" ? status : !this.state.displayLoginModal,
+      loginModalTitle: modalTitle ? modalTitle : "ورود",
+      defaultPhoneNumber: defaultPhoneNumber
+    });
+  };
+  //if any argument sent then set incoming argument else update user authentication based on set cookie
+  updateAuth = callback => {
+    this.setState(
+      {
+        userAuth: JsonParser(GetCookie("SSUSERAUTH")), //DO NOT REPLACE THIS WITH this.authObj
+        displayLoginModal: false
+      },
+      () => {
+        callback &&
+          typeof callback === "function" &&
+          callback(this.state.userAuth);
+      }
+    );
+  };
+  langTrigger = locale => {
+    const urlLangPathname = window.location.hash.replace("#", "").split("/")[1];
+    const { hash } = window.location;
+    const newHref = hash.replace(`#/${urlLangPathname}`, `/${locale}`);
+    this.setState(
+      {
+        lang: locale
+      },
+      () => this.props.history.push(newHref)
+    );
+  };
   urlParser = url => {
     let regex = /[?&]([^=#]+)=([^&#]*)/g,
       params = {},
@@ -87,7 +98,8 @@ class Main extends Component {
     }
   };
   componentWillMount() {
-    this.unlisten = this.props.history.listen((location, action) => {
+    const { history } = this.props;
+    this.unlisten = history.listen((urlLocation, action) => {
       window.scrollTo({ top: 0 });
     });
   }
@@ -118,7 +130,9 @@ class Main extends Component {
                             displayLoginModal: this.state.displayLoginModal,
                             toggleLoginModal: this.toggleLoginModal,
                             loginModalTitle: this.state.loginModalTitle,
-                            defaultPhoneNumber: this.state.defaultPhoneNumber
+                            defaultPhoneNumber: this.state.defaultPhoneNumber,
+                            lang: this.state.lang,
+                            langTrigger: this.langTrigger
                           }}
                         >
                           <React.Fragment>
