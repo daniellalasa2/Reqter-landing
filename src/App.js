@@ -1,7 +1,7 @@
 import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
-import Main from "./layout/Main";
+import Main from "./layout/Main/Main";
 
 import "samim-font/dist/font-face.css";
 

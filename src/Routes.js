@@ -1,33 +1,57 @@
 import React from "react";
 
-const Home = React.lazy(() => import("./components/Home"));
-const AboutUs = React.lazy(() => import("./components/AboutUs"));
-const Login = React.lazy(() => import("./components/Login"));
-const PrivateDesk = React.lazy(() => import("./components/PrivateDesk"));
-const SharedDesk = React.lazy(() => import("./components/SharedDesk"));
+const Home = React.lazy(() => import("./components/Home/Home"));
+const AboutUs = React.lazy(() => import("./components/AboutUs/AboutUs"));
+const Login = React.lazy(() => import("./components/Auth/Login/Login"));
+const PrivateDesk = React.lazy(() =>
+  import("./components/Forms/PrivateDesk/PrivateDesk")
+);
+const SharedDesk = React.lazy(() =>
+  import("./components/Forms/SharedDesk/SharedDesk")
+);
 const DedicatedOffice = React.lazy(() =>
-  import("./components/DedicatedOffice")
+  import("./components/Forms/DedicatedOffice/DedicatedOffice")
 );
 const PartnerProfile = React.lazy(() =>
-  import("./components/User/PartnerProfile")
+  import("./components/User/PartnerProfile/PartnerProfile")
 );
-const SessionRoom = React.lazy(() => import("./components/SessionRoom"));
-const PrivacyPolicy = React.lazy(() => import("./components/PrivacyPolicy"));
-const TermsOfUse = React.lazy(() => import("./components/TermsOfUse"));
-const Blog = React.lazy(() => import("./components/Blog"));
-const FAQ = React.lazy(() => import("./components/FAQ"));
-const ContactUs = React.lazy(() => import("./components/ContactUs"));
-const Careers = React.lazy(() => import("./components/Careers"));
-const PartnerShip = React.lazy(() => import("./components/PartnerShip"));
-const Security = React.lazy(() => import("./components/Security"));
-const MyRequests = React.lazy(() => import("./components/User/MyRequests"));
-const OfferList = React.lazy(() => import("./components/User/OfferList"));
-const NotFound = React.lazy(() => import("./components/Auth/NotFound"));
+const SessionRoom = React.lazy(() =>
+  import("./components/Forms/SessionRoom/SessionRoom")
+);
+const PrivacyPolicy = React.lazy(() =>
+  import("./components/PrivacyPolicy/PrivacyPolicy")
+);
+const TermsOfUse = React.lazy(() =>
+  import("./components/TermsOfUse/TermsOfUse")
+);
+const Blog = React.lazy(() => import("./components/Blog/Blog"));
+const FAQ = React.lazy(() => import("./components/FAQ/FAQ"));
+const ContactUs = React.lazy(() => import("./components/ContactUs/ContactUs"));
+const Careers = React.lazy(() => import("./components/Careers/Careers"));
+const PartnerShip = React.lazy(() =>
+  import("./components/Forms/PartnerShip/PartnerShip")
+);
+const Security = React.lazy(() => import("./components/Security/Security"));
+const MyRequests = React.lazy(() =>
+  import("./components/User/MyRequests/MyRequests")
+);
+const OfferList = React.lazy(() =>
+  import("./components/User/OfferList/OfferList")
+);
+const NotFound = React.lazy(() =>
+  import("./components/Auth/NotFound/NotFound")
+);
 //temporary
 const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
 // const static_routes = [
 const routes = [
-  { path: "/", exact: true, name: "Home", component: Home, navTransform: true },
+  {
+    path: "/:lang",
+    exact: true,
+    name: "Home",
+    component: Home,
+    navTransform: true
+  },
   {
     path: "/p/:slug",
     name: "partner profile",
