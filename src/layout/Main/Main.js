@@ -22,7 +22,7 @@ class Main extends Component {
       : GetCookie("SSGUESTAUTH")
       ? JsonParser(GetCookie("SSGUESTAUTH"))
       : {};
-    // this.parsedUrlObject = this.urlParser(props.location.search);
+    this.parsedUrlObject = this.urlParser(props.location.search);
     // this.urlLangPathname = window.location.hash.replace("#", "").split("/")[1];
     this.src = Boolean(GetSession("src"))
       ? GetSession("src")
