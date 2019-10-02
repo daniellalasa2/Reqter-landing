@@ -23,6 +23,7 @@ class Main extends Component {
       ? JsonParser(GetCookie("SSGUESTAUTH"))
       : {};
     this.parsedUrlObject = this.urlParser(props.location.search);
+    this.urlLangPathname = window.location.hash.replace("#", "").split("/")[1];
     this.src = Boolean(GetSession("src"))
       ? GetSession("src")
       : SetSession(
@@ -34,7 +35,7 @@ class Main extends Component {
 
     window.src = GetSession("src");
     this.state = {
-      lang: this.parsedUrlObject.lang ? this.parsedUrlObject.lang : "fa",
+      lang: this.urlLangPathname ? this.urlLangPathname : "fa",
       userAuth: {
         ROLE: this.authObj ? this.authObj.ROLE : "newcomer",
         ID: this.authObj.ID ? this.authObj.ID : "",

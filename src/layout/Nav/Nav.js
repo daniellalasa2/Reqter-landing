@@ -10,7 +10,6 @@ import {
   Row,
   Col
 } from "reactstrap";
-
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -46,9 +45,7 @@ class Navigation extends Component {
       isMobileMenuOpen: false
     };
   }
-
   componentDidMount() {
-    console.log("lang", this.context.lang);
     if (Boolean(this.props.transform)) {
       window.addEventListener("scroll", this.handleScroll);
     } else {
@@ -120,6 +117,9 @@ class Navigation extends Component {
     this.context.toggleLoginModal();
   };
   render() {
+    const { lang } = this.context;
+    this.translate = require(`./_locales/${lang}.json`);
+    const { locale } = this.translate;
     return (
       <React.Fragment>
         <ContextConsumer>
@@ -164,7 +164,7 @@ class Navigation extends Component {
                     onClick={() => this.logOut()}
                     className="nav-link"
                   >
-                    خروج
+                    {locale.logout}
                   </Link>
                 </NavItem>
               )}
@@ -175,29 +175,29 @@ class Navigation extends Component {
                 className="rtl"
               >
                 <DropdownToggle nav caret>
-                  همکاری
+                  {locale.partnership}
                 </DropdownToggle>
                 <DropdownMenu className="rtl">
                   <DropdownItem
                     onClick={() => this.props.history.push("/partnership")}
                   >
-                    همکاری تجاری
+                    {locale.buisness_partnership}
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
               <NavItem>
                 <Link className="nav-link" to="/contactus">
-                  تماس با ما
+                  {locale.contact_us}
                 </Link>
               </NavItem>
               <NavItem>
                 <Link className="nav-link" to="/faq">
-                  سوالات متداول
+                  {locale.faq}
                 </Link>
               </NavItem>
               <NavItem>
                 <Link className="nav-link" to="/">
-                  خانه
+                  {locale.home}
                 </Link>
               </NavItem>
               <NavItem>
@@ -206,7 +206,7 @@ class Navigation extends Component {
                     className="nav-link my-requests-link"
                     onClick={() => this.props.history.push("/user/myrequests")}
                   >
-                    درخواستهای من
+                    {locale.myrequests}
                     <FontAwesomeIcon
                       icon={faListAlt}
                       pull="right"
@@ -216,7 +216,7 @@ class Navigation extends Component {
                   </button>
                 ) : (
                   <button className="nav-link login" onClick={this.toggleLogin}>
-                    ورود
+                    {locale.login}
                     <FontAwesomeIcon
                       icon={faLockOpen}
                       pull="right"
@@ -286,11 +286,11 @@ class Navigation extends Component {
                     className="nav-link my-requests-link"
                     onClick={() => this.props.history.push("/user/myrequests")}
                   >
-                    درخواستهای من
+                    {locale.myrequests}
                   </span>
                 ) : (
                   <span className="nav-link login" onClick={this.toggleLogin}>
-                    ورود
+                    {locale.login}
                   </span>
                 )}
               </li>
@@ -302,7 +302,7 @@ class Navigation extends Component {
                   onClick={() => this.dropDownToggler("mobile")}
                   className="ul-dropdown-header rtl"
                 >
-                  <span>همکاری</span>
+                  <span>{locale.partnership}</span>
                   {this.state.dropdownOpen.mobile ? (
                     <FontAwesomeIcon
                       icon={faAngleUp}
@@ -325,19 +325,21 @@ class Navigation extends Component {
                 >
                   <ul className="rtl ul-dropdown">
                     <li>
-                      <Link to="/partnership">همکاری تجاری</Link>
+                      <Link to="/partnership">
+                        {locale.buisness_partnership}
+                      </Link>
                     </li>
                   </ul>
                 </Collapse>
               </li>
               <li>
                 <Link className="nav-link" to="/contactus">
-                  تماس با ما
+                  {locale.contact_us}
                 </Link>
               </li>
               <li>
                 <Link className="nav-link" to="/faq">
-                  سوالات متداول
+                  {locale.faq}
                 </Link>
               </li>
               {this.context.auth.ROLE === "user" && (

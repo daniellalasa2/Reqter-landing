@@ -1,0 +1,13 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "logout": "Logout",
+    "partnership": "Partnership",
+    "buisness_partnership": "Buisness partnership",
+    "contact_us": "Contact Us",
+    "faq": "FAQs",
+    "home": "Home",
+    "myrequests": "My Requests",
+    "login": "Login"
+  }
+}

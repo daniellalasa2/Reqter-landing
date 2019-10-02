@@ -1,0 +1,13 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "logout": "خروج",
+    "partnership": "همکاری",
+    "buisness_partnership": "همکاری تجاری",
+    "contact_us": "تماس با ما",
+    "faq": "سوالات متداول",
+    "home": "خانه",
+    "myrequests": "درخواستهای من",
+    "login": "ورود"
+  }
+}
