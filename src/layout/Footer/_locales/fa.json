@@ -1,0 +1,38 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "products": {
+      "_title": "محصولات",
+      "session_room": "اتاق جلسه",
+      "shared_desk": "میز اشتراکی",
+      "private_desk": "میز اختصاصی",
+      "dedicated_office": "اتاق کار خصوصی"
+    },
+    "support": {
+      "_title": "پشتیبانی",
+      "faq": "سوالات متداول",
+      "security": "امنیت"
+    },
+    "partnership": {
+      "_title": "شراکت",
+      "blog": "وبلاگ",
+      "job_positions": "موقعیت های شغلی",
+      "news": "اخبار"
+    },
+    "buisness_partners": {
+      "_title": "همکاران تجاری",
+      "request_partnership": "درخواست همکاری"
+    },
+    "rules": {
+      "_title": "قوانین و مجوزها",
+      "terms_of_use": "قوانین استفاده",
+      "privacy_policy": "حریم خصوصی"
+    },
+    "social": {
+      "follow_us": "ما را دنبال کنید: "
+    },
+    "copyright": {
+      "_title": "حق کپی رایت برای استارت آپ اسپیس محفوظ است."
+    }
+  }
+}

@@ -70,11 +70,6 @@ export default class MyRequests extends Component {
                 پیشنهادی برای این درخواست وجود ندارد
               </strong>
             ];
-      // const filtered_offer = SAFE_offer_list.filter(
-      //   value =>
-      //     this.offerStageArr.validOffers.indexOf(value.fields.stage._id) > -1
-      // );
-
       _this.setState({
         offerList: SAFE_offer_list
       });
@@ -114,161 +109,167 @@ export default class MyRequests extends Component {
   };
   generateOfferList = () => {
     let generatedElements = [];
-    let targetList = SafeValue(this.state.offerList, "", "object", []);
+    let targetList = SafeValue(this.state, "offerList", "object", []);
     if (targetList.length > 0) {
-      generatedElements = targetList.map(item => (
-        <div className="offer-card" key={item._id}>
-          <div className="offer-card-details">
-            <div className="product-header">
-              {SafeValue(
-                item.fields.partnerid.fields.logo[0],
-                "en",
-                "string",
-                null
-              ) && (
-                <div className="partner-img">
-                  <a
-                    href={`/#/p/${SafeValue(
-                      item,
-                      "fields.partnerid.fields.partnerkey",
-                      "string",
-                      ""
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src={SafeValue(
-                        item.fields.partnerid.fields.logo[0],
-                        "en",
-                        "string",
-                        ""
-                      )}
-                      alt={SafeValue(
+      generatedElements = targetList.map(item =>
+        SafeValue(item, "fields", "object", false) ? (
+          <div className="offer-card" key={item._id}>
+            <div className="offer-card-details">
+              <div className="product-header">
+                {SafeValue(
+                  item,
+                  "fields.partnerid.fields.logo.0.en",
+                  "string",
+                  null
+                ) && (
+                  <div className="partner-img">
+                    <a
+                      href={`/#/p/${SafeValue(
                         item,
                         "fields.partnerid.fields.partnerkey",
                         "string",
                         ""
-                      )}
-                    />
-                  </a>
-                </div>
-              )}
-              <div className="partner-title">
-                <h5>
-                  <strong className="product-title-wrapper">
-                    <strong className="product-title">
-                      {SafeValue(item, "fields.name", "string", "")}
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={SafeValue(
+                          item,
+                          "fields.partnerid.fields.logo.0.en",
+                          "string",
+                          ""
+                        )}
+                        alt={SafeValue(
+                          item,
+                          "fields.partnerid.fields.partnerkey",
+                          "string",
+                          ""
+                        )}
+                      />
+                    </a>
+                  </div>
+                )}
+                <div className="partner-title">
+                  <h5>
+                    <strong className="product-title-wrapper">
+                      <strong className="product-title">
+                        {SafeValue(item, "fields.name", "string", "")}
+                      </strong>
                     </strong>
-                  </strong>
-                </h5>
-                <h6>
-                  <strong>
-                    {SafeValue(
-                      item,
-                      "fields.partnerid.fields.name",
-                      "string",
-                      "همکار در استارتاپ اسپیس"
-                    )}{" "}
-                    {SafeValue(
-                      item,
-                      "fields.partnerid.fields.verified",
-                      "string",
-                      null
-                    ) && <img src={verifiedIcon} alt="verified" width="20" />}
-                  </strong>
-                </h6>
+                  </h5>
+                  <h6>
+                    <strong>
+                      {SafeValue(
+                        item,
+                        "fields.partnerid.fields.name",
+                        "string",
+                        "همکار در استارتاپ اسپیس"
+                      )}{" "}
+                      {SafeValue(
+                        item,
+                        "fields.partnerid.fields.verified",
+                        "string",
+                        null
+                      ) && <img src={verifiedIcon} alt="verified" width="20" />}
+                    </strong>
+                  </h6>
+                </div>
               </div>
-            </div>
 
-            <br />
-            <ul>
-              <li>
-                شهر:
-                <br />
-                <strong>
-                  {SafeValue(item, "fields.city.fields.name.fa", "string", "")}
-                </strong>
-              </li>
-              <li>
-                قیمت ساعتی:‌
-                <br />
-                <strong>
-                  {(item.fields.hourlyprice &&
-                    PersianNumber(
-                      addCommas(
-                        SafeValue(item, "fields.hourlyprice", "string", "0")
-                      ) + " تومان"
-                    )) ||
-                    "تعیین نشده"}
-                </strong>
-              </li>
-              <li>
-                قیمت روزانه:‌
-                <br />
-                <strong>
-                  {(item.fields.dailyprice &&
-                    PersianNumber(
-                      addCommas(
-                        SafeValue(item, "fields.dailyprice", "string", "0")
-                      ) + " تومان"
-                    )) ||
-                    "تعیین نشده"}
-                </strong>
-              </li>
-              <li>
-                قیمت هفتگی:‌
-                <br />
-                <strong>
-                  {(item.fields.weeklyprice &&
-                    PersianNumber(
-                      addCommas(
-                        SafeValue(item, "fields.weeklyprice", "string", "")
-                      ) + " تومان"
-                    )) ||
-                    "تعیین نشده"}
-                </strong>
-              </li>
-              <li>
-                قیمت ماهانه:‌
-                <br />
-                <strong>
-                  {(item.fields.monthlyprice &&
-                    PersianNumber(
-                      addCommas(
-                        SafeValue(item, "fields.monthlyprice", "string", "0")
-                      ) + " تومان"
-                    )) ||
-                    "تعیین نشده"}
-                </strong>
-              </li>
-              {SafeValue(item, "sys.issueDate", "string", false) && (
+              <br />
+              <ul>
                 <li>
-                  تاریخ ارسال پیشنهاد:
-                  <br />
-                  <strong>
-                    {PersianNumber(
-                      DateFormat(item.sys.issueDate).toPersianWithHour()
-                    )}
-                  </strong>
-                </li>
-              )}
-              {item.fields.description && (
-                <li style={{ display: "contents" }}>
-                  توضیح همکار درباره درخواست:
+                  شهر:
                   <br />
                   <strong>
                     {SafeValue(
                       item,
-                      "fields.description",
+                      "fields.city.fields.name.fa",
                       "string",
-                      "توضیح خاصی وجود ندارد"
+                      ""
                     )}
                   </strong>
                 </li>
-              )}
-            </ul>
-            {/* <div className="more-details">
+                <li>
+                  قیمت ساعتی:‌
+                  <br />
+                  <strong>
+                    {(item.fields.hourlyprice &&
+                      PersianNumber(
+                        addCommas(
+                          SafeValue(item, "fields.hourlyprice", "string", "0")
+                        ) + " تومان"
+                      )) ||
+                      "تعیین نشده"}
+                  </strong>
+                </li>
+                <li>
+                  قیمت روزانه:‌
+                  <br />
+                  <strong>
+                    {(item.fields.dailyprice &&
+                      PersianNumber(
+                        addCommas(
+                          SafeValue(item, "fields.dailyprice", "string", "0")
+                        ) + " تومان"
+                      )) ||
+                      "تعیین نشده"}
+                  </strong>
+                </li>
+                <li>
+                  قیمت هفتگی:‌
+                  <br />
+                  <strong>
+                    {(item.fields.weeklyprice &&
+                      PersianNumber(
+                        addCommas(
+                          SafeValue(item, "fields.weeklyprice", "string", "")
+                        ) + " تومان"
+                      )) ||
+                      "تعیین نشده"}
+                  </strong>
+                </li>
+                <li>
+                  قیمت ماهانه:‌
+                  <br />
+                  <strong>
+                    {(item.fields.monthlyprice &&
+                      PersianNumber(
+                        addCommas(
+                          SafeValue(item, "fields.monthlyprice", "string", "0")
+                        ) + " تومان"
+                      )) ||
+                      "تعیین نشده"}
+                  </strong>
+                </li>
+                {SafeValue(item, "sys.issueDate", "string", false) && (
+                  <li>
+                    تاریخ ارسال پیشنهاد:
+                    <br />
+                    <strong>
+                      {PersianNumber(
+                        DateFormat(item.sys.issueDate).toPersianWithHour()
+                      )}
+                    </strong>
+                  </li>
+                )}
+                {item.fields.description && (
+                  <li style={{ display: "contents" }}>
+                    توضیح همکار درباره درخواست:
+                    <br />
+                    <strong>
+                      {SafeValue(
+                        item,
+                        "fields.description",
+                        "string",
+                        "توضیح خاصی وجود ندارد"
+                      )}
+                    </strong>
+                  </li>
+                )}
+              </ul>
+              {/* <div className="more-details">
               <Collapse isOpen={this.state.moreDetailCollapse === item._id}>
                 <div className="more-details-description">
                   <ul style={{ marginTop: "20px" }}>
@@ -358,80 +359,83 @@ export default class MyRequests extends Component {
                 )}
               </span>
             </div> */}
-          </div>
-          <div className="offer-choose-state-wrapper">
-            {this.offerStageArr.notDefined.indexOf(item.fields.stage._id) >
-            -1 ? (
-              <React.Fragment>
-                <div
-                  className="accept-state"
-                  onClick={() =>
-                    this.toggleWarningModal({
-                      stage: "accept",
-                      offerId: item._id
-                    })
-                  }
-                >
+            </div>
+            <div className="offer-choose-state-wrapper">
+              {this.offerStageArr.notDefined.indexOf(item.fields.stage._id) >
+              -1 ? (
+                <React.Fragment>
+                  <div
+                    className="accept-state"
+                    onClick={() =>
+                      this.toggleWarningModal({
+                        stage: "accept",
+                        offerId: item._id
+                      })
+                    }
+                  >
+                    <span>
+                      <strong>قبول</strong>
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faCheckCircle}
+                      pull="left"
+                      size="lg"
+                      color="#58d37b"
+                    />
+                  </div>
+                  <div
+                    className="deny-state"
+                    onClick={() =>
+                      this.toggleWarningModal({
+                        stage: "reject",
+                        offerId: item._id
+                      })
+                    }
+                  >
+                    <span>
+                      <strong>رد</strong>
+                    </span>
+                    <FontAwesomeIcon
+                      icon={faTimesCircle}
+                      pull="left"
+                      size="lg"
+                      color="#dd4242"
+                    />
+                  </div>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {this.offerStageArr.approved.indexOf(item.fields.stage._id) >
+                    -1 && (
+                    <FontAwesomeIcon
+                      icon={faCheckCircle}
+                      pull="right"
+                      size="lg"
+                      color="#58d37b"
+                    />
+                  )}
+                  {this.offerStageArr.rejected.indexOf(item.fields.stage._id) >
+                    -1 && (
+                    <FontAwesomeIcon
+                      icon={faTimesCircle}
+                      pull="right"
+                      size="lg"
+                      color="#dd4242"
+                    />
+                  )}
                   <span>
-                    <strong>قبول</strong>
+                    <strong className="offer-stage-text">
+                      {item.fields.stage.fields.name}
+                    </strong>
                   </span>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    pull="left"
-                    size="lg"
-                    color="#58d37b"
-                  />
-                </div>
-                <div
-                  className="deny-state"
-                  onClick={() =>
-                    this.toggleWarningModal({
-                      stage: "reject",
-                      offerId: item._id
-                    })
-                  }
-                >
-                  <span>
-                    <strong>رد</strong>
-                  </span>
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    pull="left"
-                    size="lg"
-                    color="#dd4242"
-                  />
-                </div>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {this.offerStageArr.approved.indexOf(item.fields.stage._id) >
-                  -1 && (
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
-                    pull="right"
-                    size="lg"
-                    color="#58d37b"
-                  />
-                )}
-                {this.offerStageArr.rejected.indexOf(item.fields.stage._id) >
-                  -1 && (
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    pull="right"
-                    size="lg"
-                    color="#dd4242"
-                  />
-                )}
-                <span>
-                  <strong className="offer-stage-text">
-                    {item.fields.stage.fields.name}
-                  </strong>
-                </span>
-              </React.Fragment>
-            )}
+                </React.Fragment>
+              )}
+            </div>
           </div>
-        </div>
-      ));
+        ) : (
+          item
+        )
+      );
     } else {
       generatedElements = (
         <strong

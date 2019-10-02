@@ -46,7 +46,8 @@ const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
 // const static_routes = [
 const routes = [
   {
-    path: "/:lang",
+    // path: "/:lang",
+    path: "/",
     exact: true,
     name: "Home",
     component: Home,

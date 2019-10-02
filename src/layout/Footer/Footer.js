@@ -3,73 +3,90 @@ import "./Footer.scss";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
+import ContextApi from "../../components/ContextApi/ContextApi";
+import classnames from "classnames";
 class Footer extends Component {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.state = {};
   }
   render() {
+    this.translate = require(`./_locales/${this.context.lang}.json`);
+    const { locale } = this.translate;
     return (
-      <footer className="contact-info-box">
+      <footer
+        className={classnames("contact-info-box", `_${locale.direction}`)}
+      >
         <section className="footer-links">
           <div className="column">
-            <h6>محصولات</h6>
+            <h6>{locale.products._title}</h6>
             <ul>
               <li>
-                <Link to="/apply/sessionroom">سالن جلسات</Link>
+                <Link to="/apply/sessionroom">
+                  {locale.products.session_room}
+                </Link>
               </li>
               <li>
-                <Link to="/apply/shareddesk">میزکار اشتراکی</Link>
+                <Link to="/apply/shareddesk">
+                  {locale.products.shared_desk}
+                </Link>
               </li>
               <li>
-                <Link to="/apply/privatedesk">میزکار اختصاصی</Link>
+                <Link to="/apply/privatedesk">
+                  {locale.products.private_desk}
+                </Link>
               </li>
               <li>
-                <Link to="/apply/dedicatedoffice">اتاق کار خصوصی</Link>
+                <Link to="/apply/dedicatedoffice">
+                  {locale.products.dedicated_office}
+                </Link>
               </li>
             </ul>
           </div>
           <div className="column">
-            <h6>پشتیبانی</h6>
+            <h6>{locale.support._title}</h6>
             <ul>
               <li>
-                <Link to="/faq">سوالات متداول</Link>
+                <Link to="/faq">{locale.support.faq}</Link>
               </li>
               <li>
-                <Link to="/comingsoon">امنیت</Link>
+                <Link to="/comingsoon">{locale.support.security}</Link>
               </li>
             </ul>
           </div>
           <div className="column">
-            <h6>شرکت</h6>
+            <h6>{locale.partnership._title}</h6>
             <ul>
               <li>
-                <Link to="/comingsoon">بلاگ</Link>
+                <Link to="/comingsoon">{locale.partnership.blog}</Link>
               </li>
               <li>
-                <Link to="/comingsoon">فرصت های شغلی</Link>
+                <Link to="/comingsoon">{locale.partnership.job_positions}</Link>
               </li>
               <li>
-                <Link to="/comingsoon">اخبار</Link>
+                <Link to="/comingsoon">{locale.partnership.news}</Link>
               </li>
             </ul>
           </div>
           <div className="column">
-            <h6>همکاران تجاری</h6>
+            <h6>{locale.buisness_partners._title}</h6>
             <ul>
               <li>
-                <Link to="/partnership">درخواست همکاری</Link>
+                <Link to="/partnership">
+                  {locale.buisness_partners.request_partnership}
+                </Link>
               </li>
             </ul>
           </div>
           <div className="column">
-            <h6>قوانین و مجوز ها</h6>
+            <h6>{locale.rules._title}</h6>
             <ul>
               <li>
-                <Link to="/comingsoon">قوانین استفاده</Link>
+                <Link to="/comingsoon">{locale.rules.terms_of_use}</Link>
               </li>
               <li>
-                <Link to="/comingsoon">حریم خصوصی</Link>
+                <Link to="/comingsoon">{locale.rules.privacy_policy}</Link>
               </li>
             </ul>
           </div>
@@ -77,7 +94,7 @@ class Footer extends Component {
         <section className="copyright">
           <span style={{ float: "right" }}>© 2019 Startup Space</span>
           <span style={{ float: "left", marginTop: "-15px" }}>
-            <span className="followus-text"> ما را دنبال کنید: </span>
+            <span className="followus-text"> {locale.social.follow_us}</span>
             <div className="footer-social-links">
               <a
                 href="https://www.instagram.com/startupspace_hub/"
@@ -97,9 +114,7 @@ class Footer extends Component {
           </span>
           <br />
           <hr style={{ margin: 0, borderColor: "lightgrey" }} />
-          <span style={{ float: "right" }}>
-            حق کپی رایت برای استارت آپ اسپیس محفوظ است.
-          </span>
+          <span style={{ float: "right" }}>{locale.copyright._title}</span>
         </section>
       </footer>
     );

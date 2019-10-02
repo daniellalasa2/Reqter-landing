@@ -128,15 +128,17 @@ class Products extends Component {
     }
   };
   fillCombo = optionsArray => {
+    let toBeReturn = [];
     if (typeof optionsArray === "object") {
       for (let id in optionsArray) {
-        return (
+        toBeReturn.push(
           <option value={id} key={id}>
             {optionsArray[id]}
           </option>
         );
       }
     }
+    return toBeReturn;
   };
   getCitiesList = () => {
     const obj = {};

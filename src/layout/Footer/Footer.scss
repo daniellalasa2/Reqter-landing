@@ -65,6 +65,17 @@ footer {
       margin: 0 7px;
     }
   }
+  &._ltr {
+    direction: ltr !important;
+    text-align: left !important;
+    .column {
+      padding-left: 30px;
+      a {
+        padding-left: 10px;
+      }
+      text-align: left;
+    }
+  }
 }
 
 //Responsive

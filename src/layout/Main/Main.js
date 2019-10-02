@@ -22,8 +22,8 @@ class Main extends Component {
       : GetCookie("SSGUESTAUTH")
       ? JsonParser(GetCookie("SSGUESTAUTH"))
       : {};
-    this.parsedUrlObject = this.urlParser(props.location.search);
-    this.urlLangPathname = window.location.hash.replace("#", "").split("/")[1];
+    // this.parsedUrlObject = this.urlParser(props.location.search);
+    // this.urlLangPathname = window.location.hash.replace("#", "").split("/")[1];
     this.src = Boolean(GetSession("src"))
       ? GetSession("src")
       : SetSession(
@@ -155,7 +155,13 @@ class Main extends Component {
           </Switch>
         </Suspense>
         <Suspense>
-          <Footer />
+          <ContextApi.Provider
+            value={{
+              lang: this.state.lang
+            }}
+          >
+            <Footer />
+          </ContextApi.Provider>
         </Suspense>
       </React.Fragment>
     );

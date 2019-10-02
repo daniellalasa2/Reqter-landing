@@ -117,8 +117,7 @@ class Navigation extends Component {
     this.context.toggleLoginModal();
   };
   render() {
-    const { lang } = this.context;
-    this.translate = require(`./_locales/${lang}.json`);
+    this.translate = require(`./_locales/${this.context.lang}.json`);
     const { locale } = this.translate;
     return (
       <React.Fragment>
@@ -234,7 +233,7 @@ class Navigation extends Component {
                   </button>
                 )}
               </NavItem>
-              <Dropdown
+              {/* <Dropdown
                 nav
                 isOpen={this.state.dropdownOpen.lang}
                 toggle={() => this.dropDownToggler("lang")}
@@ -257,7 +256,7 @@ class Navigation extends Component {
                     English
                   </DropdownItem>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown> */}
             </Nav>
           </Col>
         </Row>
