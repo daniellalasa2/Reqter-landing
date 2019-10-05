@@ -42,6 +42,7 @@
   & .nav-item {
     display: flex;
     align-items: center;
+    direction: rtl;
   }
   & .nav-link {
     text-decoration: none;
@@ -310,6 +311,15 @@
     &.open {
       bottom: 0;
       opacity: 1;
+    }
+  }
+}
+
+._ltr {
+  .nav-links-container {
+    & .nav-item {
+      direction: ltr;
+      line-height: 2.5;
     }
   }
 }

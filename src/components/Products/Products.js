@@ -18,6 +18,8 @@ import {
   faChevronCircleRight
 } from "@fortawesome/free-solid-svg-icons";
 import Validator from "../Validator/Validator";
+import ContextApi from "../../components/ContextApi/ContextApi";
+
 //icons
 import privateOffice from "../../assets/images/products-icons/004-meet.png";
 import cowork from "../../assets/images/products-icons/005-coworking.png";
@@ -31,6 +33,7 @@ import dedicatedOffice from "../../assets/images/products-bgImg/privateOffice.jp
 //styles
 import "./Products.scss";
 class Products extends Component {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
@@ -157,6 +160,8 @@ class Products extends Component {
     this.getCitiesList();
   }
   render() {
+    this.translate = require(`./_locales/${this.context.lang}.json`);
+    const { locale } = this.translate;
     return (
       <React.Fragment>
         <Row>
@@ -188,7 +193,7 @@ class Products extends Component {
                               درخواست بدهید ، پیشنهاد بگیرید و انتخاب کنید
                             </h4>
                             <span className="choose-a-product">
-                              <strong>: یک محصول را انتخاب کنید </strong>
+                              <strong>یک محصول را انتخاب کنید</strong>
                             </span>
                           </section>
                         </Col>

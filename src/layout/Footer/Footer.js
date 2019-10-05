@@ -16,7 +16,10 @@ class Footer extends Component {
     const { locale } = this.translate;
     return (
       <footer
-        className={classnames("contact-info-box", `_${locale.direction}`)}
+        className={classnames(
+          "contact-info-box",
+          `_${this.translate.direction}`
+        )}
       >
         <section className="footer-links">
           <div className="column">
@@ -114,7 +117,13 @@ class Footer extends Component {
           </span>
           <br />
           <hr style={{ margin: 0, borderColor: "lightgrey" }} />
-          <span style={{ float: "right" }}>{locale.copyright._title}</span>
+          <span
+            style={{
+              float: this.translate.direction === "rtl" ? "right" : "left"
+            }}
+          >
+            {locale.copyright._title}
+          </span>
         </section>
       </footer>
     );

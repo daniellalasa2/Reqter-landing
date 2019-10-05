@@ -5,8 +5,13 @@ import CardHeader from "reactstrap/lib/CardHeader";
 import CardBody from "reactstrap/lib/CardBody";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import ContextApi, {
+  ContextConsumer
+} from "../../components/ContextApi/ContextApi";
 import "./FAQ.scss";
+import classnames from "classnames";
 class FAQ extends React.PureComponent {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.state = {
@@ -21,9 +26,14 @@ class FAQ extends React.PureComponent {
     });
   };
   render() {
+    this.translate = require(`./_locales/${this.context.lang}.json`);
+    const { locale, direction } = this.translate;
     return (
-      <section id="FAQ-accordion">
-        <h3 style={{ fontWeight: "bold" }}>سوالات متداول</h3>
+      <section
+        id="FAQ-accordion"
+        className={classnames(direction === "ltr" && "_ltr")}
+      >
+        <h3 style={{ fontWeight: "bold" }}>{locale.FAQ._title}</h3>
         <div className="questions-wrapper">
           <Card>
             <CardHeader
@@ -35,15 +45,10 @@ class FAQ extends React.PureComponent {
             >
               <FontAwesomeIcon icon={faPlus} color="#6d8ae0" />
               <FontAwesomeIcon icon={faMinus} color="#6d8ae0" />
-              رسالت اصلی استارتاپ اسپیس چیست؟
+              {locale.FAQ.q1.question}
             </CardHeader>
             <Collapse isOpen={this.state.FAQCollapse === "question1"}>
-              <CardBody>
-                هدف اصلی ما در استارتاپ اسپیس ایجاد مرجع جامعی از فضاهای کاری
-                مشترک در سطح شهر می باشد تا استارتاپ ها و فری لنسرها هرچه راحتتر
-                و سریعتر فضای کاری مورد نیاز خود را یافته و کار مورد علاقه خود
-                را شروع کنند .
-              </CardBody>
+              <CardBody>{locale.FAQ.q1.answer}</CardBody>
             </Collapse>
           </Card>
 
@@ -57,17 +62,10 @@ class FAQ extends React.PureComponent {
             >
               <FontAwesomeIcon icon={faPlus} color="#6d8ae0" />
               <FontAwesomeIcon icon={faMinus} color="#6d8ae0" />
-              تفاوت استارتاپ اسپیس با سایر سرویسهای موجود که در این حوزه کار
-              میکنند چیست؟
+              {locale.FAQ.q2.question}
             </CardHeader>
             <Collapse isOpen={this.state.FAQCollapse === "question2"}>
-              <CardBody>
-                استارتاپ اسپیس به شما فضاهای کاری را معرفی نمی کند بلکه شما از
-                ما درخواست فضای کار میکنید و ما به جای شما به همه فضاهای کاری
-                مشترک در شهر درخواستی درخواست میدهیم و پیشنهادشان را به شما
-                ارسال می کنیم و شما از بین پیشنهادهای رسیده بهترین را انتخاب
-                میکنید .
-              </CardBody>
+              <CardBody>{locale.FAQ.q2.answer}</CardBody>
             </Collapse>
           </Card>
 
@@ -81,15 +79,10 @@ class FAQ extends React.PureComponent {
             >
               <FontAwesomeIcon icon={faPlus} color="#6d8ae0" />
               <FontAwesomeIcon icon={faMinus} color="#6d8ae0" />
-              آیا استفاده از استارتاپ اسپیس برای من هزینه دارد؟
+              {locale.FAQ.q3.question}
             </CardHeader>
             <Collapse isOpen={this.state.FAQCollapse === "question3"}>
-              <CardBody>
-                خیر. تمامی مراحل درخواست فضای کار از زمان ارسال درخواست تا
-                دریافت پیشنهاد از فضاهای کار و تایید توسط شما از طریق این پلتفرم
-                بصورت رایگان انجام میگیرد و شما هزینه ای بابت خدماتی که ما ارایه
-                می کنیم به ما پرداخت نمی کنید .
-              </CardBody>
+              <CardBody>{locale.FAQ.q3.answer}</CardBody>
             </Collapse>
           </Card>
 
@@ -103,16 +96,10 @@ class FAQ extends React.PureComponent {
             >
               <FontAwesomeIcon icon={faPlus} color="#6d8ae0" />
               <FontAwesomeIcon icon={faMinus} color="#6d8ae0" />
-              امنیت اطلاعات در استارتاپ اسپیس چگونه است؟
+              {locale.FAQ.q4.question}
             </CardHeader>
             <Collapse isOpen={this.state.FAQCollapse === "question4"}>
-              <CardBody>
-                اطلاعات شما شامل اسم و مشخصات و شماره تلفن و تمامی اطلاعات شخصی
-                شما نزد ما نگهداری می شود و به هیچ عنوان برای مقاصد دیگر جز
-                پیشنهادهای فضای کار از طریق استارتاپ اسپیس استفاده نمی شود و
-                درخواستهای شما مستقیما برای ارائه دهندگان سرویس فضای کار ارسال
-                می شوید .
-              </CardBody>
+              <CardBody>{locale.FAQ.q4.answer}</CardBody>
             </Collapse>
           </Card>
 
@@ -126,18 +113,10 @@ class FAQ extends React.PureComponent {
             >
               <FontAwesomeIcon icon={faPlus} color="#6d8ae0" />
               <FontAwesomeIcon icon={faMinus} color="#6d8ae0" />
-              طرز کار استارتاپ اسپیس چگونه است؟
+              {locale.FAQ.q5.question}
             </CardHeader>
             <Collapse isOpen={this.state.FAQCollapse === "question5"}>
-              <CardBody>
-                شما یک فرم چند مرحله ای ساده را که به منظور شناسایی نیازهای
-                شماست پر کرده و ارسال می کنید و از داخل پنل خود بعد از ورود می
-                توانید درخواستهای خود را مشاهده و از آخرین وضعیت درخواست خود
-                مطلع می شوید و در صورت دریافت پیشنهاد می توانید قبول یا رد
-                نمایید. شما امکان انتخاب چند پیشنهاد را نیز دارید و در نهایت
-                فضای کاری مطلوب خود را انتخاب کرده و مراحل مستقر شدن و جابه جایی
-                را تا انتها به سرانجام میرسانید .
-              </CardBody>
+              <CardBody>{locale.FAQ.q5.answer}</CardBody>
             </Collapse>
           </Card>
         </div>

@@ -25,7 +25,7 @@ class App extends React.Component {
           <React.Suspense fallback={this.loading()}>
             <Switch>
               <Route
-                path="/"
+                path="/:lang?"
                 name="Home"
                 render={props => <Main {...props} />}
               />

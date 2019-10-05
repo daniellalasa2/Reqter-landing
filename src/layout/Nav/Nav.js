@@ -45,6 +45,7 @@ class Navigation extends Component {
       isMobileMenuOpen: false
     };
   }
+
   componentDidMount() {
     if (Boolean(this.props.transform)) {
       window.addEventListener("scroll", this.handleScroll);
@@ -118,9 +119,9 @@ class Navigation extends Component {
   };
   render() {
     this.translate = require(`./_locales/${this.context.lang}.json`);
-    const { locale } = this.translate;
+    const { locale, direction } = this.translate;
     return (
-      <React.Fragment>
+      <div className={classnames(direction === "ltr" && "_ltr")}>
         <ContextConsumer>
           {ctx => (
             <Login
@@ -171,7 +172,7 @@ class Navigation extends Component {
                 nav
                 isOpen={this.state.dropdownOpen.normal}
                 toggle={() => this.dropDownToggler("normal")}
-                className="rtl"
+                className={classnames(direction === "rtl" && "rtl")}
               >
                 <DropdownToggle nav caret>
                   {locale.partnership}
@@ -184,7 +185,7 @@ class Navigation extends Component {
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-              <NavItem>
+              {/* <NavItem>
                 <Link className="nav-link" to="/contactus">
                   {locale.contact_us}
                 </Link>
@@ -193,7 +194,7 @@ class Navigation extends Component {
                 <Link className="nav-link" to="/faq">
                   {locale.faq}
                 </Link>
-              </NavItem>
+              </NavItem> */}
               <NavItem>
                 <Link className="nav-link" to="/">
                   {locale.home}
@@ -205,35 +206,35 @@ class Navigation extends Component {
                     className="nav-link my-requests-link"
                     onClick={() => this.props.history.push("/user/myrequests")}
                   >
-                    {locale.myrequests}
                     <FontAwesomeIcon
                       icon={faListAlt}
-                      pull="right"
+                      pull={direction === "ltr" ? "left" : "right"}
                       color="black"
                       className="icon-myrequests"
                     />
+                    {locale.myrequests}
                   </button>
                 ) : (
                   <button className="nav-link login" onClick={this.toggleLogin}>
-                    {locale.login}
                     <FontAwesomeIcon
                       icon={faLockOpen}
-                      pull="right"
+                      pull={direction === "ltr" ? "left" : "right"}
                       size="sm"
                       color="black"
                       className="icon-lock-open"
                     />
                     <FontAwesomeIcon
                       icon={faLock}
-                      pull="right"
+                      pull={direction === "ltr" ? "left" : "right"}
                       size="sm"
                       color="black"
                       className="icon-lock-close"
                     />
+                    {locale.login}
                   </button>
                 )}
               </NavItem>
-              {/* <Dropdown
+              <Dropdown
                 nav
                 isOpen={this.state.dropdownOpen.lang}
                 toggle={() => this.dropDownToggler("lang")}
@@ -256,7 +257,7 @@ class Navigation extends Component {
                     English
                   </DropdownItem>
                 </DropdownMenu>
-              </Dropdown> */}
+              </Dropdown>
             </Nav>
           </Col>
         </Row>
@@ -272,7 +273,7 @@ class Navigation extends Component {
               <FontAwesomeIcon
                 className="close-icon"
                 icon={faTimes}
-                pull="right"
+                pull={direction === "ltr" ? "left" : "right"}
                 size="lg"
                 color="white"
                 onClick={() => this.toggleMenu("close")}
@@ -305,14 +306,14 @@ class Navigation extends Component {
                   {this.state.dropdownOpen.mobile ? (
                     <FontAwesomeIcon
                       icon={faAngleUp}
-                      pull="left"
+                      pull={direction === "ltr" ? "right" : "left"}
                       size="1x"
                       color="white"
                     />
                   ) : (
                     <FontAwesomeIcon
                       icon={faAngleDown}
-                      pull="left"
+                      pull={direction === "ltr" ? "right" : "left"}
                       size="1x"
                       color="white"
                     />
@@ -343,13 +344,13 @@ class Navigation extends Component {
               </li>
               {this.context.auth.ROLE === "user" && (
                 <li className="nav-link">
-                  <span onClick={() => this.logOut()}>خروج</span>
+                  <span onClick={() => this.logOut()}> {locale.logout}</span>
                 </li>
               )}
             </ul>
           </div>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }

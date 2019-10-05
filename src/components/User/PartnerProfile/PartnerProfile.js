@@ -194,7 +194,7 @@ export default class PartnerProfile extends React.Component {
     const images = [];
     GetPartnerInfo(params, partner => {
       if (partner.success_result.success) {
-        const { fields } = partner.data[0];
+        const { _id, fields } = partner.data[0];
         fields.workinghours =
           SafeValue(fields, "workinghours", "json", null) &&
           JSON.parse(fields.workinghours).map((item, key) => (
@@ -206,8 +206,8 @@ export default class PartnerProfile extends React.Component {
           ));
         fields.amenities =
           SafeValue(fields, "amenities", "object", null) &&
-          fields.amenities.map(item => (
-            <li>
+          fields.amenities.map((item, idx) => (
+            <li key={idx}>
               <FontAwesomeIcon icon={faCheckCircle} size="lg" color="#58d37b" />
               {SafeValue(item, "fields.name.fa", "string", " - ")}
             </li>
@@ -219,8 +219,7 @@ export default class PartnerProfile extends React.Component {
             caption: ""
           });
         });
-
-        this.fetchPartnerProducts(fields._id);
+        this.fetchPartnerProducts(_id);
         this.setState({
           partnerInfo: {
             ...fields

@@ -9,6 +9,8 @@ let _api = {
   AddContent: Config.BASE_URL_CASEER + Config.URLs.add_content,
   Upload: Config.BASE_URL_UPLOAD + Config.URLs.upload,
   FilterContents: Config.BASE_URL_REQTER + Config.URLs.filter_contents,
+  FilterContentsFullQuery:
+    Config.BASE_URL_REQTER + Config.URLs.filter_contents_get_fullquery,
   Login: Config.BASE_URL_REQTER + Config.URLs.login,
   VerifyCode: Config.BASE_URL_REQTER + Config.URLs.verify_code,
   GetRequestsList: Config.BASE_URL_REQTER + Config.URLs.all_requests,
@@ -425,14 +427,14 @@ var AddContent = (formName, data, callback) => {
 var GetPartnerProducts = (params, callback) => {
   Config.Auth().then(token => {
     axios({
-      url:
-        _api.FilterContents + `/${Config.CONTENT_TYPE_ID.get_partner_products}`,
+      url: _api.FilterContentsFullQuery,
       method: "GET",
       headers: {
         ..._api.header,
         authorization: token
       },
       params: {
+        contentType: Config.CONTENT_TYPE_ID.get_partner_products,
         ...params
       }
     })

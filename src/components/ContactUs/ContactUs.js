@@ -10,9 +10,13 @@ import { SubmitForm } from "../ApiHandlers/ApiHandler";
 import { FlatInput, FlatTextArea } from "../FlatForm/FlatForm";
 import LoadingSpinner from "../../assets/images/spinner.svg";
 import Validator from "../Validator/Validator";
-
+import ContextApi, {
+  ContextConsumer
+} from "../../components/ContextApi/ContextApi";
 import "./ContactUs.scss";
+import classnames from "classnames";
 class ContactUs extends React.PureComponent {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.contentTypeName = "contact_us";
@@ -160,27 +164,32 @@ class ContactUs extends React.PureComponent {
   };
 
   render() {
+    this.translate = require(`./_locales/${this.context.lang}.json`);
+    const { locale, direction } = this.translate;
     return (
-      <section id="contactUs">
+      <section
+        id="contactUs"
+        className={classnames("contactUs", direction === "ltr" && "_ltr")}
+      >
         <h3 className="section-title" style={{ fontWeight: "bold" }}>
-          ارتباط با ما
+          {locale.contact_us._title}
         </h3>
         <div className="contactUs-row-wrapper">
           <div className="contactUs-fields">
             {this.state.form.submitted && (
               <div className="successful-submittion">
-                پیام شما با موفقیت ارسال شد
+                {locale.fields.success_message}
               </div>
             )}
             <FlatInput
               name="name"
               type="text"
-              placeholder="نام و نام خانوادگی"
+              placeholder={locale.fields.fullname}
               onChange={this.formStateHandler}
               error={this.state.form.fields.name.error}
             />
             <FlatInput
-              placeholder="شماره تماس"
+              placeholder={locale.fields.phonenumber}
               type="number"
               maxLength="14"
               name="phonenumber"
@@ -188,7 +197,7 @@ class ContactUs extends React.PureComponent {
               error={this.state.form.fields.phonenumber.error}
             />
             <FlatInput
-              placeholder="موضوع پیام"
+              placeholder={locale.fields.subject}
               name="subject"
               type="text"
               onChange={this.formStateHandler}
@@ -196,7 +205,7 @@ class ContactUs extends React.PureComponent {
             />
             <FlatTextArea
               name="message"
-              placeholder="توضیحات"
+              placeholder={locale.fields.description}
               type="textarea"
               onChange={this.formStateHandler}
               error={this.state.form.fields.message.error}
@@ -214,7 +223,7 @@ class ContactUs extends React.PureComponent {
                   style={{ margin: "-12px -3px" }}
                 />
               ) : (
-                "ارسال"
+                locale.fields.submit
               )}
             </button>
           </div>
@@ -224,10 +233,9 @@ class ContactUs extends React.PureComponent {
                 <FontAwesomeIcon icon={faMapMarkerAlt} color="#6d8ae0" />
               </span>
               <p>
-                <strong>آدرس ما</strong>
+                <strong>{locale.contact_us.contact_info.address._title}</strong>
                 <br />
-                تهران - آجودانیه - بلوار ارتش غرب - بعد از تقاطع اوشان - کوچه
-                ابولفضل صمیع - مجموعه باغ بهشت - ساختمان پارادایس هاب
+                {locale.contact_us.contact_info.address.description}
               </p>
             </div>
 
@@ -236,11 +244,9 @@ class ContactUs extends React.PureComponent {
                 <FontAwesomeIcon icon={faPhone} color="#6d8ae0" />
               </span>
               <p>
-                <strong>تلفن</strong>
+                <strong>{locale.contact_us.contact_info.tel._title}</strong>
                 <br />
-                +98 21 284 21147
-                <br />
-                +98 919 768 2386
+                {locale.contact_us.contact_info.tel.tel}
               </p>
             </div>
 
@@ -249,10 +255,10 @@ class ContactUs extends React.PureComponent {
                 <FontAwesomeIcon icon={faEnvelope} color="#6d8ae0" />
               </span>
               <p>
-                <strong>آدرس ایمیل</strong>
+                <strong>{locale.contact_us.contact_info.email._title}</strong>
                 <br />
-                info@startupspace.ir <br />
-                support@startupspace.ir
+                {locale.contact_us.contact_info.email.email1} <br />
+                {locale.contact_us.contact_info.email.email2}
               </p>
             </div>
             <div className="contantUs-details-spec social-links">

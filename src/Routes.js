@@ -43,11 +43,9 @@ const NotFound = React.lazy(() =>
 );
 //temporary
 const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
-// const static_routes = [
 const routes = [
   {
-    // path: "/:lang",
-    path: "/",
+    path: "/:lang?",
     exact: true,
     name: "Home",
     component: Home,
@@ -126,13 +124,19 @@ const routes = [
     component: Blog
   },
   {
-    path: "/faq",
+    path: "/:lang/faq",
     exact: true,
     name: "FAQ",
     component: FAQ
   },
   {
     path: "/contactus",
+    exact: true,
+    name: "Contact Us",
+    component: ContactUs
+  },
+  {
+    path: "/:lang?/contactus",
     exact: true,
     name: "Contact Us",
     component: ContactUs
@@ -168,14 +172,6 @@ const routes = [
     component: OfferList,
     auth: "user"
   }
-  // {
-  //   path: "/user/partnerprofile",
-  //   name: "Partner Profile",
-  //   component: PartnerProfile,
-  //   auth: "user",
-  //   navTransform: true
-  // }
 ];
-// const dynamic_routes = [];
-// export { static_routes, dynamic_routes };
+
 export default routes;

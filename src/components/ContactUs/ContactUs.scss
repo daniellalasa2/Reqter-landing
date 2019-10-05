@@ -1,7 +1,7 @@
 //-----------------------------------------//
 //               Contact Us                //
 //-----------------------------------------//
-#contactUs {
+.contactUs {
   padding: 120px 0;
   background-color: whitesmoke;
   display: flex;
@@ -160,6 +160,31 @@
         textarea,
         .successful-submittion {
           width: 80vw;
+        }
+      }
+    }
+  }
+}
+
+//-----------------------------------------//
+//               LTR STYLES                //
+//-----------------------------------------//
+._ltr {
+  &.contactUs {
+    & .contactUs-row-wrapper {
+      flex-direction: row-reverse;
+      .contactUs-fields {
+        & input,
+        & textarea {
+          text-align: left;
+        }
+      }
+      .contactUs-details {
+        .contantUs-details-spec {
+          flex-direction: row;
+          p {
+            text-align: left;
+          }
         }
       }
     }

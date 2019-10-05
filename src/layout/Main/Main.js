@@ -17,13 +17,22 @@ const Footer = React.lazy(() => import("../Footer/Footer"));
 class Main extends Component {
   constructor(props) {
     super(props);
+    this.supportedLanguages = ["en", "fa"];
     this.authObj = GetCookie("SSUSERAUTH")
       ? JsonParser(GetCookie("SSUSERAUTH"))
       : GetCookie("SSGUESTAUTH")
       ? JsonParser(GetCookie("SSGUESTAUTH"))
       : {};
     this.parsedUrlObject = this.urlParser(props.location.search);
-    // this.urlLangPathname = window.location.hash.replace("#", "").split("/")[1];
+    this.urlLangPathname = (function(supportedLanguagesArr) {
+      const extractedLang = window.location.hash.replace("#", "").split("/")[1];
+      let toBeReturned = false;
+      if (Array.isArray(supportedLanguagesArr)) {
+        toBeReturned =
+          supportedLanguagesArr.indexOf(extractedLang) > -1 && extractedLang;
+      }
+      return toBeReturned;
+    })(this.supportedLanguages);
     this.src = Boolean(GetSession("src"))
       ? GetSession("src")
       : SetSession(
@@ -146,7 +155,7 @@ class Main extends Component {
                         </ContextApi.Provider>
                       </React.Fragment>
                     ) : (
-                      <Redirect to="/" />
+                      <Redirect to="/fa" />
                     )
                   }
                 />

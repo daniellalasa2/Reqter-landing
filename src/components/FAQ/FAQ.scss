@@ -84,3 +84,16 @@
     }
   }
 }
+
+._ltr {
+  & .card {
+    & .card-header {
+      text-align: left;
+      direction: ltr;
+    }
+    & .card-body {
+      direction: ltr;
+      text-align: left;
+    }
+  }
+}

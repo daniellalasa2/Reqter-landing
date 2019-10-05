@@ -16,6 +16,7 @@ var Configuration = {
   URLs: {
     submit_form: "api/v1/requests/submit",
     filter_contents: "api/v1/lists",
+    filter_contents_get_fullquery: "api/v1/lists/get/fullquery",
     upload: "asset/upload",
     login: "api/v1/customers/requestcode",
     verify_code: "api/v1/customers/verifycode",

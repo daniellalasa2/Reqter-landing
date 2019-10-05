@@ -179,3 +179,21 @@
 //Extra large desktops, 4k Monitors, TVs
 @media (min-width: 1440px) {
 }
+
+//-----------------------------------------//
+//               LTR STYLES                //
+//-----------------------------------------//
+._ltr {
+  & .facilities-description {
+    & ul {
+      flex-direction: row-reverse;
+    }
+  }
+  & .product-specs-wrapper {
+    & .specs {
+      & li.product-specs-item {
+        direction: ltr;
+      }
+    }
+  }
+}

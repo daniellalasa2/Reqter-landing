@@ -1,0 +1,31 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "contact_us": {
+      "_title": "Contact Us",
+      "contact_info": {
+        "address": {
+          "_title": "Address",
+          "description": "Paradise Hub, Bagh'e Behesht Complex, Abulfazl sami Alley, Artesh west highway, Tehran, Iran."
+        },
+        "tel": {
+          "_title": "Tel",
+          "tel": "+98 21 8833 6207"
+        },
+        "email": {
+          "_title": "Email",
+          "email1": "info@startupspace.ir",
+          "email2": "support@startupspace.ir"
+        }
+      }
+    },
+    "fields": {
+      "fullname": "Full Name",
+      "phonenumber": "Phone Number",
+      "subject": "Subject",
+      "description": "Description",
+      "submit": "Submit",
+      "success_message": "Form just submitted successfuly"
+    }
+  }
+}
