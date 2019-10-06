@@ -195,7 +195,6 @@ class InlineSelect extends React.Component {
     onChange(name, { title: title, value: val, checked: checked, name: name });
   };
   componentWillReceiveProps(nextProps) {
-    console.log("recieved");
     this.setState({ dynamicProps: nextProps });
   }
   render() {
@@ -254,7 +253,8 @@ const FlatNumberSet = ({
   error,
   name,
   defaultValue,
-  id
+  id,
+  direction
 }) => {
   const _wrapperRef = useRef();
   const _activated = e => {
@@ -288,7 +288,13 @@ const FlatNumberSet = ({
   return (
     <div className="field-row" id={id}>
       <label>{label}</label>
-      <div ref={_wrapperRef} className="number-range-buttons-container">
+      <div
+        ref={_wrapperRef}
+        className={classnames(
+          "number-range-buttons-container",
+          `_${direction}`
+        )}
+      >
         {numberRangeButtons}
       </div>
       <span className="error-message">{error}</span>

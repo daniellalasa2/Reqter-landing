@@ -20,11 +20,14 @@ import {
 import LoadingSpinner from "../../../assets/images/spinner.svg";
 import Validator from "../../Validator/Validator";
 import ContextApi from "../../ContextApi/ContextApi";
+import classnames from "classnames";
 import "../Coworking.scss";
 class DedicatedOffice extends React.PureComponent {
   static contextType = ContextApi;
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.urlParams = this.urlParser(this.props.location.search);
     this.contentTypeName = "dedicated_office";
     this.state = {
@@ -165,13 +168,19 @@ class DedicatedOffice extends React.PureComponent {
   };
   validatePhoneNumber = (doLogin, callback) => {
     const { value, code } = this.state.form.fields.phonenumber;
+    const { locale } = this.translate;
     const phonenumber = code + value;
     if (this.context.auth && this.context.auth.ID === phonenumber) {
       callback && typeof callback === "function" && callback();
       return true;
     } else {
       //if phone validation needs login action then start login flow
-      doLogin && this.context.toggleLoginModal(true, "تایید شماره تماس", value);
+      doLogin &&
+        this.context.toggleLoginModal(
+          true,
+          locale.fields.submit.verify_phonenumber,
+          value
+        );
       return false;
     }
   };
@@ -214,6 +223,7 @@ class DedicatedOffice extends React.PureComponent {
   };
   submitForm = () => {
     const _this = this;
+    const { locale } = this.translate;
     const inputs = this.state.form.fields;
     let _isValid = this.checkFormValidation();
     const _backgroundData = this.state.form.backgroundData;
@@ -230,11 +240,11 @@ class DedicatedOffice extends React.PureComponent {
         _formObjectGoingToSubmit["phonenumber"] =
           this.state.form.fields.phonenumber.code + phonenumber;
         const cityname = this.state.combo.list_of_cities.items.map(
-          curr => (curr.value === city && curr.title) || "ایران"
+          curr => (curr.value === city && curr.title) || locale.email_subject[2]
         )[0];
-        _formObjectGoingToSubmit[
-          "name"
-        ] = `درخواست اتاق کار اختصاصی با ظرفیت ${seats} نفر در ${cityname}`;
+        _formObjectGoingToSubmit["name"] = `${
+          locale.email_subject[0]
+        } ${seats} ${locale.email_subject[1]} ${cityname}`;
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
@@ -271,6 +281,7 @@ class DedicatedOffice extends React.PureComponent {
     }
   };
   uploadFile = e => {
+    const { locale } = this.translate;
     let file = "";
     try {
       file = e.target.files[0];
@@ -282,7 +293,7 @@ class DedicatedOffice extends React.PureComponent {
             ...this.state.form.fields,
             resume: {
               ...this.state.form.fields.resume,
-              error: "امکان انتخاب فایل وجود ندارد لطفا دوباره امتحان کنید"
+              error: locale.fields.resume.error
             }
           }
         }
@@ -397,35 +408,36 @@ class DedicatedOffice extends React.PureComponent {
     const selectedCity = SafeValue(exportedUrlParams, "city", "string", ""),
       neededSeats = SafeValue(exportedUrlParams, "seats", "string", "1");
 
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            seats: {
-              ...this.state.form.fields.seats,
-              value: neededSeats,
-              isValid: !isNaN(Number(neededSeats))
-            },
-            city: {
-              ...this.state.form.fields.city,
-              value: selectedCity,
-              isValid: selectedCity && true
-            }
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          seats: {
+            ...this.state.form.fields.seats,
+            value: neededSeats,
+            isValid: !isNaN(Number(neededSeats))
+          },
+          city: {
+            ...this.state.form.fields.city,
+            value: selectedCity,
+            isValid: selectedCity && true
           }
         }
-      },
-      () => console.log("seats:", this.state.form.fields.seats)
-    );
+      }
+    });
 
     this.generateCheckboxDataFromApi("list_of_cities", selectedCity);
     this.generateCheckboxDataFromApi("coworking_working_field");
   }
   render() {
+    const { locale, direction } = this.translate;
     return (
       <section
-        className="form-section rtl-layout"
+        className={classnames(
+          "form-section",
+          direction === "rtl" && "rtl-layout"
+        )}
         style={{
           backgroundColor: "whitesmoke",
           display: "flex",
@@ -450,14 +462,14 @@ class DedicatedOffice extends React.PureComponent {
                     />
                   </span>
                   <span className="title">
-                    <strong>فرم درخواست دفتر اختصاصی</strong>
+                    <strong>{locale.form_title}</strong>
                   </span>
                 </CardHeader>
                 <CardBody>
                   <FlatInput
-                    label="نام و نام خانوادگی"
+                    label={locale.fields.fullname._title}
                     type="text"
-                    placeholder="نام و نام خانوادگی را وارد کنید"
+                    placeholder={locale.fields.fullname.placeholder}
                     name="fullname"
                     id="fullname"
                     autoFocus
@@ -466,20 +478,22 @@ class DedicatedOffice extends React.PureComponent {
                   />
 
                   <FlatInput
-                    label="سال تولد"
+                    label={locale.fields.birthyear._title}
                     type="number"
                     max={9999}
                     min={1270}
                     minLength="4"
                     maxLength="4"
-                    placeholder="مثال : 1359"
+                    placeholder={locale.fields.birthyear.placeholder}
                     name="birthyear"
                     id="birthyear"
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.birthyear.error}
                   />
                   <div className="field-row">
-                    <span className="field-title">حوزه فعالیت</span>
+                    <span className="field-title">
+                      {locale.fields.workingfield._title}
+                    </span>
 
                     {/* fill checkboxes */}
                     {this.state.combo.coworking_working_field.hasLoaded ? (
@@ -487,7 +501,7 @@ class DedicatedOffice extends React.PureComponent {
                         type="checkbox"
                         items={this.state.combo.coworking_working_field.items}
                         onChange={this.checkboxStateHandler}
-                        dir="rtl"
+                        dir={direction}
                         name="workingfield"
                       />
                     ) : (
@@ -499,21 +513,21 @@ class DedicatedOffice extends React.PureComponent {
                   </div>
                   <div className="contact-section">
                     <FlatInput
-                      label="شماره تماس"
+                      label={locale.fields.phonenumber._title}
                       type="text"
                       prefix={this.state.form.fields.phonenumber.code}
-                      placeholder="9123456789"
+                      placeholder={locale.fields.phonenumber.placeholder}
                       name="phonenumber"
                       id="phonenumber"
                       maxLength="10"
-                      style={{ direction: "ltr" }}
+                      style={{ direction: direction }}
                       onChange={this.formStateHandler}
                       error={this.state.form.fields.phonenumber.error}
                     />
                     <FlatInput
-                      label="ایمیل"
+                      label={locale.fields.email._title}
                       type="email"
-                      placeholder="ایمیل خود را وارد کنید"
+                      placeholder={locale.fields.email.placeholder}
                       name="email"
                       id="email"
                       onChange={this.formStateHandler}
@@ -521,7 +535,9 @@ class DedicatedOffice extends React.PureComponent {
                     />
                   </div>
                   <div className="field-row">
-                    <span className="field-title">شهر</span>
+                    <span className="field-title">
+                      {locale.fields.city._title}
+                    </span>
 
                     {/* fill checkboxes */}
                     {this.state.combo.list_of_cities.hasLoaded ? (
@@ -529,7 +545,7 @@ class DedicatedOffice extends React.PureComponent {
                         type="radio"
                         items={this.state.combo.list_of_cities.items}
                         onChange={this.checkboxStateHandler}
-                        dir="rtl"
+                        dir={direction}
                         name="city"
                       />
                     ) : (
@@ -540,23 +556,26 @@ class DedicatedOffice extends React.PureComponent {
                     </span>
                   </div>
                   <FlatNumberSet
-                    label="تعداد صندلی"
+                    label={locale.fields.seats._title}
                     type="number"
                     range={[1, 10]}
                     defaultValue={this.state.form.fields.seats.value}
                     name="seats"
                     id="seats"
+                    direction={direction}
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.seats.error}
                   />
                   <FlatUploader
-                    label="آپلود رزومه"
+                    label={locale.fields.resume._title}
                     name="resume"
                     id="resume"
-                    placeholder="یک فایل انتخاب کنید"
+                    placeholder={locale.fields.resume.placeholder}
                     progress={this.state.form.fields.resume.uploadProgress}
                     progresscolor="lightblue"
+                    buttonValue={locale.fields.resume.buttonValue}
                     onChange={this.uploadFile}
+                    style={{ direction: direction }}
                     error={this.state.form.fields.resume.error}
                   />
                 </CardBody>
@@ -573,9 +592,9 @@ class DedicatedOffice extends React.PureComponent {
                       style={{ margin: "-12px 16px" }}
                     />
                   ) : this.validatePhoneNumber() ? (
-                    "ثبت و ارسال "
+                    locale.fields.submit.submit
                   ) : (
-                    "تایید شماره تماس"
+                    locale.fields.submit.verify_phonenumber
                   )}
                 </Button>
               </CardFooter>

@@ -659,12 +659,32 @@ label.checkboxContainer {
   justify-content: center;
   width: 100%;
   flex-wrap: wrap;
-  direction: rtl;
-  .sets {
+  &._rtl {
+    direction: rtl;
+    & .sets {
+      &:first-child {
+        border-radius: 0 0.35vw 0.35vw 0 !important;
+      }
+      &:last-child {
+        border-radius: 0.35vw 0 0 0.35vw !important;
+      }
+    }
+  }
+  &._ltr {
+    direction: ltr;
+    & .sets {
+      &:first-child {
+        border-radius: 0.35vw 0 0 0.35vw !important;
+      }
+      &:last-child {
+        border-radius: 0 0.35vw 0.35vw 0 !important;
+      }
+    }
+  }
+  & .sets {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    border-radius: none;
     border: 1px solid grey !important;
     background-color: transparent;
     color: black;
@@ -676,11 +696,15 @@ label.checkboxContainer {
       background-color: rgba(20, 20, 20, 0.4);
       color: white;
     }
+    &:not(:first-child),
+    &:not(:last-child) {
+      border-radius: none;
+    }
     &:first-child {
-      border-radius: 0 0.35vw 0.35vw 0 !important;
+      border-radius: 0.35vw 0 0 0.35vw !important;
     }
     &:last-child {
-      border-radius: 0.35vw 0 0 0.35vw !important;
+      border-radius: 0 0.35vw 0.35vw 0 !important;
     }
   }
   .active {

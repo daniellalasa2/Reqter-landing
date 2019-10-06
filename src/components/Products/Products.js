@@ -34,8 +34,10 @@ import dedicatedOffice from "../../assets/images/products-bgImg/privateOffice.jp
 import "./Products.scss";
 class Products extends Component {
   static contextType = ContextApi;
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.toggle = this.toggle.bind(this);
     this.state = {
       form: {
@@ -160,7 +162,6 @@ class Products extends Component {
     this.getCitiesList();
   }
   render() {
-    this.translate = require(`./_locales/${this.context.lang}.json`);
     const { locale } = this.translate;
     return (
       <React.Fragment>

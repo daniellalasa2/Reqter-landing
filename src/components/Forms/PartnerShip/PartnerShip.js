@@ -15,10 +15,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
 import { FlatInlineSelect, FlatInput } from "../../FlatForm/FlatForm";
+import ContextApi from "../../ContextApi/ContextApi";
 import Validator from "../../Validator/Validator";
+import classnames from "classnames";
 class PartnerShip extends React.PureComponent {
-  constructor(props) {
-    super(props);
+  static contextType = ContextApi;
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.urlParams = this.urlParser(this.props.location.search);
     this.contentTypeName = "partnership";
     this.state = {
@@ -257,9 +262,13 @@ class PartnerShip extends React.PureComponent {
     this.generateCheckboxDataFromApi("partnership_working_fields");
   }
   render() {
+    const { locale, direction } = this.translate;
     return (
       <section
-        className="form-section rtl-layout"
+        className={classnames(
+          "form-section",
+          direction === "rtl" && "rtl-layout"
+        )}
         style={{
           backgroundColor: "whitesmoke",
           display: "flex",
@@ -284,14 +293,14 @@ class PartnerShip extends React.PureComponent {
                     />
                   </span>
                   <span className="title">
-                    <strong>فرم همکاری</strong>
+                    <strong>{locale.form_title}</strong>
                   </span>
                 </CardHeader>
                 <CardBody>
                   <FlatInput
-                    label="نام شرکت یا سازمان"
+                    label={locale.fields.name._title}
                     type="text"
-                    placeholder="نام شرکت یا سازمان را وارد کنید"
+                    placeholder={locale.fields.name.placeholder}
                     name="name"
                     id="name"
                     autoFocus
@@ -300,16 +309,18 @@ class PartnerShip extends React.PureComponent {
                   />
 
                   <FlatInput
-                    label="نام درخواست کننده"
+                    label={locale.fields.fullname._title}
                     type="text"
-                    placeholder="نام درخواست کننده را وارد کنید"
+                    placeholder={locale.fields.fullname.placeholder}
                     name="primarycontact"
                     id="primarycontact"
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.primarycontact.error}
                   />
                   <div className="field-row">
-                    <span className="field-title">زمینه همکاری</span>
+                    <span className="field-title">
+                      {locale.fields.workingfield._title}
+                    </span>
 
                     {/* fill checkboxes */}
                     {this.state.combo.partnership_working_fields.hasLoaded ? (
@@ -319,7 +330,7 @@ class PartnerShip extends React.PureComponent {
                           this.state.combo.partnership_working_fields.items
                         }
                         onChange={this.checkboxStateHandler}
-                        dir="rtl"
+                        dir={direction}
                         name="collaborationtypes"
                       />
                     ) : (
@@ -330,30 +341,30 @@ class PartnerShip extends React.PureComponent {
                     </span>
                   </div>
                   <FlatInput
-                    label="شماره تماس"
+                    label={locale.fields.phonenumber._title}
                     type="text"
                     prefix={this.state.form.fields.phonenumber.code}
-                    placeholder="9123456789"
+                    placeholder={locale.fields.phonenumber.placeholder}
                     name="phonenumber"
                     id="phonenumber"
                     maxLength="10"
-                    style={{ direction: "ltr" }}
+                    style={{ direction: direction }}
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.phonenumber.error}
                   />
                   <FlatInput
-                    label="ایمیل"
+                    label={locale.fields.email._title}
                     type="email"
-                    placeholder="ایمیل خود را وارد کنید"
+                    placeholder={locale.fields.email.placeholder}
                     name="email"
                     id="email"
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.email.error}
                   />
                   <FlatInput
-                    label="وبسایت"
+                    label={locale.fields.website._title}
                     type="text"
-                    placeholder="آدرس وبسایت خود را وارد کنید"
+                    placeholder={locale.fields.website.placeholder}
                     name="homepage"
                     id="homepage"
                     onChange={this.formStateHandler}
@@ -373,7 +384,7 @@ class PartnerShip extends React.PureComponent {
                       style={{ margin: "-12px 16px" }}
                     />
                   ) : (
-                    "ثبت و ارسال "
+                    locale.fields.submit.submit
                   )}
                 </Button>
               </CardFooter>
