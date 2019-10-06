@@ -10,9 +10,14 @@ import Validator from "../../Validator/Validator";
 import { SetCookie, JsonToString } from "../../CookieHandler/CookieHandler";
 import "./Login.scss";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
+import ContextApi from "../../ContextApi/ContextApi";
+import classnames from "classnames";
 export default class Login extends React.Component {
-  constructor(props) {
-    super(props);
+  static contextType = ContextApi;
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.state = {
       modal: false,
       loginStep: 1,
@@ -72,6 +77,7 @@ export default class Login extends React.Component {
     return true;
   }
   Login = () => {
+    const { locale } = this.translate;
     this.PendingForm(true);
     const _this = this;
     const { value, code } = this.state.form.fields.phoneNumber;
@@ -106,7 +112,7 @@ export default class Login extends React.Component {
               },
               phoneNumber: {
                 ...this.state.form.fields.phoneNumber,
-                error: "شماره نامعتبر"
+                error: locale.errors.invalid_number
               }
             }
           }
@@ -124,7 +130,7 @@ export default class Login extends React.Component {
               },
               phoneNumber: {
                 ...this.state.form.fields.phoneNumber,
-                error: "مشکل در ارسال کد"
+                error: locale.errors.code_error
               }
             }
           }
@@ -141,6 +147,7 @@ export default class Login extends React.Component {
     });
   };
   CheckCode = () => {
+    const { locale } = this.translate;
     this.PendingForm(true);
     const _this = this;
     const data = {};
@@ -171,7 +178,7 @@ export default class Login extends React.Component {
               code: {
                 ...this.state.form.fields.code,
                 isValid: false,
-                error: "کد نادرست است"
+                error: locale.errors.code_error
               }
             }
           }
@@ -245,12 +252,13 @@ export default class Login extends React.Component {
   };
 
   render() {
+    const { locale, direction } = this.translate;
     return (
       <div>
         <Modal
           isOpen={this.state.modal}
           toggle={this.toggle}
-          className="login-modal"
+          className={classnames("login-modal", `_${direction}`)}
         >
           <ModalHeader className="login-modal-header" toggle={this.toggle}>
             {this.props.modalTitle}
@@ -259,12 +267,12 @@ export default class Login extends React.Component {
           {this.state.loginStep === 1 && (
             <ModalBody>
               <FlatInput
-                label="شماره تماس خود را وارد کنید"
+                label={locale.fields.phonenumber._title}
                 type="tel"
                 name="phoneNumber"
                 id="phoneNumber"
                 prefix={this.state.form.fields.phoneNumber.code}
-                placeholder="9123456789"
+                placeholder={locale.fields.phonenumber.placeholder}
                 onChange={this.formStateHandler}
                 error={this.state.form.fields.phoneNumber.error}
                 autoFocus={true}
@@ -283,7 +291,7 @@ export default class Login extends React.Component {
                     style={{ margin: "-12px 20px" }}
                   />
                 ) : (
-                  "دریافت کد تایید"
+                  locale.fields.verify_code._title
                 )}
               </Button>
             </ModalBody>
@@ -292,7 +300,7 @@ export default class Login extends React.Component {
           {this.state.loginStep === 2 && (
             <ModalBody>
               <FlatInput
-                label="کد تایید ارسال شده را وارد کنید"
+                label={locale.fields.enter_code._title}
                 type="tel"
                 name="code"
                 id="code"
@@ -306,7 +314,7 @@ export default class Login extends React.Component {
                 className="resend-code-link"
                 onClick={this.ResetPhonenumber}
               >
-                ارسال مجدد کد
+                {locale.fields.resend_code._title}
               </span>
               <div className="buttons-wrapper">
                 <Button color="success" onClick={this.CheckCode}>
@@ -317,7 +325,7 @@ export default class Login extends React.Component {
                       style={{ margin: "-12px 16px" }}
                     />
                   ) : (
-                    "تایید و ورود"
+                    locale.fields.submit.submit_code
                   )}
                 </Button>
               </div>

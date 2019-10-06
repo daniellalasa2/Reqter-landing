@@ -190,8 +190,8 @@ class InlineSelect extends React.Component {
     let { checked, name, title, val, onChange } = this.state.dynamicProps;
     const checkbox = document.getElementById("checkbox");
     checked = !checked;
-    if (checked) checkbox.current.classList.add("checked");
-    else checkbox.current.classList.remove("checked");
+    if (checked) checkbox.classList.add("checked");
+    else checkbox.classList.remove("checked");
     onChange(name, { title: title, value: val, checked: checked, name: name });
   };
   componentWillReceiveProps(nextProps) {

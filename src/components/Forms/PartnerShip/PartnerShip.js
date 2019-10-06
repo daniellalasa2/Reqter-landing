@@ -238,7 +238,7 @@ class PartnerShip extends React.PureComponent {
       const arr = [];
       SafeValue(res, "data", "object", []).map((val, key) => {
         arr.push({
-          title: val.fields.name.fa,
+          title: val.fields.name[this.context.lang],
           key: val._id,
           boxValue: key + 1,
           dir: "rtl",
