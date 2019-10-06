@@ -52,85 +52,86 @@ const routes = [
     navTransform: true
   },
   {
-    path: "/p/:slug",
+    path: "/:lang?/p/:slug",
     name: "partner profile",
     exact: true,
     component: PartnerProfile
   },
   {
-    path: "/auth/404",
+    path: "/:lang?/auth/404",
     exact: true,
     name: "Not Found",
     component: NotFound
   },
   {
-    path: "/comingsoon",
+    path: "/:lang?/comingsoon",
     exact: true,
     name: "Coming Soon",
     component: ComingSoon,
     navTransform: true
   },
   {
-    path: "/aboutus",
+    path: "/:lang?/aboutus",
     exact: true,
     name: "About Us",
     component: AboutUs
   },
   {
-    path: "/login",
+    path: "/:lang?/login",
     exact: true,
     name: "Login",
     component: Login
   },
 
   {
-    path: "/apply/sessionroom",
+    path: "/:lang?/apply/sessionroom",
     name: "Session Room",
+    exact: true,
     component: SessionRoom
   },
   {
-    path: "/apply/dedicatedoffice",
+    path: "/:lang?/apply/dedicatedoffice",
     name: "Dedicated Office",
     component: DedicatedOffice
   },
   {
-    path: "/apply/privatedesk",
+    path: "/:lang?/apply/privatedesk",
     name: "Private Desk",
     component: PrivateDesk
   },
   {
-    path: "/apply/shareddesk",
+    path: "/:lang?/apply/shareddesk",
     name: "Shared Desk",
     exact: true,
     component: SharedDesk
   },
 
   {
-    path: "/privacypolicy",
+    path: "/:lang?/privacypolicy",
     exact: true,
     name: "Privacy Policy",
     component: PrivacyPolicy
   },
   {
-    path: "/termsofuse",
+    path: "/:lang?/termsofuse",
     exact: true,
     name: "Terms Of Use",
     component: TermsOfUse
   },
   {
-    path: "/blog",
+    path: "/:lang?/blog",
     exact: true,
     name: "Blog",
     component: Blog
   },
   {
-    path: "/:lang/faq",
+    path: "/:lang?/faq",
     exact: true,
     name: "FAQ",
     component: FAQ
   },
   {
-    path: "/contactus",
+    path: "/:lang?/contactus",
     exact: true,
     name: "Contact Us",
     component: ContactUs
@@ -142,32 +143,32 @@ const routes = [
     component: ContactUs
   },
   {
-    path: "/careers",
+    path: "/:lang?/careers",
     exact: true,
     name: "Careers",
     component: Careers
   },
   {
-    path: "/partnership",
+    path: "/:lang?/partnership",
     exact: true,
     name: "Partner Ship",
     component: PartnerShip
   },
   {
-    path: "/security",
+    path: "/:lang?/security",
     exact: true,
     name: "Security",
     component: Security
   },
   {
-    path: "/user/myrequests",
+    path: "/:lang?/user/myrequests",
     exact: true,
     name: "My Requests",
     component: MyRequests,
     auth: "user"
   },
   {
-    path: "/user/offerlist",
+    path: "/:lang?/user/offerlist",
     name: "Offer List",
     component: OfferList,
     auth: "user"

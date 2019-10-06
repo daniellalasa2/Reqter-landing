@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, Link } from "react-router-dom";
 import routes from "../../Routes";
 import "./Main.scss";
 import ContextApi from "../../components/ContextApi/ContextApi";
@@ -13,7 +13,6 @@ import {
 } from "../../components/CookieHandler/CookieHandler";
 const Navigation = React.lazy(() => import("../Nav/Nav"));
 const Footer = React.lazy(() => import("../Footer/Footer"));
-
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -78,15 +77,18 @@ class Main extends Component {
     );
   };
   langTrigger = locale => {
-    const urlLangPathname = window.location.hash.replace("#", "").split("/")[1];
-    const { hash } = window.location;
-    const newHref = hash.replace(`#/${urlLangPathname}`, `/${locale}`);
-    this.setState(
-      {
-        lang: locale
-      },
-      () => this.props.history.push(newHref)
-    );
+    const urlMatch =
+      this.supportedLanguages.indexOf(this.props.match.params.lang) > -1
+        ? this.props.match.url
+        : null;
+    const newUrl = {
+      ...this.props.location,
+      pathname: urlMatch
+        ? this.props.location.pathname.replace(urlMatch, `/${locale}`)
+        : `/${locale}` + this.props.location.pathname
+    };
+    this.props.history.replace(newUrl);
+    window.location.reload();
   };
   urlParser = url => {
     let regex = /[?&]([^=#]+)=([^&#]*)/g,
@@ -109,7 +111,7 @@ class Main extends Component {
   };
   componentWillMount() {
     const { history } = this.props;
-    this.unlisten = history.listen((urlLocation, action) => {
+    this.unlisten = history.listen(action => {
       window.scrollTo({ top: 0 });
     });
   }
@@ -150,6 +152,7 @@ class Main extends Component {
                               transform={route.navTransform}
                               {...props}
                             />
+
                             <route.component {...props} />
                           </React.Fragment>
                         </ContextApi.Provider>

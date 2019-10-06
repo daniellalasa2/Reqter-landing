@@ -10,16 +10,16 @@ import { SubmitForm } from "../ApiHandlers/ApiHandler";
 import { FlatInput, FlatTextArea } from "../FlatForm/FlatForm";
 import LoadingSpinner from "../../assets/images/spinner.svg";
 import Validator from "../Validator/Validator";
-import ContextApi, {
-  ContextConsumer
-} from "../../components/ContextApi/ContextApi";
+import ContextApi from "../../components/ContextApi/ContextApi";
 import "./ContactUs.scss";
 import classnames from "classnames";
 class ContactUs extends React.PureComponent {
   static contextType = ContextApi;
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.contentTypeName = "contact_us";
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.state = {
       form: {
         isValid: false,
@@ -164,7 +164,6 @@ class ContactUs extends React.PureComponent {
   };
 
   render() {
-    this.translate = require(`./_locales/${this.context.lang}.json`);
     const { locale, direction } = this.translate;
     return (
       <section

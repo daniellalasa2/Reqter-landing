@@ -5,15 +5,15 @@ import CardHeader from "reactstrap/lib/CardHeader";
 import CardBody from "reactstrap/lib/CardBody";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-import ContextApi, {
-  ContextConsumer
-} from "../../components/ContextApi/ContextApi";
+import ContextApi from "../../components/ContextApi/ContextApi";
 import "./FAQ.scss";
 import classnames from "classnames";
 class FAQ extends React.PureComponent {
   static contextType = ContextApi;
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.state = {
       FAQCollapse: null
     };
@@ -26,7 +26,6 @@ class FAQ extends React.PureComponent {
     });
   };
   render() {
-    this.translate = require(`./_locales/${this.context.lang}.json`);
     const { locale, direction } = this.translate;
     return (
       <section

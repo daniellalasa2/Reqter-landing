@@ -18,10 +18,13 @@ import NumberFormat from "react-number-format";
 import Validator from "../../Validator/Validator";
 import ContextApi from "../../ContextApi/ContextApi";
 import "../Coworking.scss";
+import classnames from "classnames";
 class SessionRoom extends React.PureComponent {
   static contextType = ContextApi;
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.urlParams = this.urlParser(this.props.location.search);
     this.contentTypeName = "session_room";
     this.state = {
@@ -180,6 +183,8 @@ class SessionRoom extends React.PureComponent {
     const name = _this.name;
     let value = null;
     let validation = {};
+
+    const { locale } = this.state.translate;
     if (name === "startdate") {
       const enddate = this.state.form.fields.enddate.value;
       try {
@@ -197,7 +202,7 @@ class SessionRoom extends React.PureComponent {
             message: enddate
               ? value < enddate
                 ? ""
-                : "زمان شروع جلسه باید قبل از زمان پایان جلسه باشد"
+                : locale.fields.startdate.error
               : ""
           }
         : validation;
@@ -218,7 +223,7 @@ class SessionRoom extends React.PureComponent {
             message: startdate
               ? value > startdate
                 ? ""
-                : "زمان پایان جلسه باید بعد از زمان شروع جلسه باشد"
+                : locale.fields.enddate.error
               : ""
           }
         : validation;
@@ -244,12 +249,18 @@ class SessionRoom extends React.PureComponent {
   validatePhoneNumber = (doLogin, callback) => {
     const { value, code } = this.state.form.fields.phonenumber;
     const phonenumber = code + value;
+    const { locale } = this.translate;
     if (this.context.auth && this.context.auth.ID === phonenumber) {
       callback && typeof callback === "function" && callback();
       return true;
     } else {
       //if phone validation needs login action then start login flow
-      doLogin && this.context.toggleLoginModal(true, "تایید شماره تماس", value);
+      doLogin &&
+        this.context.toggleLoginModal(
+          true,
+          locale.fields.submit.verify_phonenumber,
+          value
+        );
       return false;
     }
   };
@@ -259,6 +270,7 @@ class SessionRoom extends React.PureComponent {
     let _isValid = this.checkFormValidation();
     const _backgroundData = this.state.form.backgroundData;
     let _formObjectGoingToSubmit = {};
+    const { locale } = this.state.translate;
     //if form was valid then convert state form to api form
     // if the form was valid then submit it
     if (_isValid) {
@@ -271,11 +283,11 @@ class SessionRoom extends React.PureComponent {
         _formObjectGoingToSubmit["phonenumber"] =
           this.state.form.fields.phonenumber.code + phonenumber;
         const cityname = this.state.combo.list_of_cities.items.map(
-          curr => (curr.value === city && curr.title) || "ایران"
+          curr => (curr.value === city && curr.title) || locale.email_subject[2]
         )[0];
-        _formObjectGoingToSubmit[
-          "name"
-        ] = `درخواست اتاق جلسه با ظرفیت ${seats} نفر در ${cityname}`;
+        _formObjectGoingToSubmit["name"] = `${
+          locale.email_subject[0]
+        } ${seats} ${locale.email_subject[1]} ${cityname}`;
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
@@ -321,16 +333,17 @@ class SessionRoom extends React.PureComponent {
   };
 
   generateCheckboxDataFromApi = (name, defaultChecked) => {
+    const { lang } = this;
     FilterContents(name, res => {
       const arr = [];
       SafeValue(res, "data", "object", []).map((val, key) => {
         arr.push({
-          title: val.fields.name.fa
-            ? SafeValue(val.fields.name, "fa", "string", "")
+          title: val.fields.name[lang]
+            ? SafeValue(val.fields.name, lang, "string", "")
             : SafeValue(val.fields, "name", "string", ""),
           key: SafeValue(val, "_id", "string", ""),
           boxValue: key + 1,
-          dir: "rtl",
+          dir: "inherit",
           value: SafeValue(val, "_id", "string", ""),
           defaultChecked:
             defaultChecked &&
@@ -373,10 +386,15 @@ class SessionRoom extends React.PureComponent {
     this.generateCheckboxDataFromApi("sessionroom_equipments");
     this.generateCheckboxDataFromApi("list_of_cities", selectedCity);
   }
+
   render() {
+    const { locale, direction } = this.translate;
     return (
       <section
-        className="form-section rtl-layout"
+        className={classnames(
+          "form-section",
+          direction === "rtl" && "rtl-layout"
+        )}
         style={{
           backgroundColor: "whitesmoke",
           display: "flex",
@@ -401,14 +419,14 @@ class SessionRoom extends React.PureComponent {
                     />
                   </span>
                   <span className="title">
-                    <strong>فرم درخواست اتاق جلسات</strong>
+                    <strong>{locale.form_title}</strong>
                   </span>
                 </CardHeader>
                 <CardBody>
                   <FlatInput
-                    label="نام درخواست کننده"
+                    label={locale.fields.fullname._title}
                     type="text"
-                    placeholder="نام خود را وارد کنید"
+                    placeholder={locale.fields.fullname.placeholder}
                     name="fullname"
                     id="fullname"
                     autoFocus
@@ -416,9 +434,9 @@ class SessionRoom extends React.PureComponent {
                     error={this.state.form.fields.fullname.error}
                   />
                   <FlatInput
-                    label="موضوع جلسه"
+                    label={locale.fields.subject._title}
                     type="text"
-                    placeholder="موضوع جلسه را وارد نمایید"
+                    placeholder={locale.fields.subject.placeholder}
                     name="subject"
                     id="subject"
                     autoFocus
@@ -426,7 +444,9 @@ class SessionRoom extends React.PureComponent {
                     error={this.state.form.fields.subject.error}
                   />
                   <div className="field-row">
-                    <span className="field-title">زمان شروع جلسه</span>
+                    <span className="field-title">
+                      {locale.fields.startdate._title}
+                    </span>
                     <br />
                     <br />
                     <div className="FlatTimePicker">
@@ -435,9 +455,12 @@ class SessionRoom extends React.PureComponent {
                         format="####/##/##   ## : ##"
                         type="text"
                         name="startdate"
-                        placeholder="تاریخ - ساعت و دقیقه"
+                        placeholder={locale.fields.startdate.placeholder}
                         onChange={this.formStateHandler}
-                        style={{ direction: "ltr", textAlign: "right" }}
+                        style={{
+                          direction: direction,
+                          textAlign: direction === "rtl" ? "right" : "left"
+                        }}
                       />
                       <span className="error-message">
                         {this.state.form.fields.startdate.error}
@@ -445,7 +468,9 @@ class SessionRoom extends React.PureComponent {
                     </div>
                   </div>
                   <div className="field-row">
-                    <span className="field-title">زمان پایان جلسه</span>
+                    <span className="field-title">
+                      {locale.fields.enddate._title}
+                    </span>
                     <br />
                     <br />
                     <div className="FlatTimePicker">
@@ -453,9 +478,12 @@ class SessionRoom extends React.PureComponent {
                         mask="_"
                         format="####/##/##   ## : ##"
                         type="text"
-                        placeholder="تاریخ - ساعت و دقیقه"
+                        placeholder={locale.fields.enddate.placeholder}
                         onChange={this.formStateHandler}
-                        style={{ direction: "ltr", textAlign: "right" }}
+                        style={{
+                          direction: direction,
+                          textAlign: direction === "rtl" ? "right" : "left"
+                        }}
                         name="enddate"
                       />
                       <span className="error-message">
@@ -464,7 +492,9 @@ class SessionRoom extends React.PureComponent {
                     </div>
                   </div>
                   <div className="field-row">
-                    <span className="field-title">تجهیزات مورد نیاز</span>
+                    <span className="field-title">
+                      {locale.fields.equipments._title}
+                    </span>
 
                     {/* fill checkboxes */}
                     {this.state.combo.sessionroom_equipments.hasLoaded ? (
@@ -472,7 +502,7 @@ class SessionRoom extends React.PureComponent {
                         type="checkbox"
                         items={this.state.combo.sessionroom_equipments.items}
                         onChange={this.checkboxStateHandler}
-                        dir="rtl"
+                        dir={direction}
                         name="equipments"
                       />
                     ) : (
@@ -484,21 +514,21 @@ class SessionRoom extends React.PureComponent {
                   </div>
                   <div className="contact-section">
                     <FlatInput
-                      label="شماره تماس"
+                      label={locale.fields.phonenumber._title}
                       type="text"
                       prefix={this.state.form.fields.phonenumber.code}
-                      placeholder="9123456789"
+                      placeholder={locale.fields.phonenumber.placeholder}
                       name="phonenumber"
                       id="phonenumber"
                       maxLength="10"
-                      style={{ direction: "ltr" }}
+                      style={{ direction: direction }}
                       onChange={this.formStateHandler}
                       error={this.state.form.fields.phonenumber.error}
                     />
                     <FlatInput
-                      label="ایمیل"
+                      label={locale.fields.email._title}
                       type="email"
-                      placeholder="ایمیل خود را وارد کنید"
+                      placeholder={locale.fields.email.placeholder}
                       name="email"
                       id="email"
                       onChange={this.formStateHandler}
@@ -506,7 +536,9 @@ class SessionRoom extends React.PureComponent {
                     />
                   </div>
                   <div className="field-row">
-                    <span className="field-title">شهر</span>
+                    <span className="field-title">
+                      {locale.fields.city._title}
+                    </span>
 
                     {/* fill checkboxes */}
                     {this.state.combo.list_of_cities.hasLoaded ? (
@@ -514,7 +546,7 @@ class SessionRoom extends React.PureComponent {
                         type="radio"
                         items={this.state.combo.list_of_cities.items}
                         onChange={this.checkboxStateHandler}
-                        dir="rtl"
+                        dir={direction}
                         name="city"
                       />
                     ) : (
@@ -525,11 +557,11 @@ class SessionRoom extends React.PureComponent {
                     </span>
                   </div>
                   <FlatInput
-                    label="ظرفیت درخواستی"
+                    label={locale.fields.seats._title}
                     type="number"
                     max={100}
                     min={1}
-                    placeholder="ظرفیت درخواستی"
+                    placeholder={locale.fields.seats.placeholder}
                     name="seats"
                     id="seats"
                     defaultValue={this.state.form.fields.seats.value}
@@ -550,9 +582,9 @@ class SessionRoom extends React.PureComponent {
                       style={{ margin: "-12px 16px" }}
                     />
                   ) : this.validatePhoneNumber() ? (
-                    "ثبت و ارسال "
+                    locale.fields.submit.submit
                   ) : (
-                    "تایید شماره تماس"
+                    locale.fields.submit.verify_phonenumber
                   )}
                 </Button>
               </CardFooter>

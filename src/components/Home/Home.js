@@ -48,8 +48,10 @@ import "./Home.scss";
 import "./Products.scss";
 class Home extends React.Component {
   static contextType = ContextApi;
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.toggle = this.toggle.bind(this);
     this.state = {
       form: {
@@ -159,7 +161,7 @@ class Home extends React.Component {
   };
   getCitiesList = () => {
     const obj = {};
-    const { lang } = this.context;
+    const { lang } = this;
     FilterContents("list_of_cities", res => {
       if (res.success_result.code === 200) {
         res.data.map(val => (obj[val._id] = val.fields.name[lang]));
@@ -175,7 +177,7 @@ class Home extends React.Component {
     this.getCitiesList();
   }
   render() {
-    this.translate = require(`./_locales/${this.context.lang}.json`);
+    const { lang } = this;
     const { locale, direction } = this.translate;
     const { product, how_to_use, contact_us } = locale;
     return (
@@ -228,7 +230,7 @@ class Home extends React.Component {
                                     onClick={() =>
                                       this.checkFormValidation() &&
                                       this.props.history.push({
-                                        pathname: `/apply/shareddesk`,
+                                        pathname: `${lang}/apply/shareddesk`,
                                         search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                       })
                                     }
@@ -289,7 +291,7 @@ class Home extends React.Component {
                                     onClick={() =>
                                       this.checkFormValidation() &&
                                       this.props.history.push({
-                                        pathname: `/apply/privatedesk`,
+                                        pathname: `${lang}/apply/privatedesk`,
                                         search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                       })
                                     }
@@ -347,7 +349,7 @@ class Home extends React.Component {
                                   onClick={() =>
                                     this.checkFormValidation() &&
                                     this.props.history.push({
-                                      pathname: `/apply/dedicatedoffice`,
+                                      pathname: `${lang}/apply/dedicatedoffice`,
                                       search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                     })
                                   }
@@ -404,7 +406,7 @@ class Home extends React.Component {
                                   onClick={() =>
                                     this.checkFormValidation() &&
                                     this.props.history.push({
-                                      pathname: `/apply/sessionroom`,
+                                      pathname: `${lang}/apply/sessionroom`,
                                       search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                     })
                                   }
@@ -591,7 +593,9 @@ class Home extends React.Component {
             </SpecList>
             <Btn
               color="#879cdd"
-              onClick={() => this.props.history.push("/apply/sessionroom")}
+              onClick={() =>
+                this.props.history.push(`/${lang}/apply/sessionroom`)
+              }
             >
               {product.product_specs.submit_button}
             </Btn>
@@ -603,7 +607,9 @@ class Home extends React.Component {
             </SpecList>
             <Btn
               color="#879cdd"
-              onClick={() => this.props.history.push("/apply/shareddesk")}
+              onClick={() =>
+                this.props.history.push(`/${lang}/apply/shareddesk`)
+              }
             >
               {product.product_specs.submit_button}
             </Btn>
@@ -615,7 +621,9 @@ class Home extends React.Component {
             </SpecList>
             <Btn
               color="#879cdd"
-              onClick={() => this.props.history.push("/apply/dedicatedoffice")}
+              onClick={() =>
+                this.props.history.push(`/${lang}/apply/dedicatedoffice`)
+              }
             >
               {product.product_specs.submit_button}
             </Btn>
@@ -627,7 +635,9 @@ class Home extends React.Component {
             </SpecList>
             <Btn
               color="#879cdd"
-              onClick={() => this.props.history.push("/apply/privatedesk")}
+              onClick={() =>
+                this.props.history.push(`/${lang}/apply/privatedesk`)
+              }
             >
               {product.product_specs.submit_button}
             </Btn>
@@ -637,10 +647,12 @@ class Home extends React.Component {
           <h1>{contact_us.slang}</h1>
           <p>{contact_us.description}</p>
           <div className="contact-button-box">
-            <Button onClick={() => this.props.history.push("/contactus")}>
+            <Button
+              onClick={() => this.props.history.push(`/${lang}/contactus`)}
+            >
               {contact_us.contact_us_button}
             </Button>
-            <Button onClick={() => this.props.history.push("/faq")}>
+            <Button onClick={() => this.props.history.push(`/${lang}/faq`)}>
               {contact_us.faq_button}
             </Button>
           </div>

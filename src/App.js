@@ -1,8 +1,7 @@
 import React from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import "./App.scss";
 import Main from "./layout/Main/Main";
-
 import "samim-font/dist/font-face.css";
 
 class App extends React.Component {
@@ -24,6 +23,7 @@ class App extends React.Component {
         <HashRouter>
           <React.Suspense fallback={this.loading()}>
             <Switch>
+              <Redirect exact from="/" to="/fa" />
               <Route
                 path="/:lang?"
                 name="Home"

@@ -7,12 +7,13 @@ import ContextApi from "../../components/ContextApi/ContextApi";
 import classnames from "classnames";
 class Footer extends Component {
   static contextType = ContextApi;
-  constructor(props) {
-    super(props);
-    this.state = {};
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
   }
   render() {
-    this.translate = require(`./_locales/${this.context.lang}.json`);
+    const { lang } = this;
     const { locale } = this.translate;
     return (
       <footer
@@ -26,22 +27,22 @@ class Footer extends Component {
             <h6>{locale.products._title}</h6>
             <ul>
               <li>
-                <Link to="/apply/sessionroom">
+                <Link to={`/${lang}/apply/sessionroom`}>
                   {locale.products.session_room}
                 </Link>
               </li>
               <li>
-                <Link to="/apply/shareddesk">
+                <Link to={`/${lang}/apply/shareddesk`}>
                   {locale.products.shared_desk}
                 </Link>
               </li>
               <li>
-                <Link to="/apply/privatedesk">
+                <Link to={`/${lang}/apply/privatedesk`}>
                   {locale.products.private_desk}
                 </Link>
               </li>
               <li>
-                <Link to="/apply/dedicatedoffice">
+                <Link to={`/${lang}/apply/dedicatedoffice`}>
                   {locale.products.dedicated_office}
                 </Link>
               </li>
@@ -51,10 +52,12 @@ class Footer extends Component {
             <h6>{locale.support._title}</h6>
             <ul>
               <li>
-                <Link to="/faq">{locale.support.faq}</Link>
+                <Link to={`/${lang}/faq`}>{locale.support.faq}</Link>
               </li>
               <li>
-                <Link to="/comingsoon">{locale.support.security}</Link>
+                <Link to={`/${lang}/comingsoon`}>
+                  {locale.support.security}
+                </Link>
               </li>
             </ul>
           </div>
@@ -62,13 +65,19 @@ class Footer extends Component {
             <h6>{locale.partnership._title}</h6>
             <ul>
               <li>
-                <Link to="/comingsoon">{locale.partnership.blog}</Link>
+                <Link to={`/${lang}/comingsoon`}>
+                  {locale.partnership.blog}
+                </Link>
               </li>
               <li>
-                <Link to="/comingsoon">{locale.partnership.job_positions}</Link>
+                <Link to={`/${lang}/comingsoon`}>
+                  {locale.partnership.job_positions}
+                </Link>
               </li>
               <li>
-                <Link to="/comingsoon">{locale.partnership.news}</Link>
+                <Link to={`/${lang}/comingsoon`}>
+                  {locale.partnership.news}
+                </Link>
               </li>
             </ul>
           </div>
@@ -76,7 +85,7 @@ class Footer extends Component {
             <h6>{locale.buisness_partners._title}</h6>
             <ul>
               <li>
-                <Link to="/partnership">
+                <Link to={`/${lang}/partnership`}>
                   {locale.buisness_partners.request_partnership}
                 </Link>
               </li>
@@ -86,10 +95,14 @@ class Footer extends Component {
             <h6>{locale.rules._title}</h6>
             <ul>
               <li>
-                <Link to="/comingsoon">{locale.rules.terms_of_use}</Link>
+                <Link to={`/${lang}/comingsoon`}>
+                  {locale.rules.terms_of_use}
+                </Link>
               </li>
               <li>
-                <Link to="/comingsoon">{locale.rules.privacy_policy}</Link>
+                <Link to={`/${lang}/comingsoon`}>
+                  {locale.rules.privacy_policy}
+                </Link>
               </li>
             </ul>
           </div>

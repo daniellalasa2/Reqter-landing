@@ -33,8 +33,10 @@ import { SetCookie } from "../../components/CookieHandler/CookieHandler";
 
 class Navigation extends Component {
   static contextType = ContextApi;
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.state = {
       dropdownOpen: {
         mobile: false,
@@ -118,7 +120,7 @@ class Navigation extends Component {
     this.context.toggleLoginModal();
   };
   render() {
-    this.translate = require(`./_locales/${this.context.lang}.json`);
+    const { lang } = this;
     const { locale, direction } = this.translate;
     return (
       <div className={classnames(direction === "ltr" && "_ltr")}>
@@ -138,7 +140,7 @@ class Navigation extends Component {
             <img
               src={logo}
               alt=""
-              onClick={() => (window.location.href = "/")}
+              onClick={() => this.props.history.push("/" + lang)}
             />
             <span className="logo-text-box">
               <strong className="logo-text">
@@ -179,7 +181,9 @@ class Navigation extends Component {
                 </DropdownToggle>
                 <DropdownMenu className="rtl">
                   <DropdownItem
-                    onClick={() => this.props.history.push("/partnership")}
+                    onClick={() =>
+                      this.props.history.push(`/${lang}/partnership`)
+                    }
                   >
                     {locale.buisness_partnership}
                   </DropdownItem>
@@ -196,7 +200,7 @@ class Navigation extends Component {
                 </Link>
               </NavItem> */}
               <NavItem>
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to={`/${lang}`}>
                   {locale.home}
                 </Link>
               </NavItem>
@@ -204,7 +208,9 @@ class Navigation extends Component {
                 {this.context.auth.ROLE === "user" ? (
                   <button
                     className="nav-link my-requests-link"
-                    onClick={() => this.props.history.push("/user/myrequests")}
+                    onClick={() =>
+                      this.props.history.push(`/${lang}/user/myrequests`)
+                    }
                   >
                     <FontAwesomeIcon
                       icon={faListAlt}
@@ -284,7 +290,9 @@ class Navigation extends Component {
                 {this.context.auth.ROLE === "user" ? (
                   <span
                     className="nav-link my-requests-link"
-                    onClick={() => this.props.history.push("/user/myrequests")}
+                    onClick={() =>
+                      this.props.history.push(`/${lang}/user/myrequests`)
+                    }
                   >
                     {locale.myrequests}
                   </span>
@@ -295,7 +303,9 @@ class Navigation extends Component {
                 )}
               </li>
               <li>
-                <span onClick={() => (window.location.href = "/")}>خانه</span>
+                <span onClick={() => this.props.history.push("/" + lang)}>
+                  خانه
+                </span>
               </li>
               <li>
                 <span
@@ -325,7 +335,7 @@ class Navigation extends Component {
                 >
                   <ul className="rtl ul-dropdown">
                     <li>
-                      <Link to="/partnership">
+                      <Link to={`/${lang}/partnership`}>
                         {locale.buisness_partnership}
                       </Link>
                     </li>
@@ -333,12 +343,12 @@ class Navigation extends Component {
                 </Collapse>
               </li>
               <li>
-                <Link className="nav-link" to="/contactus">
+                <Link className="nav-link" to={`/${lang}/contactus`}>
                   {locale.contact_us}
                 </Link>
               </li>
               <li>
-                <Link className="nav-link" to="/faq">
+                <Link className="nav-link" to={`/${lang}/faq`}>
                   {locale.faq}
                 </Link>
               </li>

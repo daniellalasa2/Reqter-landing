@@ -372,6 +372,12 @@ label.checkboxContainer {
     box-shadow: 0 0 0 1px rgba(46, 91, 150, 0.6);
     background-color: whitesmoke;
     display: inline-flex;
+    &._rtl {
+      direction: rtl;
+    }
+    &._ltr {
+      direction: ltr;
+    }
     .key {
       width: 35px;
       display: inline-flex;

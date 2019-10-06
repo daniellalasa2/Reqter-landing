@@ -18,7 +18,8 @@ class SelectRow extends React.Component {
     super(props);
     this.state = {
       checkedElements: [],
-      renderedChildren: null
+      renderedChildren: null,
+      props: this.props
     };
     this.thisRef = React.createRef();
   }
@@ -34,7 +35,8 @@ class SelectRow extends React.Component {
   selectionHandler = (...restArgs) => {
     let name = restArgs[0];
     let data = restArgs[1];
-    const type = this.props.type || "checkbox";
+    let { type } = this.state.props;
+    type = type || "checkbox";
     let arr = [];
     let stateGoingToUpdate = {};
     switch (type) {
@@ -77,12 +79,12 @@ class SelectRow extends React.Component {
         ...stateGoingToUpdate
       },
       () => {
-        this.props.onChange(name, this.state.checkedElements);
+        this.state.props.onChange(name, this.state.checkedElements);
       }
     );
   };
   childRenderer = newProps => {
-    return React.Children.map(this.props.children, child =>
+    return React.Children.map(this.state.props.children, child =>
       React.cloneElement(child, {
         width: `${this.childWidth}px`,
         onChange: this.selectionHandler,
@@ -93,20 +95,22 @@ class SelectRow extends React.Component {
   componentDidMount() {
     //get width from props or style !!!!
     this.width = this.thisRef.current.clientWidth;
-    this.childWidth = this.width / this.props.rowitems;
+    this.childWidth = this.width / this.state.props.rowitems;
     this.setState({
       renderedChildren: this.childRenderer()
     });
   }
-
+  componentWillReceiveProps(nextProps) {
+    this.setState({ props: nextProps }); //if new props recieved then update the state via new props
+  }
   render() {
     return (
       <div
         ref={this.thisRef}
         style={{
-          ...this.props.style,
+          ...this.state.props.style,
           boxSizing: "content-box",
-          direction: this.props.dir
+          direction: this.state.props.dir
         }}
         className="CheckBoxRow"
       >
@@ -177,60 +181,70 @@ const ImageSelect = ({
 };
 
 //Inline checkbox component
-const InlineSelect = ({
-  onChange,
-  checked,
-  className,
-  title,
-  style,
-  val,
-  boxValue,
-  width,
-  key,
-  dir,
-  name
-}) => {
-  const checkbox = useRef();
-  const toggleCheckbox = () => {
+class InlineSelect extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { dynamicProps: props };
+  }
+  toggleCheckbox = () => {
+    let { checked, name, title, val, onChange } = this.state.dynamicProps;
+    const checkbox = document.getElementById("checkbox");
     checked = !checked;
     if (checked) checkbox.current.classList.add("checked");
     else checkbox.current.classList.remove("checked");
     onChange(name, { title: title, value: val, checked: checked, name: name });
   };
-  return (
-    <React.Fragment>
-      <div
-        className="inline-checkbox-wrapper"
-        style={{ width: width, ...style }}
-      >
+  componentWillReceiveProps(nextProps) {
+    console.log("recieved");
+    this.setState({ dynamicProps: nextProps });
+  }
+  render() {
+    const {
+      checked,
+      title,
+      style,
+      boxValue,
+      width,
+      dir
+    } = this.state.dynamicProps;
+    return (
+      <React.Fragment>
         <div
-          className={"inline-checkbox" + (checked ? " checked" : "")}
-          ref={checkbox}
-          onClick={toggleCheckbox}
-          style={{ direction: dir }}
+          className="inline-checkbox-wrapper"
+          style={{ width: width, ...style }}
         >
-          <div className="key">
-            <span>{boxValue}</span>
-          </div>
-          <div className="title">{title}</div>
-          <div className="checked-icon">
-            <svg id="tickSvg" x="0px" y="0px" viewBox="0 0 512 512">
-              <g>
+          <div
+            className={classnames(
+              "inline-checkbox",
+              checked ? " checked" : "",
+              `_${dir}`
+            )}
+            id="checkbox"
+            onClick={this.toggleCheckbox}
+          >
+            <div className="key">
+              <span>{boxValue}</span>
+            </div>
+            <div className="title">{title}</div>
+            <div className="checked-icon">
+              <svg id="tickSvg" x="0px" y="0px" viewBox="0 0 512 512">
                 <g>
-                  <path
-                    d="M504.502,75.496c-9.997-9.998-26.205-9.998-36.204,0L161.594,382.203L43.702,264.311c-9.997-9.998-26.205-9.997-36.204,0
+                  <g>
+                    <path
+                      d="M504.502,75.496c-9.997-9.998-26.205-9.998-36.204,0L161.594,382.203L43.702,264.311c-9.997-9.998-26.205-9.997-36.204,0
 			c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7
 			C514.5,101.703,514.499,85.494,504.502,75.496z"
-                  />
+                    />
+                  </g>
                 </g>
-              </g>
-            </svg>
+              </svg>
+            </div>
           </div>
         </div>
-      </div>
-    </React.Fragment>
-  );
-};
+      </React.Fragment>
+    );
+  }
+}
 
 const FlatNumberSet = ({
   onClick,
@@ -370,24 +384,32 @@ const FlatTextArea = ({
                 value    = "select1"  value of select box
                 },...]
 ***************************/
-const FlatInlineSelect = ({ items, onChange, dir, type, name }) => {
-  const _options = items.map((val, index) => {
-    return (
-      <InlineSelect
-        checked={val.defaultChecked}
-        title={val.title}
-        val={val.value}
-        boxValue={index + 1}
-        dir={dir}
-        key={val.key}
-        name={name}
-      />
-    );
-  });
-  const _select =
-    items.length > 0 ? (
+class FlatInlineSelect extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dynamicProps: props
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ dynamicProps: nextProps });
+  }
+  render() {
+    const { items, onChange, dir, type, name } = this.state.dynamicProps;
+    return items.length > 0 ? (
       <SelectRow onChange={onChange} dir={dir} type={type}>
-        {_options}
+        {/* {console.log("works")} */}
+        {items.map((val, index) => (
+          <InlineSelect
+            checked={val.defaultChecked}
+            title={val.title}
+            val={val.value}
+            boxValue={index + 1}
+            dir={val.dir === "inherit" ? dir : val.dir}
+            key={val.key}
+            name={name}
+          />
+        ))}
       </SelectRow>
     ) : (
       <React.Fragment>
@@ -396,8 +418,8 @@ const FlatInlineSelect = ({ items, onChange, dir, type, name }) => {
         <strong style={{ color: "grey" }}>.گزینه ای موجود نیست</strong>
       </React.Fragment>
     );
-  return _select;
-};
+  }
+}
 
 /*************************
     *** Flat Image Select component ***
