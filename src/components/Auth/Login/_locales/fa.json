@@ -13,8 +13,11 @@
       "enter_code": {
         "_title": "کد تایید ارسال شده را وارد کنید"
       },
+      "resend_code": {
+        "_title": "ارسال مجدد کد"
+      },
       "verify_code": {
-        "_title": "تایید کد"
+        "_title": "ارسال کد"
       },
       "submit": {
         "send_code": "دریافت کد تایید",

@@ -5,35 +5,22 @@ var dateFormat = function(date) {
   this.date = date;
 };
 
-dateFormat.prototype.toPersian = function() {
+dateFormat.prototype.time = function(locale, dafaultValue) {
   if (this.isValidDate) {
-    return moment(this.date).format("jYYYY/jMM/jDD");
+    return moment(this.date)
+      .locale(locale)
+      .format("YYYY/MM/DD");
   } else {
-    return "مشخص نیست";
+    return dafaultValue;
   }
 };
-
-dateFormat.prototype.toEnglish = function() {
+dateFormat.prototype.timeWithHour = function(locale, dafaultValue) {
   if (this.isValidDate) {
-    return moment(this.date).format("YYYY/MM/DD");
+    return moment(this.date)
+      .locale(locale)
+      .format("YYYY/MM/DD HH:mm");
   } else {
-    return "Not Defined";
-  }
-};
-
-dateFormat.prototype.toPersianWithHour = function() {
-  if (this.isValidDate) {
-    return moment(this.date).format("jYYYY/jMM/jDD ساعت HH:mm");
-  } else {
-    return "مشخص نیست";
-  }
-};
-
-dateFormat.prototype.toEnglishWithHour = function() {
-  if (this.isValidDate) {
-    return moment(this.date).format("YYYY/MM/DD time HH:mm");
-  } else {
-    return "Not Defined";
+    return dafaultValue;
   }
 };
 

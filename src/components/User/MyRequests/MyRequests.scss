@@ -132,7 +132,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    direction: rtl;
     height: 190px;
 
     & .request-card-image {
@@ -144,9 +143,13 @@
       &::after {
         display: block;
         height: 80%;
-        border-left: 1px solid lightgrey;
+        border-right: 1px solid lightgrey;
+        border-left: none;
         content: "";
-        margin-right: 5px;
+        margin-left: 5px;
+      }
+      &::before {
+        display: none;
       }
       & img {
         padding: 10px;
@@ -159,6 +162,7 @@
       }
     }
     & .request-card-details {
+      direction: ltr;
       width: 53%;
       padding: 20px;
       line-height: 2;
@@ -273,6 +277,33 @@
         & li {
           width: 33.33%;
         }
+      }
+    }
+  }
+}
+
+//---------------------------//
+//         RTL STYLES        //
+//---------------------------//
+.my-requests-section {
+  &.rtl-layout {
+    & .request-card {
+      flex-direction: row-reverse !important;
+      & .request-card-image {
+        &::before {
+          display: block;
+          height: 80%;
+          border-left: 1px solid lightgrey;
+
+          content: "";
+          margin-right: 5px;
+        }
+        &::after {
+          display: none;
+        }
+      }
+      & .request-card-details {
+        direction: rtl;
       }
     }
   }

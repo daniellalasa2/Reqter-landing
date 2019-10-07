@@ -1,6 +1,7 @@
 {
   "direction": "ltr",
   "locale": {
+    "login_modal_title": "Login",
     "logout": "Logout",
     "partnership": "Partnership",
     "buisness_partnership": "Buisness partnership",

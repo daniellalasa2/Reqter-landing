@@ -116,8 +116,8 @@ class Navigation extends Component {
         throw new Error("section scroll identifier is not valid");
     }
   };
-  toggleLogin = () => {
-    this.context.toggleLoginModal();
+  toggleLogin = (...restArgs) => {
+    this.context.toggleLoginModal(restArgs);
   };
   render() {
     const { lang } = this;
@@ -127,10 +127,11 @@ class Navigation extends Component {
         <ContextConsumer>
           {ctx => (
             <Login
+              lang={ctx.lang}
               openModal={ctx.displayLoginModal}
-              toggle={this.toggleLogin}
+              toggle={() => this.toggleLogin(null, locale.login_modal_title)}
               updateAuth={ctx.updateAuth}
-              modalTitle={ctx.loginModalTitle}
+              modalTitle={locale.login_modal_title}
               defaultPhoneNumber={ctx.defaultPhoneNumber}
             />
           )}

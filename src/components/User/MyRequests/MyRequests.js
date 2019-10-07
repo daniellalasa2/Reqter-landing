@@ -12,11 +12,16 @@ import {
   faDownload,
   faList
 } from "@fortawesome/free-solid-svg-icons";
+import ContextApi from "../../ContextApi/ContextApi";
+import classnames from "classnames";
 import "./MyRequests.scss";
 import deskImg from "../../../assets/images/products-icons/002-desk.png";
 export default class MyRequests extends Component {
-  constructor(props) {
-    super(props);
+  static contextType = ContextApi;
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.UPLOAD_BASEURL = Configuration.BASE_URL_UPLOAD;
     this.state = {
       activeTab: 1,
@@ -66,6 +71,8 @@ export default class MyRequests extends Component {
   };
   generateRequestsElements = stage => {
     let generatedElements = [];
+    const { lang } = this;
+    const { locale } = this.translate;
     const targetList = SafeValue(this.state.requestsList, stage, "object", "");
     try {
       if (targetList.length > 0) {
@@ -78,9 +85,9 @@ export default class MyRequests extends Component {
                   <strong className="product-title">
                     {SafeValue(
                       item,
-                      "fields.product.fields.name.fa",
+                      `fields.product.fields.name.${lang}`,
                       "string",
-                      item.contentType.title.fa
+                      item.contentType.title[lang]
                     )}
                   </strong>
                 </div>
@@ -90,47 +97,56 @@ export default class MyRequests extends Component {
                       <strong className="product-title">
                         {SafeValue(
                           item,
-                          "fields.product.fields.name.fa",
+                          `fields.product.fields.name.${lang}`,
                           "string",
-                          item.contentType.title.fa
+                          item.contentType.title[lang]
                         )}
                       </strong>
                     </li>
                     <li>
-                      تعداد :‌{" "}
+                      {locale.fields.quantity} :‌{" "}
                       {PersianNumber(
-                        SafeValue(item, "fields.seats", "string", "fa")
+                        SafeValue(item, "fields.seats", "string", lang)
                       )}
                     </li>
                     {SafeValue(item, "sys.issueDate", "string", false) && (
                       <li>
-                        تاریخ :{" "}
+                        {locale.fields.date} :{" "}
                         {PersianNumber(
                           DateFormat(
                             item.sys.issueDate
                               .replace(/T/, " ")
                               .replace(/\..+/, "")
-                          ).toPersianWithHour()
+                          ).timeWithHour(
+                            lang,
+                            locale.fields.time_default_value
+                          ),
+                          lang
                         )}
                       </li>
                     )}
                     <li>
-                      شهر :{" "}
+                      {locale.fields.city} :{" "}
                       {SafeValue(
                         item,
-                        "fields.city.fields.name.fa",
+                        `fields.city.fields.name.${lang}`,
                         "string",
                         ""
                       )}
                     </li>
                     {item.fields.resume && item.fields.resume.length !== 0 && (
                       <li>
-                        <span>رزومه :‌ </span>
+                        <span>{locale.fields.resume} :‌ </span>
                         <a
                           href={
                             this.UPLOAD_BASEURL +
                             "asset/download/" +
-                            SafeValue(item, "fields.resume.0.fa", "string", "")
+                            SafeValue(
+                              item,
+                              `fields.resume.0.${lang}`,
+                              "string",
+                              ""
+                            )
                           }
                         >
                           <FontAwesomeIcon
@@ -153,7 +169,7 @@ export default class MyRequests extends Component {
                         )
                       }
                     >
-                      مشاهده پیشنهاد ها
+                      {locale.status.offers_list}
                     </button>
                   ) : (
                     <div
@@ -173,7 +189,7 @@ export default class MyRequests extends Component {
                           item,
                           "fields.stage.fields.name",
                           "string",
-                          "وضعیتی مشخص نشده"
+                          locale.status.no_status
                         )}
                       </strong>
                     </div>
@@ -190,9 +206,9 @@ export default class MyRequests extends Component {
                   <strong className="product-title">
                     {SafeValue(
                       item,
-                      "fields.product.fields.name.fa",
+                      `fields.product.fields.name.${lang}`,
                       "string",
-                      item.contentType.title.fa
+                      item.contentType.title[lang]
                     )}
                   </strong>
                 </div>
@@ -202,38 +218,38 @@ export default class MyRequests extends Component {
                       <strong className="product-title">
                         {SafeValue(
                           item,
-                          "fields.product.fields.name.fa",
+                          `fields.product.fields.name.${lang}`,
                           "string",
-                          item.contentType.title.fa
+                          item.contentType.title[lang]
                         )}
                       </strong>
                     </li>
                     <li>
-                      تعداد :‌ {SafeValue(item, "fields.seats", "string", "fa")}
+                      {locale.fields.quantity} :‌{" "}
+                      {SafeValue(item, "fields.seats", "string", lang)}
                     </li>
                     <li>
-                      تاریخ :{" "}
+                      {locale.fields.date} :{" "}
                       {SafeValue(item, "sys.issueDate", "string", null)
                         .replace(/T/, " ")
                         .replace(/\..+/, "")}
                     </li>
                     <li>
-                      شهر :{" "}
+                      {locale.fields.city} :{" "}
                       {SafeValue(
                         item,
-                        "fields.city.fields.name.fa",
+                        `fields.city.fields.name.${lang}`,
                         "string",
                         ""
                       )}
                     </li>
-                    {console.log("resume: ", item.fields.resume)}
                     {item.fields.resume && item.fields.resume.length !== 0 && (
                       <li>
-                        <span>رزومه :‌ </span>
+                        <span>{locale.fields.resume} :‌ </span>
                         <a
                           href={SafeValue(
                             item,
-                            "fields.resume.0.fa",
+                            `fields.resume.0.${lang}`,
                             "string",
                             ""
                           )}
@@ -253,7 +269,7 @@ export default class MyRequests extends Component {
                     {PersianNumber(
                       SafeValue(item, "fields.quotes", "object", "").length
                     )}{" "}
-                    پیشنهاد
+                    {locale.fields.offer}
                   </strong>
 
                   <button
@@ -263,7 +279,7 @@ export default class MyRequests extends Component {
                       )
                     }
                   >
-                    مشاهده پیشنهاد ها
+                    {locale.status.offers_list}
                   </button>
                 </div>
               </div>
@@ -277,9 +293,9 @@ export default class MyRequests extends Component {
                   <strong className="product-title">
                     {SafeValue(
                       item,
-                      "fields.product.fields.name.fa",
+                      `fields.product.fields.name.${lang}`,
                       "string",
-                      item.contentType.title.fa
+                      item.contentType.title[lang]
                     )}
                   </strong>
                 </div>
@@ -289,37 +305,38 @@ export default class MyRequests extends Component {
                       <strong className="product-title">
                         {SafeValue(
                           item,
-                          "fields.product.fields.name.fa",
+                          `fields.product.fields.name.${lang}`,
                           "string",
-                          item.contentType.title.fa
+                          item.contentType.title[lang]
                         )}
                       </strong>
                     </li>
                     <li>
-                      تعداد :‌ {SafeValue(item, "fields.seats", "string", "fa")}
+                      {locale.fields.quantity} :‌{" "}
+                      {SafeValue(item, "fields.seats", "string", lang)}
                     </li>
                     <li>
-                      تاریخ :{" "}
+                      {locale.fields.date} :{" "}
                       {SafeValue(item, "sys.issueDate", "string", null)
                         .replace(/T/, " ")
                         .replace(/\..+/, "")}
                     </li>
                     <li>
-                      شهر :{" "}
+                      {locale.fields.city} :{" "}
                       {SafeValue(
                         item,
-                        "fields.city.fields.name.fa",
+                        `fields.city.fields.name.${lang}`,
                         "string",
                         ""
                       )}
                     </li>
                     {item.fields.resume && item.fields.resume.length !== 0 && (
                       <li>
-                        <span>رزومه :‌ </span>
+                        <span>{locale.fields.resume} :‌ </span>
                         <a
                           href={SafeValue(
                             item,
-                            "fields.resume.0.fa",
+                            `fields.resume.0.${lang}`,
                             "string",
                             ""
                           )}
@@ -335,7 +352,7 @@ export default class MyRequests extends Component {
                   </ul>
                 </div>
                 <div className="request-card-status">
-                  <strong>در انتظار بررسی</strong>
+                  <strong>{locale.status.pending}</strong>
                 </div>
               </div>
             ));
@@ -348,9 +365,9 @@ export default class MyRequests extends Component {
                   <strong className="product-title">
                     {SafeValue(
                       item,
-                      "fields.product.fields.name.fa",
+                      `fields.product.fields.name.${lang}`,
                       "string",
-                      item.contentType.title.fa
+                      item.contentType.title[lang]
                     )}
                   </strong>
                 </div>
@@ -360,23 +377,24 @@ export default class MyRequests extends Component {
                       <strong className="product-title">
                         {SafeValue(
                           item,
-                          "fields.product.fields.name.fa",
+                          `fields.product.fields.name.${lang}`,
                           "string",
-                          item.contentType.title.fa
+                          item.contentType.title[lang]
                         )}
                       </strong>
                     </li>
                     <li>
-                      تعداد :‌ {SafeValue(item, "fields.seats", "string", "fa")}
+                      {locale.fields.quantity} :‌{" "}
+                      {SafeValue(item, "fields.seats", "string", lang)}
                     </li>
                     <li>
-                      تاریخ :{" "}
+                      {locale.fields.date} :{" "}
                       {SafeValue(item, "sys.issueDate", "string", null)
                         .replace(/T/, " ")
                         .replace(/\..+/, "")}
                     </li>
                     <li>
-                      شهر :{" "}
+                      {locale.fields.city} :{" "}
                       {SafeValue(
                         item,
                         "fields.city.fields.name.fa",
@@ -386,7 +404,7 @@ export default class MyRequests extends Component {
                     </li>
                     {item.fields.resume && item.fields.resume.length !== 0 && (
                       <li>
-                        <span>رزومه :‌ </span>
+                        <span>{locale.fields.resume} :‌ </span>
                         <a
                           href={SafeValue(item, "fields.resume", "string", "")}
                         >
@@ -401,7 +419,7 @@ export default class MyRequests extends Component {
                   </ul>
                 </div>
                 <div className="request-card-status">
-                  <strong>درخواست بسته شده</strong>
+                  <strong>{locale.status.closed}</strong>
                 </div>
               </div>
             ));
@@ -411,16 +429,16 @@ export default class MyRequests extends Component {
         }
       } else if (targetList === "") {
         generatedElements = (
-          <span className="no-content">...در حال دریافت لیست</span>
+          <span className="no-content">{locale.status.loading}</span>
         );
       } else {
         generatedElements = (
-          <span className="no-content">درخواستی برای نمایش وجود ندارد</span>
+          <span className="no-content">{locale.status.no_request}</span>
         );
       }
     } catch (err) {
       generatedElements = (
-        <span className="no-content">درخواستی برای نمایش وجود ندارد</span>
+        <span className="no-content">{locale.status.no_request}</span>
       );
     }
     return generatedElements;
@@ -433,9 +451,13 @@ export default class MyRequests extends Component {
   };
 
   render() {
+    const { direction, locale } = this.translate;
     return (
       <section
-        className="my-requests-section form-section rtl-layout"
+        className={classnames(
+          "my-requests-section form-section",
+          direction === "rtl" && "rtl-layout"
+        )}
         style={{
           backgroundColor: "whitesmoke",
           display: "flex",
@@ -482,7 +504,7 @@ export default class MyRequests extends Component {
                     />
                   </span>
                   <span className="title">
-                    <strong>لیست درخواستها</strong>
+                    <strong>{locale.form_title}</strong>
                   </span>
                 </CardHeader>
                 <CardBody>{this.generateRequestsElements("all")}</CardBody>

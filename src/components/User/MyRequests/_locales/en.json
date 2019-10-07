@@ -1,0 +1,22 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "form_title": "Request List",
+    "fields": {
+      "quantity": "Quantity",
+      "date": "Date",
+      "city": "City",
+      "resume": "Resume",
+      "offer": "offer(s)",
+      "time_default_value": "Not defined"
+    },
+    "status": {
+      "offers_list": "Offers list",
+      "pending": "Waiting for review",
+      "closed": "Closed request",
+      "loading": "Getting requests list . . .",
+      "no_request": "No request Founded.",
+      "no_status": "No status specified"
+    }
+  }
+}

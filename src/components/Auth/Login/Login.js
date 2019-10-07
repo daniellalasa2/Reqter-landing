@@ -10,13 +10,13 @@ import Validator from "../../Validator/Validator";
 import { SetCookie, JsonToString } from "../../CookieHandler/CookieHandler";
 import "./Login.scss";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
-import ContextApi from "../../ContextApi/ContextApi";
+// import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
 export default class Login extends React.Component {
-  static contextType = ContextApi;
+  // static contextType = ContextApi;
   constructor(props, context) {
     super(props, context);
-    this.lang = context.lang;
+    this.lang = props.lang;
     this.translate = require(`./_locales/${this.lang}.json`);
     this.state = {
       modal: false,
@@ -250,7 +250,6 @@ export default class Login extends React.Component {
       () => this.checkFormValidation()
     );
   };
-
   render() {
     const { locale, direction } = this.translate;
     return (

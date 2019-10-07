@@ -1,0 +1,22 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "form_title": "لیست درخواستها",
+    "fields": {
+      "quantity": "تعداد",
+      "date": "تاریخ",
+      "city": "شهر",
+      "resume": "رزومه",
+      "offer": "پیشهناد",
+      "time_default_value": "مشخص نیست"
+    },
+    "status": {
+      "offers_list": "مشاهده پیشنهاد ها",
+      "pending": "در انتظار بررسی",
+      "closed": "درخواست بسته شده",
+      "loading": " . . . در حال دریافت لیست",
+      "no_request": "درخواستی یافت نشد.",
+      "no_status": "وضعیتی مشخص نشده"
+    }
+  }
+}
