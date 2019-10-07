@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import { Link } from "react-router-dom";
 // import classnames from "classnames";
 import {
   Card,
@@ -18,11 +17,13 @@ import {
   AcceptOffer,
   RejectOffer
 } from "../../ApiHandlers/ApiHandler";
+import ContextApi from "../../ContextApi/ContextApi";
 import DateFormat from "../../DateFormat/DateFormat";
 import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
+  faArrowLeft,
   faCheckCircle,
   faTimesCircle
   // faChevronDown,
@@ -30,9 +31,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./OfferList.scss";
 import verifiedIcon from "../../../assets/images/sample-icon/verified.png";
+import classnames from "classnames";
 export default class MyRequests extends Component {
-  constructor(props) {
-    super(props);
+  static contextType = ContextApi;
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.urlParams = this.urlParser(this.props.location.search);
     this.state = {
       offerList: [],
@@ -54,6 +59,7 @@ export default class MyRequests extends Component {
   }
   getAndFilterOfferList = reqId => {
     const _this = this;
+    const { locale } = this.translate;
     GetOfferList(reqId, offer_list => {
       const SAFE_offer_list =
         SafeValue(offer_list, "data", "object", []).length > 0
@@ -67,7 +73,7 @@ export default class MyRequests extends Component {
                   textAlign: "center"
                 }}
               >
-                پیشنهادی برای این درخواست وجود ندارد
+                {locale.error.no_offer}
               </strong>
             ];
       _this.setState({
@@ -108,6 +114,8 @@ export default class MyRequests extends Component {
     return params;
   };
   generateOfferList = () => {
+    const { lang } = this;
+    const { locale, direction } = this.translate;
     let generatedElements = [];
     let targetList = SafeValue(this.state, "offerList", "object", []);
     if (targetList.length > 0) {
@@ -118,7 +126,7 @@ export default class MyRequests extends Component {
               <div className="product-header">
                 {SafeValue(
                   item,
-                  "fields.partnerid.fields.logo.0.en",
+                  `fields.partnerid.fields.logo.0.en`,
                   "string",
                   null
                 ) && (
@@ -154,7 +162,7 @@ export default class MyRequests extends Component {
                   <h5>
                     <strong className="product-title-wrapper">
                       <strong className="product-title">
-                        {SafeValue(item, "fields.name", "string", "")}
+                        {SafeValue(item, `fields.name.${lang}`, "string", "")}
                       </strong>
                     </strong>
                   </h5>
@@ -162,9 +170,9 @@ export default class MyRequests extends Component {
                     <strong>
                       {SafeValue(
                         item,
-                        "fields.partnerid.fields.name",
+                        `fields.partnerid.fields.name.${lang}`,
                         "string",
-                        "همکار در استارتاپ اسپیس"
+                        locale.fields.parter_default_name
                       )}{" "}
                       {SafeValue(
                         item,
@@ -180,90 +188,96 @@ export default class MyRequests extends Component {
               <br />
               <ul>
                 <li>
-                  شهر:
+                  {locale.fields.city}:
                   <br />
                   <strong>
                     {SafeValue(
                       item,
-                      "fields.city.fields.name.fa",
+                      `fields.city.fields.name.${lang}`,
                       "string",
                       ""
                     )}
                   </strong>
                 </li>
                 <li>
-                  قیمت ساعتی:‌
+                  {locale.fields.price.hourly}:‌
                   <br />
                   <strong>
                     {(item.fields.hourlyprice &&
                       PersianNumber(
                         addCommas(
                           SafeValue(item, "fields.hourlyprice", "string", "0")
-                        ) + " تومان"
+                        ) + ` ${locale.fields.currency.name}`,
+                        lang
                       )) ||
-                      "تعیین نشده"}
+                      locale.error.not_specified}
                   </strong>
                 </li>
                 <li>
-                  قیمت روزانه:‌
+                  {locale.fields.price.daily}:‌
                   <br />
                   <strong>
                     {(item.fields.dailyprice &&
                       PersianNumber(
                         addCommas(
                           SafeValue(item, "fields.dailyprice", "string", "0")
-                        ) + " تومان"
+                        ) + ` ${locale.fields.currency.name}`,
+                        lang
                       )) ||
-                      "تعیین نشده"}
+                      locale.error.not_specified}
                   </strong>
                 </li>
                 <li>
-                  قیمت هفتگی:‌
+                  {locale.fields.price.weekly}:‌
                   <br />
                   <strong>
                     {(item.fields.weeklyprice &&
                       PersianNumber(
                         addCommas(
                           SafeValue(item, "fields.weeklyprice", "string", "")
-                        ) + " تومان"
+                        ) + ` ${locale.fields.currency.name}`,
+                        lang
                       )) ||
-                      "تعیین نشده"}
+                      locale.error.not_specified}
                   </strong>
                 </li>
                 <li>
-                  قیمت ماهانه:‌
+                  {locale.fields.price.monthly}:‌
                   <br />
                   <strong>
                     {(item.fields.monthlyprice &&
                       PersianNumber(
                         addCommas(
                           SafeValue(item, "fields.monthlyprice", "string", "0")
-                        ) + " تومان"
+                        ) + ` ${locale.fields.currency.name}`,
+                        lang
                       )) ||
-                      "تعیین نشده"}
+                      locale.error.not_specified}
                   </strong>
                 </li>
                 {SafeValue(item, "sys.issueDate", "string", false) && (
                   <li>
-                    تاریخ ارسال پیشنهاد:
+                    {locale.fields.submission_date}:
                     <br />
                     <strong>
                       {PersianNumber(
-                        DateFormat(item.sys.issueDate).toPersianWithHour()
+                        DateFormat(item.sys.issueDate).timeWithHour(lang),
+                        lang,
+                        lang
                       )}
                     </strong>
                   </li>
                 )}
                 {item.fields.description && (
                   <li style={{ display: "contents" }}>
-                    توضیح همکار درباره درخواست:
+                    {locale.fields.partner_comment._title}:
                     <br />
                     <strong>
                       {SafeValue(
                         item,
                         "fields.description",
                         "string",
-                        "توضیح خاصی وجود ندارد"
+                        locale.fields.partner_comment.not_specified
                       )}
                     </strong>
                   </li>
@@ -374,11 +388,11 @@ export default class MyRequests extends Component {
                     }
                   >
                     <span>
-                      <strong>قبول</strong>
+                      <strong>{locale.fields.stage_buttons.approve}</strong>
                     </span>
                     <FontAwesomeIcon
                       icon={faCheckCircle}
-                      pull="left"
+                      pull={direction === "ltr" ? "right" : "left"}
                       size="lg"
                       color="#58d37b"
                     />
@@ -393,11 +407,11 @@ export default class MyRequests extends Component {
                     }
                   >
                     <span>
-                      <strong>رد</strong>
+                      <strong>{locale.fields.stage_buttons.deny}</strong>
                     </span>
                     <FontAwesomeIcon
                       icon={faTimesCircle}
-                      pull="left"
+                      pull={direction === "ltr" ? "right" : "left"}
                       size="lg"
                       color="#dd4242"
                     />
@@ -409,7 +423,7 @@ export default class MyRequests extends Component {
                     -1 && (
                     <FontAwesomeIcon
                       icon={faCheckCircle}
-                      pull="right"
+                      pull={direction === "ltr" ? "left" : "right"}
                       size="lg"
                       color="#58d37b"
                     />
@@ -418,14 +432,19 @@ export default class MyRequests extends Component {
                     -1 && (
                     <FontAwesomeIcon
                       icon={faTimesCircle}
-                      pull="right"
+                      pull={direction === "ltr" ? "left" : "right"}
                       size="lg"
                       color="#dd4242"
                     />
                   )}
                   <span>
                     <strong className="offer-stage-text">
-                      {item.fields.stage.fields.name}
+                      {SafeValue(
+                        item,
+                        `fields.stage.fields.name.${lang}`,
+                        "string",
+                        locale.error.not_specified
+                      )}
                     </strong>
                   </span>
                 </React.Fragment>
@@ -446,7 +465,7 @@ export default class MyRequests extends Component {
             textAlign: "center"
           }}
         >
-          ... در حال دریافت پیشنهادات
+          {locale.status.loading}
         </strong>
       );
     }
@@ -469,9 +488,13 @@ export default class MyRequests extends Component {
 
   // }
   render() {
+    const { locale, direction } = this.translate;
     return (
       <section
-        className="offer-list-section form-section rtl-layout"
+        className={classnames(
+          "offer-list-section form-section",
+          direction === "rtl" && "rtl-layout"
+        )}
         style={{
           backgroundColor: "whitesmoke",
           display: "flex",
@@ -488,35 +511,34 @@ export default class MyRequests extends Component {
               className="login-modal-header"
               toggle={this.toggleWarningModal}
             >
-              هشدار
+              {locale.alert_modal.title}
             </ModalHeader>
             <ModalBody>
               <span>
-                در صورت قبول یا رد پیشنهاد امکان تغییر وضعیت پیشنهاد دیگر امکان
-                پذیر نیست
+                {locale.alert_modal.body[0]}
                 <br />
                 <br />
                 <strong style={{ fontSize: "20px" }}>
-                  آیا اطمینان دارید ؟
+                  {locale.alert_modal.body[1]}
                 </strong>
               </span>
               <br />
               <Button
-                pull="right"
+                pull={direction === "ltr" ? "left" : "right"}
                 color="primary"
                 style={{ padding: "6px 25px", margin: "20px 10px 0" }}
                 onClick={() => this.offerStage()}
               >
-                بله
+                {locale.alert_modal.accept}
               </Button>
 
               <Button
-                pull="right "
+                pull={direction === "ltr" ? "left" : "right"}
                 color="primary"
                 style={{ padding: "6px 25px", margin: "20px 10px 0" }}
                 onClick={this.toggleWarningModal}
               >
-                خیر
+                {locale.alert_modal.deny}
               </Button>
             </ModalBody>
           </Modal>
@@ -526,17 +548,17 @@ export default class MyRequests extends Component {
                 <div className="back-button-section">
                   <span
                     className="fa-layers fa-fw icon "
-                    onClick={() => this.props.history.push("/user/myrequests")}
+                    onClick={() => this.props.history.goBack()}
                   >
                     <FontAwesomeIcon
-                      icon={faArrowRight}
-                      pull="right"
+                      icon={direction === "rtl" ? faArrowRight : faArrowLeft}
+                      pull={direction === "ltr" ? "left" : "right"}
                       size="lg"
                       color="white"
                     />
                   </span>
                   <span className="title">
-                    <strong>بازگشت</strong>
+                    <strong>{locale.return}</strong>
                   </span>
                 </div>
               </CardHeader>

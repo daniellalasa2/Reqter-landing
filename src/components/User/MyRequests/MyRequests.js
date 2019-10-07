@@ -106,7 +106,8 @@ export default class MyRequests extends Component {
                     <li>
                       {locale.fields.quantity} :‌{" "}
                       {PersianNumber(
-                        SafeValue(item, "fields.seats", "string", lang)
+                        SafeValue(item, "fields.seats", "string", lang),
+                        lang
                       )}
                     </li>
                     {SafeValue(item, "sys.issueDate", "string", false) && (
@@ -165,7 +166,7 @@ export default class MyRequests extends Component {
                     <button
                       onClick={() =>
                         this.props.history.push(
-                          `/user/offerlist/?rid=${item._id}`
+                          `/${lang}/user/offerlist/?rid=${item._id}`
                         )
                       }
                     >
@@ -187,7 +188,7 @@ export default class MyRequests extends Component {
                       >
                         {SafeValue(
                           item,
-                          "fields.stage.fields.name",
+                          `fields.stage.fields.name.${lang}`,
                           "string",
                           locale.status.no_status
                         )}
@@ -267,7 +268,8 @@ export default class MyRequests extends Component {
                 <div className="request-card-status">
                   <strong>
                     {PersianNumber(
-                      SafeValue(item, "fields.quotes", "object", "").length
+                      SafeValue(item, "fields.quotes", "object", "").length,
+                      lang
                     )}{" "}
                     {locale.fields.offer}
                   </strong>
@@ -275,7 +277,7 @@ export default class MyRequests extends Component {
                   <button
                     onClick={() =>
                       this.props.history.push(
-                        `/user/offerlist/?rid=${item._id}`
+                        `/${lang}/user/offerlist/?rid=${item._id}`
                       )
                     }
                   >
@@ -397,7 +399,7 @@ export default class MyRequests extends Component {
                       {locale.fields.city} :{" "}
                       {SafeValue(
                         item,
-                        "fields.city.fields.name.fa",
+                        `fields.city.fields.name.${lang}`,
                         "string",
                         ""
                       )}
@@ -406,7 +408,12 @@ export default class MyRequests extends Component {
                       <li>
                         <span>{locale.fields.resume} :‌ </span>
                         <a
-                          href={SafeValue(item, "fields.resume", "string", "")}
+                          href={SafeValue(
+                            item,
+                            `fields.resume.${lang}`,
+                            "string",
+                            ""
+                          )}
                         >
                           <FontAwesomeIcon
                             icon={faDownload}

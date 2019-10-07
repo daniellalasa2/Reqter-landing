@@ -37,7 +37,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  direction: rtl;
+  direction: ltr;
   min-height: 190px;
   // .offer-card-image {
   //   height: 100%;
@@ -113,7 +113,7 @@
         margin-bottom: 15px;
         strong {
           color: dimgrey;
-          padding-right: 10px;
+          padding-left: 10px;
         }
       }
     }
@@ -321,6 +321,27 @@
         width: 100%;
         li {
           width: 33.33%;
+        }
+      }
+    }
+  }
+}
+
+//------------------------------//
+//         RTL STYLES           //
+//------------------------------//
+.rtl-layout {
+  & .offer-card {
+    direction: rtl;
+    .offer-card-details {
+      .product-header {
+        flex-direction: row !important;
+      }
+      ul {
+        li {
+          strong {
+            padding-right: 10px;
+          }
         }
       }
     }
