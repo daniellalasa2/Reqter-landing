@@ -25,6 +25,7 @@ import {
 import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
 import SimpleMap from "../../SimpleMap/SimpleMap";
 import ContextApi from "../../ContextApi/ContextApi";
+import classnames from "classnames";
 function Loading() {
   return (
     <div className="preloader">
@@ -39,8 +40,10 @@ function Loading() {
 }
 export default class PartnerProfile extends React.Component {
   static contextType = ContextApi;
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+    this.lang = context.lang;
+    this.translate = require(`./_locales/${this.lang}.json`);
     this.partnerKey = props.match.params.slug;
     this.state = {
       activeSlideIndex: 0,
@@ -209,12 +212,12 @@ export default class PartnerProfile extends React.Component {
           fields.amenities.map((item, idx) => (
             <li key={idx}>
               <FontAwesomeIcon icon={faCheckCircle} size="lg" color="#58d37b" />
-              {SafeValue(item, "fields.name.fa", "string", " - ")}
+              {SafeValue(item, `fields.name.${this.lang}`, "string", " - ")}
             </li>
           ));
         fields.images.forEach(image => {
           images.push({
-            src: image.en,
+            src: image[this.lang],
             altText: "",
             caption: ""
           });
@@ -233,6 +236,7 @@ export default class PartnerProfile extends React.Component {
     });
   };
   fetchPartnerProducts = partnerid => {
+    const { locale } = this.translate;
     const generatedProducts = [];
     GetPartnerProducts({ "fields.partnerid": partnerid }, products => {
       if (products.success_result.success) {
@@ -248,35 +252,37 @@ export default class PartnerProfile extends React.Component {
           } = product.fields;
           generatedProducts.push(
             <tr key={index}>
-              <th scope="row">{SafeValue(name, "fa", "string", "نامشخص")}</th>
+              <th scope="row">
+                {SafeValue(name, this.lang, "string", locale.unknown)}
+              </th>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(count, "", "string", "نامشخص"))
+                  addCommas(SafeValue(count, "", "string", locale.unknown))
                 )}
               </td>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(perhourprice, "", "string", "ندارد"))
+                  addCommas(SafeValue(perhourprice, "", "string", locale.null))
                 )}
               </td>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(dailyprice, "", "string", "ندارد"))
+                  addCommas(SafeValue(dailyprice, "", "string", locale.null))
                 )}
               </td>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(weeklyprice, "", "string", "ندارد"))
+                  addCommas(SafeValue(weeklyprice, "", "string", locale.null))
                 )}
               </td>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(monthlyprice, "", "string", "ندارد"))
+                  addCommas(SafeValue(monthlyprice, "", "string", locale.null))
                 )}
               </td>
               {this.context.auth.ROLE !== "user" && (
                 <td>
-                  <button className="reserve-button">درخواست</button>
+                  <button className="reserve-button">{locale.request}</button>
                 </td>
               )}
             </tr>
@@ -337,9 +343,10 @@ export default class PartnerProfile extends React.Component {
       workinghours,
       amenities
     } = this.state.partnerInfo;
+    const { locale, direction } = this.translate;
     if (pageLoaded) {
       return (
-        <section className="partner-profile">
+        <section className={classnames("partner-profile", `_${direction}`)}>
           <Carousel
             activeIndex={activeSlideIndex}
             next={this.next}
@@ -363,29 +370,29 @@ export default class PartnerProfile extends React.Component {
             />
           </Carousel>
           <section className="partner-information">
-            {SafeValue(name, "", "string", false) && (
-              <div className="title">{name}</div>
+            {SafeValue(name, this.lang, "string", false) && (
+              <div className="title">{name[this.lang]}</div>
             )}
             {SafeValue(verified, "", "boolean", false) && (
               <div className="verified">
                 <FontAwesomeIcon
                   icon={faCheckCircle}
-                  pull="right"
+                  pull={direction === "rtl" ? "right" : "left"}
                   size="lg"
                   color="#58d37b"
                 />{" "}
-                تایید شده
+                {locale.verified}
               </div>
             )}
-            {SafeValue(address, "fa", "string", false) && (
+            {SafeValue(address, this.lang, "string", false) && (
               <div className="address">
                 <FontAwesomeIcon
                   icon={faMapMarkerAlt}
-                  pull="right"
+                  pull={direction === "rtl" ? "right" : "left"}
                   size="lg"
                   color="black"
                 />{" "}
-                {address.fa}
+                {address[this.lang]}
               </div>
             )}
           </section>
@@ -398,7 +405,7 @@ export default class PartnerProfile extends React.Component {
                 onTouchStart={this.doTouchJob}
                 onMouseDown={this.doMouseJob}
               >
-                معرفی
+                {locale.overview}
               </div>
               {partnerProducts.length > 0 && (
                 <div
@@ -408,7 +415,7 @@ export default class PartnerProfile extends React.Component {
                   onTouchStart={this.doTouchJob}
                   onMouseDown={this.doMouseJob}
                 >
-                  محصولات
+                  {locale.products}
                 </div>
               )}
               <div
@@ -418,7 +425,7 @@ export default class PartnerProfile extends React.Component {
                 onTouchStart={this.doTouchJob}
                 onMouseDown={this.doMouseJob}
               >
-                امکانات
+                {locale.facilities}
               </div>
               <div
                 className="tab hoverable"
@@ -427,7 +434,7 @@ export default class PartnerProfile extends React.Component {
                 onTouchStart={this.doTouchJob}
                 onMouseDown={this.doMouseJob}
               >
-                نقشه
+                {locale.map}
               </div>
               <div
                 className="tab hoverable"
@@ -436,27 +443,34 @@ export default class PartnerProfile extends React.Component {
                 onTouchStart={this.doTouchJob}
                 onMouseDown={this.doMouseJob}
               >
-                نظرات (بزودی)
+                {locale.reviews}
               </div>
             </div>
           </section>
           <div className="overview nav-section" id="overview-section">
-            {SafeValue(overview, "fa", "string", true) && (
-              <p>{SafeValue(overview, "fa", "string", "متن معرفی خالیست")}</p>
+            {SafeValue(overview, this.lang, "string", true) && (
+              <p>
+                {SafeValue(
+                  overview,
+                  this.lang,
+                  "string",
+                  locale.empty_overview
+                )}
+              </p>
             )}
-            {workinghours && (
+            {workinghours[this.lang] && (
               <div className="working-hours">
                 <ul>
                   <li className="title">
                     <FontAwesomeIcon
                       icon={faClock}
-                      pull="right"
+                      pull={direction === "rtl" ? "right" : "left"}
                       size="lg"
                       color="dimgrey"
                     />{" "}
-                    ساعات کاری
+                    {locale.working_hours}
                   </li>
-                  {workinghours}
+                  {workinghours[this.lang]}
                 </ul>
               </div>
             )}
@@ -467,39 +481,41 @@ export default class PartnerProfile extends React.Component {
               <div className="section-title">
                 <FontAwesomeIcon
                   icon={faBoxOpen}
-                  pull="right"
+                  pull={direction === "rtl" ? "right" : "left"}
                   size="lg"
                   color="dimgrey"
                 />{" "}
-                محصولات
+                {locale.products}
               </div>
               <Table bordered responsive>
                 <thead>
                   <tr>
-                    <th>نام محصول</th>
-                    <th>تعداد</th>
-                    <th>قیمت ساعتی</th>
-                    <th>قیمت روزانه</th>
-                    <th>قیمت هفتگی</th>
-                    <th>قیمت ماهانه</th>
-                    {this.context.auth.ROLE !== "user" && <th>رزرو</th>}
+                    <th>{locale.products.products_table}</th>
+                    <th>{locale.products.quantity}</th>
+                    <th>{locale.products.hourly_price}</th>
+                    <th>{locale.products.daily_price}</th>
+                    <th>{locale.products.weekly_price}</th>
+                    <th>{locale.products.monthly_price}</th>
+                    {this.context.auth.ROLE !== "user" && (
+                      <th>{locale.products.reserve}</th>
+                    )}
                   </tr>
                 </thead>
-                <tbody>{partnerProducts}</tbody>
+                <tbody>{partnerProducts[this.lang]}</tbody>
               </Table>
             </div>
           )}
-          {amenities && (
+          {amenities[this.lang] && (
             <div
               className="partner-facilities nav-section"
               id="facilities-section"
             >
               <div className="section-title">
                 <FontAwesomeIcon icon={faHeart} size="lg" color="dimgrey" />
-                امکانات رفاهی
+                {locale.facilities}
               </div>
               <div className="facilities-detail">
-                <ul>{amenities}</ul>
+                <ul>{amenities[this.lang]}</ul>
               </div>
             </div>
           )}
@@ -507,9 +523,9 @@ export default class PartnerProfile extends React.Component {
             <div className="section-title">
               <FontAwesomeIcon icon={faMapPin} size="lg" color="dimgrey" />
               <span>
-                <strong> آدرس</strong>
-                {SafeValue(address, "fa", "string", false) && (
-                  <p>{address.fa}</p>
+                <strong>{locale.address}</strong>
+                {SafeValue(address, this.lang, "string", false) && (
+                  <p>{address[this.lang]}</p>
                 )}
               </span>
             </div>

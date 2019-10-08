@@ -203,7 +203,7 @@
       }
       height: auto;
       padding: 0;
-      flex-direction: column;
+      flex-direction: column !important;
       & .request-card-image {
         height: 20vw;
         max-height: 86px;
@@ -288,7 +288,7 @@
 .my-requests-section {
   &.rtl-layout {
     & .request-card {
-      flex-direction: row-reverse !important;
+      flex-direction: row-reverse;
       & .request-card-image {
         &::before {
           display: block;

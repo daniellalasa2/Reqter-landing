@@ -1,3 +1,6 @@
+select {
+  border-radius: auto !important;
+}
 .picture-fader {
   background-color: rgba(0, 0, 0, 0.5);
   height: 550px;
@@ -55,7 +58,6 @@
     .product-request-form-box {
       direction: rtl;
       width: auto;
-      min-width: 575px;
       display: inline-block;
       padding: 5px;
       box-sizing: content-box;
@@ -69,11 +71,11 @@
           max-width: 206px;
         }
         & > select {
-          border-radius: 0 5px 5px 0 !important;
+          border-radius: 0 5px 5px 0;
           direction: rtl;
         }
         & > .input-group-prepend button {
-          border-radius: 5px 0 0 5px !important;
+          border-radius: 5px 0 0 5px;
           background-color: #879cdd;
         }
         width: 100%;
@@ -238,8 +240,7 @@
   }
   .tab-content {
     .choose-a-product {
-      margin-top: 100px !important;
-      text-align: center !important;
+      display: none;
     }
   }
   .head-container {
@@ -266,7 +267,9 @@
             border-radius: 0 0 5px 5px !important;
             margin: 0;
           }
-
+          & > * {
+            max-width: 400px !important;
+          }
           & > select {
             min-width: 100%;
             width: 100%;
@@ -292,6 +295,18 @@
       }
     }
   }
+  ._ltr {
+    & .products-box {
+      & .products {
+        & li {
+          flex-direction: row;
+          & strong {
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
 }
 
 //landscape phone and up , small tablets
@@ -305,6 +320,13 @@
       }
     }
   }
+  .head-container {
+    .header-content {
+      .product-request-form-box {
+        min-width: 400px;
+      }
+    }
+  }
   .crooked-divider {
     height: 70px;
     transform: rotate(0deg);
@@ -313,6 +335,13 @@
 
 //tablets and up
 @media (min-width: 768px) {
+  .head-container {
+    .header-content {
+      .product-request-form-box {
+        min-width: 575px;
+      }
+    }
+  }
   .crooked-divider {
     height: 70px;
     transform: rotate(0deg);
@@ -347,24 +376,24 @@
 //               LTR STYLES                //
 //-----------------------------------------//
 ._ltr {
-  & .head-container {
-    & .header-content {
-      & .default-header-content {
-        & span.choose-a-product {
+  .head-container {
+    .header-content {
+      .default-header-content {
+        span.choose-a-product {
           text-align: left;
         }
       }
-      & .product-request-form-box {
+      .product-request-form-box {
         direction: ltr;
-        & .input-group {
+        .input-group {
           direction: rtl;
           text-align: left;
           & > select {
-            border-radius: 5px 0 0 5px !important;
+            border-radius: 5px 0 0 5px;
             direction: ltr;
           }
           & > .input-group-prepend button {
-            border-radius: 0 5px 5px 0 !important;
+            border-radius: 0 5px 5px 0;
           }
           & > input {
             direction: ltr;

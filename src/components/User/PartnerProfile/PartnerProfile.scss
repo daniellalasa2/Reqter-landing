@@ -56,9 +56,10 @@ $green: #58d37b;
     width: 100%;
     align-self: center;
     padding: 20px;
-    direction: rtl;
+    direction: ltr;
     min-height: 90px;
     & .items-wrapper {
+      flex-direction: row;
       display: flex;
       height: auto;
       z-index: 4;
@@ -75,8 +76,9 @@ $green: #58d37b;
     }
     & .tab {
       background-color: white;
-      border: 1px solid $border-color;
-      border-right: 0;
+      border: 1px solid #aaaaaa;
+      border-left-width: 0;
+      border-right-width: 0;
       transition: all 0.15s ease-in;
       -webkit-transition: all 0.15s ease-in;
       -moz-transition: all 0.15s ease-in;
@@ -93,18 +95,22 @@ $green: #58d37b;
       font-weight: bold;
       color: $default-text-color;
       padding: 25px 40px;
-      border-width: 1px 0 1px 0;
       -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
       -moz-box-sizing: border-box; /* Firefox, other Gecko */
       box-sizing: border-box;
       &:last-child {
-        border-radius: 5px 0 0 5px;
-        border-width: 1px 0 1px 1px;
+        border-radius: 0 5px 5px 0;
+        border-top-width: 1px;
+        border-right-width: 1px;
+        border-bottom-width: 1px;
+        border-left-width: 0;
       }
       &:first-child {
-        border-width: 1px 1px 1px 0px !important;
-        border: 1px solid $border-color;
-        border-radius: 0 5px 5px 0;
+        border-top-width: 1px;
+        border-right-width: 0;
+        border-bottom-width: 1px;
+        border-left-width: 1px;
+        border-radius: 5px 0 0 5px;
       }
       &.hoverable:hover {
         cursor: pointer;
@@ -129,8 +135,8 @@ $green: #58d37b;
     margin-top: 20px;
     align-self: center;
     justify-content: flex-start;
-    text-align: right;
-    direction: rtl;
+    text-align: left;
+    direction: ltr;
     & .title {
       font-size: 25px;
       font-weight: bold;
@@ -141,35 +147,42 @@ $green: #58d37b;
       width: 130px;
       font-weight: bold;
       font-size: 16px;
-      direction: rtl;
+      direction: ltr;
       color: $green;
     }
     & .address {
       color: $default-text-color;
-      padding: 10px 5px 0 0;
+      padding: 10px 15px 0 0;
       width: fit-content;
       font-weight: bold;
       font-size: 16px;
     }
   }
+
   & .nav-section {
     font-size: 17px;
     margin-top: 15px;
     width: 100%;
     align-self: center;
     padding: 10px calc((100% - 1024px) / 2);
-    direction: rtl;
-    text-align: right;
+    direction: ltr;
+    text-align: left;
     color: $default-text-color;
+
     &:nth-child(2n + 1) {
       background-color: whitesmoke;
     }
     & .section-title {
+      display: flex;
+      align-items: center;
       font-weight: bold;
       font-size: 18px;
       width: auto;
       padding: 20px 5px;
-      svg {
+      & p {
+        margin: 0 !important;
+      }
+      & svg {
         background-color: lightgrey;
         margin: 0 18px;
         border-radius: 50%;
@@ -290,7 +303,9 @@ $green: #58d37b;
       padding: 10px 10px;
     }
     & .partner-address {
-      padding: 0;
+      & .map {
+        margin: -10px;
+      }
     }
   }
 }
@@ -409,6 +424,47 @@ $green: #58d37b;
         width: auto !important;
         padding: 25px calc(5vw - 3%) !important;
         font-size: 14px;
+      }
+    }
+  }
+}
+
+//-------------------------------//
+//           RTL STYLES          //
+//-------------------------------//
+._rtl {
+  &.partner-profile {
+    & .content-navigator {
+      direction: rtl;
+      & .items-wrapper {
+        flex-direction: row;
+      }
+      & .tab {
+        &:last-child {
+          border-radius: 5px 0 0 5px;
+          border-top-width: 1px;
+          border-right-width: 0;
+          border-bottom-width: 1px;
+          border-left-width: 1px;
+        }
+        &:first-child {
+          border-top-width: 1px;
+          border-right-width: 1px;
+          border-bottom-width: 1px;
+          border-left-width: 0;
+          border-radius: 0 5px 5px 0;
+        }
+      }
+    }
+    & .nav-section {
+      text-align: right;
+      direction: rtl;
+    }
+    & .partner-information {
+      text-align: right;
+      direction: rtl;
+      & .verified {
+        direction: rtl;
       }
     }
   }

@@ -41,7 +41,8 @@ class Navigation extends Component {
       dropdownOpen: {
         mobile: false,
         normal: false,
-        lang: false
+        lang: false,
+        langMobile: false
       },
       didBodyScrolled: false,
       isMobileMenuOpen: false
@@ -141,7 +142,7 @@ class Navigation extends Component {
             <img
               src={logo}
               alt=""
-              onClick={() => this.props.history.push("/" + lang)}
+              onClick={() => window.location.replace("/")}
             />
             <span className="logo-text-box">
               <strong className="logo-text">
@@ -268,7 +269,7 @@ class Navigation extends Component {
             </Nav>
           </Col>
         </Row>
-
+        {/********************  Mobile Menu ********************/}
         <div
           className={classnames(
             "mobile-menu-wrapper",
@@ -304,14 +305,54 @@ class Navigation extends Component {
                 )}
               </li>
               <li>
+                <span
+                  onClick={() => this.dropDownToggler("langMobile")}
+                  className={classnames("ul-dropdown-header", `${direction}`)}
+                >
+                  <span>{locale.language}</span>
+                  {this.state.dropdownOpen.langMobile ? (
+                    <FontAwesomeIcon
+                      icon={faAngleUp}
+                      pull={direction === "ltr" ? "right" : "left"}
+                      size="1x"
+                      color="white"
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      pull={direction === "ltr" ? "right" : "left"}
+                      size="1x"
+                      color="white"
+                    />
+                  )}
+                </span>
+                <Collapse
+                  isOpen={this.state.dropdownOpen.langMobile}
+                  className={classnames(`${direction}`)}
+                >
+                  <ul className={classnames("ul-dropdown", `${direction}`)}>
+                    <li>
+                      <span onClick={() => this.context.langTrigger("fa")}>
+                        فارسی
+                      </span>
+                    </li>
+                    <li>
+                      <span onClick={() => this.context.langTrigger("en")}>
+                        English
+                      </span>
+                    </li>
+                  </ul>
+                </Collapse>
+              </li>
+              <li>
                 <span onClick={() => this.props.history.push("/" + lang)}>
-                  خانه
+                  {locale.home}
                 </span>
               </li>
               <li>
                 <span
                   onClick={() => this.dropDownToggler("mobile")}
-                  className="ul-dropdown-header rtl"
+                  className={classnames("ul-dropdown-header", `${direction}`)}
                 >
                   <span>{locale.partnership}</span>
                   {this.state.dropdownOpen.mobile ? (

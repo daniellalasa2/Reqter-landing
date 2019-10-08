@@ -4,14 +4,6 @@
     100vh - 320px
   ); //min-height of content section to fill the entire height of device screen
 }
-
-input,
-select,
-textarea {
-  border-radius: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-}
 input {
   border-width: 0 0 1px 0 !important;
   border-color: #ced4da;
@@ -655,6 +647,11 @@ label.checkboxContainer {
 
 //number range set styles
 .number-range-buttons-container {
+  select,
+  input,
+  button {
+    border-radius: 0;
+  }
   display: flex;
   justify-content: center;
   width: 100%;

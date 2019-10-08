@@ -194,7 +194,7 @@ class Home extends React.Component {
               }}
             >
               <div className="header-content">
-                <div className="picture-fader">
+                <div className={classnames("picture-fader", `_${direction}`)}>
                   <TabContent activeTab={this.state.activeTab}>
                     {/* Default */}
                     <TabPane tabId="1">
@@ -467,8 +467,12 @@ class Home extends React.Component {
                     <strong>{product.items.shared_desk}</strong>
 
                     <FontAwesomeIcon
-                      icon={faChevronCircleLeft}
-                      pull="left"
+                      icon={
+                        direction === "rtl"
+                          ? faChevronCircleLeft
+                          : faChevronCircleRight
+                      }
+                      pull={direction === "rtl" ? "left" : "right"}
                       size="lg"
                       className="chevron-icon"
                       color="grey"
@@ -487,8 +491,12 @@ class Home extends React.Component {
                     <strong>{product.items.private_desk}</strong>
 
                     <FontAwesomeIcon
-                      icon={faChevronCircleLeft}
-                      pull="left"
+                      icon={
+                        direction === "rtl"
+                          ? faChevronCircleLeft
+                          : faChevronCircleRight
+                      }
+                      pull={direction === "rtl" ? "left" : "right"}
                       size="lg"
                       className="chevron-icon"
                       color="grey"
@@ -506,8 +514,12 @@ class Home extends React.Component {
 
                     <strong>{product.items.dedicated_office}</strong>
                     <FontAwesomeIcon
-                      icon={faChevronCircleLeft}
-                      pull="left"
+                      icon={
+                        direction === "rtl"
+                          ? faChevronCircleLeft
+                          : faChevronCircleRight
+                      }
+                      pull={direction === "rtl" ? "left" : "right"}
                       size="lg"
                       className="chevron-icon"
                       color="grey"
@@ -529,8 +541,12 @@ class Home extends React.Component {
 
                     <strong>{product.items.session_room}</strong>
                     <FontAwesomeIcon
-                      icon={faChevronCircleLeft}
-                      pull="left"
+                      icon={
+                        direction === "rtl"
+                          ? faChevronCircleLeft
+                          : faChevronCircleRight
+                      }
+                      pull={direction === "rtl" ? "left" : "right"}
                       size="lg"
                       className="chevron-icon"
                       color="grey"
