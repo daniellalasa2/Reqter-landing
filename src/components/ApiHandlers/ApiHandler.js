@@ -460,10 +460,17 @@ var GetPartnerProducts = (params, callback) => {
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
 //
-var SafeValue = (data, index, type, defaultValue, alternative) => {
+var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
+  const correctReturn = () => {
+    if (alternativeIndex && alternativeIndex.length) {
+      return SafeValue(data, alternativeIndex, type, defaultValue, false);
+    } else {
+      return defaultValue;
+    }
+  };
   try {
     if (!Boolean(data)) {
-      return defaultValue;
+      return correctReturn();
     }
     index = index.toString().replace(" ", "");
     index = parseInt(index) == index ? parseInt(index) : index;
@@ -472,7 +479,7 @@ var SafeValue = (data, index, type, defaultValue, alternative) => {
       if (data !== null && data !== undefined && typeof data === type) {
         return data;
       } else {
-        return defaultValue;
+        return correctReturn();
       }
     }
     let indexArr = typeof index === "string" ? index.split(".") : index;
@@ -481,7 +488,7 @@ var SafeValue = (data, index, type, defaultValue, alternative) => {
     for (let i = 0; i <= cnt - 1; i++) {
       val = indexArr[i];
       if (!Boolean(data)) {
-        return defaultValue;
+        return correctReturn();
       }
       data = data[val];
       if (i === cnt - 1) {
@@ -493,19 +500,18 @@ var SafeValue = (data, index, type, defaultValue, alternative) => {
             case "json":
               type = typeof JSON.parse(data);
               if (type === "object") return data;
-              else return defaultValue;
+              else return correctReturn();
             default:
-              return defaultValue;
+              return correctReturn();
           }
         } else {
           // console.warn(`index ${val} is not valid.`, `${val} : ${data}`);
-          return defaultValue;
+          return correctReturn();
         }
       }
     }
   } catch (err) {
-    console.warn("Value is not safe: ", err);
-    return defaultValue;
+    return correctReturn();
   }
 };
 export {

@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import classnames from "classnames";
 import ContextApi from "../../ContextApi/ContextApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,7 +27,7 @@ export default class NotFound extends React.Component {
             />
           </span>
         </h1>
-        <h3 className="body">{body}</h3>
+        <h4 className="body">{body}</h4>
         <div className="redirect-links">
           <button className="back" onClick={() => this.props.history.goBack()}>
             {back}
