@@ -148,11 +148,12 @@ class Main extends Component {
                           }}
                         >
                           <React.Fragment>
-                            <Navigation
-                              transform={route.navTransform}
-                              {...props}
-                            />
-
+                            {route.navStatus && (
+                              <Navigation
+                                transform={route.navTransform}
+                                {...props}
+                              />
+                            )}
                             <route.component {...props} />
                           </React.Fragment>
                         </ContextApi.Provider>

@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import ContextApi from "../../ContextApi/ContextApi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUnlink } from "@fortawesome/free-solid-svg-icons";
 import "./NotFound.scss";
 export default class NotFound extends React.Component {
   static contextType = ContextApi;
@@ -14,14 +16,30 @@ export default class NotFound extends React.Component {
     const { title, body, back, home } = this.translate.locale;
     const { direction } = this.translate;
     return (
-      <div id="NotFound">
-        <h1 className="title">{title}</h1>
+      <div id="NotFound" className={classnames(`_${direction}`)}>
+        <h1 className="title">
+          <span className="text">
+            {title}
+            <FontAwesomeIcon
+              icon={faUnlink}
+              pull={direction === "ltr" ? "left" : "right"}
+              color="black"
+              className="icon-unlink"
+            />
+          </span>
+        </h1>
         <h3 className="body">{body}</h3>
-
-        <button onClick={() => window.location.replace(`#/${this.lang}`)}>
-          {home}
-        </button>
-        <button onClick={() => this.props.history.goBack()}>{back}</button>
+        <div className="redirect-links">
+          <button className="back" onClick={() => this.props.history.goBack()}>
+            {back}
+          </button>
+          <button
+            className="home"
+            onClick={() => window.location.replace(`#/${this.lang}`)}
+          >
+            {home}
+          </button>
+        </div>
       </div>
     );
   }

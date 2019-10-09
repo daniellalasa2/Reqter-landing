@@ -49,129 +49,142 @@ const routes = [
     exact: true,
     name: "Home",
     component: Home,
-    navTransform: true
+    navTransform: true,
+    navStatus: true
   },
   {
     path: "/:lang?/p/:slug",
     name: "partner profile",
     exact: true,
-    component: PartnerProfile
+    component: PartnerProfile,
+    navStatus: true
   },
-  {
-    path: "/:lang?/auth/notfound",
-    exact: true,
-    name: "Not Found",
-    component: NotFound
-  },
+
   {
     path: "/:lang?/comingsoon",
     exact: true,
     name: "Coming Soon",
     component: ComingSoon,
-    navTransform: true
+    navTransform: true,
+    navStatus: true
   },
   {
     path: "/:lang?/aboutus",
     exact: true,
     name: "About Us",
-    component: AboutUs
+    component: AboutUs,
+    navStatus: true
   },
   {
     path: "/:lang?/login",
     exact: true,
     name: "Login",
-    component: Login
+    component: Login,
+    navStatus: true
   },
 
   {
     path: "/:lang?/apply/sessionroom",
     name: "Session Room",
     exact: true,
-    component: SessionRoom
+    component: SessionRoom,
+    navStatus: true
   },
   {
     path: "/:lang?/apply/dedicatedoffice",
     name: "Dedicated Office",
-    component: DedicatedOffice
+    component: DedicatedOffice,
+    navStatus: true
   },
   {
     path: "/:lang?/apply/privatedesk",
     name: "Private Desk",
-    component: PrivateDesk
+    component: PrivateDesk,
+    navStatus: true
   },
   {
     path: "/:lang?/apply/shareddesk",
     name: "Shared Desk",
     exact: true,
-    component: SharedDesk
+    component: SharedDesk,
+    navStatus: true
   },
 
   {
     path: "/:lang?/privacypolicy",
     exact: true,
     name: "Privacy Policy",
-    component: PrivacyPolicy
+    component: PrivacyPolicy,
+    navStatus: true
   },
   {
     path: "/:lang?/termsofuse",
     exact: true,
     name: "Terms Of Use",
-    component: TermsOfUse
+    component: TermsOfUse,
+    navStatus: true
   },
   {
     path: "/:lang?/blog",
     exact: true,
     name: "Blog",
-    component: Blog
+    component: Blog,
+    navStatus: true
   },
   {
     path: "/:lang?/faq",
     exact: true,
     name: "FAQ",
-    component: FAQ
+    component: FAQ,
+    navStatus: true
   },
   {
     path: "/:lang?/contactus",
     exact: true,
     name: "Contact Us",
-    component: ContactUs
-  },
-  {
-    path: "/:lang?/contactus",
-    exact: true,
-    name: "Contact Us",
-    component: ContactUs
+    component: ContactUs,
+    navStatus: true
   },
   {
     path: "/:lang?/careers",
     exact: true,
     name: "Careers",
-    component: Careers
+    component: Careers,
+    navStatus: true
   },
   {
     path: "/:lang?/partnership",
     exact: true,
     name: "Partner Ship",
-    component: PartnerShip
+    component: PartnerShip,
+    navStatus: true
   },
   {
     path: "/:lang?/security",
     exact: true,
     name: "Security",
-    component: Security
+    component: Security,
+    navStatus: true
   },
   {
     path: "/:lang?/user/myrequests",
     exact: true,
     name: "My Requests",
     component: MyRequests,
-    auth: "user"
+    auth: "user",
+    navStatus: true
   },
   {
     path: "/:lang?/user/offerlist",
     name: "Offer List",
     component: OfferList,
-    auth: "user"
+    auth: "user",
+    navStatus: true
+  },
+  //Notice: 404 page have to defined as the last route child
+  {
+    component: NotFound,
+    navStatus: false
   }
 ];
 
