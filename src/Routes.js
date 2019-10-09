@@ -58,7 +58,7 @@ const routes = [
     component: PartnerProfile
   },
   {
-    path: "/:lang?/auth/404",
+    path: "/:lang?/auth/notfound",
     exact: true,
     name: "Not Found",
     component: NotFound

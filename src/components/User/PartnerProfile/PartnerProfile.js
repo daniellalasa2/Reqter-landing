@@ -531,7 +531,7 @@ export default class PartnerProfile extends React.Component {
             </div>
             <div className="map">
               <SimpleMap
-                apiKey="AIzaSyCHvdA69xND6716dQPzu24QghfxioYk_d0"
+                apiKey="AIzaSyAtbFW_SHgPzSXfSLiQzSz2XSgaljxNKR4"
                 lng={
                   SafeValue(location, "longitude", "number", false) &&
                   location.longitude

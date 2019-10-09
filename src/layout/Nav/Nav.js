@@ -319,7 +319,11 @@ class Navigation extends Component {
               <li>
                 <span
                   onClick={() => this.dropDownToggler("langMobile")}
-                  className={classnames("ul-dropdown-header", `${direction}`)}
+                  className={classnames(
+                    "nav-link",
+                    "ul-dropdown-header",
+                    `${direction}`
+                  )}
                 >
                   <span>{locale.language}</span>
                   {this.state.dropdownOpen.langMobile ? (
@@ -357,44 +361,12 @@ class Navigation extends Component {
                 </Collapse>
               </li>
               <li>
-                <span
-                  onClick={() => this.dropDownToggler("mobile")}
-                  className={classnames("ul-dropdown-header", `${direction}`)}
-                >
-                  <span>{locale.partnership}</span>
-                  {this.state.dropdownOpen.mobile ? (
-                    <FontAwesomeIcon
-                      icon={faAngleUp}
-                      pull={direction === "ltr" ? "right" : "left"}
-                      size="1x"
-                      color="white"
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faAngleDown}
-                      pull={direction === "ltr" ? "right" : "left"}
-                      size="1x"
-                      color="white"
-                    />
-                  )}
-                </span>
-                <Collapse
-                  isOpen={this.state.dropdownOpen.mobile}
-                  className="rtl "
-                >
-                  <ul className="rtl ul-dropdown">
-                    <li>
-                      <Link to={`/${lang}/partnership`}>
-                        {locale.buisness_partnership}
-                      </Link>
-                    </li>
-                  </ul>
-                </Collapse>
+                <Link className="nav-link" to={`/${lang}/partnership`}>
+                  {locale.buisness_partnership}
+                </Link>
               </li>
               <li>
-                <Link className="nav-link" to={`/${lang}/contactus`}>
-                  {locale.contact_us}
-                </Link>
+                <Link to={`/${lang}/contactus`}>{locale.contact_us}</Link>
               </li>
               <li>
                 <Link className="nav-link" to={`/${lang}/faq`}>
@@ -402,8 +374,14 @@ class Navigation extends Component {
                 </Link>
               </li>
               {this.context.auth.ROLE === "user" && (
-                <li className="nav-link">
-                  <span onClick={() => this.logOut()}> {locale.logout}</span>
+                <li>
+                  <Link
+                    className="nav-link"
+                    to=""
+                    onClick={() => this.logOut()}
+                  >
+                    {locale.logout}
+                  </Link>
                 </li>
               )}
             </ul>

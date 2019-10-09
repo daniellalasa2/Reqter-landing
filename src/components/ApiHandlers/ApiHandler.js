@@ -460,7 +460,7 @@ var GetPartnerProducts = (params, callback) => {
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
 //
-var SafeValue = (data, index, type, defaultValue) => {
+var SafeValue = (data, index, type, defaultValue, alternative) => {
   try {
     if (!Boolean(data)) {
       return defaultValue;
