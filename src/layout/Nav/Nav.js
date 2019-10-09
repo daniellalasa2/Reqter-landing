@@ -161,18 +161,25 @@ class Navigation extends Component {
               onClick={() => this.toggleMenu("open")}
             />
             <Nav className="nav-links-container">
-              {this.context.auth.ROLE === "user" && (
-                <NavItem>
-                  <Link
-                    to=""
-                    onClick={() => this.logOut()}
-                    className="nav-link"
-                  >
-                    {locale.logout}
-                  </Link>
-                </NavItem>
-              )}
-              <Dropdown
+              {console.log(this.props)}
+              {this.context.auth.ROLE === "user" &&
+                this.props.match.path === "/:lang?/user/myrequests" && (
+                  <NavItem>
+                    <Link
+                      to=""
+                      onClick={() => this.logOut()}
+                      className="nav-link"
+                    >
+                      {locale.logout}
+                    </Link>
+                  </NavItem>
+                )}
+              <NavItem>
+                <Link to={`/${lang}/partnership`} className="nav-link">
+                  {locale.buisness_partnership}
+                </Link>
+              </NavItem>
+              {/* <Dropdown
                 nav
                 isOpen={this.state.dropdownOpen.normal}
                 toggle={() => this.dropDownToggler("normal")}
@@ -190,7 +197,7 @@ class Navigation extends Component {
                     {locale.buisness_partnership}
                   </DropdownItem>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown> */}
               {/* <NavItem>
                 <Link className="nav-link" to="/contactus">
                   {locale.contact_us}
@@ -289,6 +296,11 @@ class Navigation extends Component {
             </div>
             <ul className="items-container">
               <li>
+                <span onClick={() => this.props.history.push("/" + lang)}>
+                  {locale.home}
+                </span>
+              </li>
+              <li>
                 {this.context.auth.ROLE === "user" ? (
                   <span
                     className="nav-link my-requests-link"
@@ -343,11 +355,6 @@ class Navigation extends Component {
                     </li>
                   </ul>
                 </Collapse>
-              </li>
-              <li>
-                <span onClick={() => this.props.history.push("/" + lang)}>
-                  {locale.home}
-                </span>
               </li>
               <li>
                 <span
