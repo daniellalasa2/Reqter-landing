@@ -461,9 +461,16 @@ var GetPartnerProducts = (params, callback) => {
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
 //
 var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
+  const parimaryData = data;
   const correctReturn = () => {
     if (alternativeIndex && alternativeIndex.length) {
-      return SafeValue(data, alternativeIndex, type, defaultValue, false);
+      return SafeValue(
+        parimaryData,
+        alternativeIndex,
+        type,
+        defaultValue,
+        false
+      );
     } else {
       return defaultValue;
     }
