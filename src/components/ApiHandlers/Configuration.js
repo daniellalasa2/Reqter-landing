@@ -33,8 +33,6 @@ var Configuration = {
     coworking: "5cfc95472606810017dca194",
     dedicated_office: "5cf7e7449916860017805408",
     session_room: "5cf7e7289916860017805407",
-    private_desk: "5d36a9d78e6e9a0017c28fd9",
-    shared_desk: "5d5027842039ce674338a500",
     partnership_working_fields: "5d4169c642afbf00179b0569",
     coworking_working_field: "5d3af3a1a9602900177a5056",
     list_of_countries: "5d35e6e68e6e9a0017c28fcd",
@@ -46,6 +44,12 @@ var Configuration = {
     select_offer_stage: "5d791a0a1a2cda0017099c63",
     get_partner_info: "5d358ebc8e6e9a0017c28fc9",
     get_partner_products: "5d36a6418e6e9a0017c28fd5"
+  },
+  PRODUCT_TYPE_ID: {
+    private_desk: "5d36a9d78e6e9a0017c28fd9",
+    shared_desk: "5d5027842039ce674338a500",
+    session_room: "5d36a9eb8e6e9a0017c28fdb",
+    dedicated_office: "5d36aa018e6e9a0017c28fdd"
   }
 };
 function CheckAuthToken() {

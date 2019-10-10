@@ -3,6 +3,7 @@
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
 import {
+  Config,
   SubmitForm,
   FilterContents,
   SafeValue
@@ -87,6 +88,7 @@ class SessionRoom extends React.PureComponent {
         },
         backgroundData: {
           src: window.src,
+          product: Config.PRODUCT_TYPE_ID.session_room,
           stage: "5d6b5da15b60dc0017c95119"
         }
       },

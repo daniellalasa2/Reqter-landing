@@ -1,13 +1,13 @@
 import React from "react";
 import { Button, CardFooter, Card, CardHeader, CardBody } from "reactstrap";
 import {
+  Config,
   SafeValue,
   SubmitForm,
   Upload,
   FilterContents
 } from "../../ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
-import { Config } from "../../ApiHandlers/ApiHandler";
 import SuccessSubmit from "../Pages/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -87,7 +87,7 @@ class DedicatedOffice extends React.PureComponent {
         },
         backgroundData: {
           src: window.src,
-          product: Config.CONTENT_TYPE_ID.dedicated_office,
+          product: Config.PRODUCT_TYPE_ID.dedicated_office,
           stage: "5d6b5da15b60dc0017c95119"
         }
       },

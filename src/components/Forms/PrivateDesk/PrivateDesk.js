@@ -87,7 +87,7 @@ class PrivateDesk extends React.PureComponent {
         },
         backgroundData: {
           src: window.src,
-          product: Config.CONTENT_TYPE_ID.private_desk,
+          product: Config.PRODUCT_TYPE_ID.private_desk,
           stage: "5d6b5da15b60dc0017c95119"
         }
       },
