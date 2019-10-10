@@ -212,7 +212,13 @@ export default class PartnerProfile extends React.Component {
           fields.amenities.map((item, idx) => (
             <li key={idx}>
               <FontAwesomeIcon icon={faCheckCircle} size="lg" color="#58d37b" />
-              {SafeValue(item, `fields.name.${this.lang}`, "string", " - ")}
+              {SafeValue(
+                item,
+                `fields.name.${this.lang}`,
+                "string",
+                " - ",
+                "fields.name"
+              )}
             </li>
           ));
         fields.images.forEach(image => {
@@ -253,11 +259,11 @@ export default class PartnerProfile extends React.Component {
           generatedProducts.push(
             <tr key={index}>
               <th scope="row">
-                {SafeValue(name, this.lang, "string", locale.unknown)}
+                {SafeValue(name, this.lang, "string", locale.unknown, " ")}
               </th>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(count, "", "string", locale.unknown))
+                  addCommas(SafeValue(count, "", "string", locale.unknown, " "))
                 )}
               </td>
               <td>
@@ -370,7 +376,7 @@ export default class PartnerProfile extends React.Component {
             />
           </Carousel>
           <section className="partner-information">
-            {SafeValue(name, this.lang, "string", false) && (
+            {SafeValue(name, this.lang, "string", false, " ") && (
               <div className="title">{name[this.lang]}</div>
             )}
             {SafeValue(verified, "", "boolean", false) && (
@@ -384,7 +390,7 @@ export default class PartnerProfile extends React.Component {
                 {locale.verified}
               </div>
             )}
-            {SafeValue(address, this.lang, "string", false) && (
+            {SafeValue(address, this.lang, "string", false, " ") && (
               <div className="address">
                 <FontAwesomeIcon
                   icon={faMapMarkerAlt}
@@ -407,6 +413,7 @@ export default class PartnerProfile extends React.Component {
               >
                 {locale.overview}
               </div>
+              {console.log("partnerProducts", partnerProducts)}
               {partnerProducts.length > 0 && (
                 <div
                   className="tab hoverable"
@@ -448,7 +455,7 @@ export default class PartnerProfile extends React.Component {
             </div>
           </section>
           <div className="overview nav-section" id="overview-section">
-            {SafeValue(overview, this.lang, "string", true) && (
+            {SafeValue(overview, this.lang, "string", true, " ") && (
               <p>
                 {SafeValue(
                   overview,
@@ -524,7 +531,7 @@ export default class PartnerProfile extends React.Component {
               <FontAwesomeIcon icon={faMapPin} size="lg" color="dimgrey" />
               <span>
                 <strong>{locale.address}</strong>
-                {SafeValue(address, this.lang, "string", false) && (
+                {SafeValue(address, this.lang, "string", false, " ") && (
                   <p>{address[this.lang]}</p>
                 )}
               </span>
@@ -532,20 +539,13 @@ export default class PartnerProfile extends React.Component {
             <div className="map">
               <SimpleMap
                 apiKey="AIzaSyC0UQaQpwYxq-aOi5yXY9dU7b9mWAePwKE"
-                lng={
-                  SafeValue(location, "longitude", "string", 0) &&
-                  location.longitude
-                }
-                lat={
-                  SafeValue(location, "latitude", "string", 0) &&
-                  location.latitude
-                }
+                lng={Number(SafeValue(location, "longitude", "string", 0))}
+                lat={Number(SafeValue(location, "latitude", "string", 0))}
+                zoom={15}
                 pinDesc="paradisehub"
-                zoom={{
-                  lat:
-                    SafeValue(location, "latitude", "string", 0)
-                  lng:
-                    SafeValue(location, "longitude", "string", 0)
+                center={{
+                  lat: Number(SafeValue(location, "latitude", "string", 0)),
+                  lng: Number(SafeValue(location, "longitude", "string", 0))
                 }}
                 PinComponent={() => (
                   <FontAwesomeIcon

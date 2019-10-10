@@ -162,7 +162,13 @@ export default class MyRequests extends Component {
                   <h5>
                     <strong className="product-title-wrapper">
                       <strong className="product-title">
-                        {SafeValue(item, `fields.name.${lang}`, "string", "")}
+                        {SafeValue(
+                          item,
+                          `fields.name.${lang}`,
+                          "string",
+                          "",
+                          "fields.name"
+                        )}
                       </strong>
                     </strong>
                   </h5>
@@ -172,7 +178,8 @@ export default class MyRequests extends Component {
                         item,
                         `fields.partnerid.fields.name.${lang}`,
                         "string",
-                        locale.fields.parter_default_name
+                        locale.fields.parter_default_name,
+                        "fields.partnerid.fields.name"
                       )}{" "}
                       {SafeValue(
                         item,
@@ -195,7 +202,8 @@ export default class MyRequests extends Component {
                       item,
                       `fields.city.fields.name.${lang}`,
                       "string",
-                      ""
+                      "",
+                      "fields.city.fields.name"
                     )}
                   </strong>
                 </li>
@@ -275,9 +283,10 @@ export default class MyRequests extends Component {
                     <strong>
                       {SafeValue(
                         item,
-                        "fields.description",
+                        `fields.description.${lang}`,
                         "string",
-                        locale.fields.partner_comment.not_specified
+                        locale.fields.partner_comment.not_specified,
+                        "fields.description"
                       )}
                     </strong>
                   </li>
@@ -443,7 +452,8 @@ export default class MyRequests extends Component {
                         item,
                         `fields.stage.fields.name.${lang}`,
                         "string",
-                        locale.error.not_specified
+                        locale.error.not_specified,
+                        "fields.stage.fields.name"
                       )}
                     </strong>
                   </span>

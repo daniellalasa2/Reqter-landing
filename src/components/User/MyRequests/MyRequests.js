@@ -87,7 +87,8 @@ export default class MyRequests extends Component {
                       item,
                       `fields.product.fields.name.${lang}`,
                       "string",
-                      item.contentType.title[lang]
+                      item.contentType.title[lang],
+                      "fields.product.fields.name"
                     )}
                   </strong>
                 </div>
@@ -99,14 +100,15 @@ export default class MyRequests extends Component {
                           item,
                           `fields.product.fields.name.${lang}`,
                           "string",
-                          item.contentType.title[lang]
+                          item.contentType.title[lang],
+                          "fields.product.fields.name"
                         )}
                       </strong>
                     </li>
                     <li>
                       {locale.fields.quantity} :‌{" "}
                       {PersianNumber(
-                        SafeValue(item, "fields.seats", "string", lang),
+                        SafeValue(item, "fields.seats", "string", " - "),
                         lang
                       )}
                     </li>
@@ -132,7 +134,8 @@ export default class MyRequests extends Component {
                         item,
                         `fields.city.fields.name.${lang}`,
                         "string",
-                        ""
+                        "",
+                        "fields.city.fields.name"
                       )}
                     </li>
                     {item.fields.resume && item.fields.resume.length !== 0 && (
@@ -146,7 +149,8 @@ export default class MyRequests extends Component {
                               item,
                               `fields.resume.0.${lang}`,
                               "string",
-                              ""
+                              "",
+                              "fields.resume.0"
                             )
                           }
                         >
@@ -190,7 +194,8 @@ export default class MyRequests extends Component {
                           item,
                           `fields.stage.fields.name.${lang}`,
                           "string",
-                          locale.status.no_status
+                          locale.status.no_status,
+                          "fields.stage.fields.name"
                         )}
                       </strong>
                     </div>
@@ -209,7 +214,8 @@ export default class MyRequests extends Component {
                       item,
                       `fields.product.fields.name.${lang}`,
                       "string",
-                      item.contentType.title[lang]
+                      item.contentType.title[lang],
+                      "fields.product.fields.name"
                     )}
                   </strong>
                 </div>
@@ -221,13 +227,14 @@ export default class MyRequests extends Component {
                           item,
                           `fields.product.fields.name.${lang}`,
                           "string",
-                          item.contentType.title[lang]
+                          item.contentType.title[lang],
+                          "fields.product.fields.name"
                         )}
                       </strong>
                     </li>
                     <li>
                       {locale.fields.quantity} :‌{" "}
-                      {SafeValue(item, "fields.seats", "string", lang)}
+                      {SafeValue(item, "fields.seats", "string", " - ")}
                     </li>
                     <li>
                       {locale.fields.date} :{" "}
@@ -241,7 +248,8 @@ export default class MyRequests extends Component {
                         item,
                         `fields.city.fields.name.${lang}`,
                         "string",
-                        ""
+                        "",
+                        "fields.city.fields.name"
                       )}
                     </li>
                     {item.fields.resume && item.fields.resume.length !== 0 && (
@@ -252,7 +260,8 @@ export default class MyRequests extends Component {
                             item,
                             `fields.resume.0.${lang}`,
                             "string",
-                            ""
+                            "",
+                            "fields.resume.0"
                           )}
                         >
                           <FontAwesomeIcon
@@ -297,7 +306,8 @@ export default class MyRequests extends Component {
                       item,
                       `fields.product.fields.name.${lang}`,
                       "string",
-                      item.contentType.title[lang]
+                      item.contentType.title[lang],
+                      "fields.product.fields.name"
                     )}
                   </strong>
                 </div>
@@ -309,7 +319,8 @@ export default class MyRequests extends Component {
                           item,
                           `fields.product.fields.name.${lang}`,
                           "string",
-                          item.contentType.title[lang]
+                          item.contentType.title[lang],
+                          "fields.product.fields.name"
                         )}
                       </strong>
                     </li>
@@ -329,7 +340,8 @@ export default class MyRequests extends Component {
                         item,
                         `fields.city.fields.name.${lang}`,
                         "string",
-                        ""
+                        "",
+                        "fields.city.fields.name"
                       )}
                     </li>
                     {item.fields.resume && item.fields.resume.length !== 0 && (
@@ -340,7 +352,8 @@ export default class MyRequests extends Component {
                             item,
                             `fields.resume.0.${lang}`,
                             "string",
-                            ""
+                            "",
+                            "fields.resume.0"
                           )}
                         >
                           <FontAwesomeIcon
@@ -369,7 +382,8 @@ export default class MyRequests extends Component {
                       item,
                       `fields.product.fields.name.${lang}`,
                       "string",
-                      item.contentType.title[lang]
+                      item.contentType.title[lang],
+                      "fields.product.fields.name"
                     )}
                   </strong>
                 </div>
@@ -381,7 +395,8 @@ export default class MyRequests extends Component {
                           item,
                           `fields.product.fields.name.${lang}`,
                           "string",
-                          item.contentType.title[lang]
+                          item.contentType.title[lang],
+                          "fields.product.fields.name"
                         )}
                       </strong>
                     </li>
@@ -401,7 +416,8 @@ export default class MyRequests extends Component {
                         item,
                         `fields.city.fields.name.${lang}`,
                         "string",
-                        ""
+                        "",
+                        "fields.city.fields.name"
                       )}
                     </li>
                     {item.fields.resume && item.fields.resume.length !== 0 && (
@@ -412,7 +428,8 @@ export default class MyRequests extends Component {
                             item,
                             `fields.resume.${lang}`,
                             "string",
-                            ""
+                            "",
+                            "fields.resume"
                           )}
                         >
                           <FontAwesomeIcon
