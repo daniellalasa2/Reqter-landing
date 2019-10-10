@@ -16,7 +16,7 @@ import {
   InputGroup,
   InputGroupAddon
 } from "reactstrap";
-import { FilterContents } from "../ApiHandlers/ApiHandler";
+import { FilterContents, SafeValue } from "../ApiHandlers/ApiHandler";
 import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -51,6 +51,7 @@ class Home extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.lang = context.lang;
+    this.defaultLang = context.defaultLang;
     this.translate = require(`./_locales/${this.lang}.json`);
     this.toggle = this.toggle.bind(this);
     this.state = {
@@ -164,7 +165,16 @@ class Home extends React.Component {
     const { lang } = this;
     FilterContents("list_of_cities", res => {
       if (res.success_result.code === 200) {
-        res.data.map(val => (obj[val._id] = val.fields.name[lang]));
+        res.data.map(
+          val =>
+            (obj[val._id] = SafeValue(
+              val.fields,
+              `name.${lang}`,
+              "string",
+              "",
+              "name"
+            ))
+        );
         this.setState({
           combo: {
             city: obj

@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from "react";
-import { Route, Switch, Redirect, Link } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import routes from "../../Routes";
 import "./Main.scss";
 import ContextApi from "../../components/ContextApi/ContextApi";
@@ -16,12 +16,13 @@ const Footer = React.lazy(() => import("../Footer/Footer"));
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.supportedLanguages = ["en", "fa"];
     this.authObj = GetCookie("SSUSERAUTH")
       ? JsonParser(GetCookie("SSUSERAUTH"))
       : GetCookie("SSGUESTAUTH")
       ? JsonParser(GetCookie("SSGUESTAUTH"))
       : {};
+    this.supportedLanguages = ["en", "fa"];
+    this.defaultLang = "en";
     this.parsedUrlObject = this.urlParser(props.location.search);
     this.urlLangPathname = (function(supportedLanguagesArr) {
       const extractedLang = window.location.hash.replace("#", "").split("/")[1];
@@ -32,6 +33,7 @@ class Main extends Component {
       }
       return toBeReturned;
     })(this.supportedLanguages);
+    this.lang = this.urlLangPathname ? this.urlLangPathname : this.defaultLang;
     this.src = Boolean(GetSession("src"))
       ? GetSession("src")
       : SetSession(
@@ -40,17 +42,17 @@ class Main extends Component {
             ? this.parsedUrlObject.src
             : "direct"
         );
-
+    this.translate = require(`./_locales/${this.lang}.json`);
     window.src = GetSession("src");
     this.state = {
-      lang: this.urlLangPathname ? this.urlLangPathname : "fa",
+      lang: this.lang,
       userAuth: {
         ROLE: this.authObj ? this.authObj.ROLE : "newcomer",
         ID: this.authObj.ID ? this.authObj.ID : "",
         TOKEN: this.authObj ? this.authObj.TOKEN : ""
       },
       displayLoginModal: false,
-      loginModalTitle: "ورود",
+      loginModalTitle: this.translate.locale.login,
       defaultPhoneNumber: this.authObj ? this.authObj.ID : ""
     };
   }
@@ -58,7 +60,7 @@ class Main extends Component {
     this.setState({
       displayLoginModal:
         typeof status === "boolean" ? status : !this.state.displayLoginModal,
-      loginModalTitle: modalTitle ? modalTitle : "ورود",
+      loginModalTitle: modalTitle ? modalTitle : this.translate.locale.login,
       defaultPhoneNumber: defaultPhoneNumber
     });
   };
@@ -144,7 +146,8 @@ class Main extends Component {
                             loginModalTitle: this.state.loginModalTitle,
                             defaultPhoneNumber: this.state.defaultPhoneNumber,
                             lang: this.state.lang,
-                            langTrigger: this.langTrigger
+                            langTrigger: this.langTrigger,
+                            defaultLang: this.defaultLang
                           }}
                         >
                           <React.Fragment>
@@ -159,7 +162,7 @@ class Main extends Component {
                         </ContextApi.Provider>
                       </React.Fragment>
                     ) : (
-                      <Redirect to="/fa" />
+                      <Redirect to={`/${this.defaultLang}`} />
                     )
                   }
                 />

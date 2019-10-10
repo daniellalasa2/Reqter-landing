@@ -379,11 +379,12 @@ class PrivateDesk extends React.PureComponent {
   };
 
   generateCheckboxDataFromApi = (name, defaultChecked) => {
+    const { lang } = this;
     FilterContents(name, res => {
       const arr = [];
       SafeValue(res, "data", "object", []).map((val, key) => {
         arr.push({
-          title: val.fields.name[this.context.lang],
+          title: SafeValue(val.fields, `name.${lang}`, "string", null, "name"),
           key: val._id,
           boxValue: key + 1,
           dir: "rtl",

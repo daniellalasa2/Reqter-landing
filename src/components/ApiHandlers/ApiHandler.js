@@ -480,7 +480,7 @@ var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
       return correctReturn();
     }
     index = index.toString().replace(" ", "");
-    index = parseInt(index) == index ? parseInt(index) : index;
+    index = parseInt(index) === index ? parseInt(index) : index;
     //if index was empty string then just check validation of data
     if (index === "") {
       if (data !== null && data !== undefined && typeof data === type) {

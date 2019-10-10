@@ -531,16 +531,22 @@ export default class PartnerProfile extends React.Component {
             </div>
             <div className="map">
               <SimpleMap
-                apiKey="AIzaSyAtbFW_SHgPzSXfSLiQzSz2XSgaljxNKR4"
+                apiKey="AIzaSyC0UQaQpwYxq-aOi5yXY9dU7b9mWAePwKE"
                 lng={
-                  SafeValue(location, "longitude", "number", false) &&
+                  SafeValue(location, "longitude", "string", 0) &&
                   location.longitude
                 }
                 lat={
-                  SafeValue(location, "latitude", "number", false) &&
+                  SafeValue(location, "latitude", "string", 0) &&
                   location.latitude
                 }
                 pinDesc="paradisehub"
+                zoom={{
+                  lat:
+                    SafeValue(location, "latitude", "string", 0)
+                  lng:
+                    SafeValue(location, "longitude", "string", 0)
+                }}
                 PinComponent={() => (
                   <FontAwesomeIcon
                     icon={faMapPin}

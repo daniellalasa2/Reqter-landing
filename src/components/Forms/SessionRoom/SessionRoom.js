@@ -25,6 +25,7 @@ class SessionRoom extends React.PureComponent {
   constructor(props, context) {
     super(props, context);
     this.lang = context.lang;
+    this.defaultLang = context.defaultLang;
     this.translate = require(`./_locales/${this.lang}.json`);
     this.urlParams = this.urlParser(this.props.location.search);
     this.contentTypeName = "session_room";

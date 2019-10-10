@@ -22,7 +22,6 @@ class App extends React.Component {
         <HashRouter>
           <React.Suspense fallback={this.loading()}>
             <Switch>
-              <Redirect exact from="/" to="/fa" />
               <Route
                 path="/:lang?"
                 name="Home"
