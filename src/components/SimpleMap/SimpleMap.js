@@ -22,7 +22,6 @@ class SimpleMap extends Component {
       lng,
       lat
     } = this.props;
-    console.log(center);
     return (
       // Important! Always set the container height explicitly
       <div style={{ height: height, width: width }}>

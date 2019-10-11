@@ -378,6 +378,13 @@ var GetPartnerInfo = (params, callback) => {
     })
       .then(res => {
         const result = errorHandler(res.status);
+        if (
+          res.data.length === 0 ||
+          res.data[0].length === 0 ||
+          res.data[0].status !== "published"
+        ) {
+          result.success = false;
+        }
         return callback({
           success_result: result,
           data: SafeValue(res, "data", "object", [])
@@ -461,23 +468,24 @@ var GetPartnerProducts = (params, callback) => {
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
 //
 var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
-  const parimaryData = data;
-  const correctReturn = () => {
-    if (alternativeIndex && alternativeIndex.length) {
-      return SafeValue(
-        parimaryData,
-        alternativeIndex,
-        type,
-        defaultValue,
-        false
-      );
-    } else {
-      return defaultValue;
-    }
-  };
+  let correctReturn;
   try {
-    if (!Boolean(data)) {
-      return correctReturn();
+    const parimaryData = data;
+    correctReturn = () => {
+      if (alternativeIndex && alternativeIndex.length) {
+        return SafeValue(
+          parimaryData,
+          alternativeIndex,
+          type,
+          defaultValue,
+          false
+        );
+      } else {
+        return defaultValue;
+      }
+    };
+    if (!Boolean(data) || data === null) {
+      return defaultValue;
     }
     index = index.toString().replace(" ", "");
     index = parseInt(index) === index ? parseInt(index) : index;
@@ -495,7 +503,7 @@ var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
     for (let i = 0; i <= cnt - 1; i++) {
       val = indexArr[i];
       if (!Boolean(data)) {
-        return correctReturn();
+        return defaultValue;
       }
       data = data[val];
       if (i === cnt - 1) {

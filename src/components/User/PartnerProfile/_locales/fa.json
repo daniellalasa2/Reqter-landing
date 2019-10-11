@@ -3,7 +3,6 @@
   "locale": {
     "not_defined": "نامشخص",
     "null": "ندارد",
-
     "verified": "تایید شده",
     "overview": "معرفی",
     "products": "محصولات",
@@ -13,7 +12,7 @@
     "reviews": "نظرات (بزودی)",
     "working_hours": "ساعات کاری",
     "empty_overview": "متن معرفی خالیست",
-    "requeest": "درخواست",
+    "no_amenities": "امکانات موجود نیست",
     "products_table": {
       "products_name": "نام محصول",
       "quantity": "تعداد",
@@ -21,6 +20,7 @@
       "daily_price": "قیمت روزانه",
       "weekly_price": "قیمت هفتگی",
       "monthly_price": "قیمت ماهانه",
+      "request": "درخواست",
       "reserve": "رزرو"
     }
   }

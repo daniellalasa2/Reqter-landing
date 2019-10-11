@@ -3,7 +3,6 @@
   "locale": {
     "not_defined": "Not defined",
     "null": "Not specified",
-
     "verified": "Verified",
     "overview": "Overview",
     "products": "Products",
@@ -13,7 +12,7 @@
     "reviews": "Reviews(Soon)",
     "working_hours": "Working hours",
     "empty_overview": "Empty overview",
-    "requeest": "Request",
+    "no_amenities": "No available amenity",
     "products_table": {
       "products_name": "Product name",
       "quantity": "Quantity",
@@ -21,6 +20,7 @@
       "daily_price": "Daily price",
       "weekly_price": "Weekly price",
       "monthly_price": "Monthly price",
+      "request": "Request",
       "reserve": "Reserve"
     }
   }

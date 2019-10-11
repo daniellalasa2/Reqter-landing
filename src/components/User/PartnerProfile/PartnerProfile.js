@@ -237,7 +237,7 @@ export default class PartnerProfile extends React.Component {
           pageLoaded: true
         });
       } else {
-        this.props.history.push("/");
+        this.props.history.push(`/${this.lang}/auth/notfound`);
       }
     });
   };
@@ -263,32 +263,41 @@ export default class PartnerProfile extends React.Component {
               </th>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(count, "", "string", locale.unknown, " "))
+                  addCommas(
+                    SafeValue(count, "", "string", locale.unknown, " ")
+                  ),
+                  this.lang
                 )}
               </td>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(perhourprice, "", "string", locale.null))
+                  addCommas(SafeValue(perhourprice, "", "string", locale.null)),
+                  this.lang
                 )}
               </td>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(dailyprice, "", "string", locale.null))
+                  addCommas(SafeValue(dailyprice, "", "string", locale.null)),
+                  this.lang
                 )}
               </td>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(weeklyprice, "", "string", locale.null))
+                  addCommas(SafeValue(weeklyprice, "", "string", locale.null)),
+                  this.lang
                 )}
               </td>
               <td>
                 {PersianNumber(
-                  addCommas(SafeValue(monthlyprice, "", "string", locale.null))
+                  addCommas(SafeValue(monthlyprice, "", "string", locale.null)),
+                  this.lang
                 )}
               </td>
               {this.context.auth.ROLE !== "user" && (
                 <td>
-                  <button className="reserve-button">{locale.request}</button>
+                  <button className="reserve-button">
+                    {locale.products_table.request}
+                  </button>
                 </td>
               )}
             </tr>
@@ -376,9 +385,12 @@ export default class PartnerProfile extends React.Component {
             />
           </Carousel>
           <section className="partner-information">
-            {SafeValue(name, this.lang, "string", false, " ") && (
-              <div className="title">{name[this.lang]}</div>
-            )}
+            {console.log("name", name)}
+
+            <div className="title">
+              {SafeValue(name, this.lang, "string", false, " ")}
+            </div>
+
             {SafeValue(verified, "", "boolean", false) && (
               <div className="verified">
                 <FontAwesomeIcon
@@ -413,8 +425,7 @@ export default class PartnerProfile extends React.Component {
               >
                 {locale.overview}
               </div>
-              {console.log("partnerProducts", partnerProducts)}
-              {partnerProducts.length > 0 && (
+              {SafeValue(partnerProducts, "", "object", []).length > 0 && (
                 <div
                   className="tab hoverable"
                   id="products-section-navigator"
@@ -425,6 +436,7 @@ export default class PartnerProfile extends React.Component {
                   {locale.products}
                 </div>
               )}
+
               <div
                 className="tab hoverable"
                 id="facilities-section-navigator"
@@ -455,17 +467,16 @@ export default class PartnerProfile extends React.Component {
             </div>
           </section>
           <div className="overview nav-section" id="overview-section">
-            {SafeValue(overview, this.lang, "string", true, " ") && (
-              <p>
-                {SafeValue(
-                  overview,
-                  this.lang,
-                  "string",
-                  locale.empty_overview
-                )}
-              </p>
-            )}
-            {workinghours[this.lang] && (
+            <p>
+              {SafeValue(
+                overview,
+                this.lang,
+                "string",
+                locale.empty_overview,
+                " "
+              )}
+            </p>
+            {SafeValue(workinghours, "", "object", []).length > 0 && (
               <div className="working-hours">
                 <ul>
                   <li className="title">
@@ -477,13 +488,13 @@ export default class PartnerProfile extends React.Component {
                     />{" "}
                     {locale.working_hours}
                   </li>
-                  {workinghours[this.lang]}
+                  {workinghours}
                 </ul>
               </div>
             )}
           </div>
 
-          {partnerProducts.length > 0 && (
+          {SafeValue(partnerProducts, "", "object", []).length > 0 && (
             <div className="partner-products nav-section" id="products-section">
               <div className="section-title">
                 <FontAwesomeIcon
@@ -497,22 +508,28 @@ export default class PartnerProfile extends React.Component {
               <Table bordered responsive>
                 <thead>
                   <tr>
-                    <th>{locale.products.products_table}</th>
-                    <th>{locale.products.quantity}</th>
-                    <th>{locale.products.hourly_price}</th>
-                    <th>{locale.products.daily_price}</th>
-                    <th>{locale.products.weekly_price}</th>
-                    <th>{locale.products.monthly_price}</th>
+                    <th>{locale.products_table.products_name}</th>
+                    <th>{locale.products_table.quantity}</th>
+                    <th>{locale.products_table.hourly_price}</th>
+                    <th>{locale.products_table.daily_price}</th>
+                    <th>{locale.products_table.weekly_price}</th>
+                    <th>{locale.products_table.monthly_price}</th>
                     {this.context.auth.ROLE !== "user" && (
-                      <th>{locale.products.reserve}</th>
+                      <th>{locale.products_table.reserve}</th>
                     )}
                   </tr>
                 </thead>
-                <tbody>{partnerProducts[this.lang]}</tbody>
+                <tbody>{partnerProducts}</tbody>
               </Table>
             </div>
           )}
-          {amenities[this.lang] && (
+          {SafeValue(
+            amenities,
+            this.lang,
+            "string",
+            locale.no_amenities,
+            " "
+          ) && (
             <div
               className="partner-facilities nav-section"
               id="facilities-section"
@@ -522,7 +539,7 @@ export default class PartnerProfile extends React.Component {
                 {locale.facilities}
               </div>
               <div className="facilities-detail">
-                <ul>{amenities[this.lang]}</ul>
+                <ul>{amenities}</ul>
               </div>
             </div>
           )}
@@ -549,9 +566,9 @@ export default class PartnerProfile extends React.Component {
                 }}
                 PinComponent={() => (
                   <FontAwesomeIcon
-                    icon={faMapPin}
+                    icon={faMapMarkerAlt}
                     size="lg"
-                    color="dimgrey"
+                    color="#e22828"
                     style={{ fontSize: "3em" }}
                   />
                 )}

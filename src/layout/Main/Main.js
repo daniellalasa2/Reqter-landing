@@ -22,7 +22,7 @@ class Main extends Component {
       ? JsonParser(GetCookie("SSGUESTAUTH"))
       : {};
     this.supportedLanguages = ["en", "fa"];
-    this.defaultLang = "en";
+    this.defaultLang = "fa";
     this.parsedUrlObject = this.urlParser(props.location.search);
     this.urlLangPathname = (function(supportedLanguagesArr) {
       const extractedLang = window.location.hash.replace("#", "").split("/")[1];
@@ -45,6 +45,7 @@ class Main extends Component {
     this.translate = require(`./_locales/${this.lang}.json`);
     window.src = GetSession("src");
     this.state = {
+      componentTreeErrorCatched: false,
       lang: this.lang,
       userAuth: {
         ROLE: this.authObj ? this.authObj.ROLE : "newcomer",
@@ -111,6 +112,11 @@ class Main extends Component {
       });
     }
   };
+  static getDerivedStateFromError(error) {
+    return {
+      componentTreeErrorCatched: true
+    };
+  }
   componentWillMount() {
     const { history } = this.props;
     this.unlisten = history.listen(action => {
@@ -121,6 +127,10 @@ class Main extends Component {
     this.unlisten();
   }
   render() {
+    console.log(this.state.componentTreeErrorCatched);
+    if (this.state.componentTreeErrorCatched) {
+      return <Redirect to={`/${this.lang}/auth/internalerror`} />;
+    }
     return (
       <React.Fragment>
         {/* Routes */}

@@ -41,6 +41,9 @@ const OfferList = React.lazy(() =>
 const NotFound = React.lazy(() =>
   import("./components/Auth/NotFound/NotFound")
 );
+const InternalError = React.lazy(() =>
+  import("./components/Auth/InternalError/InternalError")
+);
 //temporary
 const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
 const routes = [
@@ -180,6 +183,12 @@ const routes = [
     component: OfferList,
     auth: "user",
     navStatus: true
+  },
+  {
+    path: "/:lang?/auth/internalerror",
+    name: "Internal Error",
+    component: InternalError,
+    navStatus: false
   },
   //Notice: 404 page have to defined as the last route child
   {
