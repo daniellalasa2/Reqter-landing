@@ -127,7 +127,6 @@ class Main extends Component {
     this.unlisten();
   }
   render() {
-    console.log(this.state.componentTreeErrorCatched);
     if (this.state.componentTreeErrorCatched) {
       return <Redirect to={`/${this.lang}/auth/internalerror`} />;
     }

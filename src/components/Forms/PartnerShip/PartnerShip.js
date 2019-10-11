@@ -122,7 +122,6 @@ class PartnerShip extends React.PureComponent {
     return _formIsValid;
   };
   checkboxStateHandler = (name, data) => {
-    console.log(name, data);
     let checkBoxValuesArr = [];
     if (data.length) {
       data.forEach(obj => {

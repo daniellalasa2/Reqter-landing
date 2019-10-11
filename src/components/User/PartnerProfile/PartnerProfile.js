@@ -20,7 +20,8 @@ import {
 import {
   SafeValue,
   GetPartnerInfo,
-  GetPartnerProducts
+  GetPartnerProducts,
+  Config
 } from "../../ApiHandlers/ApiHandler";
 import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
 import SimpleMap from "../../SimpleMap/SimpleMap";
@@ -247,61 +248,96 @@ export default class PartnerProfile extends React.Component {
     GetPartnerProducts({ "fields.partnerid": partnerid }, products => {
       if (products.success_result.success) {
         const productsArr = products.data;
+        const product_ids = [
+          { name: "sessionroom", id: Config.PRODUCT_TYPE_ID.session_room },
+          {
+            name: "dedicatedoffice",
+            id: Config.PRODUCT_TYPE_ID.dedicated_office
+          },
+          { name: "privatedesk", id: Config.PRODUCT_TYPE_ID.private_desk },
+          { name: "shareddesk", id: Config.PRODUCT_TYPE_ID.shared_desk }
+        ];
         productsArr.forEach((product, index) => {
+          const { _id } = product;
           const {
             name,
             count,
             perhourprice,
             dailyprice,
             weeklyprice,
-            monthlyprice
+            monthlyprice,
+            producttype
           } = product.fields;
-          generatedProducts.push(
-            <tr key={index}>
-              <th scope="row">
-                {SafeValue(name, this.lang, "string", locale.unknown, " ")}
-              </th>
-              <td>
-                {PersianNumber(
-                  addCommas(
-                    SafeValue(count, "", "string", locale.unknown, " ")
-                  ),
-                  this.lang
-                )}
-              </td>
-              <td>
-                {PersianNumber(
-                  addCommas(SafeValue(perhourprice, "", "string", locale.null)),
-                  this.lang
-                )}
-              </td>
-              <td>
-                {PersianNumber(
-                  addCommas(SafeValue(dailyprice, "", "string", locale.null)),
-                  this.lang
-                )}
-              </td>
-              <td>
-                {PersianNumber(
-                  addCommas(SafeValue(weeklyprice, "", "string", locale.null)),
-                  this.lang
-                )}
-              </td>
-              <td>
-                {PersianNumber(
-                  addCommas(SafeValue(monthlyprice, "", "string", locale.null)),
-                  this.lang
-                )}
-              </td>
-              {this.context.auth.ROLE !== "user" && (
+
+          if (product.status === "published") {
+            // let productName = null;
+            // for (let i = 0; i <= product_ids.length; i++) {
+            //   if (product_ids[i].id === producttype) {
+            //     productName = product_ids[i].name;
+            //   }
+            // }
+            // console.log("productName", productName);
+            // console.log("productName", productName);
+            generatedProducts.push(
+              <tr key={index}>
+                <th scope="row">
+                  {SafeValue(name, this.lang, "string", locale.unknown, " ")}
+                </th>
                 <td>
-                  <button className="reserve-button">
-                    {locale.products_table.request}
-                  </button>
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(count, "", "string", locale.unknown, " ")
+                    ),
+                    this.lang
+                  )}
                 </td>
-              )}
-            </tr>
-          );
+                <td>
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(perhourprice, "", "string", locale.null)
+                    ),
+                    this.lang
+                  )}
+                </td>
+                <td>
+                  {PersianNumber(
+                    addCommas(SafeValue(dailyprice, "", "string", locale.null)),
+                    this.lang
+                  )}
+                </td>
+                <td>
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(weeklyprice, "", "string", locale.null)
+                    ),
+                    this.lang
+                  )}
+                </td>
+                <td>
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(monthlyprice, "", "string", locale.null)
+                    ),
+                    this.lang
+                  )}
+                </td>
+                {this.context.auth.ROLE !== "user" && (
+                  <td>
+                    <button
+                      className="reserve-button"
+                      // onClick={() =>
+                      //   this.props.history.push(
+                      //     `/${this.lang}/apply/${productName}?src=${partnerid}&product_id=${_id}`
+                      //   )
+                      // }
+                    >
+                      {locale.products_table.request}
+                    </button>
+                  </td>
+                )}
+              </tr>
+            );
+          }
         });
         this.setState({
           partnerProducts: generatedProducts
@@ -385,8 +421,6 @@ export default class PartnerProfile extends React.Component {
             />
           </Carousel>
           <section className="partner-information">
-            {console.log("name", name)}
-
             <div className="title">
               {SafeValue(name, this.lang, "string", false, " ")}
             </div>
@@ -514,9 +548,9 @@ export default class PartnerProfile extends React.Component {
                     <th>{locale.products_table.daily_price}</th>
                     <th>{locale.products_table.weekly_price}</th>
                     <th>{locale.products_table.monthly_price}</th>
-                    {this.context.auth.ROLE !== "user" && (
+                    {/* {this.context.auth.ROLE !== "user" && (
                       <th>{locale.products_table.reserve}</th>
-                    )}
+                    )} */}
                   </tr>
                 </thead>
                 <tbody>{partnerProducts}</tbody>

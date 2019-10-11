@@ -161,7 +161,6 @@ class Navigation extends Component {
               onClick={() => this.toggleMenu("open")}
             />
             <Nav className="nav-links-container">
-              {console.log(this.props)}
               {this.context.auth.ROLE === "user" &&
                 this.props.match.path === "/:lang?/user/myrequests" && (
                   <NavItem>
