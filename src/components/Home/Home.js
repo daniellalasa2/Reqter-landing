@@ -240,7 +240,7 @@ class Home extends React.Component {
                                     onClick={() =>
                                       this.checkFormValidation() &&
                                       this.props.history.push({
-                                        pathname: `${lang}/apply/shareddesk`,
+                                        pathname: `/${lang}/apply/shareddesk`,
                                         search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                       })
                                     }
@@ -301,7 +301,7 @@ class Home extends React.Component {
                                     onClick={() =>
                                       this.checkFormValidation() &&
                                       this.props.history.push({
-                                        pathname: `${lang}/apply/privatedesk`,
+                                        pathname: `/${lang}/apply/privatedesk`,
                                         search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                       })
                                     }
@@ -359,7 +359,7 @@ class Home extends React.Component {
                                   onClick={() =>
                                     this.checkFormValidation() &&
                                     this.props.history.push({
-                                      pathname: `${lang}/apply/dedicatedoffice`,
+                                      pathname: `/${lang}/apply/dedicatedoffice`,
                                       search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                     })
                                   }
@@ -416,7 +416,7 @@ class Home extends React.Component {
                                   onClick={() =>
                                     this.checkFormValidation() &&
                                     this.props.history.push({
-                                      pathname: `${lang}/apply/sessionroom`,
+                                      pathname: `/${lang}/apply/sessionroom`,
                                       search: `?city=${this.state.form.fields.selectedCity.value}&seats=${this.state.form.fields.neededSeats.value}`
                                     })
                                   }

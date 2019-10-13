@@ -28,6 +28,7 @@ class SessionRoom extends React.PureComponent {
     this.defaultLang = context.defaultLang;
     this.translate = require(`./_locales/${this.lang}.json`);
     this.urlParams = this.urlParser(this.props.location.search);
+    console.log(this.urlParams);
     this.contentTypeName = "session_room";
     this.state = {
       form: {
@@ -90,7 +91,8 @@ class SessionRoom extends React.PureComponent {
         backgroundData: {
           src: window.src,
           product: Config.PRODUCT_TYPE_ID.session_room,
-          stage: "5d6b5da15b60dc0017c95119"
+          stage: "5d6b5da15b60dc0017c95119",
+          product_id: this.urlParams.product_id
         }
       },
       combo: {
@@ -187,7 +189,7 @@ class SessionRoom extends React.PureComponent {
     let value = null;
     let validation = {};
 
-    const { locale } = this.state.translate;
+    const { locale } = this.translate;
     if (name === "startdate") {
       const enddate = this.state.form.fields.enddate.value;
       try {
@@ -273,7 +275,7 @@ class SessionRoom extends React.PureComponent {
     let _isValid = this.checkFormValidation();
     const _backgroundData = this.state.form.backgroundData;
     let _formObjectGoingToSubmit = {};
-    const { locale } = this.state.translate;
+    const { locale } = this.translate;
     //if form was valid then convert state form to api form
     // if the form was valid then submit it
     if (_isValid) {
@@ -461,7 +463,7 @@ class SessionRoom extends React.PureComponent {
                         placeholder={locale.fields.startdate.placeholder}
                         onChange={this.formStateHandler}
                         style={{
-                          direction: direction,
+                          direction: "ltr",
                           textAlign: direction === "rtl" ? "right" : "left"
                         }}
                       />
@@ -484,7 +486,7 @@ class SessionRoom extends React.PureComponent {
                         placeholder={locale.fields.enddate.placeholder}
                         onChange={this.formStateHandler}
                         style={{
-                          direction: direction,
+                          direction: "ltr",
                           textAlign: direction === "rtl" ? "right" : "left"
                         }}
                         name="enddate"

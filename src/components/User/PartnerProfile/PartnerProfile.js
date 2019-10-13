@@ -270,14 +270,12 @@ export default class PartnerProfile extends React.Component {
           } = product.fields;
 
           if (product.status === "published") {
-            // let productName = null;
-            // for (let i = 0; i <= product_ids.length; i++) {
-            //   if (product_ids[i].id === producttype) {
-            //     productName = product_ids[i].name;
-            //   }
-            // }
-            // console.log("productName", productName);
-            // console.log("productName", productName);
+            let productName = null;
+            for (let i = 0; i < product_ids.length; i++) {
+              if (product_ids[i].id === producttype) {
+                productName = product_ids[i].name;
+              }
+            }
             generatedProducts.push(
               <tr key={index}>
                 <th scope="row">
@@ -325,11 +323,11 @@ export default class PartnerProfile extends React.Component {
                   <td>
                     <button
                       className="reserve-button"
-                      // onClick={() =>
-                      //   this.props.history.push(
-                      //     `/${this.lang}/apply/${productName}?src=${partnerid}&product_id=${_id}`
-                      //   )
-                      // }
+                      onClick={() =>
+                        this.props.history.push(
+                          `/${this.lang}/apply/${productName}?src=${partnerid}&product_id=${_id}`
+                        )
+                      }
                     >
                       {locale.products_table.request}
                     </button>
