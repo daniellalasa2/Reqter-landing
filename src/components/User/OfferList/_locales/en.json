@@ -33,7 +33,7 @@
         "_title": "Partner comment",
         "not_specified": "No comment"
       },
-      "stage_button": {
+      "stage_buttons": {
         "approve": "Aprrove",
         "deny": "Deny"
       }

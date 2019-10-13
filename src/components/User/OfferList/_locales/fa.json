@@ -33,7 +33,7 @@
         "_title": "توضیح همکار درباره درخواست",
         "not_specified": "توضیح خاصی وجود ندارد"
       },
-      "stage_button": {
+      "stage_buttons": {
         "approve": "قبول",
         "deny": "رد"
       }
