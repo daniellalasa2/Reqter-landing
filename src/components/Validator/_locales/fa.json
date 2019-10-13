@@ -1,0 +1,29 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "required_field": "فیلد الزامی",
+    "email": {
+      "invalid": "ایمیل نامعتبر است"
+    },
+    "phonenumber": {
+      "without_zero": "شماره نباید با صفر شروع شود",
+      "incorrect_phonenumber": "شماره وارد شده صحیح نیست"
+    },
+    "website": {
+      "invalid_format": "فرمت آدرس وبسایت وارد شده نامعتبر است"
+    },
+    "number": {
+      "invalid_number": "لطفا مقدار عددی صحیح وارد کنید"
+    },
+    "birthyear": {
+      "invalid_birthyear": "تاریخ تولد صحیح نیست"
+    },
+    "upload": {
+      "wait_for_upload": "در حال آپلود فایل لطفا منتظر بمانید"
+    },
+    "date": {
+      "invalid_date": "لطفا تاریخ و زمان صحیح وارد کنید",
+      "past_date": "تاریخ و زمان نباید از الان به قبل باشد"
+    }
+  }
+}

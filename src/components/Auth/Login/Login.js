@@ -66,7 +66,8 @@ export default class Login extends React.Component {
               value: SafeValue(nextProps, "defaultPhoneNumber", "string", ""),
               isValid: Validator(
                 SafeValue(nextProps, "defaultPhoneNumber", "string", ""),
-                this.validationRules.phoneNumber
+                this.validationRules.phoneNumber,
+                this.lang
               ).valid
             }
           }
@@ -193,7 +194,11 @@ export default class Login extends React.Component {
   };
   checkFieldValidation = fieldName => {
     const field = this.state.form.fields[fieldName];
-    const validation = Validator(field.value, this.validationRules[fieldName]);
+    const validation = Validator(
+      field.value,
+      this.validationRules[fieldName],
+      this.lang
+    );
     const fieldContent = {
       error: validation.message,
       isValid: validation.valid
@@ -231,7 +236,7 @@ export default class Login extends React.Component {
     let _this = e.target;
     const name = _this.name;
     let value = _this.value;
-    const validation = Validator(value, this.validationRules[name]);
+    const validation = Validator(value, this.validationRules[name], this.lang);
     this.setState(
       {
         form: {

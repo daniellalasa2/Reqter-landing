@@ -69,7 +69,11 @@ class Products extends Component {
     let _formIsValid = true;
     let _validation = {};
     for (let index in inputs) {
-      _validation = Validator(inputs[index].value, this.validationRules[index]);
+      _validation = Validator(
+        inputs[index].value,
+        this.validationRules[index],
+        this.lang
+      );
       if (!_validation.valid) {
         //if form is valid value could change to false else value is unchangable
         _formIsValid = _formIsValid && false;
@@ -95,7 +99,7 @@ class Products extends Component {
   formStateHandler = e => {
     const name = e.target.name;
     const value = e.target.value;
-    const validation = Validator(value, this.validationRules[name]);
+    const validation = Validator(value, this.validationRules[name], this.lang);
     if (validation.valid) {
       e.target.classList.remove("has-error");
     } else {

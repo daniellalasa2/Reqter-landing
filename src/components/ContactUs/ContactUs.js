@@ -75,7 +75,7 @@ class ContactUs extends React.PureComponent {
     let _this = e.target ? e.target : e;
     const name = _this.name;
     let value = _this.value;
-    let validation = Validator(value, this.validationRules[name]);
+    let validation = Validator(value, this.validationRules[name], this.lang);
     this.setState(
       {
         form: {
@@ -102,7 +102,11 @@ class ContactUs extends React.PureComponent {
     let _validation = {};
     for (let index in inputs) {
       _formObjectGoingToSubmit[index] = inputs[index].value;
-      _validation = Validator(inputs[index].value, this.validationRules[index]);
+      _validation = Validator(
+        inputs[index].value,
+        this.validationRules[index],
+        this.lang
+      );
       if (!_validation.valid) {
         _isValid = false;
         _fields[index] = {

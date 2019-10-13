@@ -8,7 +8,7 @@ import {
   FilterContents
 } from "../../ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
-import SuccessSubmit from "../Pages/SuccessSubmit";
+import SuccessSubmit from "../SubmitStatus/SuccessSubmit/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -125,7 +125,11 @@ class DedicatedOffice extends React.PureComponent {
     } else {
       checkBoxValuesArr = SafeValue(data, "value", "string", []);
     }
-    const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
+    const validation = Validator(
+      checkBoxValuesArr,
+      this.validationRules[name],
+      this.lang
+    );
     let toBeAssignObject = {
       value: checkBoxValuesArr,
       error: validation.message,
@@ -150,7 +154,8 @@ class DedicatedOffice extends React.PureComponent {
     const value = _this.value;
     const validation = Validator(
       value,
-      SafeValue(this.validationRules, name, "object", [])
+      SafeValue(this.validationRules, name, "object", []),
+      this.lang
     );
     this.setState({
       form: {
@@ -194,6 +199,7 @@ class DedicatedOffice extends React.PureComponent {
       _validation = Validator(
         inputs[index].value,
         SafeValue(this.validationRules, index, "object", []),
+        this.lang,
         index === "resume" && {
           uploading: this.state.form.fields.resume.uploading
         }
@@ -240,9 +246,12 @@ class DedicatedOffice extends React.PureComponent {
         const { seats, city, phonenumber } = _formObjectGoingToSubmit;
         _formObjectGoingToSubmit["phonenumber"] =
           this.state.form.fields.phonenumber.code + phonenumber;
-        const cityname = this.state.combo.list_of_cities.items.map(
-          curr => (curr.value === city && curr.title) || locale.email_subject[2]
-        )[0];
+        let cityname = locale.email_subject[2];
+        this.state.combo.list_of_cities.items.forEach(curr => {
+          if (curr.value === city) {
+            cityname = curr.title;
+          }
+        });
         _formObjectGoingToSubmit["name"] = `${
           locale.email_subject[0]
         } ${seats} ${locale.email_subject[1]} ${cityname}`;
@@ -447,7 +456,7 @@ class DedicatedOffice extends React.PureComponent {
       >
         {this.state.form.submitted ? (
           <Card className="form-card">
-            <SuccessSubmit />
+            <SuccessSubmit lang={this.lang} />
           </Card>
         ) : (
           <React.Fragment>

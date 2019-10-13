@@ -10,7 +10,7 @@ import {
   FilterContents,
   SafeValue
 } from "../../ApiHandlers/ApiHandler";
-import SuccessSubmit from "../Pages/SuccessSubmit";
+import SuccessSubmit from "../SubmitStatus/SuccessSubmit/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
@@ -130,7 +130,11 @@ class PartnerShip extends React.PureComponent {
     } else {
       checkBoxValuesArr = SafeValue(data, "value", "string", []);
     }
-    const validation = Validator(checkBoxValuesArr, this.validationRules[name]);
+    const validation = Validator(
+      checkBoxValuesArr,
+      this.validationRules[name],
+      this.lang
+    );
     let toBeAssignObject = {
       value: checkBoxValuesArr,
       error: validation.message,
@@ -155,7 +159,8 @@ class PartnerShip extends React.PureComponent {
     const value = _this.value;
     const validation = Validator(
       value,
-      SafeValue(this.validationRules, name, "object", [])
+      SafeValue(this.validationRules, name, "object", []),
+      this.lang
     );
     this.setState({
       form: {
@@ -277,7 +282,7 @@ class PartnerShip extends React.PureComponent {
       >
         {this.state.form.submitted ? (
           <Card className="form-card">
-            <SuccessSubmit />
+            <SuccessSubmit lang={this.lang} />
           </Card>
         ) : (
           <React.Fragment>
