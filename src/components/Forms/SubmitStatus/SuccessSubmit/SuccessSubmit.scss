@@ -1,0 +1,48 @@
+.success-section {
+  margin: 0;
+  padding: 0;
+
+  .main {
+    direction: rtl;
+    height: 400px;
+    display: flex;
+    align-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    .thankyou-section {
+      width: fit-content;
+      align-self: center;
+      padding: 2em;
+      .thankyou-sentence {
+        color: green;
+        font-size: 2.8em;
+        font-weight: bold;
+        text-align: center;
+        margin: 40px;
+      }
+      p {
+        font-size: 20px;
+      }
+    }
+    .more-request {
+      margin-top: 7em;
+      align-self: center;
+      a {
+        text-decoration: none;
+      }
+      button {
+        display: block;
+        padding: 10px 15px;
+        border: none;
+        margin: auto;
+        position: relative;
+      }
+    }
+  }
+}
+._ltr {
+  & .main {
+    direction: ltr;
+  }
+}
