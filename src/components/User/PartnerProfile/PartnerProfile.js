@@ -224,7 +224,7 @@ export default class PartnerProfile extends React.Component {
           ));
         fields.images.forEach(image => {
           images.push({
-            src: image[this.lang],
+            src: SafeValue(image, this.lang, "string", null, " "),
             altText: "",
             caption: ""
           });
