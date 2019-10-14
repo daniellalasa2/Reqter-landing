@@ -286,7 +286,7 @@ $green: #58d37b;
       height: 500px;
       max-height: 500px;
       overflow-y: hidden;
-      & > .map-img {
+      & .map-img {
         &:hover {
           cursor: pointer;
         }
