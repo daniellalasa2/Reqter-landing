@@ -608,8 +608,9 @@ export default class PartnerProfile extends React.Component {
                 height="100%"
                 width="100%"
               /> */}
+
               <a
-                href={`https://www.google.com/maps/search/?api=1&query=${SafeValue(
+                href={`https://www.google.com/maps/dir/?api=1&query=${SafeValue(
                   location,
                   "latitude",
                   "string",
