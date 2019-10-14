@@ -388,7 +388,7 @@ export default class PartnerProfile extends React.Component {
       verified,
       address,
       overview,
-      location,
+      locationpic,
       workinghours,
       amenities
     } = this.state.partnerInfo;
@@ -586,7 +586,7 @@ export default class PartnerProfile extends React.Component {
               </span>
             </div>
             <div className="map">
-              <SimpleMap
+              {/* <SimpleMap
                 apiKey="AIzaSyC0UQaQpwYxq-aOi5yXY9dU7b9mWAePwKE"
                 lng={Number(SafeValue(location, "longitude", "string", 0))}
                 lat={Number(SafeValue(location, "latitude", "string", 0))}
@@ -606,6 +606,12 @@ export default class PartnerProfile extends React.Component {
                 )}
                 height="100%"
                 width="100%"
+              /> */}
+              <img
+                src={locationpic}
+                alt="partner static map"
+                className="map-img"
+                style={{ width: "100%" }}
               />
             </div>
           </div>

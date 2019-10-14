@@ -284,6 +284,13 @@ $green: #58d37b;
     }
     & .map {
       height: 500px;
+      max-height: 500px;
+      overflow-y: hidden;
+      & > .map-img {
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
   }
 }
