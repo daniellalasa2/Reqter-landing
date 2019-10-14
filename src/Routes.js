@@ -1,5 +1,4 @@
 import React from "react";
-
 const Home = React.lazy(() => import("./components/Home/Home"));
 const AboutUs = React.lazy(() => import("./components/AboutUs/AboutUs"));
 const Login = React.lazy(() => import("./components/Auth/Login/Login"));
@@ -11,9 +10,6 @@ const SharedDesk = React.lazy(() =>
 );
 const DedicatedOffice = React.lazy(() =>
   import("./components/Forms/DedicatedOffice/DedicatedOffice")
-);
-const PartnerProfile = React.lazy(() =>
-  import("./components/User/PartnerProfile/PartnerProfile")
 );
 const SessionRoom = React.lazy(() =>
   import("./components/Forms/SessionRoom/SessionRoom")
@@ -33,16 +29,26 @@ const PartnerShip = React.lazy(() =>
 );
 const Security = React.lazy(() => import("./components/Security/Security"));
 const MyRequests = React.lazy(() =>
-  import("./components/User/MyRequests/MyRequests")
+  import("./components/MyPage/MyRequests/MyRequests")
 );
 const OfferList = React.lazy(() =>
-  import("./components/User/OfferList/OfferList")
+  import("./components/MyPage/OfferList/OfferList")
+);
+const PartnerPanel = React.lazy(() =>
+  import("./components/PartnerPanel/Panel/PartnerPanel")
 );
 const NotFound = React.lazy(() =>
   import("./components/Auth/NotFound/NotFound")
 );
 const InternalError = React.lazy(() =>
   import("./components/Auth/InternalError/InternalError")
+);
+//partner panel components
+const PartnerProfile = React.lazy(() =>
+  import("./components/PartnerPanel/Panel/PartnerPanel")
+);
+const PartnerLogin = React.lazy(() =>
+  import("./components/PartnerPanel/PartnerLogin/PartnerLogin")
 );
 //temporary
 const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
@@ -194,6 +200,20 @@ const routes = [
   {
     component: NotFound,
     navStatus: false
+  },
+  //partner panel routes
+  {
+    path: "/:lang?/partnerpanel/panel",
+    name: "Partner Panel",
+    auth: "partner",
+    component: PartnerPanel,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/partnerpanel/login",
+    name: "Partner Panel Login",
+    component: PartnerLogin,
+    navStatus: true
   }
 ];
 

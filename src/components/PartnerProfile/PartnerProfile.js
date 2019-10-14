@@ -23,10 +23,10 @@ import {
   GetPartnerInfo,
   GetPartnerProducts,
   Config
-} from "../../ApiHandlers/ApiHandler";
-import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
-import SimpleMap from "../../SimpleMap/SimpleMap";
-import ContextApi from "../../ContextApi/ContextApi";
+} from "../ApiHandlers/ApiHandler";
+import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
+// import SimpleMap from "../SimpleMap/SimpleMap";
+import ContextApi from "../ContextApi/ContextApi";
 import classnames from "classnames";
 function Loading() {
   return (
