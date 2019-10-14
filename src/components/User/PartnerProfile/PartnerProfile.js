@@ -8,6 +8,7 @@ import {
   CarouselCaption,
   Table
 } from "reactstrap";
+import { BrowserView, MobileView } from "react-device-detect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
@@ -608,23 +609,45 @@ export default class PartnerProfile extends React.Component {
                 height="100%"
                 width="100%"
               /> */}
-              <a
-                href={`geo:${SafeValue(
-                  location,
-                  "latitude",
-                  "string",
-                  0
-                )},${SafeValue(location, "longitude", "string", 0)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={locationpic}
-                  alt="partner static map"
-                  className="map-img"
-                  style={{ width: "100%" }}
-                />
-              </a>
+
+              <BrowserView>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${SafeValue(
+                    location,
+                    "latitude",
+                    "string",
+                    0
+                  )},${SafeValue(location, "longitude", "string", 0)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={locationpic}
+                    alt="partner static map"
+                    className="map-img"
+                    style={{ width: "100%" }}
+                  />
+                </a>
+              </BrowserView>
+              <MobileView>
+                <a
+                  href={`geo:${SafeValue(
+                    location,
+                    "latitude",
+                    "string",
+                    0
+                  )},${SafeValue(location, "longitude", "string", 0)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={locationpic}
+                    alt="partner static map"
+                    className="map-img"
+                    style={{ width: "100%" }}
+                  />
+                </a>
+              </MobileView>
             </div>
           </div>
         </section>
