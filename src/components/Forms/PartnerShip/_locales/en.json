@@ -11,9 +11,8 @@
         "_title": "Full name",
         "placeholder": "Enter your full name"
       },
-      "workingfield": {
-        "_title": "Partnership's working Field(s)"
-      },
+      "workingfield": "Working field(s)",
+      "partnershipfield": "Partnership fields(s)",
       "phonenumber": {
         "_title": "Phone number",
         "placeholder": "9123456789"

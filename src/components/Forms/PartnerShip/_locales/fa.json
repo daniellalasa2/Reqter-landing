@@ -11,9 +11,8 @@
         "_title": "نام درخواست کننده",
         "placeholder": "نام خود را وارد کنید"
       },
-      "workingfield": {
-        "_title": "زمینه همکاری"
-      },
+      "workingfield": "حوزه(های) فعالیت",
+      "partnershipfield": "زمینه(های) همکاری",
       "phonenumber": {
         "_title": "شماره تماس",
         "placeholder": "9123456789"
@@ -25,6 +24,10 @@
       "website": {
         "_title": "وبسایت",
         "placeholder": "آدرس وبسایت خود را وارد کنید"
+      },
+      "description": {
+        "_title": "توضیحات",
+        "placeholder": "اگر توضیحی درباره شرایط همکاری خود دارید برای ما بنویسید"
       },
       "submit": {
         "submit": "ثبت و ارسال"

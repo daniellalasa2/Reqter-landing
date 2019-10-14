@@ -14,7 +14,11 @@ import SuccessSubmit from "../SubmitStatus/SuccessSubmit/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
-import { FlatInlineSelect, FlatInput } from "../../FlatForm/FlatForm";
+import {
+  FlatInlineSelect,
+  FlatInput,
+  FlatTextArea
+} from "../../FlatForm/FlatForm";
 import ContextApi from "../../ContextApi/ContextApi";
 import Validator from "../../Validator/Validator";
 import classnames from "classnames";
@@ -47,6 +51,11 @@ class PartnerShip extends React.PureComponent {
             error: "",
             isValid: false
           },
+          workingfields: {
+            value: "",
+            error: "",
+            isValid: false
+          },
           phonenumber: {
             code: "+98",
             value: "",
@@ -62,6 +71,11 @@ class PartnerShip extends React.PureComponent {
             value: "",
             error: "",
             isValid: false
+          },
+          desc: {
+            value: "",
+            error: "",
+            isValid: false
           }
         },
         backgroundData: {
@@ -72,6 +86,10 @@ class PartnerShip extends React.PureComponent {
         partnership_working_fields: {
           hasLoaded: false,
           childs: {}
+        },
+        coworking_working_field: {
+          hasLoaded: false,
+          childs: {}
         }
       }
     };
@@ -79,6 +97,7 @@ class PartnerShip extends React.PureComponent {
       fullname: ["required"],
       primarycontact: ["required"],
       collaborationtypes: ["required"],
+      workingfields: ["required"],
       phonenumber: ["required", "phonenumber"],
       email: ["email"],
       homepage: ["url"]
@@ -93,6 +112,7 @@ class PartnerShip extends React.PureComponent {
       _validation = Validator(
         inputs[index].value,
         SafeValue(this.validationRules, index, "object", []),
+        this.lang,
         index === "resume" && {
           uploading: this.state.form.fields.resume.uploading
         }
@@ -265,6 +285,7 @@ class PartnerShip extends React.PureComponent {
   };
   componentDidMount() {
     this.generateCheckboxDataFromApi("partnership_working_fields");
+    this.generateCheckboxDataFromApi("coworking_working_field");
   }
   render() {
     const { locale, direction } = this.translate;
@@ -324,7 +345,7 @@ class PartnerShip extends React.PureComponent {
                   />
                   <div className="field-row">
                     <span className="field-title">
-                      {locale.fields.workingfield._title}
+                      {locale.fields.partnershipfield}
                     </span>
 
                     {/* fill checkboxes */}
@@ -339,10 +360,31 @@ class PartnerShip extends React.PureComponent {
                         name="collaborationtypes"
                       />
                     ) : (
-                      <Skeleton count={8} style={{ lineHeight: 3 }} />
+                      <Skeleton count={4} style={{ lineHeight: 3 }} />
                     )}
                     <span className="error-message">
                       {this.state.form.fields.collaborationtypes.error}
+                    </span>
+                  </div>
+                  <div className="field-row">
+                    <span className="field-title">
+                      {locale.fields.workingfield}
+                    </span>
+
+                    {/* fill checkboxes */}
+                    {this.state.combo.coworking_working_field.hasLoaded ? (
+                      <FlatInlineSelect
+                        type="checkbox"
+                        items={this.state.combo.coworking_working_field.items}
+                        onChange={this.checkboxStateHandler}
+                        dir={direction}
+                        name="workingfields"
+                      />
+                    ) : (
+                      <Skeleton count={4} style={{ lineHeight: 3 }} />
+                    )}
+                    <span className="error-message">
+                      {this.state.form.fields.workingfields.error}
                     </span>
                   </div>
                   <FlatInput
@@ -374,6 +416,15 @@ class PartnerShip extends React.PureComponent {
                     id="homepage"
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.homepage.error}
+                  />
+                  <FlatTextArea
+                    label={locale.fields._title}
+                    placeholder={locale.fields.description.placeholder}
+                    name="desc"
+                    id="desc"
+                    style={{ height: "100px" }}
+                    onChange={this.formStateHandler}
+                    error={this.state.form.fields.desc.error}
                   />
                 </CardBody>
               </section>

@@ -21,7 +21,9 @@ import {
   faLockOpen,
   faLock,
   faListAlt,
-  faGlobeAsia
+  faGlobeAsia,
+  faHome,
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/images/logo.jpg";
 import Login from "../../components/Auth/Login/Login";
@@ -175,6 +177,13 @@ class Navigation extends Component {
                 )}
               <NavItem>
                 <Link to={`/${lang}/partnership`} className="nav-link">
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    size="1x"
+                    pull={direction === "ltr" ? "left" : "right"}
+                    color="black"
+                    className="icon-myrequests"
+                  />
                   {locale.buisness_partnership}
                 </Link>
               </NavItem>
@@ -209,6 +218,11 @@ class Navigation extends Component {
               </NavItem> */}
               <NavItem>
                 <Link className="nav-link" to={`/${lang}`}>
+                  <FontAwesomeIcon
+                    icon={faHome}
+                    pull={direction === "ltr" ? "left" : "right"}
+                    color="black"
+                  />
                   {locale.home}
                 </Link>
               </NavItem>
@@ -268,7 +282,7 @@ class Navigation extends Component {
                     فارسی
                   </DropdownItem>
                   <DropdownItem onClick={() => this.context.langTrigger("en")}>
-                    English
+                    (English (preview
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -353,7 +367,7 @@ class Navigation extends Component {
                     </li>
                     <li>
                       <span onClick={() => this.context.langTrigger("en")}>
-                        English
+                        (English (preview
                       </span>
                     </li>
                   </ul>

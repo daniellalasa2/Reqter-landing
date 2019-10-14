@@ -4,7 +4,8 @@
     100vh - 320px
   ); //min-height of content section to fill the entire height of device screen
 }
-input {
+input,
+textarea {
   border-width: 0 0 1px 0 !important;
   border-color: #ced4da;
   display: block;

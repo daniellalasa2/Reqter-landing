@@ -340,7 +340,7 @@ const FlatTextArea = ({
   label,
   error,
   name,
-  props
+  ...props
 }) => {
   return (
     <div className="field-row">
