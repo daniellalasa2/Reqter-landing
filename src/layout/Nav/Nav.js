@@ -23,7 +23,8 @@ import {
   faListAlt,
   faGlobeAsia,
   faHome,
-  faPlus
+  faPlus,
+  faUserFriends
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/images/logo.jpg";
 import Login from "../../components/Auth/Login/Login";
@@ -123,6 +124,7 @@ class Navigation extends Component {
     this.context.toggleLoginModal(restArgs);
   };
   render() {
+    const { ROLE } = this.context.auth;
     const { lang } = this;
     const { locale, direction } = this.translate;
     return (
@@ -163,8 +165,9 @@ class Navigation extends Component {
               onClick={() => this.toggleMenu("open")}
             />
             <Nav className="nav-links-container">
-              {this.context.auth.ROLE === "user" &&
-                this.props.match.path === "/:lang?/user/myrequests" && (
+              {ROLE !== "guest" &&
+                (this.props.match.path === "/:lang?/user/myrequests" ||
+                  this.props.match.path === "/:lang?/partnerpanel/panel") && (
                   <NavItem>
                     <Link
                       to=""
@@ -175,6 +178,23 @@ class Navigation extends Component {
                     </Link>
                   </NavItem>
                 )}
+              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
+                <NavItem>
+                  <Link
+                    className="nav-link"
+                    to={`/${lang}/partnerpanel/${
+                      ROLE !== "partner" ? "login" : "panel"
+                    }`}
+                  >
+                    <FontAwesomeIcon
+                      icon={faUserFriends}
+                      pull={direction === "ltr" ? "left" : "right"}
+                      color="black"
+                    />
+                    {locale.partner_panel}
+                  </Link>
+                </NavItem>
+              )}
               <NavItem>
                 <Link to={`/${lang}/partnership`} className="nav-link">
                   <FontAwesomeIcon
@@ -216,6 +236,7 @@ class Navigation extends Component {
                   {locale.faq}
                 </Link>
               </NavItem> */}
+
               <NavItem>
                 <Link className="nav-link" to={`/${lang}`}>
                   <FontAwesomeIcon
@@ -226,8 +247,9 @@ class Navigation extends Component {
                   {locale.home}
                 </Link>
               </NavItem>
+
               <NavItem>
-                {this.context.auth.ROLE === "user" ? (
+                {ROLE === "user" ? (
                   <button
                     className="nav-link my-requests-link"
                     onClick={() =>
@@ -314,7 +336,7 @@ class Navigation extends Component {
                 </span>
               </li>
               <li>
-                {this.context.auth.ROLE === "user" ? (
+                {ROLE === "user" ? (
                   <span
                     className="nav-link my-requests-link"
                     onClick={() =>
@@ -378,6 +400,13 @@ class Navigation extends Component {
                   {locale.buisness_partnership}
                 </Link>
               </li>
+              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
+                <li>
+                  <Link className="nav-link" to={`/${lang}/partnerpanel/login`}>
+                    {locale.partner_panel}
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link to={`/${lang}/contactus`}>{locale.contact_us}</Link>
               </li>
@@ -386,7 +415,7 @@ class Navigation extends Component {
                   {locale.faq}
                 </Link>
               </li>
-              {this.context.auth.ROLE === "user" && (
+              {ROLE !== "guest" && (
                 <li>
                   <Link
                     className="nav-link"

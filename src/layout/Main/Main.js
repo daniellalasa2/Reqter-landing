@@ -65,7 +65,7 @@ class Main extends Component {
       defaultPhoneNumber: defaultPhoneNumber
     });
   };
-  //if any argument sent then set incoming argument else update user authentication based on set cookie
+  //if any argument was sent then set incoming argument else update user authentication based on set cookie
   updateAuth = callback => {
     this.setState(
       {
@@ -143,7 +143,9 @@ class Main extends Component {
                   exact={route.exact}
                   name={route.name}
                   render={props =>
-                    !route.auth || route.auth === this.state.userAuth.ROLE ? (
+                    //check if user has permission to access route
+                    !Array.isArray(route.auth) ||
+                    route.auth.indexOf(this.state.userAuth.ROLE) > -1 ? (
                       <React.Fragment>
                         {this.gtagUpdater(this.props.history, route.name)}
                         <ContextApi.Provider
@@ -171,7 +173,21 @@ class Main extends Component {
                         </ContextApi.Provider>
                       </React.Fragment>
                     ) : (
-                      <Redirect to={`/${this.defaultLang}`} />
+                      <React.Fragment>
+                        {this.state.userAuth === "partner" && (
+                          <Redirect
+                            from="/:lang?/partnerpanel/login"
+                            to="/:lang?/partnerpanel/panel"
+                          />
+                        )}
+                        {this.state.userAuth !== "partner" && (
+                          <Redirect
+                            from="/:lang?/partnerpanel/panel"
+                            to="/:lang?/partnerpanel/login"
+                          />
+                        )}
+                        <Redirect to={`/${this.defaultLang}`} />
+                      </React.Fragment>
                     )
                   }
                 />

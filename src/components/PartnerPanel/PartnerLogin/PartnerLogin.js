@@ -1,25 +1,25 @@
 import React from "react";
-import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
-import { FlatInput } from "../../../FlatForm/FlatForm";
+import { Button, Card, CardHeader, CardBody } from "reactstrap";
+import { FlatInput } from "../../FlatForm/FlatForm";
 import {
   LoginRequest,
   VerifyCode,
-  SafeValue
-} from "../../../ApiHandlers/ApiHandler";
-import Validator from "../../../Validator/Validator";
-import { SetCookie, JsonToString } from "../../../CookieHandler/CookieHandler";
-import LoadingSpinner from "../../../../assets/images/spinner.svg";
-// import ContextApi from "../../ContextApi/ContextApi";
+  SafeValue,
+  GetPartnerInfo
+} from "../../ApiHandlers/ApiHandler";
+import Validator from "../../Validator/Validator";
+import { SetCookie, JsonToString } from "../../CookieHandler/CookieHandler";
+import LoadingSpinner from "../../../assets/images/spinner.svg";
+import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
 import "./PartnerLogin.scss";
 export default class Login extends React.Component {
-  // static contextType = ContextApi;
+  static contextType = ContextApi;
   constructor(props, context) {
     super(props, context);
-    this.lang = props.lang;
+    this.lang = context.lang;
     this.translate = require(`./_locales/${this.lang}.json`);
     this.state = {
-      modal: false,
       loginStep: 1,
       form: {
         isValid: false,
@@ -139,6 +139,16 @@ export default class Login extends React.Component {
       }
     });
   };
+  ValidatePartnerByPhonenumber = (phonenumber, callback) => {
+    GetPartnerInfo({ "fields.phonenumber": phonenumber }, res => {
+      if (!res.data.success) {
+        window.open(`/#/${this.lang}/partnerpanel/panel`, "_blank");
+        callback();
+      } else {
+        window.close();
+      }
+    });
+  };
   PendingForm = status => {
     this.setState({
       form: {
@@ -150,7 +160,7 @@ export default class Login extends React.Component {
   CheckCode = () => {
     const { locale } = this.translate;
     this.PendingForm(true);
-    const _this = this;
+    const _this = this; //PartnerLogin object
     const data = {};
     const { value, code } = this.state.form.fields.phoneNumber;
     const phonenumber = code + value;
@@ -160,24 +170,26 @@ export default class Login extends React.Component {
       _this.PendingForm(false);
       if (res.data.success) {
         //set cookie then update program Cookie authentication
-        SetCookie(
-          "SSUSERAUTH",
-          JsonToString({
-            ROLE: "user",
-            TOKEN: res.data.access_token,
-            ID: phonenumber
-          }),
-          parseInt(res.data.expiresIn) / (60 * 60 * 24)
-        );
-        _this.props.updateAuth();
+        _this.ValidatePartnerByPhonenumber(phonenumber, () => {
+          SetCookie(
+            "SSUSERAUTH",
+            JsonToString({
+              ROLE: "partner",
+              TOKEN: res.data.access_token,
+              ID: phonenumber
+            }),
+            parseInt(res.data.expiresIn) / (60 * 60 * 24)
+          );
+          _this.context.updateAuth();
+        });
       } else {
         _this.setState({
           form: {
-            ...this.state.form,
+            ..._this.state.form,
             fields: {
-              ...this.state.form.fields,
+              ..._this.state.form.fields,
               code: {
-                ...this.state.form.fields.code,
+                ..._this.state.form.fields.code,
                 isValid: false,
                 error: locale.errors.code_error
               }
@@ -258,18 +270,14 @@ export default class Login extends React.Component {
   render() {
     const { locale, direction } = this.translate;
     return (
-      <div>
-        <Modal
-          isOpen={this.state.modal}
-          toggle={this.toggle}
-          className={classnames("login-modal", `_${direction}`)}
-        >
-          <ModalHeader className="login-modal-header" toggle={this.toggle}>
-            {this.props.modalTitle}
-          </ModalHeader>
+      <div className={classnames("PartnerLogin", `_${direction}`)}>
+        <Card className="login-card">
+          <CardHeader className="login-card-header">
+            <h5>{locale.card.title}</h5>
+          </CardHeader>
           {/* Get number */}
           {this.state.loginStep === 1 && (
-            <ModalBody>
+            <CardBody>
               <FlatInput
                 label={locale.fields.phonenumber._title}
                 type="tel"
@@ -298,11 +306,11 @@ export default class Login extends React.Component {
                   locale.fields.verify_code._title
                 )}
               </Button>
-            </ModalBody>
+            </CardBody>
           )}
           {/* Verify sent code */}
           {this.state.loginStep === 2 && (
-            <ModalBody>
+            <CardBody>
               <FlatInput
                 label={locale.fields.enter_code._title}
                 type="tel"
@@ -333,9 +341,9 @@ export default class Login extends React.Component {
                   )}
                 </Button>
               </div>
-            </ModalBody>
+            </CardBody>
           )}
-        </Modal>
+        </Card>
       </div>
     );
   }

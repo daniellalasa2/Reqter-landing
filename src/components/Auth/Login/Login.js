@@ -14,8 +14,8 @@ import LoadingSpinner from "../../../assets/images/spinner.svg";
 import classnames from "classnames";
 export default class Login extends React.Component {
   // static contextType = ContextApi;
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.lang = props.lang;
     this.translate = require(`./_locales/${this.lang}.json`);
     this.state = {

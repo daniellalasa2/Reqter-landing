@@ -180,14 +180,29 @@ const routes = [
     exact: true,
     name: "My Requests",
     component: MyRequests,
-    auth: "user",
+    auth: ["user"],
     navStatus: true
   },
   {
     path: "/:lang?/user/offerlist",
     name: "Offer List",
     component: OfferList,
-    auth: "user",
+    auth: ["user"],
+    navStatus: true
+  },
+  //partner panel routes
+  {
+    path: "/:lang?/partnerpanel/panel",
+    name: "Partner Panel",
+    auth: ["partner"],
+    component: PartnerPanel,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/partnerpanel/login",
+    name: "Partner Panel Login",
+    auth: ["guest", "user"],
+    component: PartnerLogin,
     navStatus: true
   },
   {
@@ -196,24 +211,10 @@ const routes = [
     component: InternalError,
     navStatus: false
   },
-  //Notice: 404 page have to defined as the last route child
+  //Notice: 404 page have to defined as the last child of Route object
   {
     component: NotFound,
     navStatus: false
-  },
-  //partner panel routes
-  {
-    path: "/:lang?/partnerpanel/panel",
-    name: "Partner Panel",
-    auth: "partner",
-    component: PartnerPanel,
-    navStatus: true
-  },
-  {
-    path: "/:lang?/partnerpanel/login",
-    name: "Partner Panel Login",
-    component: PartnerLogin,
-    navStatus: true
   }
 ];
 

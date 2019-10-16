@@ -1,6 +1,17 @@
 {
   "direction": "ltr",
   "locale": {
-    "card_title": "Partner Login"
+    "panel_header": {
+      "manage_requests": "مدیریت درخواستها",
+      "my_products": "محصولات من",
+      "setting": "تنظیمات"
+    },
+    "card_header": {
+      "new_requests": "New requests",
+      "open_requests": "Open requests",
+      "offers": "Offers",
+      "accepted": "Accepted offers",
+      "denied": "Denied offers"
+    }
   }
 }

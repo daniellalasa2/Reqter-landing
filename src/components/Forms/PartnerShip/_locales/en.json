@@ -25,6 +25,10 @@
         "_title": "Website",
         "placeholder": "Enter your website"
       },
+      "description": {
+        "_title": "Write your comment",
+        "placeholder": "Write a comment about your partnership ..."
+      },
       "submit": {
         "submit": "Submit and Send"
       }

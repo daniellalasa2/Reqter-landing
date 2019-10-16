@@ -418,7 +418,7 @@ class PartnerShip extends React.PureComponent {
                     error={this.state.form.fields.homepage.error}
                   />
                   <FlatTextArea
-                    label={locale.fields._title}
+                    label={locale.fields.description._title}
                     placeholder={locale.fields.description.placeholder}
                     name="desc"
                     id="desc"
