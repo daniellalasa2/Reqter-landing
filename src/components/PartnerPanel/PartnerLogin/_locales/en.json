@@ -1,6 +1,9 @@
 {
   "direction": "ltr",
   "locale": {
+    "partner_status_error": {
+      "not_verified": "You are not a verified partner.please contact support."
+    },
     "card": {
       "title": "Partner panel login"
     },

@@ -17,7 +17,9 @@ let _api = {
   GetOfferList: Config.BASE_URL_REQTER + Config.URLs.all_offers,
   AcceptOffer: Config.BASE_URL_REQTER + Config.URLs.accept_offer,
   RejectOffer: Config.BASE_URL_REQTER + Config.URLs.reject_offer,
-  GetPartnerInfo: Config.BASE_URL_REQTER + Config.URLs.get_partner_info
+  GetPartnerInfo: Config.BASE_URL_REQTER + Config.URLs.get_partner_info,
+  GetPartnerpanelRequests:
+    Config.BASE_URL_REQTER + Config.URLs.get_partnerpanel_requests
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -463,6 +465,43 @@ var GetPartnerProducts = (params, callback) => {
       });
   });
 };
+//Partner profile APIs
+var GetPartnerpanelRequests = (partnerId, stage, callback) => {
+  const params = {
+    "fields.partnerid": partnerId,
+    "fields.stage": stage
+  };
+  Config.Auth().then(token => {
+    axios({
+      url: _api.GetPartnerpanelRequests,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      params: {
+        contentType: Config.CONTENT_TYPE_ID.get_partnerpanel_requests,
+        ...params
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
 //return safe value
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
@@ -543,5 +582,6 @@ export {
   AddContent,
   GetPartnerInfo,
   GetPartnerProducts,
+  GetPartnerpanelRequests,
   Config
 };

@@ -6,12 +6,16 @@
       "my_products": "محصولات من",
       "setting": "تنظیمات"
     },
+    "requests": {
+      "loading": "در حال دریافت اطلاعات ...",
+      "no_items_found": "موردی یافت نشد."
+    },
     "card_header": {
       "new_requests": "درخواستهای جدید",
       "open_requests": "درخواستهای باز",
       "offers": "پیشنهادات",
       "accepted": "پذیرفته شده ها",
-      "denied": "رد شده ها"
+      "rejected": "رد شده ها"
     }
   }
 }

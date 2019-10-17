@@ -34,8 +34,8 @@ const MyRequests = React.lazy(() =>
 const OfferList = React.lazy(() =>
   import("./components/MyPage/OfferList/OfferList")
 );
-const PartnerPanel = React.lazy(() =>
-  import("./components/PartnerPanel/Panel/PartnerPanel")
+const PartnerProfile = React.lazy(() =>
+  import("./components/PartnerProfile/PartnerProfile")
 );
 const NotFound = React.lazy(() =>
   import("./components/Auth/NotFound/NotFound")
@@ -44,7 +44,7 @@ const InternalError = React.lazy(() =>
   import("./components/Auth/InternalError/InternalError")
 );
 //partner panel components
-const PartnerProfile = React.lazy(() =>
+const PartnerPanel = React.lazy(() =>
   import("./components/PartnerPanel/Panel/PartnerPanel")
 );
 const PartnerLogin = React.lazy(() =>

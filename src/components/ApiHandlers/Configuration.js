@@ -26,7 +26,8 @@ var Configuration = {
     accept_offer: "api/v1/quotes/accept/",
     reject_offer: "api/v1/quotes/reject/",
     add_content: "contents/add",
-    get_partner_info: "api/v1/lists/get/fullquery"
+    get_partner_info: "api/v1/lists/get/fullquery",
+    get_partnerpanel_requests: "api/v1/requests/allnew"
   },
   CONTENT_TYPE_ID: {
     partnership: "5d358ebc8e6e9a0017c28fc9",
@@ -43,7 +44,8 @@ var Configuration = {
     get_offer: "5d35adc68e6e9a0017c28fcb",
     select_offer_stage: "5d791a0a1a2cda0017099c63",
     get_partner_info: "5d358ebc8e6e9a0017c28fc9",
-    get_partner_products: "5d36a6418e6e9a0017c28fd5"
+    get_partner_products: "5d36a6418e6e9a0017c28fd5",
+    get_partnerpanel_requests: "5d58df5a74c64b0017fb45d8"
   },
   PRODUCT_TYPE_ID: {
     private_desk: "5d36a9d78e6e9a0017c28fd9",
@@ -63,7 +65,7 @@ function CheckAuthToken() {
         if (token) {
           resolve(token);
         } else {
-          reject("Error Occured!");
+          reject("Error happened!");
         }
       });
     }

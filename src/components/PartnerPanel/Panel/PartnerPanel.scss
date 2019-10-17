@@ -1,8 +1,12 @@
 .partner-panel-section {
   & .form-card {
     width: 900px;
+    text-align: left;
     & .card-header-nav {
+      display: flex;
       & button {
+        flex-grow: 1;
+        margin: 0 3px;
         color: dimgrey;
         font-weight: bold;
         background-color: transparent;
@@ -10,16 +14,34 @@
         border-radius: 4px;
         outline: none;
         line-height: 2;
+        transition: all 0.2s ease;
         &:hover {
           background-color: rgba(100, 100, 100, 0.1);
           color: black;
           cursor: pointer;
         }
-        &:active {
+        &.active {
           background-color: rgba(100, 100, 100, 1);
           color: white;
         }
       }
     }
+    & .card-body {
+      & .no-content {
+        display: block;
+        width: 100%;
+        text-align: center;
+        color: gray;
+        padding: 30px 0 10px;
+      }
+      & .requests-table {
+      }
+    }
+  }
+}
+._rtl {
+  & .form-card {
+    direction: rtl;
+    text-align: right;
   }
 }

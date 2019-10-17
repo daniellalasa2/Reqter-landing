@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, CardHeader, CardBody } from "reactstrap";
+import { Button, Card, CardHeader, CardBody, Alert } from "reactstrap";
 import { FlatInput } from "../../FlatForm/FlatForm";
 import {
   LoginRequest,
@@ -21,6 +21,7 @@ export default class Login extends React.Component {
     this.translate = require(`./_locales/${this.lang}.json`);
     this.state = {
       loginStep: 1,
+      partnerStatusError: "",
       form: {
         isValid: false,
         submitted: false,
@@ -140,12 +141,15 @@ export default class Login extends React.Component {
     });
   };
   ValidatePartnerByPhonenumber = (phonenumber, callback) => {
+    const { locale } = this.translate;
     GetPartnerInfo({ "fields.phonenumber": phonenumber }, res => {
-      if (!res.data.success) {
-        window.open(`/#/${this.lang}/partnerpanel/panel`, "_blank");
+      if (res.success_result.success) {
+        this.props.history.push(`/${this.lang}/partnerpanel/panel`);
         callback();
       } else {
-        window.close();
+        this.setState({
+          partnerStatusError: locale.partner_status_error.not_verified
+        });
       }
     });
   };
@@ -271,6 +275,11 @@ export default class Login extends React.Component {
     const { locale, direction } = this.translate;
     return (
       <div className={classnames("PartnerLogin", `_${direction}`)}>
+        {this.state.partnerStatusError && (
+          <Alert color="warning">
+            {this.locale.partner_status_error.not_verified}
+          </Alert>
+        )}
         <Card className="login-card">
           <CardHeader className="login-card-header">
             <h5>{locale.card.title}</h5>
