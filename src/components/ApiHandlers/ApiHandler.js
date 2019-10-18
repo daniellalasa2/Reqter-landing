@@ -19,7 +19,12 @@ let _api = {
   RejectOffer: Config.BASE_URL_REQTER + Config.URLs.reject_offer,
   GetPartnerInfo: Config.BASE_URL_REQTER + Config.URLs.get_partner_info,
   GetPartnerpanelRequests:
-    Config.BASE_URL_REQTER + Config.URLs.get_partnerpanel_requests
+    Config.BASE_URL_REQTER + Config.URLs.get_partnerpanel_requests,
+  PartnerpanelRejectRequest:
+    Config.BASE_URL_REQTER + Config.URLs.partnerpanel_reject_request,
+  PartnerpanelOpenRequest:
+    Config.BASE_URL_REQTER + Config.URLs.partnerpanel_open_request,
+  QueryContent: Config.BASE_URL_REQTER + Config.URLs.query_content
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -465,6 +470,42 @@ var GetPartnerProducts = (params, callback) => {
       });
   });
 };
+var QueryContent = (contentTypesArr, callback) => {
+  let contentTypesString = "";
+  if (Array.isArray(contentTypesArr)) {
+    contentTypesString = contentTypesArr.reduce(
+      (acc, curr) => acc + "," + curr
+    );
+  }
+  console.log("api", contentTypesString);
+  Config.Auth().then(token => {
+    axios({
+      url: _api.QueryContent,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      params: { contentTypes: contentTypesString }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
 //Partner profile APIs
 var GetPartnerpanelRequests = (partnerId, stage, callback) => {
   const params = {
@@ -502,6 +543,73 @@ var GetPartnerpanelRequests = (partnerId, stage, callback) => {
       });
   });
 };
+var PartnerpanelRejectRequest = (id, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.PartnerpanelRejectRequest + id,
+      method: "PUT",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      data: {
+        fields: {
+          stage: "closed"
+        }
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
+var PartnerpanelOpenRequest = (id, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.PartnerpanelOpenRequest + id,
+      method: "PUT",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      data: {
+        fields: {
+          stage: "opened"
+        }
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        callback({
+          success_result: result,
+          data: SafeValue(res, "data", "object", [])
+        });
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        callback({
+          success_result: result,
+          data: []
+        });
+      });
+  });
+};
+
 //return safe value
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
@@ -582,6 +690,9 @@ export {
   AddContent,
   GetPartnerInfo,
   GetPartnerProducts,
+  PartnerpanelRejectRequest,
+  PartnerpanelOpenRequest,
   GetPartnerpanelRequests,
+  QueryContent,
   Config
 };

@@ -3,19 +3,36 @@
   "locale": {
     "panel_header": {
       "manage_requests": "Manage requests",
-      "my_products": "My products",
-      "setting": "Setting"
+      "my_products": "My Products",
+      "setting": "Settings"
     },
     "requests": {
-      "loading": "Gathering content ...",
-      "no_items_found": "No items found."
+      "loading": "Getting information ...",
+      "no_items_found": "No items found.",
+      "open_request_button": "Open",
+      "reject_request_button": "Reject",
+      "alert": {
+        "title": "Warning !",
+        "description": "If the request status is applied, it cannot be changed.",
+        "areyousure": "Are you sure?",
+        "accept": "Yes",
+        "reject": "Cancel"
+      }
+    },
+    "table": {
+      "row": "Row",
+      "product_name": "Product name",
+      "city": "City",
+      "qunatity": "Number",
+      "date": "Date",
+      "operation": "Operation"
     },
     "card_header": {
       "new_requests": "New requests",
       "open_requests": "Open requests",
       "offers": "Offers",
-      "accepted": "Accepted offers",
-      "rejected": "Rejected offers"
+      "accepted": "Accepted",
+      "rejected": "Rejected"
     }
   }
 }

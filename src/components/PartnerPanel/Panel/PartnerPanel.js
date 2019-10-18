@@ -6,14 +6,20 @@ import {
   Table,
   Button,
   Modal,
-  ModalBody
+  ModalBody,
+  ModalHeader
 } from "reactstrap";
 import {
   SafeValue,
   GetPartnerpanelRequests,
-  Configuration,
-  GetPartnerInfo
+  GetPartnerInfo,
+  PartnerpanelRejectRequest,
+  PartnerpanelOpenRequest,
+  QueryContent,
+  Config
 } from "../../ApiHandlers/ApiHandler";
+import PersianNumber from "../../PersianNumber/PersianNumber";
+import DateFormat from "../../DateFormat/DateFormat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
 import ContextApi from "../../ContextApi/ContextApi";
@@ -31,15 +37,28 @@ export default class PartnerPanel extends React.Component {
       openrequests: "opened"
     };
     this.state = {
+      contactModal: {},
       requests: {
         activeFilter: "",
         dataContent: [],
         loading: false
       },
-      partnerId: ""
+      products: [],
+      partnerId: "",
+      modals: {
+        warning: { openStatus: false, data: {} },
+        requestContact: { openStatus: false, data: {} }
+      }
     };
   }
   filterRequests = (type, e) => {
+    this.setState({
+      requests: {
+        ...this.state.requests,
+        activeFilter: type,
+        loading: true
+      }
+    });
     if (this.requestsAPIType[type]) {
       type = this.requestsAPIType[type];
     } else {
@@ -53,13 +72,6 @@ export default class PartnerPanel extends React.Component {
       button.classList.remove("active");
     });
     e.target.classList.add("active");
-    this.setState({
-      requests: {
-        ...this.state.requests,
-        activeFilter: type,
-        loading: true
-      }
-    });
     GetPartnerpanelRequests(this.state.partnerId, type, res => {
       let APIDataContent = [];
       if (res.success_result.success) {
@@ -74,21 +86,79 @@ export default class PartnerPanel extends React.Component {
       });
     });
   };
-  openRequest = () => {};
-  rejectRequest = () => {};
+  getAndUpdateProductsList = () => {
+    QueryContent([Config.CONTENT_TYPE_ID.product_list], res => {
+      if (res.success_result.success) {
+        this.setState({
+          products: res.data
+        });
+      }
+    });
+  };
+  openRequest = requestid => {
+    PartnerpanelOpenRequest(requestid, res => {
+      if (res.success_result.success) {
+      }
+    });
+  };
+  rejectRequest = requestid => {
+    PartnerpanelRejectRequest(requestid, res => {
+      if (res.success_result.success) {
+        this.filterRequests(() => {
+          this.setState({
+            modals: {
+              ...this.state.modals,
+              warning: {
+                openStatus: false,
+                data: {}
+              }
+            }
+          });
+        });
+      }
+    });
+  };
+  toggleModals = (modalType, dataObj) => {
+    switch (modalType) {
+      case "warning":
+        this.setState({
+          modals: {
+            ...this.state.modals,
+            warning: {
+              openStatus: !this.state.modals.warning.openStatus,
+              data: dataObj
+            }
+          }
+        });
+        break;
+      case "requestContact":
+        this.setState({
+          modals: {
+            ...this.state.modals,
+            requestContact: {
+              openStatus: !this.state.modals.requestContact.openStatus,
+              data: dataObj
+            }
+          }
+        });
+        break;
+      default:
+        break;
+    }
+  };
   displayRequestsTable = (requestType, requestsObj) => {
     const { locale } = this.translate;
     let generatedElements = [];
+    requestType = requestsObj.length > 0 ? requestType : null;
     const _tableWrapper = children => (
       <Table hover className="requests-table">
         <thead>
           <tr>
-            <th>ردیف</th>
-            <th>محصول درخواستی</th>
-            <th>شهر</th>
-            <th>تعداد</th>
-            <th>تاریخ</th>
-            <th>عملیات</th>
+            <th>{locale.table.row}</th>
+            <th>{locale.table.product_name}</th>
+            <th>{locale.table.qunatity}</th>
+            <th>{locale.table.date}</th>
+            <th>{locale.table.operation}</th>
           </tr>
         </thead>
         <tbody>{children}</tbody>
@@ -99,26 +169,74 @@ export default class PartnerPanel extends React.Component {
         generatedElements = requestsObj.map(
           (request, idx) =>
             request.status === "published" && (
-              <tr ket={request._id}>
-                <th scope="row">{idx}</th>
-                <td>{request}</td>
-                <td>تهران</td>
-                <td>۶ صندلی</td>
-                <td>12/5/98</td>
+              <tr key={idx}>
+                <td>{PersianNumber(idx + 1, this.lang)}</td>
+                <td>
+                  {request.fields.requestid.fields.product &&
+                    this.state.products.map(
+                      product =>
+                        product._id ===
+                          request.fields.requestid.fields.product && (
+                          <span>
+                            <img
+                              src={SafeValue(
+                                product,
+                                `fields.thumbnail.${this.lang}`,
+                                "string",
+                                null,
+                                "fields.thumbnail.0"
+                              )}
+                              alt="Product"
+                              width="70"
+                            />{" "}
+                            <strong>
+                              {SafeValue(
+                                product,
+                                `fields.name.${this.lang}`,
+                                "string",
+                                " - ",
+                                "fields.name"
+                              )}
+                            </strong>
+                          </span>
+                        )
+                    )}
+                </td>
+                <td>
+                  {PersianNumber(
+                    SafeValue(
+                      request,
+                      "fields.requestid.fields.seats",
+                      "string",
+                      " - "
+                    ),
+                    this.lang
+                  )}
+                </td>
+                <td>
+                  {PersianNumber(
+                    DateFormat(
+                      SafeValue(request, "sys.issueDate", "string", 0)
+                    ).timeWithHour(this.lang, " - "),
+                    this.lang
+                  )}
+                </td>
                 <td>
                   <Button
                     size="sm"
                     color="success"
-                    onClick={() => this.openRequest()}
+                    onClick={() => this.openRequest(request._id)}
                   >
-                    باز کردن
+                    {locale.requests.open_request_button}
                   </Button>{" "}
                   <Button
                     size="sm"
                     color="danger"
-                    onClick={() => this.rejectRequest()}
+                    onClick={() =>
+                      this.toggleModals("warning", { requestId: request._id })
+                    }
                   >
-                    رد کردن
+                    {locale.requests.reject_request_button}
                   </Button>
                 </td>
               </tr>
@@ -135,15 +253,22 @@ export default class PartnerPanel extends React.Component {
         );
     }
   };
-  componentDidMount() {
+  updatePartnerInfo = callback => {
     GetPartnerInfo({ "fields.phonenumber": this.context.auth.ID }, res => {
       if (res.success_result.success) {
         const { _id } = res.data[0];
-        this.setState({
-          partnerId: _id
-        });
+        this.setState(
+          {
+            partnerId: _id
+          },
+          () => typeof callback === "function" && callback()
+        );
       }
     });
+  };
+  componentDidMount() {
+    this.getAndUpdateProductsList();
+    this.updatePartnerInfo();
   }
 
   render() {
@@ -214,6 +339,89 @@ export default class PartnerPanel extends React.Component {
               )}
             </CardBody>
           </Card>
+          {/************************* Alert modal ***********************/}
+          <Modal
+            isOpen={this.state.modals.warning.openStatus}
+            toggle={() => this.toggleModals("warning", {})}
+            className="login-modal"
+          >
+            <ModalHeader
+              className="login-modal-header"
+              toggle={() => this.toggleModals("warning", {})}
+            >
+              {locale.requests.alert.title}
+            </ModalHeader>
+            <ModalBody>
+              <span>
+                {locale.requests.alert.description}
+                <br />
+                <br />
+                <strong style={{ fontSize: "20px" }}>
+                  {locale.requests.alert.areyousure}
+                </strong>
+              </span>
+              <br />
+              <Button
+                pull={direction === "ltr" ? "left" : "right"}
+                color="primary"
+                style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                onClick={() =>
+                  this.rejectRequest(this.state.modals.warning.data.requestId)
+                }
+              >
+                {locale.requests.alert.accept}
+              </Button>
+              <Button
+                pull={direction === "ltr" ? "left" : "right"}
+                color="primary"
+                style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                onClick={() => this.toggleModals("warning", {})}
+              >
+                {locale.requests.alert.reject}
+              </Button>
+            </ModalBody>
+          </Modal>
+          {/******************* Requester's contact details modal **************/}
+          {/* <Modal
+            isOpen={this.state.openWarningModal}
+            toggle={this.toggleWarningModal}
+            className="login-modal"
+          >
+            <ModalHeader
+              className="login-modal-header"
+              toggle={this.toggleWarningModal}
+            >
+              {locale.alert_modal.title}
+            </ModalHeader>
+            <ModalBody>
+              <span>
+                {locale.alert_modal.body[0]}
+                <br />
+                <br />
+                <strong style={{ fontSize: "20px" }}>
+                  {locale.alert_modal.body[1]}
+                </strong>
+              </span>
+              <br />
+              <Button
+                pull={direction === "ltr" ? "left" : "right"}
+                color="primary"
+                style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                onClick={() => this.offerStage()}
+              >
+                {locale.alert_modal.accept}
+              </Button>
+
+              <Button
+                pull={direction === "ltr" ? "left" : "right"}
+                color="primary"
+                style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                onClick={this.toggleWarningModal}
+              >
+                {locale.alert_modal.deny}
+              </Button>
+            </ModalBody>
+          </Modal> */}
         </React.Fragment>
       </section>
     );

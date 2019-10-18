@@ -8,7 +8,24 @@
     },
     "requests": {
       "loading": "در حال دریافت اطلاعات ...",
-      "no_items_found": "موردی یافت نشد."
+      "no_items_found": "موردی یافت نشد.",
+      "open_request_button": "باز کردن",
+      "reject_request_button": "رد کردن",
+      "alert": {
+        "title": "هشدار",
+        "description": "در صورت اعمال وضعیت درخواست امکان تغییر وضعیت آن وجود ندارد.",
+        "areyousure": "آیا مطمئن هستید؟",
+        "accept": "بله",
+        "reject": "خیر"
+      }
+    },
+    "table": {
+      "row": "ردیف",
+      "product_name": "نام محصول",
+      "city": "شهر",
+      "qunatity": "تعداد",
+      "date": "تاریخ",
+      "operation": "عملیات"
     },
     "card_header": {
       "new_requests": "درخواستهای جدید",
