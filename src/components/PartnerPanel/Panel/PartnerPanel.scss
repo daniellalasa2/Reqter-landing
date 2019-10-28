@@ -44,6 +44,18 @@
   }
   //modals
 }
+#rejectRequest-warning-modal {
+  & .modal-header {
+    & h5 {
+      font-size: 1.1rem;
+      font-weight: normal;
+    }
+    & .close {
+      font-weight: normal;
+      font-size: 1.5rem;
+    }
+  }
+}
 .modal-dialog.requestContact-modal {
   direction: ltr;
   text-align: left;
@@ -52,6 +64,9 @@
     border: 2px solid lightgray !important;
     padding: 12px;
     border-radius: 4px;
+    & .requestInfo-text {
+      font-weight: bold;
+    }
   }
   & legend {
     width: auto;
@@ -69,6 +84,7 @@
     & .close {
       padding: 1.1rem 1.5rem;
       margin: -1rem;
+      outline: none;
     }
   }
   &._rtl {

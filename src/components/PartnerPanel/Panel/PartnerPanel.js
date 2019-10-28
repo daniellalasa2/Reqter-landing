@@ -24,6 +24,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
 import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
+import Spinner from "../../../assets/script/spinner";
 import "./PartnerPanel.scss";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
 export default class PartnerPanel extends React.Component {
@@ -100,7 +101,7 @@ export default class PartnerPanel extends React.Component {
   openRequest = (requestid, request) => {
     PartnerpanelOpenRequest(requestid, res => {
       if (res.success_result.success) {
-        this.toggleModals("requestContact", request, () => {
+        this.toggleModals("requestContact", res.data, () => {
           this.filterRequests("newrequests", undefined);
         });
       }
@@ -131,7 +132,7 @@ export default class PartnerPanel extends React.Component {
           modals: {
             ...this.state.modals,
             [modalType]: {
-              openStatus: !this.state.modals.requestContact.openStatus,
+              openStatus: !this.state.modals[modalType].openStatus,
               data: dataObj
             }
           }
@@ -335,12 +336,10 @@ export default class PartnerPanel extends React.Component {
     this.getAndUpdateProductsList();
     this.updatePartnerInfo();
   }
-
   render() {
     const { locale, direction } = this.translate;
     const { loading } = this.state.requests;
     const { modals, requests } = this.state;
-
     return (
       <section
         className={classnames(
@@ -410,6 +409,7 @@ export default class PartnerPanel extends React.Component {
             isOpen={this.state.modals.warning.openStatus}
             toggle={() => this.toggleModals("warning", {})}
             className="login-modal"
+            id="rejectRequest-warning-modal"
           >
             <ModalHeader
               className="login-modal-header"
@@ -435,7 +435,7 @@ export default class PartnerPanel extends React.Component {
                   this.rejectRequest(this.state.modals.warning.data.requestId)
                 }
               >
-                {locale.requests.alert.accept}
+                {true ? locale.requests.alert.accept : <Spinner width="25px" />}
               </Button>
               <Button
                 pull={direction === "ltr" ? "left" : "right"}
@@ -459,29 +459,74 @@ export default class PartnerPanel extends React.Component {
             >
               {locale.requests.customer_contact_detail.title}
             </ModalHeader>
+
             <ModalBody>
               <fieldset>
                 <legend>
                   {locale.requests.customer_contact_detail.request_info.title}
                 </legend>
                 {console.log(modals.requestContact.data)}
-                نام درخواست کننده: <span className="requestInfo-text">{}</span>
+                نام درخواست کننده :{" "}
+                <span className="requestInfo-text">
+                  {SafeValue(
+                    modals.requestContact,
+                    "data.fields.fullname",
+                    "string",
+                    " - ",
+                    " "
+                  )}
+                </span>
                 <br />
-                ایمیل: <span className="requestInfo-text">{}</span>
+                محصول درخواستی :{" "}
+                <span className="requestInfo-text">
+                  {SafeValue(
+                    modals.requestContact,
+                    `data.fields.product.fields.name.${this.lang}`,
+                    "string",
+                    " - ",
+                    "data.fields.product.fields.name"
+                  )}
+                </span>
                 <br />
-                تاریخ تولد: <span className="requestInfo-text">{}</span>
+                تعداد :{" "}
+                <span className="requestInfo-text">
+                  {SafeValue(
+                    modals.requestContact,
+                    "data.fields.seats",
+                    "string",
+                    " - ",
+                    " "
+                  )}
+                </span>
               </fieldset>
               <br />
               <fieldset>
                 <legend>
                   {locale.requests.customer_contact_detail.contact_info.title}{" "}
                 </legend>
-                {locale.requests.customer_contact_detail.contact_info.tel}:{" "}
-                <span className="requestInfo-text">{}</span>
+                {locale.requests.customer_contact_detail.contact_info.tel} :{" "}
+                <span className="requestInfo-text">
+                  {SafeValue(
+                    modals.requestContact,
+                    "data.fields.phonennumber",
+                    "string",
+                    " - ",
+                    " "
+                  )}
+                </span>
                 <br />
                 {
                   locale.requests.customer_contact_detail.contact_info.email
-                }: <span className="requestInfo-text"></span>
+                }:{" "}
+                <span className="requestInfo-text">
+                  {SafeValue(
+                    modals.requestContact,
+                    "data.fields.email",
+                    "string",
+                    " - ",
+                    " "
+                  )}
+                </span>
               </fieldset>
             </ModalBody>
           </Modal>
