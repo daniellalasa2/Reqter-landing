@@ -477,7 +477,6 @@ var QueryContent = (contentTypesArr, callback) => {
       (acc, curr) => acc + "," + curr
     );
   }
-  console.log("api", contentTypesString);
   Config.Auth().then(token => {
     axios({
       url: _api.QueryContent,

@@ -1,4 +1,7 @@
 .PartnerLogin {
+  &._rtl {
+    direction: rtl;
+  }
   padding-top: 110px;
   padding-bottom: 90px;
   background-color: whitesmoke;
@@ -132,6 +135,9 @@
 
 ._ltr {
   .login-card-header {
+    direction: ltr;
+  }
+  .alert {
     direction: ltr;
   }
 }

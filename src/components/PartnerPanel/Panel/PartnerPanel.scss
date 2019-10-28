@@ -42,6 +42,39 @@
       }
     }
   }
+  //modals
+}
+.modal-dialog.requestContact-modal {
+  direction: ltr;
+  text-align: left;
+  font-family: "Samim", sans-serif;
+  & fieldset {
+    border: 2px solid lightgray !important;
+    padding: 12px;
+    border-radius: 4px;
+  }
+  & legend {
+    width: auto;
+    padding: 0 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: lightgrey;
+    border-radius: 3px;
+    padding: 3px 10px;
+  }
+  & .requestContact-modal-header {
+    & h5 {
+      font-size: 1.1rem;
+    }
+    & .close {
+      padding: 1.1rem 1.5rem;
+      margin: -1rem;
+    }
+  }
+  &._rtl {
+    direction: rtl;
+    text-align: right;
+  }
 }
 ._rtl {
   & .form-card {

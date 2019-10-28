@@ -277,7 +277,7 @@ export default class Login extends React.Component {
       <div className={classnames("PartnerLogin", `_${direction}`)}>
         {this.state.partnerStatusError && (
           <Alert color="warning">
-            {this.locale.partner_status_error.not_verified}
+            {locale.partner_status_error.not_verified}
           </Alert>
         )}
         <Card className="login-card">

@@ -17,6 +17,17 @@
         "areyousure": "Are you sure?",
         "accept": "Yes",
         "reject": "Cancel"
+      },
+      "customer_contact_detail": {
+        "title": "Customer contact detail",
+        "request_info": {
+          "title": "Request Info"
+        },
+        "contact_info": {
+          "title": "Contact info",
+          "tel": "Phone number",
+          "email": "Email"
+        }
       }
     },
     "table": {

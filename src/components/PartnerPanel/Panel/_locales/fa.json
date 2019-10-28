@@ -17,6 +17,17 @@
         "areyousure": "آیا مطمئن هستید؟",
         "accept": "بله",
         "reject": "خیر"
+      },
+      "customer_contact_detail": {
+        "title": "اطلاعات تماس مشتری",
+        "request_info": {
+          "title": "اطلاعات درخواست"
+        },
+        "contact_info": {
+          "title": "اطلاعات تماس",
+          "tel": "شماره تماس",
+          "email": "ایمیل"
+        }
       }
     },
     "table": {
