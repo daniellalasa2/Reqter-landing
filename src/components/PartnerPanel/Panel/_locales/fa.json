@@ -11,6 +11,7 @@
       "no_items_found": "موردی یافت نشد.",
       "open_request_button": "باز کردن",
       "reject_request_button": "رد کردن",
+      "display_request": "نمایش",
       "alert": {
         "title": "هشدار",
         "description": "در صورت اعمال وضعیت درخواست امکان تغییر وضعیت آن وجود ندارد.",
@@ -21,18 +22,28 @@
       "customer_contact_detail": {
         "title": "اطلاعات تماس مشتری",
         "request_info": {
-          "title": "اطلاعات درخواست"
+          "title": "اطلاعات درخواست",
+          "requester_name": "نام درخواست کننده : ",
+          "product_name": "محصول درخواستی : ",
+          "seats": "تعداد : ",
+          "city": "شهر : ",
+          "country": "کشور : ",
+          "birthyear": "سال تولد : ",
+          "workingfield": "زمینه همکاری : ",
+          "resume": "رزومه : ",
+          "download": "دانلود"
         },
         "contact_info": {
           "title": "اطلاعات تماس",
-          "tel": "شماره تماس",
-          "email": "ایمیل"
+          "tel": "شماره تماس : ",
+          "email": "ایمیل : "
         }
       }
     },
     "table": {
       "row": "ردیف",
       "product_name": "نام محصول",
+      "requester_detail": "درخواست کننده",
       "city": "شهر",
       "qunatity": "تعداد",
       "date": "تاریخ",

@@ -11,6 +11,7 @@
       "no_items_found": "No items found.",
       "open_request_button": "Open",
       "reject_request_button": "Reject",
+      "display_request": "Display",
       "alert": {
         "title": "Warning !",
         "description": "If the request status is applied, it cannot be changed.",
@@ -21,18 +22,28 @@
       "customer_contact_detail": {
         "title": "Customer contact detail",
         "request_info": {
-          "title": "Request Info"
+          "title": "Request Info",
+          "requester_name": "ًRequested product :",
+          "product_name": "Product name :",
+          "seats": "Seats :",
+          "city": "City :",
+          "country": "Country :",
+          "birthyear": "Birth year :",
+          "workingfield": "Working field :",
+          "resume": "Resume :",
+          "download": "Download"
         },
         "contact_info": {
           "title": "Contact info",
-          "tel": "Phone number",
-          "email": "Email"
+          "tel": "Phone number :",
+          "email": "Email :"
         }
       }
     },
     "table": {
       "row": "Row",
       "product_name": "Product name",
+      "requester_detail": "Requester detail",
       "city": "City",
       "qunatity": "Number",
       "date": "Date",

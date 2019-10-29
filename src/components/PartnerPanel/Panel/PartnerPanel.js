@@ -26,6 +26,7 @@ import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
 import Spinner from "../../../assets/script/spinner";
 import "./PartnerPanel.scss";
+import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
 export default class PartnerPanel extends React.Component {
   static contextType = ContextApi;
@@ -98,11 +99,11 @@ export default class PartnerPanel extends React.Component {
       }
     });
   };
-  openRequest = (requestid, request) => {
+  openRequest = (requestid, request, reloadRequests) => {
     PartnerpanelOpenRequest(requestid, res => {
       if (res.success_result.success) {
         this.toggleModals("requestContact", res.data, () => {
-          this.filterRequests("newrequests", undefined);
+          reloadRequests && this.filterRequests("newrequests", undefined);
         });
       }
     });
@@ -147,12 +148,27 @@ export default class PartnerPanel extends React.Component {
     const { locale } = this.translate;
     let generatedElements = [];
     requestType = requestsObj.length > 0 ? requestType : null;
-    const _tableWrapper = children => (
+    const _tableWrapperDefault = children => (
       <Table hover className="requests-table">
         <thead>
           <tr>
             <th>{locale.table.row}</th>
             <th>{locale.table.product_name}</th>
+            <th>{locale.table.qunatity}</th>
+            <th>{locale.table.date}</th>
+            <th>{locale.table.operation}</th>
+          </tr>
+        </thead>
+        <tbody>{children}</tbody>
+      </Table>
+    );
+    const _tableWrapperOpenRequests = children => (
+      <Table hover className="requests-table">
+        <thead>
+          <tr>
+            <th>{locale.table.row}</th>
+            <th>{locale.table.product_name}</th>
+            <th>{locale.table.requester_detail}</th>
             <th>{locale.table.qunatity}</th>
             <th>{locale.table.date}</th>
             <th>{locale.table.operation}</th>
@@ -180,11 +196,11 @@ export default class PartnerPanel extends React.Component {
                                 product,
                                 `fields.thumbnail.${this.lang}`,
                                 "string",
-                                null,
+                                NoImageAlt,
                                 "fields.thumbnail.0"
                               )}
                               alt="Product"
-                              width="70"
+                              style={{ width: "60px", height: "48px" }}
                             />{" "}
                             <strong>
                               {SafeValue(
@@ -222,7 +238,7 @@ export default class PartnerPanel extends React.Component {
                   <Button
                     size="sm"
                     color="success"
-                    onClick={() => this.openRequest(request._id, request)}
+                    onClick={() => this.openRequest(request._id, request, true)}
                   >
                     {locale.requests.open_request_button}
                   </Button>{" "}
@@ -239,7 +255,7 @@ export default class PartnerPanel extends React.Component {
               </tr>
             )
         );
-        return _tableWrapper(generatedElements);
+        return _tableWrapperDefault(generatedElements);
       case "openrequests":
         generatedElements = requestsObj.map(
           (request, idx) =>
@@ -258,11 +274,11 @@ export default class PartnerPanel extends React.Component {
                                 product,
                                 `fields.thumbnail.${this.lang}`,
                                 "string",
-                                null,
+                                NoImageAlt,
                                 "fields.thumbnail.0"
                               )}
                               alt="Product"
-                              width="70"
+                              style={{ width: "60px", height: "48px" }}
                             />{" "}
                             <strong>
                               {SafeValue(
@@ -276,6 +292,33 @@ export default class PartnerPanel extends React.Component {
                           </span>
                         )
                     )}
+                </td>
+                <td>
+                  {SafeValue(
+                    request,
+                    "fields.requestid.fields.fullname",
+                    "string",
+                    " - "
+                  )}
+                  <br />
+                  <span style={{ direction: "ltr", display: "inline-block" }}>
+                    {PersianNumber(
+                      SafeValue(
+                        request,
+                        "fields.requestid.fields.phonenumber",
+                        "string",
+                        " - "
+                      ),
+                      this.lang
+                    )}
+                  </span>
+                  <br />
+                  {SafeValue(
+                    request,
+                    "fields.requestid.fields.email",
+                    "string",
+                    " - "
+                  )}
                 </td>
                 <td>
                   {PersianNumber(
@@ -299,6 +342,15 @@ export default class PartnerPanel extends React.Component {
                 <td>
                   <Button
                     size="sm"
+                    color="success"
+                    onClick={() =>
+                      this.openRequest(request._id, request, false)
+                    }
+                  >
+                    {locale.requests.display_request}
+                  </Button>{" "}
+                  <Button
+                    size="sm"
                     color="danger"
                     onClick={() =>
                       this.toggleModals("warning", { requestId: request._id })
@@ -310,7 +362,7 @@ export default class PartnerPanel extends React.Component {
               </tr>
             )
         );
-        return _tableWrapper(generatedElements);
+        return _tableWrapperOpenRequests(generatedElements);
       default:
         return (
           <span className="no-content">
@@ -420,8 +472,7 @@ export default class PartnerPanel extends React.Component {
             <ModalBody>
               <span>
                 {locale.requests.alert.description}
-                <br />
-                <br />
+
                 <strong style={{ fontSize: "20px" }}>
                   {locale.requests.alert.areyousure}
                 </strong>
@@ -465,68 +516,207 @@ export default class PartnerPanel extends React.Component {
                 <legend>
                   {locale.requests.customer_contact_detail.request_info.title}
                 </legend>
-                {console.log(modals.requestContact.data)}
-                نام درخواست کننده :{" "}
-                <span className="requestInfo-text">
-                  {SafeValue(
-                    modals.requestContact,
-                    "data.fields.fullname",
-                    "string",
-                    " - ",
-                    " "
-                  )}
-                </span>
-                <br />
-                محصول درخواستی :{" "}
-                <span className="requestInfo-text">
-                  {SafeValue(
-                    modals.requestContact,
-                    `data.fields.product.fields.name.${this.lang}`,
-                    "string",
-                    " - ",
-                    "data.fields.product.fields.name"
-                  )}
-                </span>
-                <br />
-                تعداد :{" "}
-                <span className="requestInfo-text">
-                  {SafeValue(
-                    modals.requestContact,
-                    "data.fields.seats",
-                    "string",
-                    " - ",
-                    " "
-                  )}
-                </span>
+                <div>
+                  <span className="requestInfo-title">
+                    {
+                      locale.requests.customer_contact_detail.request_info
+                        .requester_name
+                    }
+                  </span>{" "}
+                  <span className="requestInfo-text">
+                    {SafeValue(
+                      modals.requestContact,
+                      "data.fields.fullname",
+                      "string",
+                      " - "
+                    )}
+                  </span>
+                </div>
+                <div>
+                  <span className="requestInfo-title">
+                    {
+                      locale.requests.customer_contact_detail.request_info
+                        .product_name
+                    }
+                  </span>{" "}
+                  <span className="requestInfo-text">
+                    {SafeValue(
+                      modals.requestContact,
+                      `data.fields.product.fields.name.${this.lang}`,
+                      "string",
+                      " - ",
+                      "data.fields.product.fields.name"
+                    )}
+                  </span>
+                </div>
+                <div>
+                  <span className="requestInfo-title">
+                    {locale.requests.customer_contact_detail.request_info.seats}
+                  </span>{" "}
+                  <span className="requestInfo-text">
+                    {SafeValue(
+                      modals.requestContact,
+                      "data.fields.seats",
+                      "string",
+                      " - "
+                    )}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="requestInfo-title">
+                    {locale.requests.customer_contact_detail.request_info.city}
+                  </span>{" "}
+                  <span className="requestInfo-text">
+                    {SafeValue(
+                      modals.requestContact,
+                      `data.fields.city.fields.name.${this.lang}`,
+                      "string",
+                      " - ",
+                      "data.fields.city.fields.name"
+                    )}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="requestInfo-title">
+                    {
+                      locale.requests.customer_contact_detail.request_info
+                        .country
+                    }
+                  </span>{" "}
+                  <span className="requestInfo-text">
+                    {SafeValue(
+                      modals.requestContact,
+                      `data.fields.country.fields.name.${this.lang}`,
+                      "string",
+                      " - ",
+                      "data.fields.country.fields.name"
+                    )}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="requestInfo-title">
+                    {
+                      locale.requests.customer_contact_detail.request_info
+                        .birthyear
+                    }
+                  </span>{" "}
+                  <span className="requestInfo-text">
+                    {SafeValue(
+                      modals.requestContact,
+                      `data.fields.birthyear`,
+                      "string",
+                      " - "
+                    )}
+                  </span>
+                </div>
+
+                {SafeValue(
+                  modals.requestContact,
+                  "data.fields.workingfield",
+                  "object",
+                  []
+                ).length > 0 && (
+                  <div>
+                    <span className="requestInfo-title">
+                      {
+                        locale.requests.customer_contact_detail.request_info
+                          .workingfield
+                      }
+                    </span>{" "}
+                    <span className="requestInfo-text">
+                      {modals.requestContact.data.fields.workingfield.map(
+                        field => (
+                          <div
+                            id="workingfield-tag"
+                            className="workingfield-tag"
+                          >
+                            {SafeValue(
+                              field,
+                              `fields.name.${this.lang}`,
+                              "string",
+                              " - "
+                            )}
+                          </div>
+                        )
+                      )}
+                    </span>
+                  </div>
+                )}
+                {SafeValue(
+                  modals.requestContact,
+                  "data.fields.resume",
+                  "object",
+                  []
+                ).length > 0 && (
+                  <div>
+                    <span className="requestInfo-title">
+                      {
+                        locale.requests.customer_contact_detail.request_info
+                          .resume
+                      }
+                    </span>{" "}
+                    <span className="requestInfo-text">
+                      <a
+                        href={SafeValue(
+                          modals.requestContact,
+                          `data.fields.resume.0.${this.lang}`,
+                          "string",
+                          ""
+                        )}
+                      >
+                        {
+                          locale.requests.customer_contact_detail.request_info
+                            .download
+                        }
+                      </a>
+                    </span>
+                  </div>
+                )}
               </fieldset>
+              <br />
               <br />
               <fieldset>
                 <legend>
                   {locale.requests.customer_contact_detail.contact_info.title}{" "}
                 </legend>
-                {locale.requests.customer_contact_detail.contact_info.tel} :{" "}
-                <span className="requestInfo-text">
-                  {SafeValue(
-                    modals.requestContact,
-                    "data.fields.phonennumber",
-                    "string",
-                    " - ",
-                    " "
-                  )}
-                </span>
-                <br />
-                {
-                  locale.requests.customer_contact_detail.contact_info.email
-                }:{" "}
-                <span className="requestInfo-text">
-                  {SafeValue(
-                    modals.requestContact,
-                    "data.fields.email",
-                    "string",
-                    " - ",
-                    " "
-                  )}
-                </span>
+                <div>
+                  <span className="requestInfo-title">
+                    {locale.requests.customer_contact_detail.contact_info.tel}
+                  </span>{" "}
+                  <span
+                    className="requestInfo-text"
+                    style={{ direction: "ltr" }}
+                  >
+                    {PersianNumber(
+                      SafeValue(
+                        modals.requestContact,
+                        "data.fields.phonenumber",
+                        "string",
+                        " - ",
+                        " "
+                      ),
+                      this.lang
+                    )}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="requestInfo-title">
+                    {locale.requests.customer_contact_detail.contact_info.email}
+                  </span>{" "}
+                  <span className="requestInfo-text">
+                    {SafeValue(
+                      modals.requestContact,
+                      "data.fields.email",
+                      "string",
+                      " - ",
+                      " "
+                    )}
+                  </span>
+                </div>
               </fieldset>
             </ModalBody>
           </Modal>
