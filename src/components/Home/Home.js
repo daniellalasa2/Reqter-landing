@@ -56,6 +56,7 @@ class Home extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       form: {
+        //This field is used to validate form inputs. True means the form data is value otherwise false
         isValid: false,
         fields: {
           selectedCity: { value: "", isValid: true },

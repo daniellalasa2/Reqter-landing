@@ -12,6 +12,7 @@
       "open_request_button": "باز کردن",
       "reject_request_button": "رد کردن",
       "display_request": "نمایش",
+      "issue_offer": "ارسال پیشنهاد",
       "alert": {
         "title": "هشدار",
         "description": "در صورت اعمال وضعیت درخواست امکان تغییر وضعیت آن وجود ندارد.",

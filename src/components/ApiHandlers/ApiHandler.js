@@ -608,7 +608,40 @@ var PartnerpanelOpenRequest = (id, callback) => {
       });
   });
 };
-
+var PartnerpanelIssueOffer = () => {
+  Config.Auth().then(token => {
+    alert("sent");
+    // axios({
+    //   url: _api.PartnerpanelOpenRequest + id,
+    //   method: "PUT",
+    //   headers: {
+    //     ..._api.header,
+    //     authorization: token
+    //   },
+    //   data: {
+    //     fields: {
+    //       stage: "opened"
+    //     }
+    //   }
+    // })
+    //   .then(res => {
+    //     const result = errorHandler(SafeValue(res, "status", "number", null));
+    //     callback({
+    //       success_result: result,
+    //       data: SafeValue(res, "data", "object", [])
+    //     });
+    //   })
+    //   .catch(err => {
+    //     const result = errorHandler(
+    //       SafeValue(err.response, "status", "number", 0)
+    //     );
+    //     callback({
+    //       success_result: result,
+    //       data: []
+    //     });
+    //   });
+  });
+};
 //return safe value
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
@@ -692,6 +725,7 @@ export {
   PartnerpanelRejectRequest,
   PartnerpanelOpenRequest,
   GetPartnerpanelRequests,
+  PartnerpanelIssueOffer,
   QueryContent,
   Config
 };

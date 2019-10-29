@@ -7,7 +7,8 @@ import {
   Button,
   Modal,
   ModalBody,
-  ModalHeader
+  ModalHeader,
+  ModalFooter
 } from "reactstrap";
 import {
   SafeValue,
@@ -16,12 +17,13 @@ import {
   PartnerpanelRejectRequest,
   PartnerpanelOpenRequest,
   QueryContent,
+  PartnerpanelIssueOffer,
   Config
 } from "../../ApiHandlers/ApiHandler";
 import PersianNumber from "../../PersianNumber/PersianNumber";
 import DateFormat from "../../DateFormat/DateFormat";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faList } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faList } from "@fortawesome/free-solid-svg-icons";
 import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
 import Spinner from "../../../assets/script/spinner";
@@ -53,7 +55,11 @@ export default class PartnerPanel extends React.Component {
       }
     };
   }
-  filterRequests = (type, e) => {
+
+  //-------------------------------------Filter request --------------------------------------//
+  // Functionality:
+  //    1- If user clicks on filter requests tab inside partner panel this function will be call
+  filterRequests = (type, e, callback) => {
     this.setState({
       requests: {
         ...this.state.requests,
@@ -67,7 +73,8 @@ export default class PartnerPanel extends React.Component {
       type = null;
     }
     //active button class
-    if (typeof e === "object") {
+
+    if (typeof e === "object" && e.length === undefined) {
       const filterButtons = Array.from(
         document.getElementsByClassName("filter-button")
       );
@@ -81,15 +88,23 @@ export default class PartnerPanel extends React.Component {
       if (res.success_result.success) {
         APIDataContent = res.data;
       }
-      this.setState({
-        requests: {
-          ...this.state.requests,
-          dataContent: APIDataContent,
-          loading: false
+      this.setState(
+        {
+          requests: {
+            ...this.state.requests,
+            dataContent: APIDataContent,
+            loading: false
+          }
+        },
+        () => {
+          if (typeof callback === "function") callback();
         }
-      });
+      );
     });
   };
+  //--------------------------Get and update product lists------------------------------//
+  // Functionality:
+  //  1-Get main website products from backend API and update state with product ids
   getAndUpdateProductsList = () => {
     QueryContent([Config.CONTENT_TYPE_ID.product_list], res => {
       if (res.success_result.success) {
@@ -108,23 +123,26 @@ export default class PartnerPanel extends React.Component {
       }
     });
   };
-  rejectRequest = requestid => {
+  rejectRequest = (requestid, theListTypeThatIsGoingToUpdate, callback) => {
     PartnerpanelRejectRequest(requestid, res => {
       if (res.success_result.success) {
-        this.filterRequests(() => {
-          this.setState({
-            modals: {
-              ...this.state.modals,
-              warning: {
-                openStatus: false,
-                data: {}
-              }
-            }
-          });
+        this.filterRequests(theListTypeThatIsGoingToUpdate, undefined, () => {
+          if (typeof callback === "function") callback();
         });
       }
     });
   };
+  // submit offer for requests
+  issueOffer = (requestid, callback) => {
+    PartnerpanelIssueOffer(requestid, () => {
+      if (typeof callback === "function") callback();
+    });
+  };
+  //------------------------Toggle Modals------------------------------//
+  // Functionality:
+  //  1-Open and close modals
+  //  2-access sent data inside opened modal
+  //  3-call a callback function after data reached inside modal
   toggleModals = (modalType, dataObj, callback) => {
     const auhorizedModals = ["warning", "requestContact"];
     if (auhorizedModals.indexOf(modalType) > -1) {
@@ -144,6 +162,8 @@ export default class PartnerPanel extends React.Component {
       );
     }
   };
+  //------------------------- Display requests table -----------------------------//
+  // generate partner panel requests table based on active request filter tab
   displayRequestsTable = (requestType, requestsObj) => {
     const { locale } = this.translate;
     let generatedElements = [];
@@ -246,7 +266,14 @@ export default class PartnerPanel extends React.Component {
                     size="sm"
                     color="danger"
                     onClick={() =>
-                      this.toggleModals("warning", { requestId: request._id })
+                      this.toggleModals("warning", {
+                        requestId: request._id,
+                        goingToUpdateRequestsListType: this.state.requests
+                          .activeFilter,
+                        callback: () => {
+                          this.toggleModals("warning", {});
+                        }
+                      })
                     }
                   >
                     {locale.requests.reject_request_button}
@@ -342,7 +369,7 @@ export default class PartnerPanel extends React.Component {
                 <td>
                   <Button
                     size="sm"
-                    color="success"
+                    color="secondary"
                     onClick={() =>
                       this.openRequest(request._id, request, false)
                     }
@@ -353,7 +380,14 @@ export default class PartnerPanel extends React.Component {
                     size="sm"
                     color="danger"
                     onClick={() =>
-                      this.toggleModals("warning", { requestId: request._id })
+                      this.toggleModals("warning", {
+                        requestId: request._id,
+                        goingToUpdateRequestsListType: this.state.requests
+                          .activeFilter,
+                        callback: () => {
+                          this.toggleModals("warning", {});
+                        }
+                      })
                     }
                   >
                     {locale.requests.reject_request_button}
@@ -385,6 +419,7 @@ export default class PartnerPanel extends React.Component {
     });
   };
   componentDidMount() {
+    //Initial datas which are going to display in partner panel
     this.getAndUpdateProductsList();
     this.updatePartnerInfo();
   }
@@ -456,7 +491,7 @@ export default class PartnerPanel extends React.Component {
               )}
             </CardBody>
           </Card>
-          {/************************* Alert modal ***********************/}
+          {/************************* Warning modal ***********************/}
           <Modal
             isOpen={this.state.modals.warning.openStatus}
             toggle={() => this.toggleModals("warning", {})}
@@ -483,10 +518,16 @@ export default class PartnerPanel extends React.Component {
                 color="primary"
                 style={{ padding: "6px 25px", margin: "20px 10px 0" }}
                 onClick={() =>
-                  this.rejectRequest(this.state.modals.warning.data.requestId)
+                  this.rejectRequest(
+                    modals.warning.data.requestId,
+                    modals.warning.data.goingToUpdateRequestsListType,
+                    () => {
+                      modals.warning.data.callback();
+                    }
+                  )
                 }
               >
-                {true ? locale.requests.alert.accept : <Spinner width="25px" />}
+                {locale.requests.alert.accept}
               </Button>
               <Button
                 pull={direction === "ltr" ? "left" : "right"}
@@ -508,7 +549,12 @@ export default class PartnerPanel extends React.Component {
               className="requestContact-modal-header"
               toggle={() => this.toggleModals("requestContact", {})}
             >
-              {locale.requests.customer_contact_detail.title}
+              {SafeValue(
+                modals.requestContact,
+                "data.fields.name",
+                "string",
+                locale.requests.customer_contact_detail.title
+              )}
             </ModalHeader>
 
             <ModalBody>
@@ -516,22 +562,6 @@ export default class PartnerPanel extends React.Component {
                 <legend>
                   {locale.requests.customer_contact_detail.request_info.title}
                 </legend>
-                <div>
-                  <span className="requestInfo-title">
-                    {
-                      locale.requests.customer_contact_detail.request_info
-                        .requester_name
-                    }
-                  </span>{" "}
-                  <span className="requestInfo-text">
-                    {SafeValue(
-                      modals.requestContact,
-                      "data.fields.fullname",
-                      "string",
-                      " - "
-                    )}
-                  </span>
-                </div>
                 <div>
                   <span className="requestInfo-title">
                     {
@@ -554,11 +584,14 @@ export default class PartnerPanel extends React.Component {
                     {locale.requests.customer_contact_detail.request_info.seats}
                   </span>{" "}
                   <span className="requestInfo-text">
-                    {SafeValue(
-                      modals.requestContact,
-                      "data.fields.seats",
-                      "string",
-                      " - "
+                    {PersianNumber(
+                      SafeValue(
+                        modals.requestContact,
+                        "data.fields.seats",
+                        "string",
+                        " - "
+                      ),
+                      this.lang
                     )}
                   </span>
                 </div>
@@ -604,11 +637,14 @@ export default class PartnerPanel extends React.Component {
                     }
                   </span>{" "}
                   <span className="requestInfo-text">
-                    {SafeValue(
-                      modals.requestContact,
-                      `data.fields.birthyear`,
-                      "string",
-                      " - "
+                    {PersianNumber(
+                      SafeValue(
+                        modals.requestContact,
+                        `data.fields.birthyear`,
+                        "string",
+                        " - "
+                      ),
+                      this.lang
                     )}
                   </span>
                 </div>
@@ -677,11 +713,26 @@ export default class PartnerPanel extends React.Component {
                 )}
               </fieldset>
               <br />
-              <br />
               <fieldset>
                 <legend>
                   {locale.requests.customer_contact_detail.contact_info.title}{" "}
                 </legend>
+                <div>
+                  <span className="requestInfo-title">
+                    {
+                      locale.requests.customer_contact_detail.request_info
+                        .requester_name
+                    }
+                  </span>{" "}
+                  <span className="requestInfo-text">
+                    {SafeValue(
+                      modals.requestContact,
+                      "data.fields.fullname",
+                      "string",
+                      " - "
+                    )}
+                  </span>
+                </div>
                 <div>
                   <span className="requestInfo-title">
                     {locale.requests.customer_contact_detail.contact_info.tel}
@@ -719,6 +770,45 @@ export default class PartnerPanel extends React.Component {
                 </div>
               </fieldset>
             </ModalBody>
+            <ModalFooter
+              style={{
+                justifyContent: "space-between",
+                flexDirection: "row-reverse"
+              }}
+            >
+              <Button
+                color="danger"
+                onClick={() =>
+                  this.toggleModals("warning", {
+                    requestId: SafeValue(
+                      modals.requestContact,
+                      "data._id",
+                      "string",
+                      null
+                    ),
+                    goingToUpdateRequestsListType: this.state.requests
+                      .activeFilter,
+                    callback: () => {
+                      console.log("done");
+                      this.toggleModals("warning", {}, () =>
+                        this.toggleModals("requestContact", {})
+                      );
+                    }
+                  })
+                }
+                push="right"
+              >
+                {locale.requests.reject_request_button}
+              </Button>{" "}
+              <Button
+                color="success"
+                onClick={() => this.issueOffer(modals.requestContact._id)}
+                push="left"
+                style={{ fontWeight: "bold" }}
+              >
+                {locale.requests.issue_offer}
+              </Button>
+            </ModalFooter>
           </Modal>
         </React.Fragment>
       </section>

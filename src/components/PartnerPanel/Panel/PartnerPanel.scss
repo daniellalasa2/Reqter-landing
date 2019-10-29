@@ -60,7 +60,7 @@
   text-align: left;
   font-family: "Samim", sans-serif;
   & fieldset {
-    border: 2px solid lightgray !important;
+    border: 1px solid lightgray !important;
     padding: 12px;
     border-radius: 4px;
     line-height: 2.5;
@@ -70,10 +70,10 @@
     & .requestInfo-text {
       font-weight: bold;
       display: inline-flex;
+      flex-wrap: wrap;
       & .workingfield-tag {
         line-height: 1.5;
         display: flex;
-        flex-grow: 1;
         width: fit-content;
         border-radius: 6px;
         padding: 4px 7px;
@@ -81,7 +81,7 @@
         color: white;
         font-weight: bold;
         background-color: darkslateblue;
-        margin: 0 3px;
+        margin: 3px;
       }
     }
   }
@@ -108,6 +108,9 @@
   &._rtl {
     direction: rtl;
     text-align: right;
+  }
+  @media (min-width: 576px) {
+    max-width: 650px;
   }
 }
 ._rtl {

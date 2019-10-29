@@ -12,6 +12,7 @@
       "open_request_button": "Open",
       "reject_request_button": "Reject",
       "display_request": "Display",
+      "issue_offer": "Issue offer",
       "alert": {
         "title": "Warning !",
         "description": "If the request status is applied, it cannot be changed.",
@@ -23,7 +24,7 @@
         "title": "Customer contact detail",
         "request_info": {
           "title": "Request Info",
-          "requester_name": "ًRequested product :",
+          "requester_name": "Requested product :",
           "product_name": "Product name :",
           "seats": "Seats :",
           "city": "City :",
