@@ -183,7 +183,7 @@ export default class PartnerPanel extends React.Component {
       </Table>
     );
     const _tableWrapperOpenRequests = children => (
-      <Table hover className="requests-table">
+      <Table responsive bordered hover className="requests-table">
         <thead>
           <tr>
             <th>{locale.table.row}</th>
@@ -367,6 +367,16 @@ export default class PartnerPanel extends React.Component {
                   )}
                 </td>
                 <td>
+                  <Button
+                    size="sm"
+                    color="success"
+                    style={{ fontWeight: "bold" }}
+                    onClick={() =>
+                      this.submitOffer(request._id, request, false)
+                    }
+                  >
+                    {locale.requests.issue_offer}
+                  </Button>{" "}
                   <Button
                     size="sm"
                     color="secondary"

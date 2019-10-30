@@ -402,7 +402,12 @@ class Navigation extends Component {
               </li>
               {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
                 <li>
-                  <Link className="nav-link" to={`/${lang}/partnerpanel/login`}>
+                  <Link
+                    className="nav-link"
+                    to={`/${lang}/partnerpanel/${
+                      ROLE !== "partner" ? "login" : "panel"
+                    }`}
+                  >
                     {locale.partner_panel}
                   </Link>
                 </li>

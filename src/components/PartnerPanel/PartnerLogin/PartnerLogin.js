@@ -144,7 +144,6 @@ export default class Login extends React.Component {
     const { locale } = this.translate;
     GetPartnerInfo({ "fields.phonenumber": phonenumber }, res => {
       if (res.success_result.success) {
-        this.props.history.push(`/${this.lang}/partnerpanel/panel`);
         callback();
       } else {
         this.setState({
@@ -184,7 +183,9 @@ export default class Login extends React.Component {
             }),
             parseInt(res.data.expiresIn) / (60 * 60 * 24)
           );
-          _this.context.updateAuth();
+          _this.context.updateAuth(() => {
+            this.props.history.push(`/${this.lang}/partnerpanel/panel`);
+          });
         });
       } else {
         _this.setState({

@@ -16,11 +16,7 @@ const Footer = React.lazy(() => import("../Footer/Footer"));
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.authObj = GetCookie("SSUSERAUTH")
-      ? JsonParser(GetCookie("SSUSERAUTH"))
-      : GetCookie("SSGUESTAUTH")
-      ? JsonParser(GetCookie("SSGUESTAUTH"))
-      : {};
+    this.authObj = this.getCurrentUserAuthFromCookie();
     this.supportedLanguages = ["en", "fa"];
     this.defaultLang = "fa";
     this.parsedUrlObject = this.urlParser(props.location.search);
@@ -57,6 +53,13 @@ class Main extends Component {
       defaultPhoneNumber: this.authObj ? this.authObj.ID : ""
     };
   }
+  getCurrentUserAuthFromCookie = () => {
+    return GetCookie("SSUSERAUTH")
+      ? JsonParser(GetCookie("SSUSERAUTH"))
+      : GetCookie("SSGUESTAUTH")
+      ? JsonParser(GetCookie("SSGUESTAUTH"))
+      : {};
+  };
   toggleLoginModal = (status, modalTitle, defaultPhoneNumber) => {
     this.setState({
       displayLoginModal:
@@ -69,7 +72,7 @@ class Main extends Component {
   updateAuth = callback => {
     this.setState(
       {
-        userAuth: JsonParser(GetCookie("SSUSERAUTH")), //DO NOT REPLACE THIS WITH this.authObj
+        userAuth: this.getCurrentUserAuthFromCookie(), //DO NOT REPLACE THIS WITH this.authObj
         displayLoginModal: false
       },
       () => {
