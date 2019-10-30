@@ -143,7 +143,7 @@ const ImageSelect = ({
     <React.Fragment>
       <div className="styled-checkbox-wrapper">
         <div
-          className="styled-checkbox"
+          className={"styled-checkbox" + (checked ? " checked" : "")}
           ref={checkbox}
           onClick={toggleCheckbox}
           style={style}
@@ -419,7 +419,7 @@ const FlatImageSelect = ({ items, onChange, dir, type, name }) => {
       <ImageSelect
         checked={val.defaultChecked}
         title={val.title}
-        key={val.key}
+        key={index}
         boxValue={index + 1}
         dir={dir}
         imgSrc={val.imgSrc}
@@ -621,7 +621,6 @@ const FlatDatePicker = ({ onChange, name }) => {
     </div>
   );
 };
-
 // Helper Functions
 // const removeClass = (e, nameOfClass) => {
 //   e.target.classList.remove(nameOfClass);

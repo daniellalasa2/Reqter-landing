@@ -27,6 +27,7 @@ import DateFormat from "../../DateFormat/DateFormat";
 import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
 import Spinner from "../../../assets/script/spinner";
+import IssueOffer from "../IssueOffer/IssueOffer";
 import "./PartnerPanel.scss";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
@@ -51,7 +52,8 @@ export default class PartnerPanel extends React.Component {
       partnerId: "",
       modals: {
         warning: { openStatus: false, data: {} },
-        requestContact: { openStatus: false, data: {} }
+        requestContact: { openStatus: false, data: {} },
+        issueOffer: { openStatus: false, data: {} }
       }
     };
   }
@@ -133,7 +135,7 @@ export default class PartnerPanel extends React.Component {
     });
   };
   // submit offer for requests
-  issueOffer = (requestid, callback) => {
+  submitIssueOffer = (requestid, callback) => {
     PartnerpanelIssueOffer(requestid, () => {
       if (typeof callback === "function") callback();
     });
@@ -144,7 +146,7 @@ export default class PartnerPanel extends React.Component {
   //  2-access sent data inside opened modal
   //  3-call a callback function after data reached inside modal
   toggleModals = (modalType, dataObj, callback) => {
-    const auhorizedModals = ["warning", "requestContact"];
+    const auhorizedModals = ["warning", "requestContact", "issueOffer"];
     if (auhorizedModals.indexOf(modalType) > -1) {
       this.setState(
         {
@@ -371,9 +373,7 @@ export default class PartnerPanel extends React.Component {
                     size="sm"
                     color="success"
                     style={{ fontWeight: "bold" }}
-                    onClick={() =>
-                      this.submitOffer(request._id, request, false)
-                    }
+                    onClick={() => this.toggleModals("issueOffer", {})}
                   >
                     {locale.requests.issue_offer}
                   </Button>{" "}
@@ -501,6 +501,32 @@ export default class PartnerPanel extends React.Component {
               )}
             </CardBody>
           </Card>
+
+          {/************************** Issue offer modal**************************/}
+          <Modal
+            isOpen={this.state.modals.issueOffer.openStatus}
+            toggle={() => this.toggleModals("issue_offer", {})}
+            className="login-modal"
+            id="issueOffer-modal"
+            style={{ width: "400px" }}
+          >
+            <ModalHeader
+              className="login-modal-header"
+              toggle={() => this.toggleModals("issue_offer", {})}
+            >
+              {locale.requests.issue_offer_modal.title}
+            </ModalHeader>
+            <ModalBody>
+              <IssueOffer
+                data={modals.issueOffer.data.prodcutsObj}
+                type="radio"
+                onChange={() => console.log("changed")}
+                callback={() =>
+                  this.submitIssueOffer(...modals.issueOffer.data)
+                }
+              />
+            </ModalBody>
+          </Modal>
           {/************************* Warning modal ***********************/}
           <Modal
             isOpen={this.state.modals.warning.openStatus}

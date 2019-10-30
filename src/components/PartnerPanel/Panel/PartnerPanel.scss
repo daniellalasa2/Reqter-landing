@@ -1,6 +1,6 @@
 .partner-panel-section {
   & .form-card {
-    width: 1000px;
+    width: 1100px;
     text-align: left;
     min-height: 600px;
     & .card-header-nav {
@@ -47,6 +47,11 @@
         }
         & th:nth-child(2) {
           min-width: 215px;
+        }
+        & tr > td:nth-child(2) > span {
+          display: flex;
+          align-items: center;
+          justify-content: space-evenly;
         }
       }
     }

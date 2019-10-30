@@ -39,6 +39,9 @@
           "tel": "Phone number :",
           "email": "Email :"
         }
+      },
+      "issue_offer_modal": {
+        "title": "Issue offer"
       }
     },
     "table": {

@@ -330,9 +330,10 @@ label.checkboxContainer {
       }
     }
     img {
-      width: 120px;
+      max-width: 90px;
       border-radius: 10px;
       position: relative;
+      margin: 20px 0;
     }
     .title {
       font-weight: bold;
