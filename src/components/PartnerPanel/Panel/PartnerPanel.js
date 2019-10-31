@@ -548,14 +548,14 @@ export default class PartnerPanel extends React.Component {
           {/************************** Issue offer modal**************************/}
           <Modal
             isOpen={this.state.modals.issueOffer.openStatus}
-            toggle={() => this.toggleModals("issue_offer", {})}
+            toggle={() => this.toggleModals("issueOffer", {})}
             className="login-modal"
             id="issueOffer-modal"
             style={{ width: "700px" }}
           >
             <ModalHeader
               className="login-modal-header"
-              toggle={() => this.toggleModals("issue_offer", {})}
+              toggle={() => this.toggleModals("issueOffer", {})}
             >
               {locale.requests.issue_offer_modal.title}
             </ModalHeader>
@@ -874,7 +874,6 @@ export default class PartnerPanel extends React.Component {
                     goingToUpdateRequestsListType: this.state.requests
                       .activeFilter,
                     callback: () => {
-                      console.log("done");
                       this.toggleModals("warning", {}, () =>
                         this.toggleModals("requestContact", {})
                       );
