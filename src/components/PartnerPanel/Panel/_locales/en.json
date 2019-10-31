@@ -41,7 +41,9 @@
         }
       },
       "issue_offer_modal": {
-        "title": "Issue offer"
+        "title": "Issue offer",
+        "company_name": "Offer from ",
+        "no_product_founded": "You dont have any available product. firstly, please add your product in \"My products\" page"
       }
     },
     "table": {

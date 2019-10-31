@@ -30,7 +30,8 @@ var Configuration = {
     get_partnerpanel_requests: "api/v1/requests/allnew",
     partnerpanel_reject_request: "api/v1/requests/reject/",
     partnerpanel_open_request: "api/v1/requests/open/",
-    query_content: "api/v1/lists/get/query"
+    query_content: "api/v1/lists/get/query",
+    issue_offer: "api/v1/quotes/issueoffer"
   },
   CONTENT_TYPE_ID: {
     partnership: "5d358ebc8e6e9a0017c28fc9",
@@ -49,7 +50,8 @@ var Configuration = {
     get_partner_info: "5d358ebc8e6e9a0017c28fc9",
     get_partner_products: "5d36a6418e6e9a0017c28fd5",
     get_partnerpanel_requests: "5d58df5a74c64b0017fb45d8",
-    product_list: "5d36a7d18e6e9a0017c28fd6"
+    product_type: "5d36a7d18e6e9a0017c28fd6",
+    issue_offer: "5d35adc68e6e9a0017c28fcb"
   },
   PRODUCT_TYPE_ID: {
     private_desk: "5d36a9d78e6e9a0017c28fd9",

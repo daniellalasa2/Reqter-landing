@@ -1,0 +1,45 @@
+#issueOffer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: row;
+  flex-wrap: wrap;
+  & .issueOffer-step.-step1 {
+    width: 850px;
+  }
+  & .issueOffer-step.-step2 {
+    width: 600px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    & .field-row {
+      width: 300px;
+      margin-bottom: 0;
+      margin-top: 0;
+      align-self: flex-start;
+      &:nth-child(7) {
+        width: 87%;
+        margin: auto;
+      }
+      & .FlatTimePicker {
+        margin-top: 7px;
+      }
+      & .input-wrapper {
+        margin-top: 0 !important;
+      }
+      & input {
+        font-size: 15px;
+        text-align: center !important;
+        letter-spacing: 0;
+        display: block;
+        margin: auto;
+      }
+      & textarea {
+        min-height: 120px;
+        padding: 10px;
+        border-width: 2px !important;
+      }
+    }
+  }
+}

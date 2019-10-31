@@ -18,6 +18,7 @@ import {
   PartnerpanelOpenRequest,
   QueryContent,
   PartnerpanelIssueOffer,
+  GetPartnerProducts,
   Config
 } from "../../ApiHandlers/ApiHandler";
 import PersianNumber from "../../PersianNumber/PersianNumber";
@@ -48,7 +49,9 @@ export default class PartnerPanel extends React.Component {
         dataContent: [],
         loading: false
       },
-      products: [],
+      productsType: [],
+      partnerProducts: [],
+      partnerData: {},
       partnerId: "",
       modals: {
         warning: { openStatus: false, data: {} },
@@ -104,17 +107,30 @@ export default class PartnerPanel extends React.Component {
       );
     });
   };
-  //--------------------------Get and update product lists------------------------------//
+  //--------------------------Get and update product types------------------------------//
   // Functionality:
   //  1-Get main website products from backend API and update state with product ids
+  //  2-Get partner products by partnerid and update the state
   getAndUpdateProductsList = () => {
-    QueryContent([Config.CONTENT_TYPE_ID.product_list], res => {
+    //get and update productsType
+    QueryContent([Config.CONTENT_TYPE_ID.product_type], res => {
       if (res.success_result.success) {
         this.setState({
-          products: res.data
+          productsType: res.data
         });
       }
     });
+    //this.state.partnerId
+    GetPartnerProducts(
+      { "fields.partnerid": "5d6d17bbaedb7b0017ae6b74" },
+      res => {
+        if (res.success_result.success) {
+          this.setState({
+            partnerProducts: res.data
+          });
+        }
+      }
+    );
   };
   openRequest = (requestid, request, reloadRequests) => {
     PartnerpanelOpenRequest(requestid, res => {
@@ -208,7 +224,7 @@ export default class PartnerPanel extends React.Component {
                 <td>{PersianNumber(idx + 1, this.lang)}</td>
                 <td>
                   {request.fields.requestid.fields.product &&
-                    this.state.products.map(
+                    this.state.productsType.map(
                       (product, idx) =>
                         product._id ===
                           request.fields.requestid.fields.product && (
@@ -293,7 +309,7 @@ export default class PartnerPanel extends React.Component {
                 <td>{PersianNumber(idx + 1, this.lang)}</td>
                 <td>
                   {request.fields.requestid.fields.product &&
-                    this.state.products.map(
+                    this.state.productsType.map(
                       (product, idx) =>
                         product._id ===
                           request.fields.requestid.fields.product && (
@@ -373,7 +389,33 @@ export default class PartnerPanel extends React.Component {
                     size="sm"
                     color="success"
                     style={{ fontWeight: "bold" }}
-                    onClick={() => this.toggleModals("issueOffer", {})}
+                    onClick={() =>
+                      this.toggleModals("issueOffer", {
+                        name: "",
+                        country: SafeValue(
+                          this.state.partnerData,
+                          "fields.country",
+                          "string",
+                          "0"
+                        ),
+                        city: SafeValue(
+                          this.state.partnerData,
+                          "fields.city",
+                          "string",
+                          "0"
+                        ),
+                        hourlyprice: "",
+                        dailyprice: "",
+                        weeklyprice: "",
+                        monthlyprice: "",
+                        description: null,
+                        startdate: "",
+                        partnerid: this.state.partnerId,
+                        requestid: request._id,
+                        stage: "5d7b968418a6400017ee1512",
+                        partnerProducts: this.state.partnerProducts
+                      })
+                    }
                   >
                     {locale.requests.issue_offer}
                   </Button>{" "}
@@ -421,6 +463,7 @@ export default class PartnerPanel extends React.Component {
         const { _id } = res.data[0];
         this.setState(
           {
+            partnerData: res.data[0],
             partnerId: _id
           },
           () => typeof callback === "function" && callback()
@@ -508,7 +551,7 @@ export default class PartnerPanel extends React.Component {
             toggle={() => this.toggleModals("issue_offer", {})}
             className="login-modal"
             id="issueOffer-modal"
-            style={{ width: "400px" }}
+            style={{ width: "700px" }}
           >
             <ModalHeader
               className="login-modal-header"
@@ -517,14 +560,20 @@ export default class PartnerPanel extends React.Component {
               {locale.requests.issue_offer_modal.title}
             </ModalHeader>
             <ModalBody>
-              <IssueOffer
-                data={modals.issueOffer.data.prodcutsObj}
-                type="radio"
-                onChange={() => console.log("changed")}
-                callback={() =>
-                  this.submitIssueOffer(...modals.issueOffer.data)
-                }
-              />
+              {this.state.partnerProducts.length > 0 ? (
+                <IssueOffer
+                  data={modals.issueOffer.data}
+                  type="radio"
+                  lang={this.lang}
+                  callback={() =>
+                    this.submitIssueOffer(...modals.issueOffer.data)
+                  }
+                />
+              ) : (
+                <strong style={{ color: "var(--red)", lineHeight: 3 }}>
+                  {locale.requests.issue_offer_modal.no_product_founded}
+                </strong>
+              )}
             </ModalBody>
           </Modal>
           {/************************* Warning modal ***********************/}

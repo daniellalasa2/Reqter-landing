@@ -24,7 +24,8 @@ let _api = {
     Config.BASE_URL_REQTER + Config.URLs.partnerpanel_reject_request,
   PartnerpanelOpenRequest:
     Config.BASE_URL_REQTER + Config.URLs.partnerpanel_open_request,
-  QueryContent: Config.BASE_URL_REQTER + Config.URLs.query_content
+  QueryContent: Config.BASE_URL_REQTER + Config.URLs.query_content,
+  PartnerpanelIssueOffer: Config.BASE_URL_REQTER + Config.URLs.issue_offer
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -80,16 +81,20 @@ var SubmitForm = (formName, data, callback) => {
     })
       .then(res => {
         const result = errorHandler(res.status);
-        return callback(result);
+        if (typeof callback === "function") {
+          return callback(result);
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -110,19 +115,23 @@ var FilterContents = (type, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -162,19 +171,23 @@ var Upload = (file, callback, progress) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        return callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", {})
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", {})
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        return callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -196,19 +209,23 @@ var LoginRequest = (phoneNumber, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        return callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", {})
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", {})
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        return callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -228,19 +245,23 @@ var VerifyCode = (data, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        return callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        return callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -256,19 +277,23 @@ var GetRequestsList = callback => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        return callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        return callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -289,19 +314,23 @@ var GetOfferList = (requestId, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        return callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        return callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -321,19 +350,23 @@ var RejectOffer = (offerId, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        return callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        return callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -352,19 +385,23 @@ var AcceptOffer = (offerId, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        return callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        return callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -392,19 +429,23 @@ var GetPartnerInfo = (params, callback) => {
         ) {
           result.success = false;
         }
-        return callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -425,16 +466,20 @@ var AddContent = (formName, data, callback) => {
     })
       .then(res => {
         const result = errorHandler(res.status);
-        return callback(result);
+        if (typeof callback === "function") {
+          return callback(result);
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -454,19 +499,23 @@ var GetPartnerProducts = (params, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -489,19 +538,23 @@ var QueryContent = (contentTypesArr, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -526,19 +579,23 @@ var GetPartnerpanelRequests = (partnerId, stage, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -559,19 +616,23 @@ var PartnerpanelRejectRequest = (id, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
@@ -592,54 +653,60 @@ var PartnerpanelOpenRequest = (id, callback) => {
     })
       .then(res => {
         const result = errorHandler(SafeValue(res, "status", "number", null));
-        callback({
-          success_result: result,
-          data: SafeValue(res, "data", "object", [])
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
       })
       .catch(err => {
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );
-        callback({
-          success_result: result,
-          data: []
-        });
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
       });
   });
 };
-var PartnerpanelIssueOffer = () => {
+var PartnerpanelIssueOffer = (data, callback) => {
   Config.Auth().then(token => {
-    alert("sent");
-    // axios({
-    //   url: _api.PartnerpanelOpenRequest + id,
-    //   method: "PUT",
-    //   headers: {
-    //     ..._api.header,
-    //     authorization: token
-    //   },
-    //   data: {
-    //     fields: {
-    //       stage: "opened"
-    //     }
-    //   }
-    // })
-    //   .then(res => {
-    //     const result = errorHandler(SafeValue(res, "status", "number", null));
-    //     callback({
-    //       success_result: result,
-    //       data: SafeValue(res, "data", "object", [])
-    //     });
-    //   })
-    //   .catch(err => {
-    //     const result = errorHandler(
-    //       SafeValue(err.response, "status", "number", 0)
-    //     );
-    //     callback({
-    //       success_result: result,
-    //       data: []
-    //     });
-    //   });
+    axios({
+      url: _api.PartnerpanelIssueOffer,
+      method: "POST",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      data: {
+        contentType: Config.CONTENT_TYPE_ID.issue_offer,
+        fields: data
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
   });
 };
 //return safe value

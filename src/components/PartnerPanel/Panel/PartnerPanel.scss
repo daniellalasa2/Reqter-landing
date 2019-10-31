@@ -127,6 +127,11 @@
     max-width: 650px;
   }
 }
+#issueOffer-modal {
+  & .modal-content {
+    width: auto;
+  }
+}
 ._rtl {
   & .form-card {
     direction: rtl;

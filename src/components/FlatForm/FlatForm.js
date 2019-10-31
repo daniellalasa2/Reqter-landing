@@ -3,6 +3,8 @@ import classnames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloud, faCheck } from "@fortawesome/free-solid-svg-icons";
 import "./FlatForm.scss";
+import { Button } from "reactstrap";
+import Spinner from "../../assets/script/spinner";
 /*
   Todo:
     1- CustomCheckBox must return data as the last or the first arguments toward onChange function
@@ -563,6 +565,13 @@ const FlatTimePicker = ({ onChange, name }) => {
     </div>
   );
 };
+const FlatButton = ({ value, color, suspense, ...props }) => {
+  return (
+    <Button {...props} disabled={suspense ? true : props.disabled}>
+      {suspense ? <Spinner width="30px" /> : props.children}
+    </Button>
+  );
+};
 const FlatDatePicker = ({ onChange, name }) => {
   // define states
   const [date, setDate] = useState({
@@ -638,5 +647,6 @@ export {
   FlatNumberSet,
   FlatUploader,
   FlatTimePicker,
-  FlatDatePicker
+  FlatDatePicker,
+  FlatButton
 };

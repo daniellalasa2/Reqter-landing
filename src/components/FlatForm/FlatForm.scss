@@ -303,7 +303,7 @@ label.checkboxContainer {
   .styled-checkbox {
     cursor: pointer;
     background-color: rgba(232, 232, 232, 0.7);
-    padding: 11px;
+    padding: 12px 0;
     position: relative;
     display: inline-block;
     border-radius: 5px;
@@ -330,10 +330,10 @@ label.checkboxContainer {
       }
     }
     img {
-      max-width: 90px;
+      max-width: 80px;
       border-radius: 10px;
       position: relative;
-      margin: 20px 0;
+      margin: 10px 0;
     }
     .title {
       font-weight: bold;
@@ -514,12 +514,12 @@ label.checkboxContainer {
   width: auto;
   display: inline-block;
   width: 150px;
-  height: 183px;
+  height: auto;
   margin: 10px;
   .styled-checkbox {
     cursor: pointer;
     background-color: rgba(232, 232, 232, 0.7);
-    padding: 11px;
+    padding: 12px 0;
     position: relative;
     display: inline-block;
     border-radius: 5px;
@@ -546,7 +546,7 @@ label.checkboxContainer {
       }
     }
     img {
-      width: 120px;
+      width: 80px;
       border-radius: 10px;
       position: relative;
     }
