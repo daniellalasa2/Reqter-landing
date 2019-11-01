@@ -1,6 +1,12 @@
 {
   "direction": "rtl",
   "locale": {
-    "login": "ورود"
+    "login": "ورود",
+    "notification": {
+      "info": "اطلاع رسانی",
+      "success": "عملیات موفق آمیز",
+      "warning": "هشدار",
+      "error": "خطا"
+    }
   }
 }

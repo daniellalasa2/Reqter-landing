@@ -11,6 +11,12 @@ import {
   GetCookie,
   JsonParser
 } from "../../components/CookieHandler/CookieHandler";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
+
 const Navigation = React.lazy(() => import("../Nav/Nav"));
 const Footer = React.lazy(() => import("../Footer/Footer"));
 class Main extends Component {
@@ -120,6 +126,28 @@ class Main extends Component {
       componentTreeErrorCatched: true
     };
   }
+
+  createNotif = (type, text) => {
+    const { locale } = this.translate;
+    const closeTime = 3000;
+    switch (type) {
+      case "info":
+        NotificationManager.info(locale.notification.info, text, closeTime);
+        break;
+      case "success":
+        NotificationManager.success(locale.notification.info, text, closeTime);
+        break;
+      case "error":
+        NotificationManager.error(locale.notification.info, text, closeTime);
+        break;
+
+      case "warning":
+        NotificationManager.warning(locale.notification.info, text, closeTime);
+        break;
+      default:
+        return;
+    }
+  };
   componentWillMount() {
     const { history } = this.props;
     this.unlisten = history.listen(action => {
@@ -161,7 +189,8 @@ class Main extends Component {
                             defaultPhoneNumber: this.state.defaultPhoneNumber,
                             lang: this.state.lang,
                             langTrigger: this.langTrigger,
-                            defaultLang: this.defaultLang
+                            defaultLang: this.defaultLang,
+                            displayNotif: this.createNotif
                           }}
                         >
                           <React.Fragment>

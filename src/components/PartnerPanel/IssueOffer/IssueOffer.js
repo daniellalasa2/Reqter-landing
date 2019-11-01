@@ -13,13 +13,15 @@ import {
   Config,
   PartnerpanelIssueOffer
 } from "../../ApiHandlers/ApiHandler";
-
+import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
 import IconESandali from "../../../assets/images/products-icons/001-money.png";
 import IconESandali2 from "../../../assets/images/products-icons/002-desk.png";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 import classnames from "classnames";
 import NumberFormat from "react-number-format";
+import ContextApi from "../../ContextApi/ContextApi";
 export default class IssueOffer extends React.Component {
+  static contextType = ContextApi;
   constructor(props) {
     super(props);
     this.lang = props.lang;
@@ -218,6 +220,7 @@ export default class IssueOffer extends React.Component {
   submitOffer = () => {
     const _this = this;
     const inputs = this.state.form.fields;
+    const { locale } = this.translate;
     let _isValid = this.checkFormValidation();
     const _backgroundData = this.state.form.backgroundData;
     let _formObjectGoingToSubmit = {};
@@ -242,30 +245,40 @@ export default class IssueOffer extends React.Component {
         },
         () => {
           PartnerpanelIssueOffer(_formObjectGoingToSubmit, res => {
-            let succesSubmit = true;
-            if (!res.success_result.success) {
-              succesSubmit = false;
-            }
+            const { success } = res.success_result;
             this.setState(
               {
                 form: {
                   ...this.state.form,
-                  submitted: succesSubmit
+                  submitted: success
                 }
               },
               () => {
-                this.forwardToStep(
-                  3,
-                  () =>
-                    typeof callback === "function" &&
-                    this.props.callback(succesSubmit)
-                );
+                if (success) {
+                  this.context.displayNotif(
+                    "success",
+                    locale.notification.issue_offer.success
+                  );
+                } else {
+                  this.context.displayNotif(
+                    "error",
+                    locale.notification.issue_offer.success
+                  );
+                }
               }
             );
           });
         }
       );
     }
+  };
+  thousandSeprator = (number, reverseOperation) => {
+    number = number
+      .toString()
+      .split(",")
+      .join("");
+    if (!reverseOperation) return addCommas(number);
+    else return number;
   };
   render() {
     const { currentStep, stepsValidation, form, selectedProduct } = this.state;
@@ -333,8 +346,8 @@ export default class IssueOffer extends React.Component {
 
               <div className="FlatTimePicker">
                 <NumberFormat
-                  mask="_"
-                  format="####/##/##   ## : ##"
+                  mask=" _ "
+                  format="####-##-##"
                   type="text"
                   name="startdate"
                   placeholder={locale.fields.startdate.placeholder}
@@ -356,47 +369,48 @@ export default class IssueOffer extends React.Component {
               type="text"
               name="hourlyprice"
               id="hourlyprice"
-              defaultValue={SafeValue(
-                selectedProduct,
-                "fields.perhourprice",
-                "string",
-                0
+              defaultValue={this.thousandSeprator(
+                SafeValue(selectedProduct, "fields.perhourprice", "string", 0)
               )}
-              onChange={e =>
-                this.formStateHandler(e.target.name, e.target.value)
-              }
+              onChange={e => {
+                e.target.value = this.thousandSeprator(e.target.value, false);
+                const apiData = this.thousandSeprator(e.target.value, true);
+                this.formStateHandler(e.target.name, apiData);
+              }}
               error={this.state.form.fields.hourlyprice.error}
             />
             <FlatInput
               label={locale.fields.dailyprice._title}
               type="text"
               name="dailyprice"
-              defaultValue={SafeValue(
-                selectedProduct,
-                "fields.dailyprice",
-                "string",
-                0
+              defaultValue={this.thousandSeprator(
+                SafeValue(selectedProduct, "fields.dailyprice", "string", 0)
               )}
               id="dailyprice"
-              onChange={e =>
-                this.formStateHandler(e.target.name, e.target.value)
-              }
+              onChange={e => {
+                e.target.value = this.thousandSeprator(e.target.value, false);
+                const apiData = this.thousandSeprator(e.target.value, true);
+                this.formStateHandler(e.target.name, apiData);
+                console.log(apiData);
+              }}
               error={this.state.form.fields.dailyprice.error}
             />
             <FlatInput
               label={locale.fields.weeklyprice._title}
               type="text"
               name="weeklyprice"
-              defaultValue={SafeValue(
-                selectedProduct,
-                "fields.weeklyprice",
-                "string",
-                0
+              defaultValue={this.thousandSeprator(
+                SafeValue(selectedProduct, "fields.weeklyprice", "string", 0)
+              )}
+              data-value={this.thousandSeprator(
+                SafeValue(selectedProduct, "fields.weeklyprice", "string", 0)
               )}
               id="weeklyprice"
-              onChange={e =>
-                this.formStateHandler(e.target.name, e.target.value)
-              }
+              onChange={e => {
+                e.target.value = this.thousandSeprator(e.target.value, false);
+                const apiData = this.thousandSeprator(e.target.value, true);
+                this.formStateHandler(e.target.name, apiData);
+              }}
               error={this.state.form.fields.weeklyprice.error}
             />
             <FlatInput
@@ -404,15 +418,17 @@ export default class IssueOffer extends React.Component {
               type="text"
               name="monthlyprice"
               id="monthlyprice"
-              defaultValue={SafeValue(
-                selectedProduct,
-                "fields.monthlyprice",
-                "string",
-                0
+              data-value={this.thousandSeprator(
+                SafeValue(selectedProduct, "fields.weeklyprice", "string", 0)
               )}
-              onChange={e =>
-                this.formStateHandler(e.target.name, e.target.value)
-              }
+              defaultValue={this.thousandSeprator(
+                SafeValue(selectedProduct, "fields.monthlyprice", "string", 0)
+              )}
+              onChange={e => {
+                e.target.value = this.thousandSeprator(e.target.value, false);
+                const apiData = this.thousandSeprator(e.target.value, true);
+                this.formStateHandler(e.target.name, apiData);
+              }}
               error={this.state.form.fields.monthlyprice.error}
             />
 
@@ -422,6 +438,7 @@ export default class IssueOffer extends React.Component {
               placeholder={locale.fields.description.placeholder}
               name="description"
               id="description"
+              data-value=""
               onChange={e =>
                 this.formStateHandler(e.target.name, e.target.value)
               }
@@ -436,20 +453,6 @@ export default class IssueOffer extends React.Component {
             >
               {locale.step2.submit_offer_button}
             </FlatButton>
-          </div>
-        )}
-        {currentStep === 3 && (
-          <div>
-            {this.state.form.isSubmitting && this.state.form.submitted && (
-              <h4 style={{ lineHeight: "2.5", color: "var(--green)" }}>
-                {locale.step3.success_text}
-              </h4>
-            )}
-            {this.state.form.isSubmitting && !this.state.form.submitted && (
-              <h4 style={{ lineHeight: "2.5", color: "var(--red)" }}>
-                {locale.step3.failed_text}
-              </h4>
-            )}
           </div>
         )}
       </div>

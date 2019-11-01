@@ -8,10 +8,6 @@
     "step2": {
       "submit_offer_button": "Submit offer"
     },
-    "step3": {
-      "success_text": "Your offer issued successfuly .",
-      "failed_text": "Unfortunately an error occured while submiting the offer, please try later."
-    },
     "fields": {
       "name": {
         "_title": "Offer name",
@@ -33,7 +29,13 @@
       "monthlyprice": {
         "_title": "Monthly price"
       },
-      "startdate": { "_title": "Start date", "placeholder": "YYYY/MM/DD hh:mm" }
+      "startdate": { "_title": "Start date", "placeholder": "YYYY-MM-DD" }
+    },
+    "notification": {
+      "issue_offer": {
+        "success": "Your offer issued successfuly .",
+        "failed": "Unfortunately an error occured while submiting the offer, please try later."
+      }
     }
   }
 }
