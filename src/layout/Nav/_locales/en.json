@@ -12,6 +12,8 @@
     "home": "Home",
     "partnerpanel": "Partner panel",
     "myrequests": "My Page",
-    "login": "Login"
+    "login": "Login",
+    "partnerpanel_myproducts": "My products",
+    "partnerpanel_myprofile": "My profile"
   }
 }

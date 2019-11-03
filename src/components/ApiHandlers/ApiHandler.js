@@ -25,7 +25,9 @@ let _api = {
   PartnerpanelOpenRequest:
     Config.BASE_URL_REQTER + Config.URLs.partnerpanel_open_request,
   QueryContent: Config.BASE_URL_REQTER + Config.URLs.query_content,
-  PartnerpanelIssueOffer: Config.BASE_URL_REQTER + Config.URLs.issue_offer
+  PartnerpanelIssueOffer: Config.BASE_URL_REQTER + Config.URLs.issue_offer,
+  GetPartnerAllOffers:
+    Config.BASE_URL_REQTER + Config.URLs.get_partner_all_offers
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -599,6 +601,45 @@ var GetPartnerpanelRequests = (partnerId, stage, callback) => {
       });
   });
 };
+var GetPartnerAllOffers = (partnerId, callback) => {
+  const params = {
+    "fields.partnerid": partnerId
+  };
+  Config.Auth().then(token => {
+    axios({
+      url: _api.GetPartnerAllOffers,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      params: {
+        contentType: Config.CONTENT_TYPE_ID.get_partner_all_offers,
+        ...params
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+};
 var PartnerpanelRejectRequest = (id, callback) => {
   Config.Auth().then(token => {
     axios({
@@ -794,5 +835,6 @@ export {
   GetPartnerpanelRequests,
   PartnerpanelIssueOffer,
   QueryContent,
+  GetPartnerAllOffers,
   Config
 };

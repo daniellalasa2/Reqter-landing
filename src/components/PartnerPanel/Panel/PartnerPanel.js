@@ -19,6 +19,7 @@ import {
   QueryContent,
   PartnerpanelIssueOffer,
   GetPartnerProducts,
+  GetPartnerAllOffers,
   Config
 } from "../../ApiHandlers/ApiHandler";
 import PersianNumber from "../../PersianNumber/PersianNumber";
@@ -40,11 +41,12 @@ export default class PartnerPanel extends React.Component {
     this.translate = require(`./_locales/${this.lang}.json`);
     this.requestsAPIType = {
       newrequests: "assigned",
-      openrequests: "opened"
+      openrequests: "opened",
+      alloffers: "alloffers"
     };
     this.state = {
       contactModal: {},
-      requests: {
+      requestsOrOffers: {
         activeFilter: "",
         dataContent: [],
         loading: false
@@ -64,18 +66,20 @@ export default class PartnerPanel extends React.Component {
   //-------------------------------------Filter request --------------------------------------//
   // Functionality:
   //    1- If user clicks on filter requests tab inside partner panel this function will be call
-  filterRequests = (type, e, callback) => {
+
+  filterRequestsOrOffers = (type, filter, e, callback) => {
+    const _partnerId = this.state.partnerId;
     this.setState({
-      requests: {
-        ...this.state.requests,
-        activeFilter: type,
+      requestsOrOffers: {
+        ...this.state.requestsOrOffers,
+        activeFilter: filter,
         loading: true
       }
     });
-    if (this.requestsAPIType[type]) {
-      type = this.requestsAPIType[type];
+    if (this.requestsAPIType[filter]) {
+      filter = this.requestsAPIType[filter];
     } else {
-      type = null;
+      filter = null;
     }
     //active button class
 
@@ -88,24 +92,45 @@ export default class PartnerPanel extends React.Component {
       });
       e.target.classList.add("active");
     }
-    GetPartnerpanelRequests(this.state.partnerId, type, res => {
-      let APIDataContent = [];
-      if (res.success_result.success) {
-        APIDataContent = res.data;
-      }
-      this.setState(
-        {
-          requests: {
-            ...this.state.requests,
-            dataContent: APIDataContent,
-            loading: false
-          }
-        },
-        () => {
-          if (typeof callback === "function") callback();
+    if (type === "request") {
+      GetPartnerpanelRequests(_partnerId, filter, res => {
+        let APIDataContent = [];
+        if (res.success_result.success) {
+          APIDataContent = res.data;
         }
-      );
-    });
+        this.setState(
+          {
+            requestsOrOffers: {
+              ...this.state.requestsOrOffers,
+              dataContent: APIDataContent,
+              loading: false
+            }
+          },
+          () => {
+            if (typeof callback === "function") callback();
+          }
+        );
+      });
+    } else {
+      GetPartnerAllOffers(_partnerId, res => {
+        let APIDataContent = [];
+        if (res.success_result.success) {
+          APIDataContent = res.data;
+        }
+        this.setState(
+          {
+            requestsOrOffers: {
+              ...this.state.requestsOrOffers,
+              dataContent: APIDataContent,
+              loading: false
+            }
+          },
+          () => {
+            if (typeof callback === "function") callback();
+          }
+        );
+      });
+    }
   };
   //--------------------------Get and update product types------------------------------//
   // Functionality:
@@ -136,7 +161,8 @@ export default class PartnerPanel extends React.Component {
     PartnerpanelOpenRequest(requestid, res => {
       if (res.success_result.success) {
         this.toggleModals("requestContact", res.data, () => {
-          reloadRequests && this.filterRequests("newrequests", undefined);
+          reloadRequests &&
+            this.filterRequestsOrOffers("request", "newrequests", undefined);
         });
       }
     });
@@ -144,16 +170,15 @@ export default class PartnerPanel extends React.Component {
   rejectRequest = (requestid, theListTypeThatIsGoingToUpdate, callback) => {
     PartnerpanelRejectRequest(requestid, res => {
       if (res.success_result.success) {
-        this.filterRequests(theListTypeThatIsGoingToUpdate, undefined, () => {
-          if (typeof callback === "function") callback();
-        });
+        this.filterRequestsOrOffers(
+          "request",
+          theListTypeThatIsGoingToUpdate,
+          undefined,
+          () => {
+            if (typeof callback === "function") callback();
+          }
+        );
       }
-    });
-  };
-  // submit offer for requests
-  submitIssueOffer = (requestid, callback) => {
-    PartnerpanelIssueOffer(requestid, () => {
-      if (typeof callback === "function") callback();
     });
   };
   //------------------------Toggle Modals------------------------------//
@@ -187,7 +212,7 @@ export default class PartnerPanel extends React.Component {
     let generatedElements = [];
     requestType = requestsObj.length > 0 ? requestType : null;
     const _tableWrapperDefault = children => (
-      <Table hover className="requests-table">
+      <Table hover responsive bordered className="requests-table">
         <thead>
           <tr>
             <th>{locale.table.row}</th>
@@ -215,6 +240,22 @@ export default class PartnerPanel extends React.Component {
         <tbody>{children}</tbody>
       </Table>
     );
+    const _tableWrapperAllOffers = children => (
+      <Table responsive bordered hover className="requests-table">
+        <thead>
+          <tr>
+            <th>{locale.table.row}</th>
+            <th>{locale.table.offer_name}</th>
+            <th>{locale.table.request_details}</th>
+            <th>{locale.table.sent_offer}</th>
+            <th>{locale.table.offer_stage}</th>
+            <th>{locale.table.date}</th>
+            <th>{locale.table.operation}</th>
+          </tr>
+        </thead>
+        <tbody>{children}</tbody>
+      </Table>
+    );
     switch (requestType) {
       case "newrequests":
         generatedElements = requestsObj.map(
@@ -223,7 +264,12 @@ export default class PartnerPanel extends React.Component {
               <tr key={idx}>
                 <td>{PersianNumber(idx + 1, this.lang)}</td>
                 <td>
-                  {request.fields.requestid.fields.product &&
+                  {SafeValue(
+                    request,
+                    "fields.requestid.fields.product",
+                    "string",
+                    false
+                  ) &&
                     this.state.productsType.map(
                       (product, idx) =>
                         product._id ===
@@ -286,8 +332,8 @@ export default class PartnerPanel extends React.Component {
                     onClick={() =>
                       this.toggleModals("warning", {
                         requestId: request._id,
-                        goingToUpdateRequestsListType: this.state.requests
-                          .activeFilter,
+                        goingToUpdateRequestsListType: this.state
+                          .requestsOrOffers.activeFilter,
                         callback: () => {
                           this.toggleModals("warning", {});
                         }
@@ -308,7 +354,12 @@ export default class PartnerPanel extends React.Component {
               <tr key={idx}>
                 <td>{PersianNumber(idx + 1, this.lang)}</td>
                 <td>
-                  {request.fields.requestid.fields.product &&
+                  {SafeValue(
+                    request,
+                    "fields.requestid.fields.product",
+                    "string",
+                    false
+                  ) &&
                     this.state.productsType.map(
                       (product, idx) =>
                         product._id ===
@@ -434,8 +485,8 @@ export default class PartnerPanel extends React.Component {
                     onClick={() =>
                       this.toggleModals("warning", {
                         requestId: request._id,
-                        goingToUpdateRequestsListType: this.state.requests
-                          .activeFilter,
+                        goingToUpdateRequestsListType: this.state
+                          .requestsOrOffers.activeFilter,
                         callback: () => {
                           this.toggleModals("warning", {});
                         }
@@ -449,6 +500,124 @@ export default class PartnerPanel extends React.Component {
             )
         );
         return _tableWrapperOpenRequests(generatedElements);
+      case "alloffers":
+        generatedElements = requestsObj.map(
+          (request, idx) =>
+            request.status === "published" && (
+              <tr key={idx}>
+                <td>{PersianNumber(idx + 1, this.lang)}</td>
+                <td>{SafeValue(request, "fields.name", "string", false)}</td>
+                <td>
+                  {SafeValue(
+                    request,
+                    "fields.requestid.fields.fullname",
+                    "string",
+                    " - "
+                  )}
+                  <br />
+                  <span style={{ direction: "ltr", display: "inline-block" }}>
+                    {PersianNumber(
+                      SafeValue(
+                        request,
+                        "fields.requestid.fields.phonenumber",
+                        "string",
+                        " - "
+                      ),
+                      this.lang
+                    )}
+                  </span>
+                  <br />
+                  {SafeValue(
+                    request,
+                    "fields.requestid.fields.email",
+                    "string",
+                    " - "
+                  )}
+                </td>
+                <td>
+                  {PersianNumber(
+                    SafeValue(
+                      request,
+                      "fields.requestid.fields.seats",
+                      "string",
+                      " - "
+                    ),
+                    this.lang
+                  )}
+                </td>
+                <td>
+                  {PersianNumber(
+                    DateFormat(
+                      SafeValue(request, "sys.issueDate", "string", 0)
+                    ).timeWithHour(this.lang, " - "),
+                    this.lang
+                  )}
+                </td>
+                <td>
+                  <Button
+                    size="sm"
+                    color="success"
+                    style={{ fontWeight: "bold" }}
+                    onClick={() =>
+                      this.toggleModals("issueOffer", {
+                        name: "",
+                        country: SafeValue(
+                          this.state.partnerData,
+                          "fields.country",
+                          "string",
+                          "0"
+                        ),
+                        city: SafeValue(
+                          this.state.partnerData,
+                          "fields.city",
+                          "string",
+                          "0"
+                        ),
+                        hourlyprice: "",
+                        dailyprice: "",
+                        weeklyprice: "",
+                        monthlyprice: "",
+                        description: null,
+                        startdate: "",
+                        partnerid: this.state.partnerId,
+                        requestid: request._id,
+                        stage: "5d7b968418a6400017ee1512",
+                        partnerProducts: this.state.partnerProducts
+                      })
+                    }
+                  >
+                    {locale.requests.issue_offer}
+                  </Button>{" "}
+                  <Button
+                    size="sm"
+                    color="secondary"
+                    onClick={() =>
+                      this.openRequest(request._id, request, false)
+                    }
+                  >
+                    {locale.requests.display_request}
+                  </Button>{" "}
+                  <Button
+                    size="sm"
+                    color="danger"
+                    onClick={() =>
+                      this.toggleModals("warning", {
+                        requestId: request._id,
+                        goingToUpdateRequestsListType: this.state
+                          .requestsOrOffers.activeFilter,
+                        callback: () => {
+                          this.toggleModals("warning", {});
+                        }
+                      })
+                    }
+                  >
+                    {locale.requests.reject_request_button}
+                  </Button>
+                </td>
+              </tr>
+            )
+        );
+        return _tableWrapperAllOffers(generatedElements);
       default:
         return (
           <span className="no-content">
@@ -478,8 +647,8 @@ export default class PartnerPanel extends React.Component {
   }
   render() {
     const { locale, direction } = this.translate;
-    const { loading } = this.state.requests;
-    const { modals, requests } = this.state;
+    const { loading } = this.state.requestsOrOffers;
+    const { modals, requestsOrOffers } = this.state;
     return (
       <section
         className={classnames(
@@ -499,33 +668,49 @@ export default class PartnerPanel extends React.Component {
               <nav className="card-header-nav filter">
                 <button
                   className="filter-button"
-                  onClick={button => this.filterRequests("newrequests", button)}
+                  onClick={button =>
+                    this.filterRequestsOrOffers(
+                      "request",
+                      "newrequests",
+                      button
+                    )
+                  }
                 >
                   {locale.card_header.new_requests}
                 </button>
                 <button
                   className="filter-button"
                   onClick={button =>
-                    this.filterRequests("openrequests", button)
+                    this.filterRequestsOrOffers(
+                      "request",
+                      "openrequests",
+                      button
+                    )
                   }
                 >
                   {locale.card_header.open_requests}
                 </button>
                 <button
                   className="filter-button"
-                  onClick={button => this.filterRequests("offers", button)}
+                  onClick={button =>
+                    this.filterRequestsOrOffers("offer", "alloffers", button)
+                  }
                 >
                   {locale.card_header.offers}
                 </button>
                 <button
                   className="filter-button"
-                  onClick={button => this.filterRequests("accepted", button)}
+                  onClick={button =>
+                    this.filterRequestsOrOffers("offer", "accepted", button)
+                  }
                 >
                   {locale.card_header.accepted}
                 </button>
                 <button
                   className="filter-button"
-                  onClick={button => this.filterRequests("rejected", button)}
+                  onClick={button =>
+                    this.filterRequestsOrOffers("offer", "rejected", button)
+                  }
                 >
                   {locale.card_header.rejected}
                 </button>
@@ -538,8 +723,8 @@ export default class PartnerPanel extends React.Component {
                 </span>
               ) : (
                 this.displayRequestsTable(
-                  requests.activeFilter,
-                  requests.dataContent
+                  requestsOrOffers.activeFilter,
+                  requestsOrOffers.dataContent
                 )
               )}
             </CardBody>
@@ -549,9 +734,8 @@ export default class PartnerPanel extends React.Component {
           <Modal
             isOpen={this.state.modals.issueOffer.openStatus}
             toggle={() => this.toggleModals("issueOffer", {})}
-            className="login-modal"
+            className={classnames("login-modal", `_${direction}`)}
             id="issueOffer-modal"
-            style={{ width: "700px" }}
           >
             <ModalHeader
               className="login-modal-header"
@@ -565,9 +749,7 @@ export default class PartnerPanel extends React.Component {
                   data={modals.issueOffer.data}
                   type="radio"
                   lang={this.lang}
-                  callback={() =>
-                    this.submitIssueOffer(...modals.issueOffer.data)
-                  }
+                  callback={() => this.toggleModals("issueOffer", {})}
                 />
               ) : (
                 <strong style={{ color: "var(--red)", lineHeight: 3 }}>
@@ -580,7 +762,7 @@ export default class PartnerPanel extends React.Component {
           <Modal
             isOpen={this.state.modals.warning.openStatus}
             toggle={() => this.toggleModals("warning", {})}
-            className="login-modal"
+            className={classnames("login-modal", `_${direction}`)}
             id="rejectRequest-warning-modal"
           >
             <ModalHeader
@@ -871,7 +1053,7 @@ export default class PartnerPanel extends React.Component {
                       "string",
                       null
                     ),
-                    goingToUpdateRequestsListType: this.state.requests
+                    goingToUpdateRequestsListType: this.state.requestsOrOffers
                       .activeFilter,
                     callback: () => {
                       this.toggleModals("warning", {}, () =>

@@ -24,7 +24,10 @@ import {
   faGlobeAsia,
   faHome,
   faPlus,
-  faUserFriends
+  faUserFriends,
+  faBoxOpen,
+  faSignOutAlt,
+  faUserAlt
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/images/logo.jpg";
 import Login from "../../components/Auth/Login/Login";
@@ -174,10 +177,59 @@ class Navigation extends Component {
                       onClick={() => this.logOut()}
                       className="nav-link"
                     >
+                      <FontAwesomeIcon
+                        icon={faSignOutAlt}
+                        pull={direction === "ltr" ? "left" : "right"}
+                        color="black"
+                      />
                       {locale.logout}
                     </Link>
                   </NavItem>
                 )}
+              {/* Partner panel's menu items */}
+              {this.props.match.path.startsWith(
+                "/:lang?/partnerpanel/panel"
+              ) && (
+                <React.Fragment>
+                  <NavItem>
+                    <Link
+                      to=""
+                      onClick={() =>
+                        this.props.history.push(
+                          `/${lang}/partnerpanel/panel/myproducts`
+                        )
+                      }
+                      className="nav-link"
+                    >
+                      <FontAwesomeIcon
+                        icon={faBoxOpen}
+                        pull={direction === "ltr" ? "left" : "right"}
+                        color="black"
+                      />
+                      {locale.partnerpanel_myproducts}
+                    </Link>
+                  </NavItem>
+                  <NavItem>
+                    <Link
+                      to=""
+                      onClick={() =>
+                        this.props.history.push(
+                          `/${lang}/partnerpanel/panel/myprofile`
+                        )
+                      }
+                      className="nav-link"
+                    >
+                      <FontAwesomeIcon
+                        icon={faUserAlt}
+                        pull={direction === "ltr" ? "left" : "right"}
+                        color="black"
+                      />
+                      {locale.partnerpanel_myprofile}
+                    </Link>
+                  </NavItem>
+                </React.Fragment>
+              )}
+
               {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
                 <NavItem>
                   <Link
@@ -420,6 +472,38 @@ class Navigation extends Component {
                   {locale.faq}
                 </Link>
               </li>
+              {this.props.match.path.startsWith(
+                "/:lang?/partnerpanel/panel"
+              ) && (
+                <React.Fragment>
+                  <li>
+                    <Link
+                      className="nav-link"
+                      to=""
+                      onClick={() =>
+                        this.props.history.push(
+                          `/${lang}/partnerpanel/panel/myproducts`
+                        )
+                      }
+                    >
+                      {locale.partnerpanel_myproducts}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="nav-link"
+                      to=""
+                      onClick={() =>
+                        this.props.history.push(
+                          `/${lang}/partnerpanel/panel/myprofile`
+                        )
+                      }
+                    >
+                      {locale.partnerpanel_myprofile}
+                    </Link>
+                  </li>
+                </React.Fragment>
+              )}
               {ROLE !== "guest" && (
                 <li>
                   <Link

@@ -5,14 +5,18 @@
   flex-direction: row;
   flex-wrap: wrap;
   & .issueOffer-step.-step1 {
-    width: 850px;
+    width: 100%;
+    & .product-items {
+      justify-content: center;
+      align-items: center;
+    }
   }
   & .issueOffer-step.-step2 {
-    width: 600px;
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-
+    justify-content: space-around;
     & .field-row {
       width: 300px;
       margin-bottom: 0;

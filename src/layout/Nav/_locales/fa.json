@@ -12,6 +12,8 @@
     "home": "خانه",
     "partnerpanel": "پنل همکاران",
     "myrequests": "صفحه من",
-    "login": "ورود"
+    "login": "ورود",
+    "partnerpanel_myproducts": "محصولات من",
+    "partnerpanel_myprofile": "پروفایل من"
   }
 }

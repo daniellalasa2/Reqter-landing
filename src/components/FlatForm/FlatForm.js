@@ -110,7 +110,7 @@ class SelectRow extends React.Component {
           boxSizing: "content-box",
           direction: this.props.dir
         }}
-        className="CheckBoxRow"
+        className={classnames("CheckBoxRow", this.props.className)}
       >
         {this.state.renderedChildren}
       </div>
@@ -415,7 +415,7 @@ const FlatInlineSelect = ({ items, onChange, dir, type, name }) => {
                 imgAlt = "Image Exampe"  //alt attr for img  
                 },...]
 ***************************/
-const FlatImageSelect = ({ items, onChange, dir, type, name }) => {
+const FlatImageSelect = ({ items, onChange, dir, type, name, className }) => {
   const _options = items.map((val, index) => {
     return (
       <ImageSelect
@@ -433,7 +433,12 @@ const FlatImageSelect = ({ items, onChange, dir, type, name }) => {
   });
   const _select =
     items.length > 0 ? (
-      <SelectRow onChange={onChange} dir={dir} type={type}>
+      <SelectRow
+        onChange={onChange}
+        dir={dir}
+        type={type}
+        className={className}
+      >
         {_options}
       </SelectRow>
     ) : (

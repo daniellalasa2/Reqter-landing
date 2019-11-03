@@ -11,11 +11,8 @@ import {
   GetCookie,
   JsonParser
 } from "../../components/CookieHandler/CookieHandler";
-import {
-  NotificationContainer,
-  NotificationManager
-} from "react-notifications";
-import "react-notifications/lib/notifications.css";
+import { ToastContainer, toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Navigation = React.lazy(() => import("../Nav/Nav"));
 const Footer = React.lazy(() => import("../Footer/Footer"));
@@ -127,22 +124,26 @@ class Main extends Component {
     };
   }
 
-  createNotif = (type, text) => {
-    const { locale } = this.translate;
-    const closeTime = 3000;
+  createNotif = (type, text, callback) => {
+    toast.configure({
+      draggable: false,
+      position: toast.POSITION.TOP_RIGHT,
+      closeButton: true,
+      transition: Slide,
+      onClose: typeof callback === "function" ? callback() : undefined
+    });
     switch (type) {
       case "info":
-        NotificationManager.info(locale.notification.info, text, closeTime);
+        toast.info(text, { autoClose: 30000 });
         break;
       case "success":
-        NotificationManager.success(locale.notification.info, text, closeTime);
+        toast.success(text, { autoClose: 8000 });
         break;
       case "error":
-        NotificationManager.error(locale.notification.info, text, closeTime);
+        toast.error(text, { autoClose: false });
         break;
-
       case "warning":
-        NotificationManager.warning(locale.notification.info, text, closeTime);
+        toast.warning(text, { autoClose: false });
         break;
       default:
         return;
@@ -158,6 +159,7 @@ class Main extends Component {
     this.unlisten();
   }
   render() {
+    const { direction } = this.translate;
     if (this.state.componentTreeErrorCatched) {
       return <Redirect to={`/${this.lang}/auth/internalerror`} />;
     }
@@ -200,6 +202,10 @@ class Main extends Component {
                                 {...props}
                               />
                             )}
+                            <ToastContainer
+                              rtl={direction === "rtl"}
+                              className="react-toastify"
+                            />
                             <route.component {...props} />
                           </React.Fragment>
                         </ContextApi.Provider>

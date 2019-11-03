@@ -250,19 +250,21 @@ export default class IssueOffer extends React.Component {
               {
                 form: {
                   ...this.state.form,
-                  submitted: success
+                  submitted: success,
+                  isSubmitting: false
                 }
               },
               () => {
                 if (success) {
-                  this.context.displayNotif(
+                  return this.context.displayNotif(
                     "success",
-                    locale.notification.issue_offer.success
+                    locale.notification.issue_offer.success,
+                    () => this.props.callback()
                   );
                 } else {
-                  this.context.displayNotif(
+                  return this.context.displayNotif(
                     "error",
-                    locale.notification.issue_offer.success
+                    locale.notification.issue_offer.failed
                   );
                 }
               }
@@ -271,6 +273,44 @@ export default class IssueOffer extends React.Component {
         }
       );
     }
+  };
+  submitSelectedProduct = (name, checkedObj) => {
+    const productParsedObj = JSON.parse(checkedObj.value);
+    const { backgroundData, fields } = this.state.form;
+    checkedObj = JSON.parse(checkedObj.value);
+    this.setState({
+      selectedProduct: productParsedObj,
+      stepsValidation: {
+        ...this.state.stepsValidation,
+        1: true
+      },
+      form: {
+        ...this.state.form,
+        fields: {
+          ...fields,
+          hourlyprice: {
+            ...fields.hourlyprice,
+            value: SafeValue(checkedObj, "fields.perhourprice", "string", "")
+          },
+          dailyprice: {
+            ...fields.dailyprice,
+            value: SafeValue(checkedObj, "fields.dailyprice", "string", "")
+          },
+          weeklyprice: {
+            ...fields.weeklyprice,
+            value: SafeValue(checkedObj, "fields.weeklyprice", "string", "")
+          },
+          monthlyprice: {
+            ...fields.monthlyprice,
+            value: SafeValue(checkedObj, "fields.monthlyprice", "string", "")
+          }
+        },
+        backgroundData: {
+          ...backgroundData,
+          productid: productParsedObj._id
+        }
+      }
+    });
   };
   thousandSeprator = (number, reverseOperation) => {
     number = number
@@ -294,24 +334,11 @@ export default class IssueOffer extends React.Component {
               {locale.step1.choose_a_product}
             </span>
             <FlatImageSelect
+              className="product-items"
               items={this.productsDataForCheckbox}
-              onChange={(name, checkedObj) => {
-                const productParsedObj = JSON.parse(checkedObj.value);
-                this.setState({
-                  selectedProduct: productParsedObj,
-                  stepsValidation: {
-                    ...this.state.stepsValidation,
-                    1: true
-                  },
-                  form: {
-                    ...this.state.form,
-                    backgroundData: {
-                      ...this.state.form.backgroundData,
-                      productid: productParsedObj._id
-                    }
-                  }
-                });
-              }}
+              onChange={(name, checkedObj) =>
+                this.submitSelectedProduct(name, checkedObj)
+              }
               type="radio"
               name="offeredProduct"
             />

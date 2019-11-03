@@ -103,6 +103,12 @@
       margin: 0.2rem !important;
     }
   }
+  &._ltr {
+    direction: ltr;
+    .login-modal-header {
+      direction: ltr;
+    }
+  }
 }
 
 @media (max-width: 425px) {
@@ -110,11 +116,5 @@
     .modal-content {
       width: 95vw;
     }
-  }
-}
-
-._ltr {
-  .login-modal-header {
-    direction: ltr;
   }
 }

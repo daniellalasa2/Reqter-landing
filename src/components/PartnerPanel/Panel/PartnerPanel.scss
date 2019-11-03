@@ -3,28 +3,31 @@
     width: 1100px;
     text-align: left;
     min-height: 600px;
-    & .card-header-nav {
-      display: flex;
-      & button {
-        flex-grow: 1;
-        margin: 0 3px;
-        color: dimgrey;
-        font-weight: bold;
-        background-color: transparent;
-        border: none;
-        border-radius: 4px;
-        outline: none;
-        line-height: 2;
-        transition: all 0.2s ease;
-        min-width: fit-content;
-        &:hover {
-          background-color: rgba(100, 100, 100, 0.1);
-          color: black;
-          cursor: pointer;
-        }
-        &.active {
-          background-color: rgba(100, 100, 100, 1);
-          color: white;
+    & .card-header {
+      overflow-y: auto;
+      & .card-header-nav {
+        display: flex;
+        & button {
+          flex-grow: 1;
+          margin: 0 3px;
+          color: dimgrey;
+          font-weight: bold;
+          background-color: transparent;
+          border: none;
+          border-radius: 4px;
+          outline: none;
+          line-height: 2;
+          transition: all 0.2s ease;
+          min-width: fit-content;
+          &:hover {
+            background-color: rgba(100, 100, 100, 0.1);
+            color: black;
+            cursor: pointer;
+          }
+          &.active {
+            background-color: rgba(100, 100, 100, 1);
+            color: white;
+          }
         }
       }
     }
@@ -123,13 +126,20 @@
     direction: rtl;
     text-align: right;
   }
-  @media (min-width: 576px) {
-    max-width: 650px;
+  @media (min-width: 900px) {
+    &.modal-content {
+      width: 93vw;
+    }
   }
 }
 #issueOffer-modal {
   & .modal-content {
-    width: auto;
+    width: 800px;
+  }
+  @media (max-width: 900px) {
+    & .modal-content {
+      width: 93vw;
+    }
   }
 }
 ._rtl {

@@ -13,6 +13,7 @@
       "reject_request_button": "رد کردن",
       "display_request": "نمایش",
       "issue_offer": "ارسال پیشنهاد",
+      "cancel_offer": "لغو پیشنهاد",
       "alert": {
         "title": "هشدار",
         "description": "در صورت اعمال وضعیت درخواست امکان تغییر وضعیت آن وجود ندارد.",
@@ -53,7 +54,12 @@
       "city": "شهر",
       "qunatity": "تعداد",
       "date": "تاریخ",
-      "operation": "عملیات"
+      "operation": "عملیات",
+      "offer_name": "نام پیشنهاد",
+      "request_details": "جزییات درخواست",
+      "sent_offer": "پیشنهاد ارسال شده",
+      "offer_stage": "وضعیت",
+      "cancel_offer": "لغو پیشنهاد"
     },
     "card_header": {
       "new_requests": "درخواستهای جدید",

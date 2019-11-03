@@ -13,6 +13,7 @@
       "reject_request_button": "Reject",
       "display_request": "Display",
       "issue_offer": "Issue offer",
+      "cancel_offer": "Cancel offer",
       "alert": {
         "title": "Warning !",
         "description": "If the request status is applied, it cannot be changed.",
@@ -53,7 +54,12 @@
       "city": "City",
       "qunatity": "Number",
       "date": "Date",
-      "operation": "Operation"
+      "operation": "Operation",
+      "offer_name": "Offer name",
+      "request_details": "Request details",
+      "sent_offer": "Sent offer",
+      "offer_stage": "Offer stage",
+      "cancel_offer": "Cancel offer"
     },
     "card_header": {
       "new_requests": "New requests",
