@@ -57,6 +57,13 @@
           justify-content: space-evenly;
         }
       }
+      & .offers-table {
+        & td,
+        & th {
+          vertical-align: middle;
+          text-align: center;
+        }
+      }
     }
   }
   //modals

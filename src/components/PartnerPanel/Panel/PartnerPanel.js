@@ -241,7 +241,7 @@ export default class PartnerPanel extends React.Component {
       </Table>
     );
     const _tableWrapperAllOffers = children => (
-      <Table responsive bordered hover className="requests-table">
+      <Table responsive bordered hover className="offers-table">
         <thead>
           <tr>
             <th>{locale.table.row}</th>
@@ -535,14 +535,30 @@ export default class PartnerPanel extends React.Component {
                   )}
                 </td>
                 <td>
-                  {PersianNumber(
-                    SafeValue(
+                  {
+                    (SafeValue(
                       request,
                       "fields.requestid.fields.seats",
                       "string",
                       " - "
                     ),
-                    this.lang
+                    this.lang)
+                  }
+                  <small>{locale.table.hourlyprice}</small>
+                  {SafeValue(
+                    request,
+                    "fields.requestid.fields.seats",
+                    "string",
+                    false
+                  ) && <small>{locale.table.hourlyprice}</small>}
+                </td>
+                <td>
+                  {SafeValue(
+                    request,
+                    `fields.stage.fields.name.${this.lang}`,
+                    "string",
+                    locale.table.not_specified_stage,
+                    "fields.stage.fields.name"
                   )}
                 </td>
                 <td>
@@ -554,49 +570,6 @@ export default class PartnerPanel extends React.Component {
                   )}
                 </td>
                 <td>
-                  <Button
-                    size="sm"
-                    color="success"
-                    style={{ fontWeight: "bold" }}
-                    onClick={() =>
-                      this.toggleModals("issueOffer", {
-                        name: "",
-                        country: SafeValue(
-                          this.state.partnerData,
-                          "fields.country",
-                          "string",
-                          "0"
-                        ),
-                        city: SafeValue(
-                          this.state.partnerData,
-                          "fields.city",
-                          "string",
-                          "0"
-                        ),
-                        hourlyprice: "",
-                        dailyprice: "",
-                        weeklyprice: "",
-                        monthlyprice: "",
-                        description: null,
-                        startdate: "",
-                        partnerid: this.state.partnerId,
-                        requestid: request._id,
-                        stage: "5d7b968418a6400017ee1512",
-                        partnerProducts: this.state.partnerProducts
-                      })
-                    }
-                  >
-                    {locale.requests.issue_offer}
-                  </Button>{" "}
-                  <Button
-                    size="sm"
-                    color="secondary"
-                    onClick={() =>
-                      this.openRequest(request._id, request, false)
-                    }
-                  >
-                    {locale.requests.display_request}
-                  </Button>{" "}
                   <Button
                     size="sm"
                     color="danger"
@@ -611,7 +584,7 @@ export default class PartnerPanel extends React.Component {
                       })
                     }
                   >
-                    {locale.requests.reject_request_button}
+                    {locale.table.cancel_offer}
                   </Button>
                 </td>
               </tr>

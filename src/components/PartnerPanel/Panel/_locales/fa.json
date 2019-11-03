@@ -59,7 +59,14 @@
       "request_details": "جزییات درخواست",
       "sent_offer": "پیشنهاد ارسال شده",
       "offer_stage": "وضعیت",
-      "cancel_offer": "لغو پیشنهاد"
+      "cancel_offer": "لغو پیشنهاد",
+      "not_specified_stage": "نامشخص",
+      "description": "توضیحات",
+      "hourlyprice": "قیمت ساعتی(تومان)",
+      "dailyprice": "قیمت روزانه(تومان)",
+      "weeklyprice": "قیمت هفتگی(تومان)",
+      "monthlyprice": "قیمت ماهانه(تومان)",
+      "startdate": "زمان شروع"
     },
     "card_header": {
       "new_requests": "درخواستهای جدید",

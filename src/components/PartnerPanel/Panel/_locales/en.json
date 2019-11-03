@@ -59,7 +59,14 @@
       "request_details": "Request details",
       "sent_offer": "Sent offer",
       "offer_stage": "Offer stage",
-      "cancel_offer": "Cancel offer"
+      "cancel_offer": "Cancel offer",
+      "not_specified_stage": "Not specified",
+      "description": "Description",
+      "hourlyprice": "Hourly price",
+      "dailyprice": "Daily price",
+      "weeklyprice": "Weekly price",
+      "monthlyprice": "Monthly price",
+      "startdate": "Start date"
     },
     "card_header": {
       "new_requests": "New requests",
