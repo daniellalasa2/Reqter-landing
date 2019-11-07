@@ -5,7 +5,6 @@ import {
   JsonToString
 } from "../CookieHandler/CookieHandler";
 import axios from "axios";
-<<<<<<< HEAD
 var Configuration = {
   BASE_URL_CASEER:
     process.env.REACT_APP_GATEWAY || "https://app-ipanel.herokuapp.com/",
@@ -18,15 +17,6 @@ var Configuration = {
   CLIENT_ID:
     process.env.REACT_APP_CLIENT_ID || "1d42c55e-0f44-4613-adba-a5bbbca878e1",
   SPACE_ID: process.env.REACT_APP_SPACE_ID || "5cf3883dcce4de00174d48cf",
-=======
-
-var Configuration = {
-  BASE_URL_CASEER: "https://app-ipanel.herokuapp.com/",
-  BASE_URL_REQTER: "https://app-rpanel.herokuapp.com/",
-  BASE_URL_UPLOAD: "https://app-spanel.herokuapp.com/",
-  CLIENT_ID: "1d42c55e-0f44-4613-adba-a5bbbca878e1",
-  SPACE_ID: "5cf3883dcce4de00174d48cf",
->>>>>>> 5366a05d23667e0c44b10899bb19319ef69b6245
   Auth: CheckAuthToken,
   URLs: {
     submit_form: "api/v1/requests/submit",
@@ -114,7 +104,6 @@ function GetInitialToken(callback) {
           }),
           res.data.expiresIn / (1000 * 60 * 60 * 24)
         );
-<<<<<<< HEAD
         if (typeof callback === "function") callback(res.data.access_token);
       }
     })
@@ -123,15 +112,4 @@ function GetInitialToken(callback) {
       console.error("get initial token error: ", err);
     });
 }
-=======
-        callback(res.data.access_token);
-      }
-    })
-    .catch(err => {
-      callback("");
-      console.error("get initial token error: ", err);
-    });
-}
-
->>>>>>> 5366a05d23667e0c44b10899bb19319ef69b6245
 export default Configuration;
