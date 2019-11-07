@@ -10,12 +10,9 @@ import Validator from "../../Validator/Validator";
 import { Button } from "reactstrap";
 import {
   SafeValue,
-  Config,
   PartnerpanelIssueOffer
 } from "../../ApiHandlers/ApiHandler";
-import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
-import IconESandali from "../../../assets/images/products-icons/001-money.png";
-import IconESandali2 from "../../../assets/images/products-icons/002-desk.png";
+import { addCommas } from "../../PersianNumber/PersianNumber";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 import classnames from "classnames";
 import NumberFormat from "react-number-format";
@@ -218,7 +215,6 @@ export default class IssueOffer extends React.Component {
     );
   };
   submitOffer = () => {
-    const _this = this;
     const inputs = this.state.form.fields;
     const { locale } = this.translate;
     let _isValid = this.checkFormValidation();
