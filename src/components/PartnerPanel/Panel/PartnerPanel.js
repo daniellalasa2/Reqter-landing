@@ -17,7 +17,6 @@ import {
   PartnerpanelRejectRequest,
   PartnerpanelOpenRequest,
   QueryContent,
-  PartnerpanelIssueOffer,
   GetPartnerProducts,
   GetPartnerAllOffers,
   Config
@@ -28,7 +27,6 @@ import DateFormat from "../../DateFormat/DateFormat";
 // import { faList } from "@fortawesome/free-solid-svg-icons";
 import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
-import Spinner from "../../../assets/script/spinner";
 import IssueOffer from "../IssueOffer/IssueOffer";
 import "./PartnerPanel.scss";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
@@ -505,15 +503,20 @@ export default class PartnerPanel extends React.Component {
           (request, idx) =>
             request.status === "published" && (
               <tr key={idx}>
+                {/* Row number */}
                 <td>{PersianNumber(idx + 1, this.lang)}</td>
+                {/* Offer name */}
                 <td>{SafeValue(request, "fields.name", "string", false)}</td>
+                {/* Request Details */}
                 <td>
-                  {SafeValue(
-                    request,
-                    "fields.requestid.fields.fullname",
-                    "string",
-                    " - "
-                  )}
+                  <span>
+                    {SafeValue(
+                      request,
+                      "fields.requestid.fields.fullname",
+                      "string",
+                      " - "
+                    )}
+                  </span>
                   <br />
                   <span style={{ direction: "ltr", display: "inline-block" }}>
                     {PersianNumber(
@@ -527,23 +530,23 @@ export default class PartnerPanel extends React.Component {
                     )}
                   </span>
                   <br />
+                  <span>
+                    {SafeValue(
+                      request,
+                      "fields.requestid.fields.email",
+                      "string",
+                      " - "
+                    )}
+                  </span>
+                </td>
+                {/* Offer datils */}
+                <td>
                   {SafeValue(
                     request,
-                    "fields.requestid.fields.email",
+                    "fields.requestid.fields.seats",
                     "string",
                     " - "
                   )}
-                </td>
-                <td>
-                  {
-                    (SafeValue(
-                      request,
-                      "fields.requestid.fields.seats",
-                      "string",
-                      " - "
-                    ),
-                    this.lang)
-                  }
                   <small>{locale.table.hourlyprice}</small>
                   {SafeValue(
                     request,
@@ -552,6 +555,7 @@ export default class PartnerPanel extends React.Component {
                     false
                   ) && <small>{locale.table.hourlyprice}</small>}
                 </td>
+                {/* Status */}
                 <td>
                   {SafeValue(
                     request,
@@ -561,6 +565,7 @@ export default class PartnerPanel extends React.Component {
                     "fields.stage.fields.name"
                   )}
                 </td>
+                {/* Date */}
                 <td>
                   {PersianNumber(
                     DateFormat(
@@ -569,6 +574,7 @@ export default class PartnerPanel extends React.Component {
                     this.lang
                   )}
                 </td>
+                {/* Operation */}
                 <td>
                   <Button
                     size="sm"
