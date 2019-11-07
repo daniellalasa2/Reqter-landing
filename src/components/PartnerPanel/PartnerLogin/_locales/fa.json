@@ -1,0 +1,34 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "partner_status_error": {
+      "not_verified": "پنل همکاری شما غیر فعال است. لطفا با پشتیبانی تماس بگیرید."
+    },
+    "card": {
+      "title": "ورود به پنل همکاران"
+    },
+    "errors": {
+      "invalid_number": "شماره نامعتبر",
+      "code_error": "کد نامعتبر"
+    },
+    "fields": {
+      "phonenumber": {
+        "_title": "شماره تماس خود را وارد کنید",
+        "placeholder": "9123456789"
+      },
+      "enter_code": {
+        "_title": "کد تایید ارسال شده را وارد کنید"
+      },
+      "resend_code": {
+        "_title": "ارسال مجدد کد"
+      },
+      "verify_code": {
+        "_title": "ارسال کد"
+      },
+      "submit": {
+        "send_code": "دریافت کد تایید",
+        "submit_code": "تایید و ورود"
+      }
+    }
+  }
+}

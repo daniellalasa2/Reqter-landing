@@ -1,0 +1,310 @@
+.my-requests-section {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: baseline;
+  justify-content: center;
+  & .form-card {
+    margin: 80px 10px 10px;
+  }
+  & .filter-section {
+    height: auto;
+    border: 2px solid lightgrey;
+    border-radius: 8px;
+    width: 160px;
+    align-self: flex-start;
+    margin-top: 80px;
+    box-sizing: border-box;
+    & .filter-title {
+      width: 100%;
+      line-height: 3;
+      background-color: lightgrey;
+    }
+    & ul.filter-list {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      text-align: center;
+      & li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        align-self: center;
+        width: 100%;
+        cursor: pointer;
+        &.active {
+          background-color: rgba(100, 100, 100, 0.1);
+        }
+        &:hover {
+          background-color: rgba(100, 100, 100, 0.1);
+        }
+      }
+    }
+  }
+  & .card-header {
+    padding-top: 0;
+  }
+  & .approved-requests-section {
+    & .card-header {
+      & .fa-layers {
+        background-color: #58d37b !important;
+      }
+    }
+    & .request-card-status {
+      & strong {
+        color: rgb(44, 186, 58);
+        color: white;
+        background-color: rgb(44, 186, 58);
+        border-radius: 0.3rem;
+        padding: 5px;
+        cursor: default;
+      }
+      & button {
+        border: 2px solid rgb(114, 127, 221);
+        background-color: rgba(114, 127, 221, 0.4);
+        &:hover {
+          background-color: rgb(114, 127, 221);
+          color: white;
+        }
+      }
+    }
+  }
+  & .pending-requests-section {
+    & .card-header {
+      & .fa-layers {
+        background-color: #e8e855 !important;
+      }
+    }
+    & .card-body {
+      & .request-card-status {
+        & strong {
+          color: white;
+          background-color: rgb(214, 214, 62);
+          border-radius: 0.3rem;
+          padding: 5px;
+          cursor: wait;
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+  & .closed-requests-section {
+    & .card-header {
+      & .fa-layers {
+        background-color: #dd4242 !important;
+      }
+    }
+    & .card-body {
+      & .request-card-status {
+        & strong {
+          color: white;
+          background-color: #dd4242;
+          border-radius: 0.3rem;
+          padding: 5px;
+          cursor: not-allowed;
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+  & .card-body {
+    min-height: 430px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & .no-content {
+      color: grey;
+      font-size: 16px;
+      margin-top: 40px;
+      font-weight: bold;
+    }
+  }
+
+  //request cards
+  & .request-card {
+    width: 100%;
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid lightgrey;
+    box-shadow: 0 0 2px 0 lightgrey;
+    border-radius: 0.3rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 190px;
+
+    & .request-card-image {
+      height: 100%;
+      width: 15%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &::after {
+        display: block;
+        height: 80%;
+        border-right: 1px solid lightgrey;
+        border-left: none;
+        content: "";
+        margin-left: 5px;
+      }
+      &::before {
+        display: none;
+      }
+      & img {
+        padding: 10px;
+        border-radius: 0.3rem;
+        background-color: rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 8px -1px lightgrey;
+      }
+      & strong {
+        display: none;
+      }
+    }
+    & .request-card-details {
+      direction: ltr;
+      width: 53%;
+      padding: 20px;
+      line-height: 2;
+      & ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        & li.product-title-wrapper {
+          display: block;
+        }
+      }
+    }
+    & .request-card-status {
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 30%;
+      & strong {
+        font-size: 1.2rem;
+      }
+      & button {
+        font-size: 16px;
+        outline: none;
+        padding: 5px 8px;
+        border-radius: 0.3rem;
+      }
+    }
+  }
+}
+@media (max-width: 576px) {
+  & .my-requests-section {
+    & .request-card {
+      width: 110%;
+      & > * {
+        width: 100% !important;
+      }
+      height: auto;
+      padding: 0;
+      flex-direction: column !important;
+      & .request-card-image {
+        height: 20vw;
+        max-height: 86px;
+        border-radius: 0.3rem 0.3rem 0 0;
+        background-color: rgb(210, 210, 210);
+        padding: 0;
+        &::after {
+          display: none;
+        }
+        & img {
+          width: 20%;
+          max-width: 75px;
+        }
+        & strong.product-title {
+          margin: 25px;
+          font-size: 18px;
+          display: block;
+        }
+      }
+      & .request-card-details {
+        & ul {
+          & li.product-title-wrapper {
+            display: none;
+          }
+        }
+      }
+      .request-card-status {
+        & strong {
+          margin: 11px;
+        }
+        & button {
+          width: 100%;
+          height: 50px;
+          border: none;
+          border-radius: 0 0 0.3rem 0.3rem;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .my-requests-section {
+    & .form-card {
+      & .card-header {
+        padding: 0.5rem 1.25rem !important;
+      }
+    }
+  }
+}
+//custom screen
+@media (max-width: 930px) {
+  & .my-requests-section {
+    align-content: start;
+    & .form-card {
+      margin: 80px 10px 10px;
+    }
+    & .filter-section {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      margin: 80px 10px 10px;
+      justify-content: center;
+      max-width: 750px;
+      & .filter-title {
+        display: none;
+      }
+      & ul.filter-list {
+        display: inline-flex;
+        direction: rtl;
+        width: 100%;
+        & li {
+          width: 33.33%;
+        }
+      }
+    }
+  }
+}
+
+//---------------------------//
+//         RTL STYLES        //
+//---------------------------//
+.my-requests-section {
+  &.rtl-layout {
+    & .request-card {
+      flex-direction: row-reverse;
+      & .request-card-image {
+        &::before {
+          display: block;
+          height: 80%;
+          border-left: 1px solid lightgrey;
+
+          content: "";
+          margin-right: 5px;
+        }
+        &::after {
+          display: none;
+        }
+      }
+      & .request-card-details {
+        direction: rtl;
+      }
+    }
+  }
+}

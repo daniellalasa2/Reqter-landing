@@ -1,0 +1,12 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "login": "Login",
+    "notification": {
+      "info": "Information",
+      "success": "Success",
+      "warning": "Warning",
+      "error": "Error"
+    }
+  }
+}

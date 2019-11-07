@@ -1,0 +1,28 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "errors": {
+      "invalid_number": "Invalid number",
+      "code_error": "Invalid code"
+    },
+    "fields": {
+      "phonenumber": {
+        "_title": "شماره تماس خود را وارد کنید",
+        "placeholder": "9123456789"
+      },
+      "enter_code": {
+        "_title": "کد تایید ارسال شده را وارد کنید"
+      },
+      "resend_code": {
+        "_title": "ارسال مجدد کد"
+      },
+      "verify_code": {
+        "_title": "ارسال کد"
+      },
+      "submit": {
+        "send_code": "دریافت کد تایید",
+        "submit_code": "تایید و ورود"
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "form_title": "Shared desk form",
+    "email_subject": [
+      "Request shared desk with number of",
+      "seats in",
+      "unknown city"
+    ],
+    "fields": {
+      "fullname": {
+        "_title": "Full name",
+        "placeholder": "Enter your full name"
+      },
+      "birthyear": {
+        "_title": "Birth year",
+        "placeholder": "Example: 1980"
+      },
+      "workingfield": {
+        "_title": "Working Field(s)"
+      },
+      "phonenumber": {
+        "_title": "Phone number",
+        "placeholder": "9123456789"
+      },
+      "email": {
+        "_title": "Email",
+        "placeholder": "Enter your email"
+      },
+      "city": {
+        "_title": "City"
+      },
+      "resume": {
+        "_title": "Upload resume",
+        "placeholder": "Choose a file",
+        "error": "Cannot choosing a file right now, please try later",
+        "buttonValue": "Choose"
+      },
+      "seats": {
+        "_title": "Number of sears",
+        "placeholder": "Number of seats"
+      },
+      "submit": {
+        "submit": "Submit and Send",
+        "verify_phonenumber": "Verify your phone number"
+      }
+    }
+  }
+}

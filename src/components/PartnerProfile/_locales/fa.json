@@ -1,0 +1,27 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "not_defined": "نامشخص",
+    "null": "ندارد",
+    "verified": "تایید شده",
+    "overview": "معرفی",
+    "products": "محصولات",
+    "facilities": "امکانات",
+    "address": "آدرس",
+    "map": "نقشه",
+    "reviews": "نظرات (بزودی)",
+    "working_hours": "ساعات کاری",
+    "empty_overview": "متن معرفی خالیست",
+    "no_amenities": "امکانات موجود نیست",
+    "products_table": {
+      "products_name": "نام محصول",
+      "quantity": "تعداد",
+      "hourly_price": "قیمت ساعتی",
+      "daily_price": "قیمت روزانه",
+      "weekly_price": "قیمت هفتگی",
+      "monthly_price": "قیمت ماهانه",
+      "request": "درخواست",
+      "reserve": "رزرو"
+    }
+  }
+}

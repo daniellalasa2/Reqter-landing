@@ -1,125 +1,220 @@
 import React from "react";
-
-const Home = React.lazy(() => import("./components/Home"));
-const AboutUs = React.lazy(() => import("./components/AboutUs"));
-const Login = React.lazy(() => import("./components/Login"));
-const Coworking = React.lazy(() => import("./components/Coworking"));
-const SessionRoom = React.lazy(() => import("./components/SessionRoom"));
-const Investing = React.lazy(() => import("./components/Investing"));
-const PrivateOffice = React.lazy(() => import("./components/PrivateOffice"));
-const Startup = React.lazy(() => import("./components/Startup"));
-const PrivacyPolicy = React.lazy(() => import("./components/PrivacyPolicy"));
-const TermsOfUse = React.lazy(() => import("./components/TermsOfUse"));
-const Blog = React.lazy(() => import("./components/Blog"));
-const FAQ = React.lazy(() => import("./components/FAQ"));
-const Careers = React.lazy(() => import("./components/Careers"));
-const PartnerShip = React.lazy(() => import("./components/PartnerShip"));
-const Security = React.lazy(() => import("./components/Security"));
-const News = React.lazy(() => import("./components/News"));
-
-//temporary
-const ComingSoon = React.lazy(() =>
-  import("./components/DefaultInnerLinks.js")
+const Home = React.lazy(() => import("./components/Home/Home"));
+const AboutUs = React.lazy(() => import("./components/AboutUs/AboutUs"));
+const Login = React.lazy(() => import("./components/Auth/Login/Login"));
+const PrivateDesk = React.lazy(() =>
+  import("./components/Forms/PrivateDesk/PrivateDesk")
 );
-
+const SharedDesk = React.lazy(() =>
+  import("./components/Forms/SharedDesk/SharedDesk")
+);
+const DedicatedOffice = React.lazy(() =>
+  import("./components/Forms/DedicatedOffice/DedicatedOffice")
+);
+const SessionRoom = React.lazy(() =>
+  import("./components/Forms/SessionRoom/SessionRoom")
+);
+const PrivacyPolicy = React.lazy(() =>
+  import("./components/PrivacyPolicy/PrivacyPolicy")
+);
+const TermsOfUse = React.lazy(() =>
+  import("./components/TermsOfUse/TermsOfUse")
+);
+const Blog = React.lazy(() => import("./components/Blog/Blog"));
+const FAQ = React.lazy(() => import("./components/FAQ/FAQ"));
+const ContactUs = React.lazy(() => import("./components/ContactUs/ContactUs"));
+const Careers = React.lazy(() => import("./components/Careers/Careers"));
+const PartnerShip = React.lazy(() =>
+  import("./components/Forms/PartnerShip/PartnerShip")
+);
+const Security = React.lazy(() => import("./components/Security/Security"));
+const MyRequests = React.lazy(() =>
+  import("./components/MyPage/MyRequests/MyRequests")
+);
+const OfferList = React.lazy(() =>
+  import("./components/MyPage/OfferList/OfferList")
+);
+const PartnerProfile = React.lazy(() =>
+  import("./components/PartnerProfile/PartnerProfile")
+);
+const NotFound = React.lazy(() =>
+  import("./components/Auth/NotFound/NotFound")
+);
+const InternalError = React.lazy(() =>
+  import("./components/Auth/InternalError/InternalError")
+);
+//partner panel components
+const PartnerPanel = React.lazy(() =>
+  import("./components/PartnerPanel/Panel/PartnerPanel")
+);
+const PartnerLogin = React.lazy(() =>
+  import("./components/PartnerPanel/PartnerLogin/PartnerLogin")
+);
+//temporary
+const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
 const routes = [
-  { path: "/", exact: true, name: "Home", component: Home, navTransform: true },
   {
-    path: "/comingsoon",
+    path: "/:lang?",
+    exact: true,
+    name: "Home",
+    component: Home,
+    navTransform: true,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/p/:slug",
+    name: "partner profile",
+    exact: true,
+    component: PartnerProfile,
+    navStatus: true
+  },
+
+  {
+    path: "/:lang?/comingsoon",
     exact: true,
     name: "Coming Soon",
     component: ComingSoon,
-    navTransform: true
+    navTransform: true,
+    navStatus: true
   },
   {
-    path: "/aboutus",
+    path: "/:lang?/aboutus",
     exact: true,
     name: "About Us",
-    component: AboutUs
+    component: AboutUs,
+    navStatus: true
   },
   {
-    path: "/login",
+    path: "/:lang?/login",
     exact: true,
     name: "Login",
-    component: Login
+    component: Login,
+    navStatus: true
   },
+
   {
-    path: "/apply/coworking",
-    exact: true,
-    name: "Coworking",
-    component: Coworking
-  },
-  {
-    path: "/apply/sessionroom",
-    exact: true,
+    path: "/:lang?/apply/sessionroom",
     name: "Session Room",
-    component: SessionRoom
-  },
-  {
-    path: "/apply/investing",
     exact: true,
-    name: "Investing",
-    component: Investing
+    component: SessionRoom,
+    navStatus: true
   },
   {
-    path: "/apply/privateoffice",
+    path: "/:lang?/apply/dedicatedoffice",
+    name: "Dedicated Office",
+    component: DedicatedOffice,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/apply/privatedesk",
+    name: "Private Desk",
+    component: PrivateDesk,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/apply/shareddesk",
+    name: "Shared Desk",
     exact: true,
-    name: "Private Office",
-    component: PrivateOffice
+    component: SharedDesk,
+    navStatus: true
   },
+
   {
-    path: "/apply/startup",
-    exact: true,
-    name: "Startup",
-    component: Startup
-  },
-  {
-    path: "/privacypolicy",
+    path: "/:lang?/privacypolicy",
     exact: true,
     name: "Privacy Policy",
-    component: PrivacyPolicy
+    component: PrivacyPolicy,
+    navStatus: true
   },
   {
-    path: "/termsofuse",
+    path: "/:lang?/termsofuse",
     exact: true,
     name: "Terms Of Use",
-    component: TermsOfUse
+    component: TermsOfUse,
+    navStatus: true
   },
   {
-    path: "/blog",
+    path: "/:lang?/blog",
     exact: true,
     name: "Blog",
-    component: Blog
+    component: Blog,
+    navStatus: true
   },
   {
-    path: "/faq",
+    path: "/:lang?/faq",
     exact: true,
     name: "FAQ",
-    component: FAQ
+    component: FAQ,
+    navStatus: true
   },
   {
-    path: "/careers",
+    path: "/:lang?/contactus",
+    exact: true,
+    name: "Contact Us",
+    component: ContactUs,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/careers",
     exact: true,
     name: "Careers",
-    component: Careers
+    component: Careers,
+    navStatus: true
   },
   {
-    path: "/partnership",
+    path: "/:lang?/partnership",
     exact: true,
     name: "Partner Ship",
-    component: PartnerShip
+    component: PartnerShip,
+    navStatus: true
   },
   {
-    path: "/security",
+    path: "/:lang?/security",
     exact: true,
     name: "Security",
-    component: Security
+    component: Security,
+    navStatus: true
   },
   {
-    path: "/news",
+    path: "/:lang?/user/myrequests",
     exact: true,
-    name: "News",
-    component: News
+    name: "My Requests",
+    component: MyRequests,
+    auth: ["user"],
+    navStatus: true
+  },
+  {
+    path: "/:lang?/user/offerlist",
+    name: "Offer List",
+    component: OfferList,
+    auth: ["user"],
+    navStatus: true
+  },
+  //partner panel routes
+  {
+    path: "/:lang?/partnerpanel/panel",
+    name: "Partner Panel",
+    auth: ["partner"],
+    component: PartnerPanel,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/partnerpanel/login",
+    name: "Partner Panel Login",
+    auth: ["guest", "user"],
+    component: PartnerLogin,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/auth/internalerror",
+    name: "Internal Error",
+    component: InternalError,
+    navStatus: false
+  },
+  //Notice: 404 page have to defined as the last child of Route object
+  {
+    component: NotFound,
+    navStatus: false
   }
 ];
 

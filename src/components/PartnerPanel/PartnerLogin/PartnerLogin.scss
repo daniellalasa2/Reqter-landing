@@ -1,0 +1,143 @@
+.PartnerLogin {
+  &._rtl {
+    direction: rtl;
+  }
+  padding-top: 110px;
+  padding-bottom: 90px;
+  background-color: whitesmoke;
+  .modal-open {
+    padding-right: 0 !important;
+  }
+  .login-card {
+    display: flex !important;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    direction: rtl;
+    text-align: right;
+    font-family: "Samim", sans-serif;
+    border-radius: 0.3rem;
+    width: 380px;
+    margin: auto;
+    height: 100%;
+    .modal-content {
+      width: 80%;
+    }
+    .card-header {
+      width: 100%;
+      h5 {
+        margin: 0;
+      }
+    }
+    .card-body {
+      text-align: center;
+      width: 100%;
+      .buttons-wrapper {
+        display: flex;
+        direction: ltr;
+      }
+      button {
+        float: left;
+        margin: 15px 10px;
+        padding: 12px 48px;
+        background-color: #727fdd;
+        float: none;
+        margin: 1.55rem auto auto;
+        width: auto;
+        height: auto;
+        border-radius: 0.3rem;
+        font-size: 16px;
+        font-weight: bold;
+        outline: none;
+      }
+    }
+    .success-login {
+      text-align: center;
+      button {
+        float: none;
+        margin: auto;
+      }
+    }
+    .resend-code-link {
+      color: grey;
+      margin-top: 25px;
+      margin-bottom: 0;
+      display: block;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.95rem;
+      &:hover {
+        color: #727fdd;
+      }
+    }
+    .field-row {
+      .input-wrapper {
+        margin: auto;
+        margin-top: 14px;
+        margin-bottom: 0;
+        font-size: 18px;
+      }
+      input {
+        text-align: center;
+        font-size: 20px;
+        width: 220px;
+        min-width: auto;
+        font-weight: bold;
+        border-width: 0 0 2px 0 !important;
+        letter-spacing: 3px;
+        &#code {
+          margin-bottom: 0;
+          font-size: 25px;
+          letter-spacing: 10px;
+        }
+      }
+
+      .error-message {
+        text-align: center;
+        float: none !important;
+        margin: auto;
+      }
+      margin-top: 20px;
+    }
+    .input-error {
+      text-align: right !important;
+    }
+    .login-card-header {
+      background-color: whitesmoke;
+
+      h5 {
+        font-weight: bold;
+        text-align: center;
+      }
+      .close {
+        outline: none;
+        margin-left: 0;
+        width: auto;
+        padding: 0;
+        font-size: 30px;
+        margin: 0.2rem !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .PartnerLogin {
+    .login-card {
+      .modal-content {
+        width: 95vw;
+      }
+    }
+  }
+}
+
+._ltr {
+  .login-card-header {
+    direction: ltr;
+  }
+  .alert {
+    direction: ltr;
+  }
+}

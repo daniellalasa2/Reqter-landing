@@ -1,0 +1,157 @@
+.partner-panel-section {
+  & .form-card {
+    width: 1100px;
+    text-align: left;
+    min-height: 600px;
+    & .card-header {
+      overflow-y: auto;
+      & .card-header-nav {
+        display: flex;
+        & button {
+          flex-grow: 1;
+          margin: 0 3px;
+          color: dimgrey;
+          font-weight: bold;
+          background-color: transparent;
+          border: none;
+          border-radius: 4px;
+          outline: none;
+          line-height: 2;
+          transition: all 0.2s ease;
+          min-width: fit-content;
+          &:hover {
+            background-color: rgba(100, 100, 100, 0.1);
+            color: black;
+            cursor: pointer;
+          }
+          &.active {
+            background-color: rgba(100, 100, 100, 1);
+            color: white;
+          }
+        }
+      }
+    }
+    & .card-body {
+      & .no-content {
+        display: block;
+        width: 100%;
+        text-align: center;
+        color: gray;
+        padding: 30px 0 10px;
+      }
+      & .requests-table {
+        & td,
+        & th {
+          vertical-align: middle;
+          text-align: center;
+        }
+        & th:last-child {
+          min-width: 253px;
+        }
+        & th:nth-child(2) {
+          min-width: 215px;
+        }
+        & tr > td:nth-child(2) > span {
+          display: flex;
+          align-items: center;
+          justify-content: space-evenly;
+        }
+      }
+      & .offers-table {
+        & td,
+        & th {
+          vertical-align: middle;
+          text-align: center;
+        }
+      }
+    }
+  }
+  //modals
+}
+#rejectRequest-warning-modal {
+  & .modal-header {
+    & h5 {
+      font-size: 1.1rem;
+      font-weight: normal;
+    }
+    & .close {
+      font-size: 1.5rem;
+    }
+  }
+}
+.modal-dialog.requestContact-modal {
+  direction: ltr;
+  text-align: left;
+  font-family: "Samim", sans-serif;
+  & fieldset {
+    border: 1px solid lightgray !important;
+    padding: 12px;
+    border-radius: 4px;
+    line-height: 2.5;
+    & .requestInfo-title {
+      display: inline-flex;
+    }
+    & .requestInfo-text {
+      font-weight: bold;
+      display: inline-flex;
+      flex-wrap: wrap;
+      & .workingfield-tag {
+        line-height: 1.5;
+        display: flex;
+        width: fit-content;
+        border-radius: 6px;
+        padding: 4px 7px;
+        font-size: 14px;
+        color: white;
+        font-weight: bold;
+        background-color: darkslateblue;
+        margin: 3px;
+      }
+    }
+  }
+  & legend {
+    line-height: 2;
+    width: auto;
+    padding: 0 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: lightgrey;
+    border-radius: 3px;
+    padding: 3px 10px;
+  }
+  & .requestContact-modal-header {
+    & h5 {
+      font-size: 1.1rem;
+    }
+    & .close {
+      padding: 1.1rem 1.5rem;
+      margin: -1rem;
+      outline: none;
+    }
+  }
+  &._rtl {
+    direction: rtl;
+    text-align: right;
+  }
+  @media (min-width: 900px) {
+    &.modal-content {
+      width: 93vw;
+    }
+  }
+}
+#issueOffer-modal {
+  & .modal-content {
+    width: 800px;
+  }
+  @media (max-width: 900px) {
+    & .modal-content {
+      width: 93vw;
+    }
+  }
+}
+._rtl {
+  & .form-card {
+    direction: rtl;
+    text-align: right;
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "form_title": "فرم درخواست همکاری",
+    "fields": {
+      "name": {
+        "_title": "نام شرکت یا سازمان",
+        "placeholder": "نام شرکت یا سازمان را وارد کنید"
+      },
+      "fullname": {
+        "_title": "نام درخواست کننده",
+        "placeholder": "نام خود را وارد کنید"
+      },
+      "workingfield": "حوزه(های) فعالیت",
+      "partnershipfield": "زمینه(های) همکاری",
+      "phonenumber": {
+        "_title": "شماره تماس",
+        "placeholder": "9123456789"
+      },
+      "email": {
+        "_title": "ایمیل",
+        "placeholder": "ایمیل خود را وارد کنید"
+      },
+      "website": {
+        "_title": "وبسایت",
+        "placeholder": "آدرس وبسایت خود را وارد کنید"
+      },
+      "description": {
+        "_title": "توضیحات",
+        "placeholder": "اگر توضیحی درباره شرایط همکاری خود دارید برای ما بنویسید"
+      },
+      "submit": {
+        "submit": "ثبت و ارسال"
+      }
+    }
+  }
+}

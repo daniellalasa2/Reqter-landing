@@ -1,0 +1,27 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "not_defined": "Not defined",
+    "null": "Not specified",
+    "verified": "Verified",
+    "overview": "Overview",
+    "products": "Products",
+    "facilities": "Amenities",
+    "address": "Address",
+    "map": "Map",
+    "reviews": "Reviews(Soon)",
+    "working_hours": "Working hours",
+    "empty_overview": "Empty overview",
+    "no_amenities": "No available amenity",
+    "products_table": {
+      "products_name": "Product name",
+      "quantity": "Quantity",
+      "hourly_price": "Hourly price",
+      "daily_price": "Daily price",
+      "weekly_price": "Weekly price",
+      "monthly_price": "Monthly price",
+      "request": "Request",
+      "reserve": "Reserve"
+    }
+  }
+}

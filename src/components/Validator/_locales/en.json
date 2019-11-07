@@ -1,0 +1,29 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "required_field": "Required field",
+    "email": {
+      "invalid": "The email is invalid"
+    },
+    "phonenumber": {
+      "without_zero": "The phone number has not start with 0",
+      "incorrect_phonenumber": "The phone number is incorrect."
+    },
+    "website": {
+      "invalid_format": "The website format is invalid."
+    },
+    "number": {
+      "invalid_number": "Please insert a valid number."
+    },
+    "birthyear": {
+      "invalid_birthyear": "The birth year is invalid"
+    },
+    "upload": {
+      "wait_for_upload": "Uploading the file... ,please wait."
+    },
+    "date": {
+      "invalid_date": "Please inset a valid time and date.",
+      "past_date": "The date and time should not be past."
+    }
+  }
+}

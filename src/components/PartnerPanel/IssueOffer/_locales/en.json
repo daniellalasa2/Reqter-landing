@@ -1,0 +1,41 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "step1": {
+      "choose_a_product": "Choose a product :",
+      "next_step_button": "Next Step"
+    },
+    "step2": {
+      "submit_offer_button": "Submit offer"
+    },
+    "fields": {
+      "name": {
+        "_title": "Offer name",
+        "placeholder": "Example: Issue from test company"
+      },
+      "description": {
+        "_title": "Description",
+        "placeholder": "Do you have any comment for your customer? if Yes, please type it here..."
+      },
+      "hourlyprice": {
+        "_title": "Hourly price"
+      },
+      "dailyprice": {
+        "_title": "Daily price"
+      },
+      "weeklyprice": {
+        "_title": "Weekly price"
+      },
+      "monthlyprice": {
+        "_title": "Monthly price"
+      },
+      "startdate": { "_title": "Start date", "placeholder": "YYYY-MM-DD" }
+    },
+    "notification": {
+      "issue_offer": {
+        "success": "Your offer issued successfuly .",
+        "failed": "Unfortunately an error occured while submiting the offer, please try later."
+      }
+    }
+  }
+}

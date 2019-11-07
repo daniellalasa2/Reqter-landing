@@ -1,0 +1,50 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "form_title": "Request a session room",
+    "email_subject": [
+      "Request a meeting room with capacity of",
+      "persons in",
+      "unknown city"
+    ],
+    "fields": {
+      "fullname": {
+        "_title": "Full name",
+        "placeholder": "Enter your full name"
+      },
+      "subject": {
+        "_title": "Session subject",
+        "placeholder": "Enter your session subject"
+      },
+      "startdate": {
+        "_title": "Session start time",
+        "placeholder": "Date - Hour : Minute",
+        "error": "The start time of the session must be before the end of the session"
+      },
+      "enddate": {
+        "_title": "Session end time",
+        "placeholder": "Date - Hour : Minute",
+        "error": "The end of the session must be after the start of the session"
+      },
+      "equipments": {
+        "_title": "Equipments"
+      },
+      "phonenumber": {
+        "_title": "Phone number",
+        "placeholder": "9123456789"
+      },
+      "email": {
+        "_title": "Email Address",
+        "placeholder": "Enter your Email address"
+      },
+      "city": {
+        "_title": "City"
+      },
+      "seats": { "_title": "Number of seats", "placeholder": "Required Seats" },
+      "submit": {
+        "submit": "Submit and Send",
+        "verify_phonenumber": "Verify your phone number"
+      }
+    }
+  }
+}

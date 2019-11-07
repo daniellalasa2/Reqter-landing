@@ -1,0 +1,14 @@
+.pageWrapper {
+  min-height: calc(100vh - 297px);
+  background-color: white;
+}
+.react-toastify {
+  & .Toastify__toast-body {
+    font-family: "Samim", sans-serif;
+  }
+}
+@media (max-width: 768px) {
+  .pageWrapper {
+    min-height: calc(100vh - 89px);
+  }
+}

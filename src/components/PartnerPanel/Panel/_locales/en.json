@@ -1,0 +1,79 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "panel_header": {
+      "manage_requests": "Manage requests",
+      "my_products": "My Products",
+      "setting": "Settings"
+    },
+    "requests": {
+      "loading": "Getting information ...",
+      "no_items_found": "No items found.",
+      "open_request_button": "Open",
+      "reject_request_button": "Reject",
+      "display_request": "Display",
+      "issue_offer": "Issue offer",
+      "cancel_offer": "Cancel offer",
+      "alert": {
+        "title": "Warning !",
+        "description": "If the request status is applied, it cannot be changed.",
+        "areyousure": "Are you sure?",
+        "accept": "Yes",
+        "reject": "Cancel"
+      },
+      "customer_contact_detail": {
+        "title": "Customer contact detail",
+        "request_info": {
+          "title": "Request Info",
+          "requester_name": "Requested product :",
+          "product_name": "Product name :",
+          "seats": "Seats :",
+          "city": "City :",
+          "country": "Country :",
+          "birthyear": "Birth year :",
+          "workingfield": "Working field :",
+          "resume": "Resume :",
+          "download": "Download"
+        },
+        "contact_info": {
+          "title": "Contact info",
+          "tel": "Phone number :",
+          "email": "Email :"
+        }
+      },
+      "issue_offer_modal": {
+        "title": "Issue offer",
+        "company_name": "Offer from ",
+        "no_product_founded": "You dont have any available product. firstly, please add your product in \"My products\" page"
+      }
+    },
+    "table": {
+      "row": "Row",
+      "product_name": "Product name",
+      "requester_detail": "Requester detail",
+      "city": "City",
+      "qunatity": "Number",
+      "date": "Date",
+      "operation": "Operation",
+      "offer_name": "Offer name",
+      "request_details": "Request details",
+      "sent_offer": "Sent offer",
+      "offer_stage": "Offer stage",
+      "cancel_offer": "Cancel offer",
+      "not_specified_stage": "Not specified",
+      "description": "Description",
+      "hourlyprice": "Hourly price",
+      "dailyprice": "Daily price",
+      "weeklyprice": "Weekly price",
+      "monthlyprice": "Monthly price",
+      "startdate": "Start date"
+    },
+    "card_header": {
+      "new_requests": "New requests",
+      "open_requests": "Open requests",
+      "offers": "Offers",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    }
+  }
+}

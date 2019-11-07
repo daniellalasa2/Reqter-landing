@@ -1,0 +1,31 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "contact_us": {
+      "_title": "ارتباط با ما",
+      "contact_info": {
+        "address": {
+          "_title": "آدرس ما",
+          "description": "تهران - آجودانیه - بلوار ارتش غرب - بعد از تقاطع اوشان - کوچه ابولفضل صمیع - مجموعه باغ بهشت - ساختمان پارادایس هاب"
+        },
+        "tel": {
+          "_title": "تلفن",
+          "tel": "+98 21 8833 6207"
+        },
+        "email": {
+          "_title": "ایمیل",
+          "email1": "info@startupspace.ir",
+          "email2": "support@startupspace.ir"
+        }
+      }
+    },
+    "fields": {
+      "fullname": "نام و نام خانوادگی",
+      "phonenumber": "شماره تماس",
+      "subject": "موضوع",
+      "description": "توضیحات",
+      "submit": "ارسال",
+      "success_message": "پیام شما با موفقیت ارسال شد"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "FAQ": {
+      "_title": "Frequently Asked Questions",
+      "q1": {
+        "question": "What is the main mission of Startup Space?",
+        "answer": "Our main goal at Startup Space is to create a comprehensive reference of shared workspaces across the city so startups and freelancers can find the workspace they need and start their own workflows as quickly and easily as possible."
+      },
+      "q2": {
+        "question": "What is the difference between Startup Space and other existing services that work in this field?",
+        "answer": "Startup Space does not introduce you to workspaces but you request us workspaces and we will request all the shared workspaces in your city instead of you and send them their suggestions and you will choose from the best offers You do."
+      },
+      "q3": {
+        "question": "Does it cost me to use Startup Space?",
+        "answer": "No. The entire process of applying for a workspace is free of charge from the time of submission of the application to the acceptance of your workspace and approval by you and you will not be charged for the services we provide."
+      },
+      "q4": {
+        "question": "How is Information Security in Startup Space?",
+        "answer": "Your information, including name, phone number, and all your personal information is kept with us and is not used for any purpose other than workspace offers via StartSpace and your requests will be sent directly to your workspace providers."
+      },
+      "q5": {
+        "question": "How does Startup Space work?",
+        "answer": "You fill in and submit a simple multi-step form to identify your needs and you can view your requests from within your panel after logging in and be informed of the latest status of your request and if you receive an offer Accept or reject. You can also choose from a few suggestions and finally choose your desired workspace and complete the deployment and relocation steps to the end."
+      }
+    }
+  }
+}

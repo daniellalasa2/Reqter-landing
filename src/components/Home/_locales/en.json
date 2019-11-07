@@ -1,0 +1,65 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "product": {
+      "header": {
+        "title": "Provide work space for start-ups and freelancers",
+        "slang": "Apply, Get offered and Choose",
+        "choose_a_product": "Choose a product"
+      },
+      "header_forms": {
+        "choose_city_and_seats": "Start your application by choosing the city and the number of people",
+        "submit_button": "Send Request",
+        "seats_placeholder": "Seats",
+        "team_placeholder": "Seats",
+        "city_placeholder": "Choose a city"
+      },
+      "items": {
+        "shared_desk": "Shared Desk",
+        "private_desk": "Private Desk",
+        "dedicated_office": "Dedicated Office",
+        "session_room": "Session Room"
+      },
+      "product_specs": {
+        "submit_button": "Send Request",
+        "session_room": {
+          "_title": "Conference and Session room",
+          "description": "If you have an important meeting like investor presentations, inter-team coordination meetings, consulting and sales or hiring meetings, and you want to keep your conversations confidential and not disturb others in the workplace environment, you may want to during the meeting Make use of meeting room facilities such as filming and photography, reception, etc. You can now request a meeting room reservation."
+        },
+        "shared_desk": {
+          "_title": "Shared Desk",
+          "description": "A shared desktop in a shared workspace or a quirk refers to a desk that is not yours and that a different person may use it every day. Therefore it is not possible to install work requirements such as computers and ... on them. One interesting thing about these desks is that every day your partner may be someone else and new friendships and partnerships can be formed. With our shared desktop service, you can only receive multiple offers from the city's shared workspaces with just one request and choose the best and most suitable."
+        },
+        "dedicated_office": {
+          "_title": "Dedicated Office",
+          "description": "If you are a dedicated office or roommate who does not have the cost of a standalone office space and is fully immersed in a dynamic environment, our office or room service service will present you with the best and most convenient office space available. And you choose the right office from among the bids received."
+        },
+        "private_desk": {
+          "_title": "Private Desk",
+          "description": "Having a dedicated desktop in the shared workspace has its own advantages, most notably the ability to have your workstation set up, like a single-person office, and you have your own place to work every day. Generally in shared workspaces, dedicated and shared desks are separated, and this allows you to have a deeper relationship with the person on hand, and often leads to collaborative projects. With the dedicated desktop service you can offer your own custom desktop from your shared workspace."
+        }
+      }
+    },
+    "how_to_use": {
+      "_title": "Steps to get the job done",
+      "get_service": {
+        "_title": "Get the service",
+        "description": "After you have reviewed the offers received by your clients, the connection will be established between you and the appropriate server for the job."
+      },
+      "match_making": {
+        "_title": "Review and send to related providers",
+        "description": "Your inquiry will be submitted to our top service providers and providers after being reviewed by our professional team."
+      },
+      "submit_form": {
+        "_title": "Fill out the service request form",
+        "description": "Fill out the service request form online"
+      }
+    },
+    "contact_us": {
+      "slang": "Our customer success team is always with you",
+      "description": "Do you have any question? Our distance with you is an email or phone. Get in touch with us",
+      "contact_us_button": "Contact Us",
+      "faq_button": "FAQ"
+    }
+  }
+}

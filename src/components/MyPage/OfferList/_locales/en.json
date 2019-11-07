@@ -1,0 +1,42 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "return": "Back",
+    "error": {
+      "no_offer": "There is no offer for this request",
+      "not_specified": "Not Sepcified"
+    },
+    "status": {
+      "loading": "Getting offers . . ."
+    },
+    "alert_modal": {
+      "title": "Warning",
+      "body": [
+        "If you accept or reject the offer, it is no longer possible to change the offer status",
+        "Are your sure ?"
+      ],
+      "accept": "Yes",
+      "deny": "No"
+    },
+    "fields": {
+      "partner_default_name": "Startup space's partner",
+      "city": "City",
+      "price": {
+        "hourly": "Hourly price",
+        "daily": "Daily price",
+        "monthly": "Monthly price",
+        "weekly": "Weekly price"
+      },
+      "currency": { "name": "Toman" },
+      "submission_date": "Submission date",
+      "partner_comment": {
+        "_title": "Partner comment",
+        "not_specified": "No comment"
+      },
+      "stage_buttons": {
+        "approve": "Aprrove",
+        "deny": "Deny"
+      }
+    }
+  }
+}

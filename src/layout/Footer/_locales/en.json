@@ -1,0 +1,38 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "products": {
+      "_title": "Products",
+      "session_room": "Session Room",
+      "shared_desk": "Shared Desk",
+      "private_desk": "Private Desk",
+      "dedicated_office": "Dedicated Office"
+    },
+    "support": {
+      "_title": "Support",
+      "faq": "FAQs",
+      "security": "Security"
+    },
+    "partnership": {
+      "_title": "Partner Ship",
+      "blog": "Blog",
+      "job_positions": "Job Positions",
+      "news": "News"
+    },
+    "buisness_partners": {
+      "_title": "Buisness Partners",
+      "request_partnership": "Request Partnership"
+    },
+    "rules": {
+      "_title": "Rules",
+      "terms_of_use": "Terms of Use",
+      "privacy_policy": "Privacy Policy"
+    },
+    "social": {
+      "follow_us": "Follow Us"
+    },
+    "copyright": {
+      "_title": "All right reserved for the Startup Space."
+    }
+  }
+}

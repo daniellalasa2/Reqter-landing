@@ -1,0 +1,12 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "title": "THANK YOU !",
+    "description": [
+      "Your request submitted. Visit ",
+      " To checkout your request stage."
+    ],
+    "mypage": "\"My page\"",
+    "newrequest": "New request"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "return": "بازگشت",
+    "error": {
+      "no_offer": "پیشنهادی برای این درخواست وجود ندارد",
+      "not_specified": "مشخص نشده"
+    },
+    "status": {
+      "loading": ". . . در حال دریافت پیشنهادات"
+    },
+    "alert_modal": {
+      "title": "هشدار",
+      "body": [
+        "در صورت قبول یا رد پیشنهاد امکان تغییر وضعیت پیشنهاد دیگر امکانپذیر نیست",
+        "آیا اطمینان دارید ؟"
+      ],
+      "accept": "بله",
+      "deny": "خیر"
+    },
+    "fields": {
+      "partner_default_name": "همکار در استارتاپ اسپیس",
+      "city": "شهر",
+      "price": {
+        "hourly": "قیمت ساعتی",
+        "daily": "قیمت روزانه",
+        "monthly": "قیمت ماهانه",
+        "weekly": "قیمت هفتگی"
+      },
+      "currency": { "name": "تومان" },
+      "submission_date": "زمان ارسال پیشنهاد",
+      "partner_comment": {
+        "_title": "توضیح همکار درباره درخواست",
+        "not_specified": "توضیح خاصی وجود ندارد"
+      },
+      "stage_buttons": {
+        "approve": "قبول",
+        "deny": "رد"
+      }
+    }
+  }
+}

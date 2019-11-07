@@ -1,0 +1,79 @@
+0000000000000000000000000000000000000000 abd7cfce6cc059eeca8a28f8778b0c910fd178ca daniel <daniel.lalasa@gmail.com> 1567085411 +0430	branch: Created from development_coworking
+abd7cfce6cc059eeca8a28f8778b0c910fd178ca 069c65d206be536c9d74e567eb1176b7f362de18 daniel <daniel.lalasa@gmail.com> 1567085495 +0430	commit: new customer-panel branch created
+069c65d206be536c9d74e567eb1176b7f362de18 fce27b2c9321903e754baaeed23a219d881a945e daniel <daniel.lalasa@gmail.com> 1567099815 +0430	commit: request card responsive done
+fce27b2c9321903e754baaeed23a219d881a945e 9f22e4eca36fd3d9d61145282f131ef900580796 daniel <daniel.lalasa@gmail.com> 1567400210 +0430	commit: authorization automation done
+9f22e4eca36fd3d9d61145282f131ef900580796 38d2023345b73de2df1a2cca8f420796ce425ed0 daniel <daniel.lalasa@gmail.com> 1567403690 +0430	commit: forms adopted with new rpanel api
+38d2023345b73de2df1a2cca8f420796ce425ed0 e1db121a600006d4711cfe598381dcc686f1502c daniel <daniel.lalasa@gmail.com> 1567432829 +0430	commit: phone validation in form done
+e1db121a600006d4711cfe598381dcc686f1502c f552c1b4295dd08b2042c80b8107453ecd56e7c8 daniel <daniel.lalasa@gmail.com> 1567506932 +0430	commit: phoneverification bugs fixed,keeping phonenumber as an ID in user authentication cookie implemented
+f552c1b4295dd08b2042c80b8107453ecd56e7c8 fe959d29a9e23bb4341da51e24e1fe7c69dacc51 daniel <daniel.lalasa@gmail.com> 1567533053 +0430	commit: routes role support feauture added
+fe959d29a9e23bb4341da51e24e1fe7c69dacc51 dd1c2ad462974271300d9594f36823782f9803ce daniel <daniel.lalasa@gmail.com> 1567620406 +0430	commit: phonenmber country code support done
+dd1c2ad462974271300d9594f36823782f9803ce 6c244de590e8b1db29333a9b115be255e7c10a83 daniel <daniel.lalasa@gmail.com> 1567666510 +0430	commit: Bug of flatInlineSelect with radio type fixed
+6c244de590e8b1db29333a9b115be255e7c10a83 de6a91554a9b2ced9ee56377484863154118ab9e daniel <daniel.lalasa@gmail.com> 1567694755 +0430	commit: form phone number validation UX improved , submit form during upload process bug fixed
+de6a91554a9b2ced9ee56377484863154118ab9e 0063cc7fb15f4490ba36956b99ef2c4459bf5617 daniel <daniel.lalasa@gmail.com> 1567697023 +0430	commit: form phone number validation UX improved , submit form during upload process bug fixed
+0063cc7fb15f4490ba36956b99ef2c4459bf5617 5810f30f58c8a731018d8dfb4ca262f75973c8a9 daniel <daniel.lalasa@gmail.com> 1567784747 +0430	commit: form name bug fixed
+5810f30f58c8a731018d8dfb4ca262f75973c8a9 ac943b139ab6118026413da8def7395844debd7f daniel <daniel.lalasa@gmail.com> 1567784960 +0430	commit: form name bug fixed
+ac943b139ab6118026413da8def7395844debd7f d3266592fc71f03285e41c4edd02470846ea0729 daniel <daniel.lalasa@gmail.com> 1567935870 +0430	commit: login phonenumber validation improved
+d3266592fc71f03285e41c4edd02470846ea0729 992a2ed75785813b74764fd95b0b9b94502d1f87 daniel <daniel.lalasa@gmail.com> 1567938711 +0430	commit: Logout button added
+992a2ed75785813b74764fd95b0b9b94502d1f87 dc2ff8f4e0ed1d1d911bc74df8ea8a847ccbf6a6 daniel <daniel.lalasa@gmail.com> 1567960499 +0430	commit: request cards bug fixed
+dc2ff8f4e0ed1d1d911bc74df8ea8a847ccbf6a6 34dc1c1b2ea2aa16885be43548f7af026b079b10 daniel <daniel.lalasa@gmail.com> 1568306287 +0430	commit: approved request english to persian number conversion done
+34dc1c1b2ea2aa16885be43548f7af026b079b10 5a11e55ccad3a775818a1abd8cdc4ef56d4dbed1 daniel <daniel.lalasa@gmail.com> 1568306297 +0430	commit: approved request english to persian number conversion done
+5a11e55ccad3a775818a1abd8cdc4ef56d4dbed1 cbc4e12204ddb67175a06701ab37c1539a3bba9e daniel <daniel.lalasa@gmail.com> 1568368846 +0430	commit: offer list bug fixed
+cbc4e12204ddb67175a06701ab37c1539a3bba9e 72fcc1ea0049bc5b23475a5b0c3c8b2515a72ed9 daniel <daniel.lalasa@gmail.com> 1568387773 +0430	commit: partner image and verified icon added
+72fcc1ea0049bc5b23475a5b0c3c8b2515a72ed9 52d23a2336672d97e3abcde97cafa346928132c0 daniel <daniel.lalasa@gmail.com> 1568388530 +0430	commit: getting offer list from api done,send dedicated office product content type while submitting done
+52d23a2336672d97e3abcde97cafa346928132c0 ef88378d423cd8d4286cdbf97a588629b5949f15 daniel <daniel.lalasa@gmail.com> 1568537848 +0430	commit: accept reject offer
+ef88378d423cd8d4286cdbf97a588629b5949f15 248d1df7221032cc15213dbecf5d9778b2a3194b daniel <daniel.lalasa@gmail.com> 1568540178 +0430	commit: offer list bug fix
+248d1df7221032cc15213dbecf5d9778b2a3194b 02ea646ad6b4419506f7e41ae20e3067f3af5b78 daniel <daniel.lalasa@gmail.com> 1568555707 +0430	commit: offere list hard code removed
+02ea646ad6b4419506f7e41ae20e3067f3af5b78 e980875a4c69c5dbeab0fc1e77589f1ff51aca70 daniel <daniel.lalasa@gmail.com> 1568557082 +0430	commit: get offer list request bug fixed
+e980875a4c69c5dbeab0fc1e77589f1ff51aca70 41f21181a067f825795c339c4d0ab193293f1e1c daniel <daniel.lalasa@gmail.com> 1568563656 +0430	commit: products verification
+41f21181a067f825795c339c4d0ab193293f1e1c 6fe9d8be620a9a3d4acf3a60b5fda60b3fd22d1a daniel <daniel.lalasa@gmail.com> 1568709987 +0430	commit: stage set in product data background
+6fe9d8be620a9a3d4acf3a60b5fda60b3fd22d1a 93e2a411c71944ca6739a7914d7794d60668ee2b daniel <daniel.lalasa@gmail.com> 1568710164 +0430	commit: partnership form edited
+93e2a411c71944ca6739a7914d7794d60668ee2b 22eb5c6f2f0c3a33ba40d3325679c1fba34969db daniel <daniel.lalasa@gmail.com> 1568736086 +0430	commit: offer bugs fixed, request filter removed
+22eb5c6f2f0c3a33ba40d3325679c1fba34969db a444d0a2376a43b4970aa497594ad356a464a7a2 daniel <daniel.lalasa@gmail.com> 1568793566 +0430	commit: Display accurate offer stage in offerlist done, DateFormat library added
+a444d0a2376a43b4970aa497594ad356a464a7a2 9e9b02518b46035f613d07edb85f228e2f22009d daniel <daniel.lalasa@gmail.com> 1568817400 +0430	commit: offer alert popup
+9e9b02518b46035f613d07edb85f228e2f22009d 785bdf9ab5e326a3855fe288dc75e198fea9b973 daniel <daniel.lalasa@gmail.com> 1568906957 +0430	commit: partner profile added
+785bdf9ab5e326a3855fe288dc75e198fea9b973 67ae5bde4c1eb15cede1b017edffeb485788127b daniel <daniel.lalasa@gmail.com> 1568983734 +0430	commit: partner profile navigator and scroll behaviors implemented , facilities section added , map section added , products section added , working hours added
+67ae5bde4c1eb15cede1b017edffeb485788127b 0dae8cb743be504f1596e84a7d18dc65806f1cd9 daniel <daniel.lalasa@gmail.com> 1568987803 +0430	commit: navigation scroll done
+0dae8cb743be504f1596e84a7d18dc65806f1cd9 de709dbe44a13e975219b510756e7798a8e1b8ba daniel <daniel.lalasa@gmail.com> 1568994732 +0430	commit: partner page responsive done
+de709dbe44a13e975219b510756e7798a8e1b8ba c52cdff4d80d8ed02c8e40409a6feaa97b317c5d daniel <daniel.lalasa@gmail.com> 1568995040 +0430	commit: scroll Desctrustion on Component unmout bug fixed
+c52cdff4d80d8ed02c8e40409a6feaa97b317c5d fb541ab7390e3e6b87331cda330879d21a82b760 daniel <daniel.lalasa@gmail.com> 1569153653 +0330	commit: dynamic data from Api implemented
+fb541ab7390e3e6b87331cda330879d21a82b760 4c2f9fb41bff8f52b3160f71706054215e7959a3 daniel <daniel.lalasa@gmail.com> 1569155067 +0330	commit: sections colorized ,overview justify text removed
+4c2f9fb41bff8f52b3160f71706054215e7959a3 15ca8d9fcac3e63a529ea9a28401ccf258a1dce0 daniel <daniel.lalasa@gmail.com> 1569166312 +0330	commit: poroducts added to partner profile
+15ca8d9fcac3e63a529ea9a28401ccf258a1dce0 6400c407b9a7801fae89d1f4135050f7f290552b daniel <daniel.lalasa@gmail.com> 1569177444 +0330	commit: navigation scroll done
+6400c407b9a7801fae89d1f4135050f7f290552b 4c939c1c60f06a9e417045cc507e18ec03f82e17 daniel <daniel.lalasa@gmail.com> 1569221872 +0330	commit: working hours added
+4c939c1c60f06a9e417045cc507e18ec03f82e17 b51fa627207e5f2b7cb1ddcccc1456706c5ad75b daniel <daniel.lalasa@gmail.com> 1569227506 +0330	commit: partner profile link added to partner image in offer list page
+b51fa627207e5f2b7cb1ddcccc1456706c5ad75b 88a21e432b9ec1fac9be50b7b9728ce43315d647 daniel <daniel.lalasa@gmail.com> 1569232032 +0330	commit: data filling into amenities table from server in partner profile page done
+88a21e432b9ec1fac9be50b7b9728ce43315d647 5c652749e0016e475179ac12f30dab4ed66686b1 daniel <daniel.lalasa@gmail.com> 1569429326 +0330	commit: raychat script added to index.html section,offer list showing image and partner image link bug fixed
+5c652749e0016e475179ac12f30dab4ed66686b1 05466172d59f70d687e8c394b6b61aca8acb0a1f daniel <daniel.lalasa@gmail.com> 1569918169 +0330	commit: Project directory re-structured
+05466172d59f70d687e8c394b6b61aca8acb0a1f 18c3dee4fa0e8b168e27dd8bb703e3e82cb2d84f daniel <daniel.lalasa@gmail.com> 1569935383 +0330	commit: change lang functionality implemented
+18c3dee4fa0e8b168e27dd8bb703e3e82cb2d84f 676120aaf649be361f4a839d347807c88a8c7dcd daniel <daniel.lalasa@gmail.com> 1570001235 +0330	commit: translate functionality ,logic created
+676120aaf649be361f4a839d347807c88a8c7dcd 7e96909d1773705025d0439806a512068d70f3b2 daniel <daniel.lalasa@gmail.com> 1570015303 +0330	commit: offerlist bug fixed
+7e96909d1773705025d0439806a512068d70f3b2 fbdfb2cd79c355bc3f459d3c595446a6129374cd daniel <daniel.lalasa@gmail.com> 1570015840 +0330	commit: url params bug fixed
+fbdfb2cd79c355bc3f459d3c595446a6129374cd 6e3aa7bf1393f45289160c3ff6b1a32f21cdd049 daniel <daniel.lalasa@gmail.com> 1570316902 +0330	commit: static components translated
+6e3aa7bf1393f45289160c3ff6b1a32f21cdd049 de09651c632d71261217cbdaef7716a18431ee73 daniel <daniel.lalasa@gmail.com> 1570371106 +0330	commit: FAQ,contact Us, Session Room form translation added
+de09651c632d71261217cbdaef7716a18431ee73 a192d4db182e42c17c4b44d117b0fd79eea28a13 daniel <daniel.lalasa@gmail.com> 1570375414 +0330	commit: partnership translation added
+a192d4db182e42c17c4b44d117b0fd79eea28a13 c01e31393b24b71ef0e8315630e1564197405587 daniel <daniel.lalasa@gmail.com> 1570379549 +0330	commit: shared desk translated, login module translated
+c01e31393b24b71ef0e8315630e1564197405587 1032c195946e58714bab3eb764d9aa7dfc984835 daniel <daniel.lalasa@gmail.com> 1570451658 +0330	commit: login module translated,request list translated
+1032c195946e58714bab3eb764d9aa7dfc984835 2c96cda45cd55b623af075ba3404c1d4b1bcb119 daniel <daniel.lalasa@gmail.com> 1570460945 +0330	commit: offer list translated
+2c96cda45cd55b623af075ba3404c1d4b1bcb119 d8e58150f32c39a09e969efe3ce80baefd506932 daniel <daniel.lalasa@gmail.com> 1570553176 +0330	commit: partner profile translation done
+d8e58150f32c39a09e969efe3ce80baefd506932 6debd71385705495c20cc958aab99939094af842 daniel <daniel.lalasa@gmail.com> 1570612129 +0330	commit: nav menu text changed , logout forced to show just on myrequests page
+6debd71385705495c20cc958aab99939094af842 01457757a95c3cdf1ecf93dfc168baae5f256301 daniel <daniel.lalasa@gmail.com> 1570623524 +0330	commit: mobile nav menu bug fixed
+01457757a95c3cdf1ecf93dfc168baae5f256301 52d2d5f9540f8b9da9f5dd67dcbbd1e2b7a4ce67 daniel <daniel.lalasa@gmail.com> 1570634683 +0330	commit: 404 page implemented ,404 responsive have been done
+52d2d5f9540f8b9da9f5dd67dcbbd1e2b7a4ce67 22e31793efbccc74c6decc10e54d7b7aab7a4196 daniel <daniel.lalasa@gmail.com> 1570642880 +0330	commit: alternativeIndex added to SafeValue BUT it has some bugs...
+22e31793efbccc74c6decc10e54d7b7aab7a4196 64bf547d39d56b748c95da2b631c3256ff8f1d52 daniel <daniel.lalasa@gmail.com> 1570689038 +0330	commit: SafeValue bugs fixed
+64bf547d39d56b748c95da2b631c3256ff8f1d52 668741795fb718f801ff17ed2c6e57224cb3abcb daniel <daniel.lalasa@gmail.com> 1570692007 +0330	commit: product_id object added to ApiHandler Configuration component,Product ids attached to forms
+668741795fb718f801ff17ed2c6e57224cb3abcb f8b572d75a5a615403a3e673fd7da9b3584f600d daniel <daniel.lalasa@gmail.com> 1570713609 +0330	commit: simple map api key changed
+f8b572d75a5a615403a3e673fd7da9b3584f600d 8e6598d5d926db19da44704719b4d06799650c1f daniel <daniel.lalasa@gmail.com> 1570724760 +0330	commit: SafeValue bug fixed
+8e6598d5d926db19da44704719b4d06799650c1f 03f2565b5c52fa535700e6a077332fc96e0831a6 daniel <daniel.lalasa@gmail.com> 1570810972 +0330	commit: partner profile data binding fixed
+03f2565b5c52fa535700e6a077332fc96e0831a6 6b2dac7f70a3198cbac95db5284abfa1d5d7160f daniel <daniel.lalasa@gmail.com> 1570811443 +0330	commit: FlatForm reverted to commit 6e3aa7bf1393f45289160c3ff6b1a32f21cdd049
+6b2dac7f70a3198cbac95db5284abfa1d5d7160f 9e591111eda4c16cd804ae929ff4502a040759f5 daniel <daniel.lalasa@gmail.com> 1570815231 +0330	commit: partnerprofile bugs fixed
+9e591111eda4c16cd804ae929ff4502a040759f5 dad031c08ea1bf226f542dfa7619e7b8719c48ba daniel <daniel.lalasa@gmail.com> 1570950026 +0330	commit: partnership request buttons link connected
+dad031c08ea1bf226f542dfa7619e7b8719c48ba 4935b6713fbd3d7846c14d45c1a10964c0acbfb6 daniel <daniel.lalasa@gmail.com> 1570955323 +0330	commit: OfferList: stage button bug fixed
+4935b6713fbd3d7846c14d45c1a10964c0acbfb6 6c9e44f73c1c07cbe596214ea08cd96b48d0ca25 daniel <daniel.lalasa@gmail.com> 1570982953 +0330	commit: success page translated,Unknown city bug fixed,validations translation implemented
+6c9e44f73c1c07cbe596214ea08cd96b48d0ca25 003660b3773ff2bb05c10d8ff92d7c0ceac4d136 daniel <daniel.lalasa@gmail.com> 1570982967 +0330	commit: success page translated,Unknown city bug fixed,validations translation implemented
+003660b3773ff2bb05c10d8ff92d7c0ceac4d136 9f52453a91d165d54bbb2cbc2cd8557a3e0033ab daniel <daniel.lalasa@gmail.com> 1571042468 +0330	commit: PartnerProfile image slider's images source bug fixed
+9f52453a91d165d54bbb2cbc2cd8557a3e0033ab ac81b25588cc721d12a1140c16b3ce55a8b86f35 daniel <daniel.lalasa@gmail.com> 1571044408 +0330	commit: Static map replaced with google map
+ac81b25588cc721d12a1140c16b3ce55a8b86f35 306f4a54cb8aff133fba1a71c218f5d8bb83f256 daniel <daniel.lalasa@gmail.com> 1571046418 +0330	commit: Static locatio google map link connected
+306f4a54cb8aff133fba1a71c218f5d8bb83f256 e509f7f583b358dbb8406483079405d551808036 daniel <daniel.lalasa@gmail.com> 1571047714 +0330	commit: location direction property changed
+e509f7f583b358dbb8406483079405d551808036 5036e35cabcb3d27b0f408001edc5f2acb028e60 daniel <daniel.lalasa@gmail.com> 1571047930 +0330	commit: location direction property changed
+5036e35cabcb3d27b0f408001edc5f2acb028e60 1bf03a3af76eaa8397b3e0182a91a278489ea3c1 daniel <daniel.lalasa@gmail.com> 1571049064 +0330	commit: react-device-detect added to npm-modules, PartnerProfile static map link devided into mobile and desktop mode
+1bf03a3af76eaa8397b3e0182a91a278489ea3c1 450a2d4cecc38f90a59518a8f9d124abd7d2d64d daniel <daniel.lalasa@gmail.com> 1571060772 +0330	commit: addMySpace description field added, addMySpace partnership_working_fields added, validator translate bug fixed

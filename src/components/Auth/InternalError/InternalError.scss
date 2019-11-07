@@ -1,0 +1,155 @@
+#InternalError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 301px);
+  padding: 5rem 1rem 3rem;
+  & .title {
+    font-size: 12em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    & .text {
+      display: flex;
+      margin-left: -8rem;
+      align-items: baseline;
+    }
+    & span {
+      line-height: 1;
+      color: grey;
+      font-weight: bold;
+      letter-spacing: 5rem;
+
+      & svg {
+        margin-left: -22.5rem;
+        font-size: 8rem;
+        color: rgb(200, 200, 200);
+      }
+    }
+  }
+  & .body {
+    padding: 1rem 4rem;
+  }
+  & button {
+    border: 2px solid dimgrey;
+    color: dimgrey;
+    border-radius: 8px;
+    background-color: whitesmoke;
+    font-size: 20px;
+    transition: all 0.3 ease-in;
+    -webkit-transition: all 0.3 ease-in;
+    -moz-transition: all 0.3 ease-in;
+    padding: 7px 30px;
+    font-weight: bold;
+    margin: 10px;
+    &:hover {
+      background-color: grey;
+      color: whitesmoke;
+    }
+  }
+  & .redirect-links {
+    direction: ltr;
+  }
+}
+
+@media (max-width: 768px) {
+  #NotFound {
+    min-height: calc(100vh - 89px);
+    & .title {
+      font-size: 9em;
+      & .text {
+        margin-left: -8rem;
+      }
+      & span {
+        letter-spacing: 4rem;
+
+        & svg {
+          margin-left: -17.5rem;
+          font-size: 6rem;
+        }
+      }
+    }
+    & .body {
+      padding: 1rem 4rem;
+      font-size: 1.2rem;
+    }
+    & button {
+      font-size: 17px;
+
+      padding: 5px 25px;
+      margin: 10px;
+    }
+  }
+}
+@media (max-width: 576px) {
+  #NotFound {
+    padding: 5rem 1rem 3rem;
+    & .title {
+      font-size: 9.5rem;
+
+      & .text {
+        margin-left: -6rem;
+      }
+      & span {
+        letter-spacing: 4rem;
+
+        & svg {
+          margin-left: -17.5rem;
+          font-size: 6rem;
+        }
+      }
+    }
+    & .body {
+      padding: 1rem;
+      font-size: 1.2rem;
+    }
+    & button {
+      font-size: 17px;
+
+      padding: 5px 25px;
+      margin: 10px;
+    }
+  }
+}
+@media (max-width: 375px) {
+  #InternalError {
+    padding: 5rem 1rem 3rem;
+    & .title {
+      font-size: 6.5rem;
+
+      & .text {
+        margin-left: -3rem;
+      }
+      & span {
+        letter-spacing: 2rem;
+
+        & svg {
+          margin-left: -10.5rem;
+          font-size: 4rem;
+        }
+      }
+    }
+    & .body {
+      padding: 1rem;
+      font-size: 1.2rem;
+    }
+    & button {
+      font-size: 17px;
+
+      padding: 5px 25px;
+      margin: 10px;
+    }
+  }
+}
+._rtl {
+  &#InternalError {
+    & .body {
+      direction: rtl;
+    }
+    & .redirect-links {
+      direction: rtl;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "step1": {
+      "choose_a_product": "یک محصول را انتخاب کنید :",
+      "next_step_button": "مرحله بعد"
+    },
+    "step2": {
+      "submit_offer_button": "ثبت پیشنهاد"
+    },
+    "fields": {
+      "name": {
+        "_title": "نام پیشنهاد",
+        "placeholder": "مثال: پیشنهاد شرکت تست"
+      },
+      "description": {
+        "_title": "توضیحات",
+        "placeholder": "اگر توضیحات خاصی برای مشتری خود دارید اینجا بنویسید"
+      },
+      "hourlyprice": {
+        "_title": "قیمت ساعتی(تومان)"
+      },
+      "dailyprice": {
+        "_title": "قیمت روزانه(تومان)"
+      },
+      "weeklyprice": {
+        "_title": "قیمت هفتگی(تومان)"
+      },
+      "monthlyprice": {
+        "_title": "قیمت ماهانه(تومان)"
+      },
+      "startdate": { "_title": "زمان شروع", "placeholder": "YYYY-MM-DD" }
+    },
+    "notification": {
+      "issue_offer": {
+        "success": "پیشنهاد شما با موفقیت ارسال شد.",
+        "failed": "متاسفانه هنگام ارسال پیشنهاد مشکلی رخ داده لطفا بعدا امتحان کنید."
+      }
+    }
+  }
+}

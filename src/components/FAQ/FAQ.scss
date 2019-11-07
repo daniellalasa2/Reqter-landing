@@ -1,0 +1,99 @@
+//-----------------------------------------//
+//               FAQ styles                //
+//-----------------------------------------//
+
+#FAQ-accordion {
+  min-height: calc(100vh - 297px);
+  background-color: white;
+  background-color: whitesmoke !important;
+  direction: rtl;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+  .questions-wrapper {
+    margin-top: 100px;
+    width: auto;
+  }
+  .card {
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+    width: 768px;
+    margin-top: 5px;
+    border: none;
+    text-align: right;
+    background-color: white;
+    .card-header {
+      background-color: white;
+      line-height: 2.7;
+      font-size: 16px;
+      font-weight: bold;
+      border-bottom: none;
+      cursor: pointer;
+      transition: color 0.2s ease-in;
+      -moz-transition: color 0.2s ease-in;
+      -webkit-transition: color 0.2s ease-in;
+      .fa-minus {
+        display: none;
+      }
+      svg {
+        margin: 7px 5px 0 5px;
+      }
+      &:hover {
+        color: #6d8ae0;
+      }
+      &.activeHeader {
+        color: #6d8ae0;
+        .fa-plus {
+          display: none;
+        }
+        .fa-minus {
+          display: inline-block;
+        }
+      }
+    }
+    .card-body {
+      background-color: white;
+    }
+    .show,
+    .collapsing {
+      .card & {
+        .card-header {
+          color: #6d8ae0;
+        }
+      }
+      border-top: 1px solid #6d8ae0;
+    }
+  }
+}
+
+//-----------------------------------------//
+//               Responsive                //
+//-----------------------------------------//
+//Small devices (portrait phone )
+@media (max-width: 768px) {
+  #FAQ-accordion {
+    min-height: calc(100vh - 89px);
+
+    .questions-wrapper {
+      width: 100% !important;
+      padding: 12px !important;
+    }
+    .card {
+      width: 100% !important;
+    }
+  }
+}
+
+._ltr {
+  & .card {
+    & .card-header {
+      text-align: left;
+      direction: ltr;
+    }
+    & .card-body {
+      direction: ltr;
+      text-align: left;
+    }
+  }
+}
