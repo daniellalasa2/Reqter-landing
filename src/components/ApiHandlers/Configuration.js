@@ -7,13 +7,13 @@ import {
 import axios from "axios";
 var Configuration = {
   BASE_URL_CASEER:
-    process.env.REACT_APP_GATEWAY || "https://app-ipanel.herokuapp.com/",
+    process.env.REACT_APP_GATEWAY || "https://reqter-adminapi.herokuapp.com/",
   BASE_URL_REQTER:
     process.env.REACT_APP_BASE_URL_REQTER ||
-    "https://app-rpanel.herokuapp.com/",
+    "https://reqter-requester.herokuapp.com/",
   BASE_URL_UPLOAD:
     process.env.REACT_APP_BASE_URL_UPLOAD ||
-    "https://app-spanel.herokuapp.com/",
+    "https://reqter-assets.herokuapp.com/",
   CLIENT_ID:
     process.env.REACT_APP_CLIENT_ID || "1d42c55e-0f44-4613-adba-a5bbbca878e1",
   SPACE_ID: process.env.REACT_APP_SPACE_ID || "5cf3883dcce4de00174d48cf",

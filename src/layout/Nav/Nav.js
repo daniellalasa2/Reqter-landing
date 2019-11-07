@@ -229,7 +229,6 @@ class Navigation extends Component {
                   </NavItem>
                 </React.Fragment>
               )}
-
               {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
                 <NavItem>
                   <Link
@@ -247,18 +246,20 @@ class Navigation extends Component {
                   </Link>
                 </NavItem>
               )}
-              <NavItem>
-                <Link to={`/${lang}/partnership`} className="nav-link">
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    size="1x"
-                    pull={direction === "ltr" ? "left" : "right"}
-                    color="black"
-                    className="icon-myrequests"
-                  />
-                  {locale.buisness_partnership}
-                </Link>
-              </NavItem>
+              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
+                <NavItem>
+                  <Link to={`/${lang}/partnership`} className="nav-link">
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      size="1x"
+                      pull={direction === "ltr" ? "left" : "right"}
+                      color="black"
+                      className="icon-myrequests"
+                    />
+                    {locale.buisness_partnership}
+                  </Link>
+                </NavItem>
+              )}
               {/* <Dropdown
                 nav
                 isOpen={this.state.dropdownOpen.normal}
@@ -288,7 +289,7 @@ class Navigation extends Component {
                   {locale.faq}
                 </Link>
               </NavItem> */}
-
+              {/* 
               <NavItem>
                 <Link className="nav-link" to={`/${lang}`}>
                   <FontAwesomeIcon
@@ -298,44 +299,49 @@ class Navigation extends Component {
                   />
                   {locale.home}
                 </Link>
-              </NavItem>
+              </NavItem> */}
 
-              <NavItem>
-                {ROLE === "user" ? (
-                  <button
-                    className="nav-link my-requests-link"
-                    onClick={() =>
-                      this.props.history.push(`/${lang}/user/myrequests`)
-                    }
-                  >
-                    <FontAwesomeIcon
-                      icon={faListAlt}
-                      pull={direction === "ltr" ? "left" : "right"}
-                      color="black"
-                      className="icon-myrequests"
-                    />
-                    {locale.myrequests}
-                  </button>
-                ) : (
-                  <button className="nav-link login" onClick={this.toggleLogin}>
-                    <FontAwesomeIcon
-                      icon={faLockOpen}
-                      pull={direction === "ltr" ? "left" : "right"}
-                      size="sm"
-                      color="black"
-                      className="icon-lock-open"
-                    />
-                    <FontAwesomeIcon
-                      icon={faLock}
-                      pull={direction === "ltr" ? "left" : "right"}
-                      size="sm"
-                      color="black"
-                      className="icon-lock-close"
-                    />
-                    {locale.login}
-                  </button>
-                )}
-              </NavItem>
+              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
+                <NavItem>
+                  {ROLE === "user" ? (
+                    <button
+                      className="nav-link my-requests-link"
+                      onClick={() =>
+                        this.props.history.push(`/${lang}/user/myrequests`)
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={faListAlt}
+                        pull={direction === "ltr" ? "left" : "right"}
+                        color="black"
+                        className="icon-myrequests"
+                      />
+                      {locale.myrequests}
+                    </button>
+                  ) : (
+                    <button
+                      className="nav-link login"
+                      onClick={this.toggleLogin}
+                    >
+                      <FontAwesomeIcon
+                        icon={faLockOpen}
+                        pull={direction === "ltr" ? "left" : "right"}
+                        size="sm"
+                        color="black"
+                        className="icon-lock-open"
+                      />
+                      <FontAwesomeIcon
+                        icon={faLock}
+                        pull={direction === "ltr" ? "left" : "right"}
+                        size="sm"
+                        color="black"
+                        className="icon-lock-close"
+                      />
+                      {locale.login}
+                    </button>
+                  )}
+                </NavItem>
+              )}
               <Dropdown
                 nav
                 isOpen={this.state.dropdownOpen.lang}
@@ -382,27 +388,29 @@ class Navigation extends Component {
               />
             </div>
             <ul className="items-container">
-              <li>
+              {/* <li>
                 <span onClick={() => this.props.history.push("/" + lang)}>
                   {locale.home}
                 </span>
-              </li>
-              <li>
-                {ROLE === "user" ? (
-                  <span
-                    className="nav-link my-requests-link"
-                    onClick={() =>
-                      this.props.history.push(`/${lang}/user/myrequests`)
-                    }
-                  >
-                    {locale.myrequests}
-                  </span>
-                ) : (
-                  <span className="nav-link login" onClick={this.toggleLogin}>
-                    {locale.login}
-                  </span>
-                )}
-              </li>
+              </li> */}
+              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
+                <li>
+                  {ROLE === "user" ? (
+                    <span
+                      className="nav-link my-requests-link"
+                      onClick={() =>
+                        this.props.history.push(`/${lang}/user/myrequests`)
+                      }
+                    >
+                      {locale.myrequests}
+                    </span>
+                  ) : (
+                    <span className="nav-link login" onClick={this.toggleLogin}>
+                      {locale.login}
+                    </span>
+                  )}
+                </li>
+              )}
               <li>
                 <span
                   onClick={() => this.dropDownToggler("langMobile")}
@@ -447,31 +455,27 @@ class Navigation extends Component {
                   </ul>
                 </Collapse>
               </li>
-              <li>
-                <Link className="nav-link" to={`/${lang}/partnership`}>
-                  {locale.buisness_partnership}
-                </Link>
-              </li>
+
               {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
-                <li>
-                  <Link
-                    className="nav-link"
-                    to={`/${lang}/partnerpanel/${
-                      ROLE !== "partner" ? "login" : "panel"
-                    }`}
-                  >
-                    {locale.partner_panel}
-                  </Link>
-                </li>
+                <React.Fragment>
+                  <li>
+                    <Link className="nav-link" to={`/${lang}/partnership`}>
+                      {locale.buisness_partnership}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="nav-link"
+                      to={`/${lang}/partnerpanel/${
+                        ROLE !== "partner" ? "login" : "panel"
+                      }`}
+                    >
+                      {locale.partner_panel}
+                    </Link>
+                  </li>
+                </React.Fragment>
               )}
-              <li>
-                <Link to={`/${lang}/contactus`}>{locale.contact_us}</Link>
-              </li>
-              <li>
-                <Link className="nav-link" to={`/${lang}/faq`}>
-                  {locale.faq}
-                </Link>
-              </li>
+
               {this.props.match.path.startsWith(
                 "/:lang?/partnerpanel/panel"
               ) && (
@@ -504,6 +508,16 @@ class Navigation extends Component {
                   </li>
                 </React.Fragment>
               )}
+              <li>
+                <Link className="nav-link" to={`/${lang}/contactus`}>
+                  {locale.contact_us}
+                </Link>
+              </li>
+              <li>
+                <Link className="nav-link" to={`/${lang}/faq`}>
+                  {locale.faq}
+                </Link>
+              </li>
               {ROLE !== "guest" && (
                 <li>
                   <Link

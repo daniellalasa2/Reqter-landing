@@ -19,6 +19,7 @@
 .zip
 .rar
 .tar
+/.git-old
 
 npm-debug.log*
 yarn-debug.log*
