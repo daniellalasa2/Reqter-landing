@@ -203,11 +203,13 @@ export default class PartnerPanel extends React.Component {
       );
     }
   };
+
   //------------------------- Display requests table -----------------------------//
   // generate partner panel requests table based on active request filter tab
   displayRequestsTable = (requestType, requestsObj) => {
     const { locale } = this.translate;
     let generatedElements = [];
+    requestsObj = requestsObj.filter(request => request.status === "published");
     requestType = requestsObj.length > 0 ? requestType : null;
     const _tableWrapperDefault = children => (
       <Table hover responsive bordered className="requests-table">
@@ -254,348 +256,386 @@ export default class PartnerPanel extends React.Component {
         <tbody>{children}</tbody>
       </Table>
     );
+    const _extractProductName = (productId, imageIncluded = true) => {
+      return this.state.productsType.map(
+        (product, idx) =>
+          product._id === productId && (
+            <span key={idx}>
+              {imageIncluded &&
+                SafeValue(
+                  product,
+                  `fields.thumbnail.${this.lang}`,
+                  "string",
+                  NoImageAlt,
+                  "fields.thumbnail.0"
+                ) && (
+                  <img
+                    src={SafeValue(
+                      product,
+                      `fields.thumbnail.${this.lang}`,
+                      "string",
+                      NoImageAlt,
+                      "fields.thumbnail.0"
+                    )}
+                    alt="Product"
+                    style={{ width: "60px", height: "48px" }}
+                  />
+                ) &&
+                " "}
+              <strong>
+                {SafeValue(
+                  product,
+                  `fields.name.${this.lang}`,
+                  "string",
+                  " - ",
+                  "fields.name"
+                )}
+              </strong>
+            </span>
+          )
+      );
+    };
     switch (requestType) {
       case "newrequests":
-        generatedElements = requestsObj.map(
-          (request, idx) =>
-            request.status === "published" && (
-              <tr key={idx}>
-                <td>{PersianNumber(idx + 1, this.lang)}</td>
-                <td>
-                  {SafeValue(
+        generatedElements = requestsObj.map((request, idx) => (
+          <tr key={idx}>
+            <td>{PersianNumber(idx + 1, this.lang)}</td>
+            <td>
+              {SafeValue(
+                request,
+                "fields.requestid.fields.product",
+                "string",
+                false
+              ) &&
+                _extractProductName(
+                  SafeValue(
                     request,
                     "fields.requestid.fields.product",
                     "string",
-                    false
-                  ) &&
-                    this.state.productsType.map(
-                      (product, idx) =>
-                        product._id ===
-                          request.fields.requestid.fields.product && (
-                          <span key={idx}>
-                            <img
-                              src={SafeValue(
-                                product,
-                                `fields.thumbnail.${this.lang}`,
-                                "string",
-                                NoImageAlt,
-                                "fields.thumbnail.0"
-                              )}
-                              alt="Product"
-                              style={{ width: "60px", height: "48px" }}
-                            />{" "}
-                            <strong>
-                              {SafeValue(
-                                product,
-                                `fields.name.${this.lang}`,
-                                "string",
-                                " - ",
-                                "fields.name"
-                              )}
-                            </strong>
-                          </span>
-                        )
-                    )}
-                </td>
-                <td>
-                  {PersianNumber(
-                    SafeValue(
-                      request,
-                      "fields.requestid.fields.seats",
-                      "string",
-                      " - "
-                    ),
-                    this.lang
-                  )}
-                </td>
-                <td>
-                  {PersianNumber(
-                    DateFormat(
-                      SafeValue(request, "sys.issueDate", "string", 0)
-                    ).timeWithHour(this.lang, " - "),
-                    this.lang
-                  )}
-                </td>
-                <td>
-                  <Button
-                    size="sm"
-                    color="success"
-                    onClick={() => this.openRequest(request._id, request, true)}
-                  >
-                    {locale.requests.open_request_button}
-                  </Button>{" "}
-                  <Button
-                    size="sm"
-                    color="danger"
-                    onClick={() =>
-                      this.toggleModals("warning", {
-                        requestId: request._id,
-                        goingToUpdateRequestsListType: this.state
-                          .requestsOrOffers.activeFilter,
-                        callback: () => {
-                          this.toggleModals("warning", {});
-                        }
-                      })
+                    0
+                  )
+                )}
+            </td>
+            <td>
+              {PersianNumber(
+                SafeValue(
+                  request,
+                  "fields.requestid.fields.seats",
+                  "string",
+                  " - "
+                ),
+                this.lang
+              )}
+            </td>
+            <td>
+              {PersianNumber(
+                DateFormat(
+                  SafeValue(request, "sys.issueDate", "string", 0)
+                ).timeWithHour(this.lang, " - "),
+                this.lang
+              )}
+            </td>
+            <td>
+              <Button
+                size="sm"
+                color="success"
+                onClick={() => this.openRequest(request._id, request, true)}
+              >
+                {locale.requests.open_request_button}
+              </Button>{" "}
+              <Button
+                size="sm"
+                color="danger"
+                onClick={() =>
+                  this.toggleModals("warning", {
+                    requestId: request._id,
+                    goingToUpdateRequestsListType: this.state.requestsOrOffers
+                      .activeFilter,
+                    callback: () => {
+                      this.toggleModals("warning", {});
                     }
-                  >
-                    {locale.requests.reject_request_button}
-                  </Button>
-                </td>
-              </tr>
-            )
-        );
+                  })
+                }
+              >
+                {locale.requests.reject_request_button}
+              </Button>
+            </td>
+          </tr>
+        ));
         return _tableWrapperDefault(generatedElements);
       case "openrequests":
-        generatedElements = requestsObj.map(
-          (request, idx) =>
-            request.status === "published" && (
-              <tr key={idx}>
-                <td>{PersianNumber(idx + 1, this.lang)}</td>
-                <td>
-                  {SafeValue(
+        generatedElements = requestsObj.map((request, idx) => (
+          <tr key={idx}>
+            <td>{PersianNumber(idx + 1, this.lang)}</td>
+            <td>
+              {SafeValue(
+                request,
+                "fields.requestid.fields.product",
+                "string",
+                false
+              ) &&
+                _extractProductName(
+                  SafeValue(
                     request,
                     "fields.requestid.fields.product",
                     "string",
-                    false
-                  ) &&
-                    this.state.productsType.map(
-                      (product, idx) =>
-                        product._id ===
-                          request.fields.requestid.fields.product && (
-                          <span key={idx}>
-                            <img
-                              src={SafeValue(
-                                product,
-                                `fields.thumbnail.${this.lang}`,
-                                "string",
-                                NoImageAlt,
-                                "fields.thumbnail.0"
-                              )}
-                              alt="Product"
-                              style={{ width: "60px", height: "48px" }}
-                            />{" "}
-                            <strong>
-                              {SafeValue(
-                                product,
-                                `fields.name.${this.lang}`,
-                                "string",
-                                " - ",
-                                "fields.name"
-                              )}
-                            </strong>
-                          </span>
-                        )
-                    )}
-                </td>
-                <td>
-                  {SafeValue(
+                    0
+                  )
+                )}
+            </td>
+            <td>
+              {SafeValue(
+                request,
+                "fields.requestid.fields.fullname",
+                "string",
+                " - "
+              )}
+              <br />
+              <span style={{ direction: "ltr", display: "inline-block" }}>
+                {PersianNumber(
+                  SafeValue(
                     request,
-                    "fields.requestid.fields.fullname",
+                    "fields.requestid.fields.phonenumber",
                     "string",
                     " - "
-                  )}
-                  <br />
-                  <span style={{ direction: "ltr", display: "inline-block" }}>
-                    {PersianNumber(
-                      SafeValue(
-                        request,
-                        "fields.requestid.fields.phonenumber",
-                        "string",
-                        " - "
-                      ),
-                      this.lang
+                  ),
+                  this.lang
+                )}
+              </span>
+              <br />
+              {SafeValue(
+                request,
+                "fields.requestid.fields.email",
+                "string",
+                " - "
+              )}
+            </td>
+            <td>
+              {PersianNumber(
+                SafeValue(
+                  request,
+                  "fields.requestid.fields.seats",
+                  "string",
+                  " - "
+                ),
+                this.lang
+              )}
+            </td>
+            <td>
+              {PersianNumber(
+                DateFormat(
+                  SafeValue(request, "sys.issueDate", "string", 0)
+                ).timeWithHour(this.lang, " - "),
+                this.lang
+              )}
+            </td>
+            <td>
+              <Button
+                size="sm"
+                color="success"
+                style={{ fontWeight: "bold" }}
+                onClick={() =>
+                  this.toggleModals("issueOffer", {
+                    name: "",
+                    country: SafeValue(
+                      this.state.partnerData,
+                      "fields.country._id",
+                      "string",
+                      undefined
+                    ),
+                    city: SafeValue(
+                      this.state.partnerData,
+                      "fields.city._id",
+                      "string",
+                      undefined
+                    ),
+                    hourlyprice: "",
+                    dailyprice: "",
+                    weeklyprice: "",
+                    monthlyprice: "",
+                    description: null,
+                    startdate: "",
+                    partnerid: this.state.partnerId,
+                    requestid: SafeValue(
+                      request,
+                      "fields.requestid._id",
+                      "string",
+                      undefined
+                    ),
+                    stage: "5d7b968418a6400017ee1512",
+                    partnerProducts: this.state.partnerProducts
+                  })
+                }
+              >
+                {locale.requests.issue_offer}
+              </Button>{" "}
+              <Button
+                size="sm"
+                color="secondary"
+                onClick={() => this.openRequest(request._id, request, false)}
+              >
+                {locale.requests.display_request}
+              </Button>{" "}
+              <Button
+                size="sm"
+                color="danger"
+                onClick={() =>
+                  this.toggleModals("warning", {
+                    requestId: request._id,
+                    goingToUpdateRequestsListType: this.state.requestsOrOffers
+                      .activeFilter,
+                    callback: () => {
+                      this.toggleModals("warning", {});
+                    }
+                  })
+                }
+              >
+                {locale.requests.reject_request_button}
+              </Button>
+            </td>
+          </tr>
+        ));
+        return _tableWrapperOpenRequests(generatedElements);
+      case "alloffers":
+        generatedElements = requestsObj.map((request, idx) => (
+          <tr key={idx}>
+            {/* Row number */}
+            <td>{PersianNumber(idx + 1, this.lang)}</td>
+            {/* Offer name */}
+            <td>{SafeValue(request, "fields.name", "string", false)}</td>
+            {/* Request Details */}
+            <td>
+              {/* <strong>
+                    <small>
+                      {_extractProductName(
+                        SafeValue(
+                          request,
+                          "fields.requestid.fields.product",
+                          "string",
+                          0
+                        )
+                      )}
+                    </small>
+                  </strong>
+                  <br /> */}
+              <span>
+                <small>
+                  <strong>
+                    {SafeValue(
+                      request,
+                      `fields.requestid.fields.fullname.${this.lang}`,
+                      "string",
+                      " - ",
+                      "fields.requestid.fields.fullname"
                     )}
-                  </span>
-                  <br />
+                  </strong>
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {SafeValue(
+                    request,
+                    `fields.requestid.fields.name.${this.lang}`,
+                    "string",
+                    " - ",
+                    "fields.requestid.fields.name"
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
                   {SafeValue(
                     request,
                     "fields.requestid.fields.email",
                     "string",
                     " - "
                   )}
-                </td>
-                <td>
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
                   {PersianNumber(
                     SafeValue(
                       request,
-                      "fields.requestid.fields.seats",
+                      "fields.requestid.fields.phonenumber",
                       "string",
                       " - "
                     ),
                     this.lang
                   )}
-                </td>
-                <td>
-                  {PersianNumber(
-                    DateFormat(
-                      SafeValue(request, "sys.issueDate", "string", 0)
-                    ).timeWithHour(this.lang, " - "),
-                    this.lang
-                  )}
-                </td>
-                <td>
-                  <Button
-                    size="sm"
-                    color="success"
-                    style={{ fontWeight: "bold" }}
-                    onClick={() =>
-                      this.toggleModals("issueOffer", {
-                        name: "",
-                        country: SafeValue(
-                          this.state.partnerData,
-                          "fields.country",
-                          "string",
-                          "0"
-                        ),
-                        city: SafeValue(
-                          this.state.partnerData,
-                          "fields.city",
-                          "string",
-                          "0"
-                        ),
-                        hourlyprice: "",
-                        dailyprice: "",
-                        weeklyprice: "",
-                        monthlyprice: "",
-                        description: null,
-                        startdate: "",
-                        partnerid: this.state.partnerId,
-                        requestid: request._id,
-                        stage: "5d7b968418a6400017ee1512",
-                        partnerProducts: this.state.partnerProducts
-                      })
-                    }
-                  >
-                    {locale.requests.issue_offer}
-                  </Button>{" "}
-                  <Button
-                    size="sm"
-                    color="secondary"
-                    onClick={() =>
-                      this.openRequest(request._id, request, false)
-                    }
-                  >
-                    {locale.requests.display_request}
-                  </Button>{" "}
-                  <Button
-                    size="sm"
-                    color="danger"
-                    onClick={() =>
-                      this.toggleModals("warning", {
-                        requestId: request._id,
-                        goingToUpdateRequestsListType: this.state
-                          .requestsOrOffers.activeFilter,
-                        callback: () => {
-                          this.toggleModals("warning", {});
-                        }
-                      })
-                    }
-                  >
-                    {locale.requests.reject_request_button}
-                  </Button>
-                </td>
-              </tr>
-            )
-        );
-        return _tableWrapperOpenRequests(generatedElements);
-      case "alloffers":
-        generatedElements = requestsObj.map(
-          (request, idx) =>
-            request.status === "published" && (
-              <tr key={idx}>
-                {/* Row number */}
-                <td>{PersianNumber(idx + 1, this.lang)}</td>
-                {/* Offer name */}
-                <td>{SafeValue(request, "fields.name", "string", false)}</td>
-                {/* Request Details */}
-                <td>
-                  <span>
-                    {SafeValue(
-                      request,
-                      "fields.requestid.fields.fullname",
-                      "string",
-                      " - "
-                    )}
-                  </span>
-                  <br />
-                  <span style={{ direction: "ltr", display: "inline-block" }}>
-                    {PersianNumber(
-                      SafeValue(
-                        request,
-                        "fields.requestid.fields.phonenumber",
-                        "string",
-                        " - "
-                      ),
-                      this.lang
-                    )}
-                  </span>
-                  <br />
-                  <span>
-                    {SafeValue(
-                      request,
-                      "fields.requestid.fields.email",
-                      "string",
-                      " - "
-                    )}
-                  </span>
-                </td>
-                {/* Offer datils */}
-                <td>
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
                   {SafeValue(
                     request,
-                    "fields.requestid.fields.seats",
+                    "fields.requestid.fields.email",
                     "string",
                     " - "
                   )}
-                  <small>{locale.table.hourlyprice}</small>
-                  {SafeValue(
-                    request,
-                    "fields.requestid.fields.seats",
-                    "string",
-                    false
-                  ) && <small>{locale.table.hourlyprice}</small>}
-                </td>
-                {/* Status */}
-                <td>
-                  {SafeValue(
-                    request,
-                    `fields.stage.fields.name.${this.lang}`,
-                    "string",
-                    locale.table.not_specified_stage,
-                    "fields.stage.fields.name"
-                  )}
-                </td>
-                {/* Date */}
-                <td>
-                  {PersianNumber(
-                    DateFormat(
-                      SafeValue(request, "sys.issueDate", "string", 0)
-                    ).timeWithHour(this.lang, " - "),
-                    this.lang
-                  )}
-                </td>
-                {/* Operation */}
-                <td>
-                  <Button
-                    size="sm"
-                    color="danger"
-                    onClick={() =>
-                      this.toggleModals("warning", {
-                        requestId: request._id,
-                        goingToUpdateRequestsListType: this.state
-                          .requestsOrOffers.activeFilter,
-                        callback: () => {
-                          this.toggleModals("warning", {});
-                        }
-                      })
+                </small>
+              </span>
+            </td>
+            {/* Offer datils */}
+            <td>
+              {SafeValue(
+                request,
+                "fields.requestid.fields.seats",
+                "string",
+                " - "
+              )}
+              <small>{locale.table.hourlyprice}</small>
+              {SafeValue(
+                request,
+                "fields.requestid.fields.seats",
+                "string",
+                false
+              ) && <small>{locale.table.hourlyprice}</small>}
+            </td>
+            {/* Status */}
+            <td>
+              {SafeValue(
+                request,
+                `fields.stage.fields.name.${this.lang}`,
+                "string",
+                locale.table.not_specified_stage,
+                "fields.stage.fields.name"
+              )}
+            </td>
+            {/* Date */}
+            <td>
+              {PersianNumber(
+                DateFormat(
+                  SafeValue(request, "sys.issueDate", "string", 0)
+                ).timeWithHour(this.lang, " - "),
+                this.lang
+              )}
+            </td>
+            {/* Operation */}
+            <td>
+              <Button
+                size="sm"
+                color="danger"
+                onClick={() =>
+                  this.toggleModals("warning", {
+                    requestId: request._id,
+                    goingToUpdateRequestsListType: this.state.requestsOrOffers
+                      .activeFilter,
+                    callback: () => {
+                      this.toggleModals("warning", {});
                     }
-                  >
-                    {locale.table.cancel_offer}
-                  </Button>
-                </td>
-              </tr>
-            )
-        );
+                  })
+                }
+              >
+                {locale.table.cancel_offer}
+              </Button>
+            </td>
+          </tr>
+        ));
         return _tableWrapperAllOffers(generatedElements);
       default:
         return (

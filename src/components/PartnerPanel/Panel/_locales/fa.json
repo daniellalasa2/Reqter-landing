@@ -66,7 +66,8 @@
       "dailyprice": "قیمت روزانه(تومان)",
       "weeklyprice": "قیمت هفتگی(تومان)",
       "monthlyprice": "قیمت ماهانه(تومان)",
-      "startdate": "زمان شروع"
+      "startdate": "زمان شروع",
+      "more_details": "اطلاعات بیشتر"
     },
     "card_header": {
       "new_requests": "درخواستهای جدید",

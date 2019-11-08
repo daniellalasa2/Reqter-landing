@@ -128,7 +128,8 @@ export default class MyRequests extends Component {
                   item,
                   `fields.partnerid.fields.logo.0.en`,
                   "string",
-                  null
+                  null,
+                  "fields.partnerid.fields.logo.0"
                 ) && (
                   <div className="partner-img">
                     <a
@@ -146,7 +147,8 @@ export default class MyRequests extends Component {
                           item,
                           "fields.partnerid.fields.logo.0.en",
                           "string",
-                          ""
+                          "",
+                          "fields.partnerid.fields.logo.0"
                         )}
                         alt={SafeValue(
                           item,
