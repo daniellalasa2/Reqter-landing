@@ -169,7 +169,7 @@ class Navigation extends Component {
             />
             <Nav className="nav-links-container">
               {ROLE !== "guest" &&
-                (this.props.match.path === "/:lang?/user/myrequests" ||
+                (this.props.match.path.startsWith("/:lang?/user/") ||
                   this.props.match.path === "/:lang?/partnerpanel/panel") && (
                   <NavItem>
                     <Link
@@ -301,47 +301,48 @@ class Navigation extends Component {
                 </Link>
               </NavItem> */}
 
-              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
-                <NavItem>
-                  {ROLE === "user" ? (
-                    <button
-                      className="nav-link my-requests-link"
-                      onClick={() =>
-                        this.props.history.push(`/${lang}/user/myrequests`)
-                      }
-                    >
-                      <FontAwesomeIcon
-                        icon={faListAlt}
-                        pull={direction === "ltr" ? "left" : "right"}
-                        color="black"
-                        className="icon-myrequests"
-                      />
-                      {locale.myrequests}
-                    </button>
-                  ) : (
-                    <button
-                      className="nav-link login"
-                      onClick={this.toggleLogin}
-                    >
-                      <FontAwesomeIcon
-                        icon={faLockOpen}
-                        pull={direction === "ltr" ? "left" : "right"}
-                        size="sm"
-                        color="black"
-                        className="icon-lock-open"
-                      />
-                      <FontAwesomeIcon
-                        icon={faLock}
-                        pull={direction === "ltr" ? "left" : "right"}
-                        size="sm"
-                        color="black"
-                        className="icon-lock-close"
-                      />
-                      {locale.login}
-                    </button>
-                  )}
-                </NavItem>
-              )}
+              {!this.props.match.path.startsWith("/:lang?/partnerpanel/") &&
+                !this.props.match.path.startsWith("/:lang?/user/") && (
+                  <NavItem>
+                    {ROLE === "user" ? (
+                      <button
+                        className="nav-link my-requests-link"
+                        onClick={() =>
+                          this.props.history.push(`/${lang}/user/myrequests`)
+                        }
+                      >
+                        <FontAwesomeIcon
+                          icon={faListAlt}
+                          pull={direction === "ltr" ? "left" : "right"}
+                          color="black"
+                          className="icon-myrequests"
+                        />
+                        {locale.myrequests}
+                      </button>
+                    ) : (
+                      <button
+                        className="nav-link login"
+                        onClick={this.toggleLogin}
+                      >
+                        <FontAwesomeIcon
+                          icon={faLockOpen}
+                          pull={direction === "ltr" ? "left" : "right"}
+                          size="sm"
+                          color="black"
+                          className="icon-lock-open"
+                        />
+                        <FontAwesomeIcon
+                          icon={faLock}
+                          pull={direction === "ltr" ? "left" : "right"}
+                          size="sm"
+                          color="black"
+                          className="icon-lock-close"
+                        />
+                        {locale.login}
+                      </button>
+                    )}
+                  </NavItem>
+                )}
               <Dropdown
                 nav
                 isOpen={this.state.dropdownOpen.lang}

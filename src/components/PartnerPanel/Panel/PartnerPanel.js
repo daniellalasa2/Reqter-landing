@@ -21,7 +21,7 @@ import {
   GetPartnerAllOffers,
   Config
 } from "../../ApiHandlers/ApiHandler";
-import PersianNumber from "../../PersianNumber/PersianNumber";
+import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
 import DateFormat from "../../DateFormat/DateFormat";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faList } from "@fortawesome/free-solid-svg-icons";
@@ -247,7 +247,7 @@ export default class PartnerPanel extends React.Component {
             <th>{locale.table.row}</th>
             <th>{locale.table.offer_name}</th>
             <th>{locale.table.request_details}</th>
-            <th>{locale.table.sent_offer}</th>
+            <th style={{ width: "200px" }}>{locale.table.sent_offer}</th>
             <th>{locale.table.offer_stage}</th>
             <th>{locale.table.date}</th>
             <th>{locale.table.operation}</th>
@@ -502,7 +502,9 @@ export default class PartnerPanel extends React.Component {
             {/* Row number */}
             <td>{PersianNumber(idx + 1, this.lang)}</td>
             {/* Offer name */}
-            <td>{SafeValue(request, "fields.name", "string", false)}</td>
+            <td>
+              {SafeValue(request, "fields.name", "string", locale.table.null)}
+            </td>
             {/* Request Details */}
             <td>
               {/* <strong>
@@ -525,7 +527,7 @@ export default class PartnerPanel extends React.Component {
                       request,
                       `fields.requestid.fields.fullname.${this.lang}`,
                       "string",
-                      " - ",
+                      locale.table.null,
                       "fields.requestid.fields.fullname"
                     )}
                   </strong>
@@ -538,7 +540,7 @@ export default class PartnerPanel extends React.Component {
                     request,
                     `fields.requestid.fields.name.${this.lang}`,
                     "string",
-                    " - ",
+                    locale.table.null,
                     "fields.requestid.fields.name"
                   )}
                 </small>
@@ -550,7 +552,7 @@ export default class PartnerPanel extends React.Component {
                     request,
                     "fields.requestid.fields.email",
                     "string",
-                    " - "
+                    locale.table.null
                   )}
                 </small>
               </span>
@@ -562,13 +564,13 @@ export default class PartnerPanel extends React.Component {
                       request,
                       "fields.requestid.fields.phonenumber",
                       "string",
-                      " - "
+                      locale.table.null
                     ),
                     this.lang
                   )}
                 </small>
               </span>
-              <br />
+              {/* <br />
               <span>
                 <small>
                   {SafeValue(
@@ -578,23 +580,84 @@ export default class PartnerPanel extends React.Component {
                     " - "
                   )}
                 </small>
-              </span>
+              </span> */}
             </td>
             {/* Offer datils */}
             <td>
-              {SafeValue(
-                request,
-                "fields.requestid.fields.seats",
-                "string",
-                " - "
-              )}
-              <small>{locale.table.hourlyprice}</small>
-              {SafeValue(
-                request,
-                "fields.requestid.fields.seats",
-                "string",
-                false
-              ) && <small>{locale.table.hourlyprice}</small>}
+              <span>
+                <small>
+                  {locale.table.hourlyprice}:&nbsp;
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(request, "fields.hourlyprice", "string", 0)
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {locale.table.dailyprice}:&nbsp;
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(request, "fields.dailyprice", "string", 0)
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>{" "}
+              <br />
+              <span>
+                <small>
+                  {locale.table.weeklyprice}:&nbsp;
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(request, "fields.weeklyprice", "string", 0)
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {locale.table.monthlyprice}:&nbsp;
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(request, "fields.monthlyprice", "string", 0)
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {locale.table.description}:&nbsp;
+                  {SafeValue(
+                    request,
+                    "fields.description",
+                    "string",
+                    locale.table.null
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {locale.table.startdate}:&nbsp;
+                  {PersianNumber(
+                    SafeValue(
+                      request,
+                      "fields.startdate",
+                      "string",
+                      locale.table.null
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>
             </td>
             {/* Status */}
             <td>

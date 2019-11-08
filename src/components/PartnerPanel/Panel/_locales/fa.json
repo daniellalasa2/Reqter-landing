@@ -67,7 +67,8 @@
       "weeklyprice": "قیمت هفتگی(تومان)",
       "monthlyprice": "قیمت ماهانه(تومان)",
       "startdate": "زمان شروع",
-      "more_details": "اطلاعات بیشتر"
+      "more_details": "اطلاعات بیشتر",
+      "null": "ندارد"
     },
     "card_header": {
       "new_requests": "درخواستهای جدید",
