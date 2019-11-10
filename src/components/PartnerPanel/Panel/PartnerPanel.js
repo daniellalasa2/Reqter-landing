@@ -21,6 +21,7 @@ import {
   GetPartnerAllOffers,
   GetPartnerAcceptedOffers,
   GetPartnerLostOffers,
+  CancelIssuedOffer,
   Config
 } from "../../ApiHandlers/ApiHandler";
 import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
@@ -197,6 +198,18 @@ export default class PartnerPanel extends React.Component {
           }
         );
       }
+    });
+  };
+  cancelOffer = (offerId, callback) => {
+    CancelIssuedOffer(offerId, res => {
+      this.filterRequestsOrOffers(
+        "offer",
+        this.state.requestsOrOffers.activeFilter,
+        undefined,
+        () => {
+          if (typeof callback === "function") callback();
+        }
+      );
     });
   };
   //------------------------Toggle Modals------------------------------//
@@ -533,13 +546,13 @@ export default class PartnerPanel extends React.Component {
         return _tableWrapperOpenRequests(generatedElements);
       case "alloffers":
       case "acceptedoffers":
-        generatedElements = requestsObj.map((request, idx) => (
+        generatedElements = requestsObj.map((offer, idx) => (
           <tr key={idx}>
             {/* Row number */}
             <td>{PersianNumber(idx + 1, this.lang)}</td>
             {/* Offer name */}
             <td>
-              {SafeValue(request, "fields.name", "string", locale.table.null)}
+              {SafeValue(offer, "fields.name", "string", locale.table.null)}
             </td>
             {/* Request Details */}
             <td>
@@ -560,7 +573,7 @@ export default class PartnerPanel extends React.Component {
                 <small>
                   <strong>
                     {SafeValue(
-                      request,
+                      offer,
                       `fields.requestid.fields.fullname.${this.lang}`,
                       "string",
                       locale.table.null,
@@ -573,7 +586,7 @@ export default class PartnerPanel extends React.Component {
               <span>
                 <small>
                   {SafeValue(
-                    request,
+                    offer,
                     `fields.requestid.fields.name.${this.lang}`,
                     "string",
                     locale.table.null,
@@ -585,7 +598,7 @@ export default class PartnerPanel extends React.Component {
               <span>
                 <small>
                   {SafeValue(
-                    request,
+                    offer,
                     "fields.requestid.fields.email",
                     "string",
                     locale.table.null
@@ -597,7 +610,7 @@ export default class PartnerPanel extends React.Component {
                 <small>
                   {PersianNumber(
                     SafeValue(
-                      request,
+                      offer,
                       "fields.requestid.fields.phonenumber",
                       "string",
                       locale.table.null
@@ -625,7 +638,7 @@ export default class PartnerPanel extends React.Component {
                   {locale.table.hourlyprice}:&nbsp;
                   {PersianNumber(
                     addCommas(
-                      SafeValue(request, "fields.hourlyprice", "string", 0)
+                      SafeValue(offer, "fields.hourlyprice", "string", 0)
                     ),
                     this.lang
                   )}
@@ -637,7 +650,7 @@ export default class PartnerPanel extends React.Component {
                   {locale.table.dailyprice}:&nbsp;
                   {PersianNumber(
                     addCommas(
-                      SafeValue(request, "fields.dailyprice", "string", 0)
+                      SafeValue(offer, "fields.dailyprice", "string", 0)
                     ),
                     this.lang
                   )}
@@ -649,7 +662,7 @@ export default class PartnerPanel extends React.Component {
                   {locale.table.weeklyprice}:&nbsp;
                   {PersianNumber(
                     addCommas(
-                      SafeValue(request, "fields.weeklyprice", "string", 0)
+                      SafeValue(offer, "fields.weeklyprice", "string", 0)
                     ),
                     this.lang
                   )}
@@ -661,7 +674,7 @@ export default class PartnerPanel extends React.Component {
                   {locale.table.monthlyprice}:&nbsp;
                   {PersianNumber(
                     addCommas(
-                      SafeValue(request, "fields.monthlyprice", "string", 0)
+                      SafeValue(offer, "fields.monthlyprice", "string", 0)
                     ),
                     this.lang
                   )}
@@ -673,7 +686,7 @@ export default class PartnerPanel extends React.Component {
                   {locale.table.startdate}:&nbsp;
                   {PersianNumber(
                     SafeValue(
-                      request,
+                      offer,
                       "fields.startdate",
                       "string",
                       locale.table.null
@@ -682,14 +695,14 @@ export default class PartnerPanel extends React.Component {
                   )}
                 </small>
               </span>
-              {SafeValue(request, "fields.description", "string", false) && (
+              {SafeValue(offer, "fields.description", "string", false) && (
                 <React.Fragment>
                   <br />
                   <span>
                     <small>
                       {locale.table.description}:&nbsp;
                       {SafeValue(
-                        request,
+                        offer,
                         "fields.description",
                         "string",
                         locale.table.null
@@ -702,7 +715,7 @@ export default class PartnerPanel extends React.Component {
             {/* Status */}
             <td>
               {SafeValue(
-                request,
+                offer,
                 `fields.stage.fields.name.${this.lang}`,
                 "string",
                 locale.table.not_specified_stage,
@@ -713,7 +726,7 @@ export default class PartnerPanel extends React.Component {
             <td>
               {PersianNumber(
                 DateFormat(
-                  SafeValue(request, "sys.issueDate", "string", 0)
+                  SafeValue(offer, "sys.issueDate", "string", 0)
                 ).timeWithHour(this.lang, " - "),
                 this.lang
               )}
@@ -725,9 +738,7 @@ export default class PartnerPanel extends React.Component {
                 color="danger"
                 onClick={() =>
                   this.toggleModals("warning", {
-                    requestId: request._id,
-                    goingToUpdateRequestsListType: this.state.requestsOrOffers
-                      .activeFilter,
+                    offerId: offer._id,
                     callback: () => {
                       this.toggleModals("warning", {});
                     }
@@ -952,6 +963,7 @@ export default class PartnerPanel extends React.Component {
       }
     });
   };
+
   componentDidMount() {
     //Initial datas which are going to display in partner panel
     this.updatePartnerInfo();
@@ -959,7 +971,7 @@ export default class PartnerPanel extends React.Component {
   }
   render() {
     const { locale, direction } = this.translate;
-    const { loading } = this.state.requestsOrOffers;
+    const { loading, activeFilter } = this.state.requestsOrOffers;
     const { modals, requestsOrOffers, pageLoaded } = this.state;
     if (pageLoaded) {
       return (
@@ -1075,7 +1087,8 @@ export default class PartnerPanel extends React.Component {
                 )}
               </ModalBody>
             </Modal>
-            {/************************* Warning modal ***********************/}
+            {/************************* Warning modal reject***********************/}
+            {/* this modal and calling function on the "yes" button needs refactoring and logic improvment */}
             <Modal
               isOpen={this.state.modals.warning.openStatus}
               toggle={() => this.toggleModals("warning", {})}
@@ -1101,15 +1114,24 @@ export default class PartnerPanel extends React.Component {
                   pull={direction === "ltr" ? "left" : "right"}
                   color="primary"
                   style={{ padding: "6px 25px", margin: "20px 10px 0" }}
-                  onClick={() =>
-                    this.rejectRequest(
-                      modals.warning.data.requestId,
-                      modals.warning.data.goingToUpdateRequestsListType,
-                      () => {
+                  onClick={() => {
+                    if (
+                      activeFilter === "newrequests" ||
+                      activeFilter === "openrequests"
+                    ) {
+                      this.rejectRequest(
+                        modals.warning.data.requestId,
+                        modals.warning.data.goingToUpdateRequestsListType,
+                        () => {
+                          modals.warning.data.callback();
+                        }
+                      );
+                    } else {
+                      this.cancelOffer(modals.warning.data.offerId, () => {
                         modals.warning.data.callback();
-                      }
-                    )
-                  }
+                      });
+                    }
+                  }}
                 >
                   {locale.requests.alert.accept}
                 </Button>

@@ -39,7 +39,8 @@ var Configuration = {
     issue_offer: "api/v1/quotes/issueoffer",
     get_partner_all_offers: "api/v1/quotes/alloffers",
     get_partner_accepted_offers: "api/v1/quotes/acceptedoffers",
-    get_partner_lost_offers: "api/v1/quotes/lostoffers"
+    get_partner_lost_offers: "api/v1/quotes/lostoffers",
+    cancel_issued_offer: "api/v1/quotes/cancel/"
   },
   CONTENT_TYPE_ID: {
     partnership: "5d358ebc8e6e9a0017c28fc9",

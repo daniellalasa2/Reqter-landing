@@ -31,7 +31,8 @@ let _api = {
   GetPartnerAcceptedOffers:
     Config.BASE_URL_REQTER + Config.URLs.get_partner_accepted_offers,
   GetPartnerLostOffers:
-    Config.BASE_URL_REQTER + Config.URLs.get_partner_lost_offers
+    Config.BASE_URL_REQTER + Config.URLs.get_partner_lost_offers,
+  CancelIssuedOffer: Config.BASE_URL_REQTER + Config.URLs.cancel_issued_offer
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -799,6 +800,41 @@ var PartnerpanelOpenRequest = (id, callback) => {
       });
   });
 };
+var CancelIssuedOffer = (offerId, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.CancelIssuedOffer + offerId,
+      method: "PUT",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      data: {
+        fields: { stage: "5d7b96b218a6400017ee1518" }
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+};
 var PartnerpanelIssueOffer = (data, callback) => {
   Config.Auth().then(token => {
     axios({
@@ -923,5 +959,6 @@ export {
   GetPartnerAllOffers,
   GetPartnerAcceptedOffers,
   GetPartnerLostOffers,
+  CancelIssuedOffer,
   Config
 };
