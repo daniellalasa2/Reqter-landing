@@ -20,6 +20,9 @@ function GetCookie(cname) {
   return "";
 }
 function SetSession(sname, svalue) {
+  if (typeof svalue === "object" && !svalue.length) {
+    svalue = JSON.stringify(svalue);
+  }
   const extacted = sessionStorage.setItem(sname, svalue);
   return extacted;
 }

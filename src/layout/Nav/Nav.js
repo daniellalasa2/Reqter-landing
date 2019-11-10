@@ -22,7 +22,6 @@ import {
   faLock,
   faListAlt,
   faGlobeAsia,
-  faHome,
   faPlus,
   faUserFriends,
   faBoxOpen,
