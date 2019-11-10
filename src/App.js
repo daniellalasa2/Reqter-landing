@@ -1,26 +1,15 @@
 import React from "react";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import Main from "./layout/Main/Main";
 import "samim-font/dist/font-face.css";
+import PageSuspense from "./components/PageSuspense";
 class App extends React.Component {
-  loading = () => (
-    <div className="preloader">
-      <div className="ball-rotate">
-        <div />
-      </div>
-      <span className="loading-text">
-        <strong>Startup Space</strong>
-      </span>
-    </div>
-  );
-
-  //WARNING! To be deprecated in React v17. Use componentDidMount instead.
   render() {
     return (
       <div className="App">
         <HashRouter>
-          <React.Suspense fallback={this.loading()}>
+          <React.Suspense fallback={PageSuspense()}>
             <Switch>
               <Route
                 path="/:lang?"

@@ -1,0 +1,136 @@
+//Loader Spinner
+$white: #ffffff;
+// set postions: fixed absolute through css params
+@mixin position(
+  $pos,
+  $top: null,
+  $right: null,
+  $bottom: null,
+  $left: null,
+  $index: null
+) {
+  position: $pos;
+  top: $top;
+  left: $left;
+  right: $right;
+  bottom: $bottom;
+  z-index: $index;
+}
+// set postions: fixed absolute through css params
+@mixin position(
+  $pos,
+  $top: null,
+  $right: null,
+  $bottom: null,
+  $left: null,
+  $index: null
+) {
+  position: $pos;
+  top: $top;
+  left: $left;
+  right: $right;
+  bottom: $bottom;
+  z-index: $index;
+}
+
+.preloader {
+  @include position(fixed, 0, 0, 0, 0, 9999);
+  background-color: $white;
+  .loading-text {
+    position: relative;
+    display: block;
+    width: auto;
+    text-align: center;
+    color: grey;
+    margin-top: 58vh;
+    margin-left: 5px;
+  }
+  .ball-rotate {
+    @include position(absolute, 0, 0, 0, 0);
+    margin: auto;
+    width: 15px;
+    height: 15px;
+
+    & > div {
+      position: relative;
+      margin: 2px;
+      width: 15px;
+      height: 15px;
+      background: #3264f5;
+      border-radius: 100%;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+
+      &:after,
+      &:before {
+        background-color: #3264f5;
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+        margin: 0 2px;
+        content: "";
+        position: absolute;
+        opacity: 0.8;
+      }
+      &:before {
+        top: 0;
+        left: -28px;
+      }
+      &:after {
+        top: 0;
+        left: 25px;
+      }
+      &:first-child {
+        animation: rotate 1s 0s cubic-bezier(0.7, -0.13, 0.22, 0.86) infinite;
+      }
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes rotate {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes preloader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

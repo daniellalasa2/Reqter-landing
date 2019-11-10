@@ -27,7 +27,11 @@ let _api = {
   QueryContent: Config.BASE_URL_REQTER + Config.URLs.query_content,
   PartnerpanelIssueOffer: Config.BASE_URL_REQTER + Config.URLs.issue_offer,
   GetPartnerAllOffers:
-    Config.BASE_URL_REQTER + Config.URLs.get_partner_all_offers
+    Config.BASE_URL_REQTER + Config.URLs.get_partner_all_offers,
+  GetPartnerAcceptedOffers:
+    Config.BASE_URL_REQTER + Config.URLs.get_partner_accepted_offers,
+  GetPartnerLostOffers:
+    Config.BASE_URL_REQTER + Config.URLs.get_partner_lost_offers
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -601,9 +605,90 @@ var GetPartnerpanelRequests = (partnerId, stage, callback) => {
       });
   });
 };
+var GetPartnerLostOffers = (partnerId, callback) => {
+  const params = {
+    "fields.partnerid": partnerId,
+    "fields.stage": "5d7b96a018a6400017ee1516"
+  };
+  Config.Auth().then(token => {
+    axios({
+      url: _api.GetPartnerLostOffers,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      params: {
+        contentType: Config.CONTENT_TYPE_ID.get_partner_all_offers,
+        ...params
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+};
+var GetPartnerAcceptedOffers = (partnerId, callback) => {
+  const params = {
+    "fields.partnerid": partnerId,
+    "fields.stage": "5d7b969c18a6400017ee1515"
+  };
+  Config.Auth().then(token => {
+    axios({
+      url: _api.GetPartnerAcceptedOffers,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      params: {
+        contentType: Config.CONTENT_TYPE_ID.get_partner_all_offers,
+        ...params
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+};
 var GetPartnerAllOffers = (partnerId, callback) => {
   const params = {
-    "fields.partnerid": partnerId
+    "fields.partnerid": partnerId,
+    "fields.stage": "5d7b968918a6400017ee1513"
   };
   Config.Auth().then(token => {
     axios({
@@ -836,5 +921,7 @@ export {
   PartnerpanelIssueOffer,
   QueryContent,
   GetPartnerAllOffers,
+  GetPartnerAcceptedOffers,
+  GetPartnerLostOffers,
   Config
 };

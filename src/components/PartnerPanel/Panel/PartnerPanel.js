@@ -19,6 +19,8 @@ import {
   QueryContent,
   GetPartnerProducts,
   GetPartnerAllOffers,
+  GetPartnerAcceptedOffers,
+  GetPartnerLostOffers,
   Config
 } from "../../ApiHandlers/ApiHandler";
 import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
@@ -28,6 +30,7 @@ import DateFormat from "../../DateFormat/DateFormat";
 import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
 import IssueOffer from "../IssueOffer/IssueOffer";
+import PageSuspense from "../../PageSuspense";
 import "./PartnerPanel.scss";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
@@ -37,13 +40,18 @@ export default class PartnerPanel extends React.Component {
     super(props, context);
     this.lang = context.lang;
     this.translate = require(`./_locales/${this.lang}.json`);
+    //Valid filters must defined into the following object, because of compability and rejecting invalid filters
+    //key: activefilter, value: api's param name
     this.requestsAPIType = {
       newrequests: "assigned",
       openrequests: "opened",
-      alloffers: "alloffers"
+      alloffers: "alloffers",
+      acceptedoffers: "acceptedoffers",
+      lostoffers: "lostoffers"
     };
     this.state = {
       contactModal: {},
+      pageLoaded: false,
       requestsOrOffers: {
         activeFilter: "",
         dataContent: [],
@@ -110,7 +118,7 @@ export default class PartnerPanel extends React.Component {
         );
       });
     } else {
-      GetPartnerAllOffers(_partnerId, res => {
+      const _apiCallback = res => {
         let APIDataContent = [];
         if (res.success_result.success) {
           APIDataContent = res.data;
@@ -127,7 +135,19 @@ export default class PartnerPanel extends React.Component {
             if (typeof callback === "function") callback();
           }
         );
-      });
+      };
+      switch (filter) {
+        case "alloffers":
+          GetPartnerAllOffers(_partnerId, _apiCallback);
+          break;
+        case "acceptedoffers":
+          GetPartnerAcceptedOffers(_partnerId, _apiCallback);
+          break;
+        case "lostoffers":
+          GetPartnerLostOffers(_partnerId, _apiCallback);
+          break;
+        default:
+      }
     }
   };
   //--------------------------Get and update product types------------------------------//
@@ -251,6 +271,21 @@ export default class PartnerPanel extends React.Component {
             <th>{locale.table.offer_stage}</th>
             <th>{locale.table.date}</th>
             <th>{locale.table.operation}</th>
+          </tr>
+        </thead>
+        <tbody>{children}</tbody>
+      </Table>
+    );
+    const _tableWrapperLostOffers = children => (
+      <Table responsive bordered hover className="offers-table">
+        <thead>
+          <tr>
+            <th>{locale.table.row}</th>
+            <th>{locale.table.offer_name}</th>
+            <th>{locale.table.request_details}</th>
+            <th style={{ width: "200px" }}>{locale.table.sent_offer}</th>
+            <th>{locale.table.offer_stage}</th>
+            <th>{locale.table.date}</th>
           </tr>
         </thead>
         <tbody>{children}</tbody>
@@ -497,6 +532,7 @@ export default class PartnerPanel extends React.Component {
         ));
         return _tableWrapperOpenRequests(generatedElements);
       case "alloffers":
+      case "acceptedoffers":
         generatedElements = requestsObj.map((request, idx) => (
           <tr key={idx}>
             {/* Row number */}
@@ -634,18 +670,6 @@ export default class PartnerPanel extends React.Component {
               <br />
               <span>
                 <small>
-                  {locale.table.description}:&nbsp;
-                  {SafeValue(
-                    request,
-                    "fields.description",
-                    "string",
-                    locale.table.null
-                  )}
-                </small>
-              </span>
-              <br />
-              <span>
-                <small>
                   {locale.table.startdate}:&nbsp;
                   {PersianNumber(
                     SafeValue(
@@ -658,6 +682,22 @@ export default class PartnerPanel extends React.Component {
                   )}
                 </small>
               </span>
+              {SafeValue(request, "fields.description", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      {locale.table.description}:&nbsp;
+                      {SafeValue(
+                        request,
+                        "fields.description",
+                        "string",
+                        locale.table.null
+                      )}
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
             </td>
             {/* Status */}
             <td>
@@ -700,6 +740,195 @@ export default class PartnerPanel extends React.Component {
           </tr>
         ));
         return _tableWrapperAllOffers(generatedElements);
+      case "lostoffers":
+        generatedElements = requestsObj.map((request, idx) => (
+          <tr key={idx}>
+            {/* Row number */}
+            <td>{PersianNumber(idx + 1, this.lang)}</td>
+            {/* Offer name */}
+            <td>
+              {SafeValue(request, "fields.name", "string", locale.table.null)}
+            </td>
+            {/* Request Details */}
+            <td>
+              {/* <strong>
+                      <small>
+                        {_extractProductName(
+                          SafeValue(
+                            request,
+                            "fields.requestid.fields.product",
+                            "string",
+                            0
+                          )
+                        )}
+                      </small>
+                    </strong>
+                    <br /> */}
+              <span>
+                <small>
+                  <strong>
+                    {SafeValue(
+                      request,
+                      `fields.requestid.fields.fullname.${this.lang}`,
+                      "string",
+                      locale.table.null,
+                      "fields.requestid.fields.fullname"
+                    )}
+                  </strong>
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {SafeValue(
+                    request,
+                    `fields.requestid.fields.name.${this.lang}`,
+                    "string",
+                    locale.table.null,
+                    "fields.requestid.fields.name"
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {SafeValue(
+                    request,
+                    "fields.requestid.fields.email",
+                    "string",
+                    locale.table.null
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {PersianNumber(
+                    SafeValue(
+                      request,
+                      "fields.requestid.fields.phonenumber",
+                      "string",
+                      locale.table.null
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>
+              {/* <br />
+                <span>
+                  <small>
+                    {SafeValue(
+                      request,
+                      "fields.requestid.fields.email",
+                      "string",
+                      " - "
+                    )}
+                  </small>
+                </span> */}
+            </td>
+            {/* Offer datils */}
+            <td>
+              <span>
+                <small>
+                  {locale.table.hourlyprice}:&nbsp;
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(request, "fields.hourlyprice", "string", 0)
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {locale.table.dailyprice}:&nbsp;
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(request, "fields.dailyprice", "string", 0)
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>{" "}
+              <br />
+              <span>
+                <small>
+                  {locale.table.weeklyprice}:&nbsp;
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(request, "fields.weeklyprice", "string", 0)
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {locale.table.monthlyprice}:&nbsp;
+                  {PersianNumber(
+                    addCommas(
+                      SafeValue(request, "fields.monthlyprice", "string", 0)
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  {locale.table.startdate}:&nbsp;
+                  {PersianNumber(
+                    SafeValue(
+                      request,
+                      "fields.startdate",
+                      "string",
+                      locale.table.null
+                    ),
+                    this.lang
+                  )}
+                </small>
+              </span>
+              {SafeValue(request, "fields.description", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      {locale.table.description}:&nbsp;
+                      {SafeValue(
+                        request,
+                        "fields.description",
+                        "string",
+                        locale.table.null
+                      )}
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
+            </td>
+            {/* Status */}
+            <td>
+              {SafeValue(
+                request,
+                `fields.stage.fields.name.${this.lang}`,
+                "string",
+                locale.table.not_specified_stage,
+                "fields.stage.fields.name"
+              )}
+            </td>
+            {/* Date */}
+            <td>
+              {PersianNumber(
+                DateFormat(
+                  SafeValue(request, "sys.issueDate", "string", 0)
+                ).timeWithHour(this.lang, " - "),
+                this.lang
+              )}
+            </td>
+          </tr>
+        ));
+        return _tableWrapperLostOffers(generatedElements);
       default:
         return (
           <span className="no-content">
@@ -715,7 +944,8 @@ export default class PartnerPanel extends React.Component {
         this.setState(
           {
             partnerData: res.data[0],
-            partnerId: _id
+            partnerId: _id,
+            pageLoaded: true
           },
           () => typeof callback === "function" && callback()
         );
@@ -724,442 +954,459 @@ export default class PartnerPanel extends React.Component {
   };
   componentDidMount() {
     //Initial datas which are going to display in partner panel
-    this.getAndUpdateProductsList();
     this.updatePartnerInfo();
+    this.getAndUpdateProductsList();
   }
   render() {
     const { locale, direction } = this.translate;
     const { loading } = this.state.requestsOrOffers;
-    const { modals, requestsOrOffers } = this.state;
-    return (
-      <section
-        className={classnames(
-          "partner-panel-section form-section",
-          `_${direction}`
-        )}
-        style={{
-          backgroundColor: "whitesmoke",
-          display: "flex",
-          flexWrap: "wrap"
-        }}
-      >
-        <React.Fragment>
-          <Card className="form-card">
-            {/* Approved requests */}
-            <CardHeader>
-              <nav className="card-header-nav filter">
-                <button
-                  className="filter-button"
-                  onClick={button =>
-                    this.filterRequestsOrOffers(
-                      "request",
-                      "newrequests",
-                      button
-                    )
-                  }
-                >
-                  {locale.card_header.new_requests}
-                </button>
-                <button
-                  className="filter-button"
-                  onClick={button =>
-                    this.filterRequestsOrOffers(
-                      "request",
-                      "openrequests",
-                      button
-                    )
-                  }
-                >
-                  {locale.card_header.open_requests}
-                </button>
-                <button
-                  className="filter-button"
-                  onClick={button =>
-                    this.filterRequestsOrOffers("offer", "alloffers", button)
-                  }
-                >
-                  {locale.card_header.offers}
-                </button>
-                <button
-                  className="filter-button"
-                  onClick={button =>
-                    this.filterRequestsOrOffers("offer", "accepted", button)
-                  }
-                >
-                  {locale.card_header.accepted}
-                </button>
-                <button
-                  className="filter-button"
-                  onClick={button =>
-                    this.filterRequestsOrOffers("offer", "rejected", button)
-                  }
-                >
-                  {locale.card_header.rejected}
-                </button>
-              </nav>
-            </CardHeader>
-            <CardBody>
-              {loading ? (
-                <span className="no-content">
-                  <strong>{locale.requests.loading}</strong>
-                </span>
-              ) : (
-                this.displayRequestsTable(
-                  requestsOrOffers.activeFilter,
-                  requestsOrOffers.dataContent
-                )
-              )}
-            </CardBody>
-          </Card>
-
-          {/************************** Issue offer modal**************************/}
-          <Modal
-            isOpen={this.state.modals.issueOffer.openStatus}
-            toggle={() => this.toggleModals("issueOffer", {})}
-            className={classnames("login-modal", `_${direction}`)}
-            id="issueOffer-modal"
-          >
-            <ModalHeader
-              className="login-modal-header"
-              toggle={() => this.toggleModals("issueOffer", {})}
-            >
-              {locale.requests.issue_offer_modal.title}
-            </ModalHeader>
-            <ModalBody>
-              {this.state.partnerProducts.length > 0 ? (
-                <IssueOffer
-                  data={modals.issueOffer.data}
-                  type="radio"
-                  lang={this.lang}
-                  callback={() => this.toggleModals("issueOffer", {})}
-                />
-              ) : (
-                <strong style={{ color: "var(--red)", lineHeight: 3 }}>
-                  {locale.requests.issue_offer_modal.no_product_founded}
-                </strong>
-              )}
-            </ModalBody>
-          </Modal>
-          {/************************* Warning modal ***********************/}
-          <Modal
-            isOpen={this.state.modals.warning.openStatus}
-            toggle={() => this.toggleModals("warning", {})}
-            className={classnames("login-modal", `_${direction}`)}
-            id="rejectRequest-warning-modal"
-          >
-            <ModalHeader
-              className="login-modal-header"
-              toggle={() => this.toggleModals("warning", {})}
-            >
-              {locale.requests.alert.title}
-            </ModalHeader>
-            <ModalBody>
-              <span>
-                {locale.requests.alert.description}
-
-                <strong style={{ fontSize: "20px" }}>
-                  {locale.requests.alert.areyousure}
-                </strong>
-              </span>
-              <br />
-              <Button
-                pull={direction === "ltr" ? "left" : "right"}
-                color="primary"
-                style={{ padding: "6px 25px", margin: "20px 10px 0" }}
-                onClick={() =>
-                  this.rejectRequest(
-                    modals.warning.data.requestId,
-                    modals.warning.data.goingToUpdateRequestsListType,
-                    () => {
-                      modals.warning.data.callback();
+    const { modals, requestsOrOffers, pageLoaded } = this.state;
+    if (pageLoaded) {
+      return (
+        <section
+          className={classnames(
+            "partner-panel-section form-section",
+            `_${direction}`
+          )}
+          style={{
+            backgroundColor: "whitesmoke",
+            display: "flex",
+            flexWrap: "wrap"
+          }}
+        >
+          <React.Fragment>
+            <Card className="form-card">
+              {/* Approved requests */}
+              <CardHeader>
+                <nav className="card-header-nav filter">
+                  <button
+                    className="filter-button"
+                    onClick={button =>
+                      this.filterRequestsOrOffers(
+                        "request",
+                        "newrequests",
+                        button
+                      )
                     }
+                  >
+                    {locale.card_header.new_requests}
+                  </button>
+                  <button
+                    className="filter-button"
+                    onClick={button =>
+                      this.filterRequestsOrOffers(
+                        "request",
+                        "openrequests",
+                        button
+                      )
+                    }
+                  >
+                    {locale.card_header.open_requests}
+                  </button>
+                  <button
+                    className="filter-button"
+                    onClick={button =>
+                      this.filterRequestsOrOffers("offer", "alloffers", button)
+                    }
+                  >
+                    {locale.card_header.offers}
+                  </button>
+                  <button
+                    className="filter-button"
+                    onClick={button =>
+                      this.filterRequestsOrOffers(
+                        "offer",
+                        "acceptedoffers",
+                        button
+                      )
+                    }
+                  >
+                    {locale.card_header.accepted}
+                  </button>
+                  <button
+                    className="filter-button"
+                    onClick={button =>
+                      this.filterRequestsOrOffers("offer", "lostoffers", button)
+                    }
+                  >
+                    {locale.card_header.rejected}
+                  </button>
+                </nav>
+              </CardHeader>
+              <CardBody>
+                {loading ? (
+                  <span className="no-content">
+                    <strong>{locale.requests.loading}</strong>
+                  </span>
+                ) : (
+                  this.displayRequestsTable(
+                    requestsOrOffers.activeFilter,
+                    requestsOrOffers.dataContent
                   )
-                }
-              >
-                {locale.requests.alert.accept}
-              </Button>
-              <Button
-                pull={direction === "ltr" ? "left" : "right"}
-                color="primary"
-                style={{ padding: "6px 25px", margin: "20px 10px 0" }}
-                onClick={() => this.toggleModals("warning", {})}
-              >
-                {locale.requests.alert.reject}
-              </Button>
-            </ModalBody>
-          </Modal>
-          {/******************* Requester's contact details modal **************/}
-          <Modal
-            isOpen={this.state.modals.requestContact.openStatus}
-            toggle={() => this.toggleModals("requestContact", {})}
-            className={classnames("requestContact-modal", `_${direction}`)}
-          >
-            <ModalHeader
-              className="requestContact-modal-header"
-              toggle={() => this.toggleModals("requestContact", {})}
+                )}
+              </CardBody>
+            </Card>
+
+            {/************************** Issue offer modal**************************/}
+            <Modal
+              isOpen={this.state.modals.issueOffer.openStatus}
+              toggle={() => this.toggleModals("issueOffer", {})}
+              className={classnames("login-modal", `_${direction}`)}
+              id="issueOffer-modal"
             >
-              {SafeValue(
-                modals.requestContact,
-                "data.fields.name",
-                "string",
-                locale.requests.customer_contact_detail.title
-              )}
-            </ModalHeader>
+              <ModalHeader
+                className="login-modal-header"
+                toggle={() => this.toggleModals("issueOffer", {})}
+              >
+                {locale.requests.issue_offer_modal.title}
+              </ModalHeader>
+              <ModalBody>
+                {this.state.partnerProducts.length > 0 ? (
+                  <IssueOffer
+                    data={modals.issueOffer.data}
+                    type="radio"
+                    lang={this.lang}
+                    callback={() => this.toggleModals("issueOffer", {})}
+                  />
+                ) : (
+                  <strong style={{ color: "var(--red)", lineHeight: 3 }}>
+                    {locale.requests.issue_offer_modal.no_product_founded}
+                  </strong>
+                )}
+              </ModalBody>
+            </Modal>
+            {/************************* Warning modal ***********************/}
+            <Modal
+              isOpen={this.state.modals.warning.openStatus}
+              toggle={() => this.toggleModals("warning", {})}
+              className={classnames("login-modal", `_${direction}`)}
+              id="rejectRequest-warning-modal"
+            >
+              <ModalHeader
+                className="login-modal-header"
+                toggle={() => this.toggleModals("warning", {})}
+              >
+                {locale.requests.alert.title}
+              </ModalHeader>
+              <ModalBody>
+                <span>
+                  {locale.requests.alert.description}
 
-            <ModalBody>
-              <fieldset>
-                <legend>
-                  {locale.requests.customer_contact_detail.request_info.title}
-                </legend>
-                <div>
-                  <span className="requestInfo-title">
-                    {
-                      locale.requests.customer_contact_detail.request_info
-                        .product_name
-                    }
-                  </span>{" "}
-                  <span className="requestInfo-text">
-                    {SafeValue(
-                      modals.requestContact,
-                      `data.fields.product.fields.name.${this.lang}`,
-                      "string",
-                      " - ",
-                      "data.fields.product.fields.name"
-                    )}
-                  </span>
-                </div>
-                <div>
-                  <span className="requestInfo-title">
-                    {locale.requests.customer_contact_detail.request_info.seats}
-                  </span>{" "}
-                  <span className="requestInfo-text">
-                    {PersianNumber(
-                      SafeValue(
-                        modals.requestContact,
-                        "data.fields.seats",
-                        "string",
-                        " - "
-                      ),
-                      this.lang
-                    )}
-                  </span>
-                </div>
-
-                <div>
-                  <span className="requestInfo-title">
-                    {locale.requests.customer_contact_detail.request_info.city}
-                  </span>{" "}
-                  <span className="requestInfo-text">
-                    {SafeValue(
-                      modals.requestContact,
-                      `data.fields.city.fields.name.${this.lang}`,
-                      "string",
-                      " - ",
-                      "data.fields.city.fields.name"
-                    )}
-                  </span>
-                </div>
-
-                <div>
-                  <span className="requestInfo-title">
-                    {
-                      locale.requests.customer_contact_detail.request_info
-                        .country
-                    }
-                  </span>{" "}
-                  <span className="requestInfo-text">
-                    {SafeValue(
-                      modals.requestContact,
-                      `data.fields.country.fields.name.${this.lang}`,
-                      "string",
-                      " - ",
-                      "data.fields.country.fields.name"
-                    )}
-                  </span>
-                </div>
-
-                <div>
-                  <span className="requestInfo-title">
-                    {
-                      locale.requests.customer_contact_detail.request_info
-                        .birthyear
-                    }
-                  </span>{" "}
-                  <span className="requestInfo-text">
-                    {PersianNumber(
-                      SafeValue(
-                        modals.requestContact,
-                        `data.fields.birthyear`,
-                        "string",
-                        " - "
-                      ),
-                      this.lang
-                    )}
-                  </span>
-                </div>
-
+                  <strong style={{ fontSize: "20px" }}>
+                    {locale.requests.alert.areyousure}
+                  </strong>
+                </span>
+                <br />
+                <Button
+                  pull={direction === "ltr" ? "left" : "right"}
+                  color="primary"
+                  style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                  onClick={() =>
+                    this.rejectRequest(
+                      modals.warning.data.requestId,
+                      modals.warning.data.goingToUpdateRequestsListType,
+                      () => {
+                        modals.warning.data.callback();
+                      }
+                    )
+                  }
+                >
+                  {locale.requests.alert.accept}
+                </Button>
+                <Button
+                  pull={direction === "ltr" ? "left" : "right"}
+                  color="primary"
+                  style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                  onClick={() => this.toggleModals("warning", {})}
+                >
+                  {locale.requests.alert.reject}
+                </Button>
+              </ModalBody>
+            </Modal>
+            {/******************* Requester's contact details modal **************/}
+            <Modal
+              isOpen={this.state.modals.requestContact.openStatus}
+              toggle={() => this.toggleModals("requestContact", {})}
+              className={classnames("requestContact-modal", `_${direction}`)}
+            >
+              <ModalHeader
+                className="requestContact-modal-header"
+                toggle={() => this.toggleModals("requestContact", {})}
+              >
                 {SafeValue(
                   modals.requestContact,
-                  "data.fields.workingfield",
-                  "object",
-                  []
-                ).length > 0 && (
+                  "data.fields.name",
+                  "string",
+                  locale.requests.customer_contact_detail.title
+                )}
+              </ModalHeader>
+
+              <ModalBody>
+                <fieldset>
+                  <legend>
+                    {locale.requests.customer_contact_detail.request_info.title}
+                  </legend>
                   <div>
                     <span className="requestInfo-title">
                       {
                         locale.requests.customer_contact_detail.request_info
-                          .workingfield
+                          .product_name
                       }
                     </span>{" "}
                     <span className="requestInfo-text">
-                      {modals.requestContact.data.fields.workingfield.map(
-                        field => (
-                          <div
-                            id="workingfield-tag"
-                            className="workingfield-tag"
-                          >
-                            {SafeValue(
-                              field,
-                              `fields.name.${this.lang}`,
-                              "string",
-                              " - "
-                            )}
-                          </div>
-                        )
+                      {SafeValue(
+                        modals.requestContact,
+                        `data.fields.product.fields.name.${this.lang}`,
+                        "string",
+                        " - ",
+                        "data.fields.product.fields.name"
                       )}
                     </span>
                   </div>
-                )}
-                {SafeValue(
-                  modals.requestContact,
-                  "data.fields.resume",
-                  "object",
-                  []
-                ).length > 0 && (
                   <div>
                     <span className="requestInfo-title">
                       {
                         locale.requests.customer_contact_detail.request_info
-                          .resume
+                          .seats
                       }
                     </span>{" "}
                     <span className="requestInfo-text">
-                      <a
-                        href={SafeValue(
+                      {PersianNumber(
+                        SafeValue(
                           modals.requestContact,
-                          `data.fields.resume.0.${this.lang}`,
+                          "data.fields.seats",
                           "string",
-                          ""
-                        )}
-                      >
-                        {
-                          locale.requests.customer_contact_detail.request_info
-                            .download
-                        }
-                      </a>
+                          " - "
+                        ),
+                        this.lang
+                      )}
                     </span>
                   </div>
-                )}
-              </fieldset>
-              <br />
-              <fieldset>
-                <legend>
-                  {locale.requests.customer_contact_detail.contact_info.title}{" "}
-                </legend>
-                <div>
-                  <span className="requestInfo-title">
-                    {
-                      locale.requests.customer_contact_detail.request_info
-                        .requester_name
-                    }
-                  </span>{" "}
-                  <span className="requestInfo-text">
-                    {SafeValue(
-                      modals.requestContact,
-                      "data.fields.fullname",
-                      "string",
-                      " - "
-                    )}
-                  </span>
-                </div>
-                <div>
-                  <span className="requestInfo-title">
-                    {locale.requests.customer_contact_detail.contact_info.tel}
-                  </span>{" "}
-                  <span
-                    className="requestInfo-text"
-                    style={{ direction: "ltr" }}
-                  >
-                    {PersianNumber(
-                      SafeValue(
+
+                  <div>
+                    <span className="requestInfo-title">
+                      {
+                        locale.requests.customer_contact_detail.request_info
+                          .city
+                      }
+                    </span>{" "}
+                    <span className="requestInfo-text">
+                      {SafeValue(
                         modals.requestContact,
-                        "data.fields.phonenumber",
+                        `data.fields.city.fields.name.${this.lang}`,
+                        "string",
+                        " - ",
+                        "data.fields.city.fields.name"
+                      )}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="requestInfo-title">
+                      {
+                        locale.requests.customer_contact_detail.request_info
+                          .country
+                      }
+                    </span>{" "}
+                    <span className="requestInfo-text">
+                      {SafeValue(
+                        modals.requestContact,
+                        `data.fields.country.fields.name.${this.lang}`,
+                        "string",
+                        " - ",
+                        "data.fields.country.fields.name"
+                      )}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="requestInfo-title">
+                      {
+                        locale.requests.customer_contact_detail.request_info
+                          .birthyear
+                      }
+                    </span>{" "}
+                    <span className="requestInfo-text">
+                      {PersianNumber(
+                        SafeValue(
+                          modals.requestContact,
+                          `data.fields.birthyear`,
+                          "string",
+                          " - "
+                        ),
+                        this.lang
+                      )}
+                    </span>
+                  </div>
+
+                  {SafeValue(
+                    modals.requestContact,
+                    "data.fields.workingfield",
+                    "object",
+                    []
+                  ).length > 0 && (
+                    <div>
+                      <span className="requestInfo-title">
+                        {
+                          locale.requests.customer_contact_detail.request_info
+                            .workingfield
+                        }
+                      </span>{" "}
+                      <span className="requestInfo-text">
+                        {modals.requestContact.data.fields.workingfield.map(
+                          field => (
+                            <div
+                              id="workingfield-tag"
+                              className="workingfield-tag"
+                            >
+                              {SafeValue(
+                                field,
+                                `fields.name.${this.lang}`,
+                                "string",
+                                " - "
+                              )}
+                            </div>
+                          )
+                        )}
+                      </span>
+                    </div>
+                  )}
+                  {SafeValue(
+                    modals.requestContact,
+                    "data.fields.resume",
+                    "object",
+                    []
+                  ).length > 0 && (
+                    <div>
+                      <span className="requestInfo-title">
+                        {
+                          locale.requests.customer_contact_detail.request_info
+                            .resume
+                        }
+                      </span>{" "}
+                      <span className="requestInfo-text">
+                        <a
+                          href={SafeValue(
+                            modals.requestContact,
+                            `data.fields.resume.0.${this.lang}`,
+                            "string",
+                            ""
+                          )}
+                        >
+                          {
+                            locale.requests.customer_contact_detail.request_info
+                              .download
+                          }
+                        </a>
+                      </span>
+                    </div>
+                  )}
+                </fieldset>
+                <br />
+                <fieldset>
+                  <legend>
+                    {locale.requests.customer_contact_detail.contact_info.title}{" "}
+                  </legend>
+                  <div>
+                    <span className="requestInfo-title">
+                      {
+                        locale.requests.customer_contact_detail.request_info
+                          .requester_name
+                      }
+                    </span>{" "}
+                    <span className="requestInfo-text">
+                      {SafeValue(
+                        modals.requestContact,
+                        "data.fields.fullname",
+                        "string",
+                        " - "
+                      )}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="requestInfo-title">
+                      {locale.requests.customer_contact_detail.contact_info.tel}
+                    </span>{" "}
+                    <span
+                      className="requestInfo-text"
+                      style={{ direction: "ltr" }}
+                    >
+                      {PersianNumber(
+                        SafeValue(
+                          modals.requestContact,
+                          "data.fields.phonenumber",
+                          "string",
+                          " - ",
+                          " "
+                        ),
+                        this.lang
+                      )}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="requestInfo-title">
+                      {
+                        locale.requests.customer_contact_detail.contact_info
+                          .email
+                      }
+                    </span>{" "}
+                    <span className="requestInfo-text">
+                      {SafeValue(
+                        modals.requestContact,
+                        "data.fields.email",
                         "string",
                         " - ",
                         " "
+                      )}
+                    </span>
+                  </div>
+                </fieldset>
+              </ModalBody>
+              <ModalFooter
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row-reverse"
+                }}
+              >
+                <Button
+                  color="danger"
+                  onClick={() =>
+                    this.toggleModals("warning", {
+                      requestId: SafeValue(
+                        modals.requestContact,
+                        "data._id",
+                        "string",
+                        null
                       ),
-                      this.lang
-                    )}
-                  </span>
-                </div>
-
-                <div>
-                  <span className="requestInfo-title">
-                    {locale.requests.customer_contact_detail.contact_info.email}
-                  </span>{" "}
-                  <span className="requestInfo-text">
-                    {SafeValue(
-                      modals.requestContact,
-                      "data.fields.email",
-                      "string",
-                      " - ",
-                      " "
-                    )}
-                  </span>
-                </div>
-              </fieldset>
-            </ModalBody>
-            <ModalFooter
-              style={{
-                justifyContent: "space-between",
-                flexDirection: "row-reverse"
-              }}
-            >
-              <Button
-                color="danger"
-                onClick={() =>
-                  this.toggleModals("warning", {
-                    requestId: SafeValue(
-                      modals.requestContact,
-                      "data._id",
-                      "string",
-                      null
-                    ),
-                    goingToUpdateRequestsListType: this.state.requestsOrOffers
-                      .activeFilter,
-                    callback: () => {
-                      this.toggleModals("warning", {}, () =>
-                        this.toggleModals("requestContact", {})
-                      );
-                    }
-                  })
-                }
-                push="right"
-              >
-                {locale.requests.reject_request_button}
-              </Button>{" "}
-              <Button
-                color="success"
-                onClick={() => this.issueOffer(modals.requestContact._id)}
-                push="left"
-                style={{ fontWeight: "bold" }}
-              >
-                {locale.requests.issue_offer}
-              </Button>
-            </ModalFooter>
-          </Modal>
-        </React.Fragment>
-      </section>
-    );
+                      goingToUpdateRequestsListType: this.state.requestsOrOffers
+                        .activeFilter,
+                      callback: () => {
+                        this.toggleModals("warning", {}, () =>
+                          this.toggleModals("requestContact", {})
+                        );
+                      }
+                    })
+                  }
+                  push="right"
+                >
+                  {locale.requests.reject_request_button}
+                </Button>{" "}
+                <Button
+                  color="success"
+                  onClick={() => this.issueOffer(modals.requestContact._id)}
+                  push="left"
+                  style={{ fontWeight: "bold" }}
+                >
+                  {locale.requests.issue_offer}
+                </Button>
+              </ModalFooter>
+            </Modal>
+          </React.Fragment>
+        </section>
+      );
+    } else {
+      return <PageSuspense />;
+    }
   }
 }

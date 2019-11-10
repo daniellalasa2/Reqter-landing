@@ -28,18 +28,7 @@ import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
 // import SimpleMap from "../SimpleMap/SimpleMap";
 import ContextApi from "../ContextApi/ContextApi";
 import classnames from "classnames";
-function Loading() {
-  return (
-    <div className="preloader">
-      <div className="ball-rotate">
-        <div />
-      </div>
-      <span className="loading-text">
-        <strong>Startup Space</strong>
-      </span>
-    </div>
-  );
-}
+import PageSuspense from "../PageSuspense";
 export default class PartnerProfile extends React.Component {
   static contextType = ContextApi;
   constructor(props, context) {
@@ -653,7 +642,7 @@ export default class PartnerProfile extends React.Component {
         </section>
       );
     } else {
-      return <Loading />;
+      return <PageSuspense />;
     }
   }
 }
