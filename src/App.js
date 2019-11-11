@@ -5,14 +5,10 @@ import Main from "./layout/Main/Main";
 import "samim-font/dist/font-face.css";
 import PageSuspense from "./components/PageSuspense";
 class App extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   if (process.env.NODE_ENV !== "production") {
-  //     let script = document.createElement("script");
-  //     document.getElementsByTagName("head")[0].appendChild(script);
-  //     script.src = "../src/extra/Hotjar.js";
-  //   }
-  // }
+  constructor(props) {
+    super(props);
+    window.NODE_ENV = process.env.NODE_ENV;
+  }
   render() {
     return (
       <div className="App">
