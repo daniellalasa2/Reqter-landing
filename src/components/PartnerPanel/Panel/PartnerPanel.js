@@ -571,52 +571,68 @@ export default class PartnerPanel extends React.Component {
                   <br /> */}
               <span>
                 <small>
-                  <strong>
+                  <span>
+                    {locale.table.requester_detail}:&nbsp;
+                    <strong>
+                      {SafeValue(
+                        offer,
+                        `fields.requestid.fields.fullname.${this.lang}`,
+                        "string",
+                        locale.table.null,
+                        "fields.requestid.fields.fullname"
+                      )}
+                    </strong>
+                  </span>
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  <span>
+                    {locale.table.offer_name}:&nbsp;
                     {SafeValue(
                       offer,
-                      `fields.requestid.fields.fullname.${this.lang}`,
+                      `fields.requestid.fields.name.${this.lang}`,
                       "string",
                       locale.table.null,
-                      "fields.requestid.fields.fullname"
+                      "fields.requestid.fields.name"
                     )}
-                  </strong>
+                  </span>
                 </small>
               </span>
               <br />
               <span>
                 <small>
-                  {SafeValue(
-                    offer,
-                    `fields.requestid.fields.name.${this.lang}`,
-                    "string",
-                    locale.table.null,
-                    "fields.requestid.fields.name"
-                  )}
-                </small>
-              </span>
-              <br />
-              <span>
-                <small>
-                  {SafeValue(
-                    offer,
-                    "fields.requestid.fields.email",
-                    "string",
-                    locale.table.null
-                  )}
-                </small>
-              </span>
-              <br />
-              <span>
-                <small>
-                  {PersianNumber(
-                    SafeValue(
+                  <span>
+                    {locale.requests.customer_contact_detail.contact_info.email}
+                    &nbsp;
+                    {SafeValue(
                       offer,
-                      "fields.requestid.fields.phonenumber",
+                      "fields.requestid.fields.email",
                       "string",
                       locale.table.null
-                    ),
-                    this.lang
-                  )}
+                    )}
+                  </span>
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  <span>
+                    {locale.requests.customer_contact_detail.contact_info.tel}
+                  </span>
+                  &nbsp;
+                  <span style={{ direction: "ltr" }}>
+                    {PersianNumber(
+                      SafeValue(
+                        offer,
+                        "fields.requestid.fields.phonenumber",
+                        "string",
+                        locale.table.null
+                      ),
+                      this.lang
+                    )}
+                  </span>
                 </small>
               </span>
               {/* <br />
@@ -636,13 +652,15 @@ export default class PartnerPanel extends React.Component {
               {SafeValue(offer, "fields.hourlyprice", "string", false) && (
                 <span>
                   <small>
-                    {locale.table.hourlyprice}:&nbsp;
-                    {PersianNumber(
-                      addCommas(
-                        SafeValue(offer, "fields.hourlyprice", "string", 0)
-                      ),
-                      this.lang
-                    )}
+                    <span>
+                      {locale.table.hourlyprice}:&nbsp;
+                      {PersianNumber(
+                        addCommas(
+                          SafeValue(offer, "fields.hourlyprice", "string", 0)
+                        ),
+                        this.lang
+                      )}
+                    </span>
                   </small>
                 </span>
               )}
@@ -651,13 +669,15 @@ export default class PartnerPanel extends React.Component {
                   <br />
                   <span>
                     <small>
-                      {locale.table.dailyprice}:&nbsp;
-                      {PersianNumber(
-                        addCommas(
-                          SafeValue(offer, "fields.dailyprice", "string", 0)
-                        ),
-                        this.lang
-                      )}
+                      <span>
+                        {locale.table.dailyprice}:&nbsp;
+                        {PersianNumber(
+                          addCommas(
+                            SafeValue(offer, "fields.dailyprice", "string", 0)
+                          ),
+                          this.lang
+                        )}
+                      </span>
                     </small>
                   </span>
                 </React.Fragment>
@@ -667,13 +687,15 @@ export default class PartnerPanel extends React.Component {
                   <br />
                   <span>
                     <small>
-                      {locale.table.weeklyprice}:&nbsp;
-                      {PersianNumber(
-                        addCommas(
-                          SafeValue(offer, "fields.weeklyprice", "string", 0)
-                        ),
-                        this.lang
-                      )}
+                      <span>
+                        {locale.table.weeklyprice}:&nbsp;
+                        {PersianNumber(
+                          addCommas(
+                            SafeValue(offer, "fields.weeklyprice", "string", 0)
+                          ),
+                          this.lang
+                        )}
+                      </span>
                     </small>
                   </span>
                 </React.Fragment>
@@ -683,13 +705,15 @@ export default class PartnerPanel extends React.Component {
                   <br />
                   <span>
                     <small>
-                      <span>{locale.table.monthlyprice}: </span>{" "}
-                      {PersianNumber(
-                        addCommas(
-                          SafeValue(offer, "fields.monthlyprice", "string", 0)
-                        ),
-                        this.lang
-                      )}
+                      <span>
+                        {locale.table.monthlyprice}:&nbsp;
+                        {PersianNumber(
+                          addCommas(
+                            SafeValue(offer, "fields.monthlyprice", "string", 0)
+                          ),
+                          this.lang
+                        )}
+                      </span>
                     </small>
                   </span>
                 </React.Fragment>
@@ -699,7 +723,7 @@ export default class PartnerPanel extends React.Component {
                   <br />
                   <span>
                     <small>
-                      <span>{locale.table.startdate}:</span>{" "}
+                      <span>{locale.table.startdate}:&nbsp;</span>
                       <span style={{ direction: locale.direction }}>
                         {PersianNumber(
                           SafeValue(
@@ -772,163 +796,207 @@ export default class PartnerPanel extends React.Component {
         ));
         return _tableWrapperAllOffers(generatedElements);
       case "lostoffers":
-        generatedElements = requestsObj.map((request, idx) => (
+        generatedElements = requestsObj.map((offer, idx) => (
           <tr key={idx}>
             {/* Row number */}
             <td>{PersianNumber(idx + 1, this.lang)}</td>
             {/* Offer name */}
             <td>
-              {SafeValue(request, "fields.name", "string", locale.table.null)}
+              {SafeValue(offer, "fields.name", "string", locale.table.null)}
             </td>
             {/* Request Details */}
             <td>
               {/* <strong>
-                      <small>
-                        {_extractProductName(
-                          SafeValue(
-                            request,
-                            "fields.requestid.fields.product",
-                            "string",
-                            0
-                          )
-                        )}
-                      </small>
-                    </strong>
-                    <br /> */}
+                    <small>
+                      {_extractProductName(
+                        SafeValue(
+                          request,
+                          "fields.requestid.fields.product",
+                          "string",
+                          0
+                        )
+                      )}
+                    </small>
+                  </strong>
+                  <br /> */}
               <span>
                 <small>
-                  <strong>
+                  <span>
+                    {locale.table.requester_detail}:&nbsp;
+                    <strong>
+                      {SafeValue(
+                        offer,
+                        `fields.requestid.fields.fullname.${this.lang}`,
+                        "string",
+                        locale.table.null,
+                        "fields.requestid.fields.fullname"
+                      )}
+                    </strong>
+                  </span>
+                </small>
+              </span>
+              <br />
+              <span>
+                <small>
+                  <span>
+                    {locale.table.offer_name}:&nbsp;
                     {SafeValue(
-                      request,
-                      `fields.requestid.fields.fullname.${this.lang}`,
+                      offer,
+                      `fields.requestid.fields.name.${this.lang}`,
                       "string",
                       locale.table.null,
-                      "fields.requestid.fields.fullname"
+                      "fields.requestid.fields.name"
                     )}
-                  </strong>
+                  </span>
                 </small>
               </span>
               <br />
               <span>
                 <small>
-                  {SafeValue(
-                    request,
-                    `fields.requestid.fields.name.${this.lang}`,
-                    "string",
-                    locale.table.null,
-                    "fields.requestid.fields.name"
-                  )}
+                  <span>
+                    {locale.requests.customer_contact_detail.contact_info.email}
+                    &nbsp;
+                    {SafeValue(
+                      offer,
+                      "fields.requestid.fields.email",
+                      "string",
+                      locale.table.null
+                    )}
+                  </span>
                 </small>
               </span>
               <br />
+              <span>
+                <small>
+                  <span>
+                    {locale.requests.customer_contact_detail.contact_info.tel}
+                  </span>
+                  &nbsp;
+                  <span style={{ direction: "ltr" }}>
+                    {PersianNumber(
+                      SafeValue(
+                        offer,
+                        "fields.requestid.fields.phonenumber",
+                        "string",
+                        locale.table.null
+                      ),
+                      this.lang
+                    )}
+                  </span>
+                </small>
+              </span>
+              {/* <br />
               <span>
                 <small>
                   {SafeValue(
                     request,
                     "fields.requestid.fields.email",
                     "string",
-                    locale.table.null
+                    " - "
                   )}
                 </small>
-              </span>
-              <br />
-              <span>
-                <small>
-                  {PersianNumber(
-                    SafeValue(
-                      request,
-                      "fields.requestid.fields.phonenumber",
-                      "string",
-                      locale.table.null
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>
-              {/* <br />
-                <span>
-                  <small>
-                    {SafeValue(
-                      request,
-                      "fields.requestid.fields.email",
-                      "string",
-                      " - "
-                    )}
-                  </small>
-                </span> */}
+              </span> */}
             </td>
             {/* Offer datils */}
             <td>
-              <span>
-                <small>
-                  {locale.table.hourlyprice}:&nbsp;
-                  {PersianNumber(
-                    addCommas(
-                      SafeValue(request, "fields.hourlyprice", "string", 0)
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>
-              <br />
-              <span>
-                <small>
-                  {locale.table.dailyprice}:&nbsp;
-                  {PersianNumber(
-                    addCommas(
-                      SafeValue(request, "fields.dailyprice", "string", 0)
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>{" "}
-              <br />
-              <span>
-                <small>
-                  {locale.table.weeklyprice}:&nbsp;
-                  {PersianNumber(
-                    addCommas(
-                      SafeValue(request, "fields.weeklyprice", "string", 0)
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>
-              <br />
-              <span>
-                <small>
-                  {locale.table.monthlyprice}:&nbsp;
-                  {PersianNumber(
-                    addCommas(
-                      SafeValue(request, "fields.monthlyprice", "string", 0)
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>
-              <br />
-              <span>
-                <small>
-                  {locale.table.startdate}:&nbsp;
-                  {PersianNumber(
-                    SafeValue(
-                      request,
-                      "fields.startdate",
-                      "string",
-                      locale.table.null
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>
-              {SafeValue(request, "fields.description", "string", false) && (
+              {SafeValue(offer, "fields.hourlyprice", "string", false) && (
+                <span>
+                  <small>
+                    <span>
+                      {locale.table.hourlyprice}:&nbsp;
+                      {PersianNumber(
+                        addCommas(
+                          SafeValue(offer, "fields.hourlyprice", "string", 0)
+                        ),
+                        this.lang
+                      )}
+                    </span>
+                  </small>
+                </span>
+              )}
+              {SafeValue(offer, "fields.dailyprice", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      <span>
+                        {locale.table.dailyprice}:&nbsp;
+                        {PersianNumber(
+                          addCommas(
+                            SafeValue(offer, "fields.dailyprice", "string", 0)
+                          ),
+                          this.lang
+                        )}
+                      </span>
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
+              {SafeValue(offer, "fields.weeklyprice", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      <span>
+                        {locale.table.weeklyprice}:&nbsp;
+                        {PersianNumber(
+                          addCommas(
+                            SafeValue(offer, "fields.weeklyprice", "string", 0)
+                          ),
+                          this.lang
+                        )}
+                      </span>
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
+              {SafeValue(offer, "fields.monthlyprice", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      <span>
+                        {locale.table.monthlyprice}:&nbsp;
+                        {PersianNumber(
+                          addCommas(
+                            SafeValue(offer, "fields.monthlyprice", "string", 0)
+                          ),
+                          this.lang
+                        )}
+                      </span>
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
+              {SafeValue(offer, "fields.startdate", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      <span>{locale.table.startdate}:&nbsp;</span>
+                      <span style={{ direction: locale.direction }}>
+                        {PersianNumber(
+                          SafeValue(
+                            offer,
+                            "fields.startdate",
+                            "string",
+                            locale.table.null
+                          ),
+                          this.lang
+                        )}
+                      </span>
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
+              {SafeValue(offer, "fields.description", "string", false) && (
                 <React.Fragment>
                   <br />
                   <span>
                     <small>
                       {locale.table.description}:&nbsp;
                       {SafeValue(
-                        request,
+                        offer,
                         "fields.description",
                         "string",
                         locale.table.null
@@ -941,7 +1009,7 @@ export default class PartnerPanel extends React.Component {
             {/* Status */}
             <td>
               {SafeValue(
-                request,
+                offer,
                 `fields.stage.fields.name.${this.lang}`,
                 "string",
                 locale.table.not_specified_stage,
@@ -952,7 +1020,7 @@ export default class PartnerPanel extends React.Component {
             <td>
               {PersianNumber(
                 DateFormat(
-                  SafeValue(request, "sys.issueDate", "string", 0)
+                  SafeValue(offer, "sys.issueDate", "string", 0)
                 ).timeWithHour(this.lang, " - "),
                 this.lang
               )}
@@ -1405,7 +1473,7 @@ export default class PartnerPanel extends React.Component {
                   </div>
                 </fieldset>
               </ModalBody>
-              <ModalFooter
+              {/* <ModalFooter
                 style={{
                   justifyContent: "space-between",
                   flexDirection: "row-reverse"
@@ -1442,7 +1510,7 @@ export default class PartnerPanel extends React.Component {
                 >
                   {locale.requests.issue_offer}
                 </Button>
-              </ModalFooter>
+              </ModalFooter> */}
             </Modal>
           </React.Fragment>
         </section>
