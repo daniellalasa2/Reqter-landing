@@ -274,7 +274,7 @@ export default class PartnerPanel extends React.Component {
       </Table>
     );
     const _tableWrapperAllOffers = children => (
-      <Table responsive bordered hover className="offers-table">
+      <Table responsive bordered hover className="offers-table alloffers">
         <thead>
           <tr>
             <th>{locale.table.row}</th>
@@ -290,7 +290,7 @@ export default class PartnerPanel extends React.Component {
       </Table>
     );
     const _tableWrapperLostOffers = children => (
-      <Table responsive bordered hover className="offers-table">
+      <Table responsive bordered hover className="offers-table lostoffers">
         <thead>
           <tr>
             <th>{locale.table.row}</th>
@@ -633,68 +633,88 @@ export default class PartnerPanel extends React.Component {
             </td>
             {/* Offer datils */}
             <td>
-              <span>
-                <small>
-                  {locale.table.hourlyprice}:&nbsp;
-                  {PersianNumber(
-                    addCommas(
-                      SafeValue(offer, "fields.hourlyprice", "string", 0)
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>
-              <br />
-              <span>
-                <small>
-                  {locale.table.dailyprice}:&nbsp;
-                  {PersianNumber(
-                    addCommas(
-                      SafeValue(offer, "fields.dailyprice", "string", 0)
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>{" "}
-              <br />
-              <span>
-                <small>
-                  {locale.table.weeklyprice}:&nbsp;
-                  {PersianNumber(
-                    addCommas(
-                      SafeValue(offer, "fields.weeklyprice", "string", 0)
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>
-              <br />
-              <span>
-                <small>
-                  {locale.table.monthlyprice}:&nbsp;
-                  {PersianNumber(
-                    addCommas(
-                      SafeValue(offer, "fields.monthlyprice", "string", 0)
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>
-              <br />
-              <span>
-                <small>
-                  {locale.table.startdate}:&nbsp;
-                  {PersianNumber(
-                    SafeValue(
-                      offer,
-                      "fields.startdate",
-                      "string",
-                      locale.table.null
-                    ),
-                    this.lang
-                  )}
-                </small>
-              </span>
+              {SafeValue(offer, "fields.hourlyprice", "string", false) && (
+                <span>
+                  <small>
+                    {locale.table.hourlyprice}:&nbsp;
+                    {PersianNumber(
+                      addCommas(
+                        SafeValue(offer, "fields.hourlyprice", "string", 0)
+                      ),
+                      this.lang
+                    )}
+                  </small>
+                </span>
+              )}
+              {SafeValue(offer, "fields.dailyprice", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      {locale.table.dailyprice}:&nbsp;
+                      {PersianNumber(
+                        addCommas(
+                          SafeValue(offer, "fields.dailyprice", "string", 0)
+                        ),
+                        this.lang
+                      )}
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
+              {SafeValue(offer, "fields.weeklyprice", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      {locale.table.weeklyprice}:&nbsp;
+                      {PersianNumber(
+                        addCommas(
+                          SafeValue(offer, "fields.weeklyprice", "string", 0)
+                        ),
+                        this.lang
+                      )}
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
+              {SafeValue(offer, "fields.monthlyprice", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      <span>{locale.table.monthlyprice}: </span>{" "}
+                      {PersianNumber(
+                        addCommas(
+                          SafeValue(offer, "fields.monthlyprice", "string", 0)
+                        ),
+                        this.lang
+                      )}
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
+              {SafeValue(offer, "fields.startdate", "string", false) && (
+                <React.Fragment>
+                  <br />
+                  <span>
+                    <small>
+                      <span>{locale.table.startdate}:</span>{" "}
+                      <span style={{ direction: locale.direction }}>
+                        {PersianNumber(
+                          SafeValue(
+                            offer,
+                            "fields.startdate",
+                            "string",
+                            locale.table.null
+                          ),
+                          this.lang
+                        )}
+                      </span>
+                    </small>
+                  </span>
+                </React.Fragment>
+              )}
               {SafeValue(offer, "fields.description", "string", false) && (
                 <React.Fragment>
                   <br />

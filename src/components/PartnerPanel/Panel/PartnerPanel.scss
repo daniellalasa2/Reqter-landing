@@ -32,6 +32,12 @@
       }
     }
     & .card-body {
+      & .table {
+        & small {
+          display: inline-flex;
+          direction: ltr;
+        }
+      }
       & .no-content {
         display: block;
         width: 100%;
@@ -58,16 +64,20 @@
         }
       }
       & .offers-table {
-        & td,
         & th {
           vertical-align: middle;
           text-align: center;
+        }
+        & td {
+          vertical-align: middle;
+          text-align: left;
         }
       }
     }
   }
   //modals
 }
+
 #rejectRequest-warning-modal {
   & .modal-header {
     & h5 {
@@ -149,9 +159,21 @@
     }
   }
 }
-._rtl {
+.partner-panel-section._rtl {
   & .form-card {
     direction: rtl;
     text-align: right;
+    & .card-body {
+      & .table {
+        & small {
+          direction: rtl;
+        }
+      }
+      & .offers-table {
+        & td {
+          text-align: right;
+        }
+      }
+    }
   }
 }
