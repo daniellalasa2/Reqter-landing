@@ -20,6 +20,7 @@ import {
 import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
 import PageSuspense from "../../PageSuspense";
+import FlatInput from "../../FlatForm/FlatForm";
 import "./PartnerProfile.scss";
 // import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
@@ -53,28 +54,23 @@ export default class PartnerPanel extends React.Component {
             error: "",
             isValid: false
           },
-          birthyear: {
+          regno: {
             value: "",
             error: "",
             isValid: false
           },
-          workingfield: {
+          logo: {
             value: "",
             error: "",
             isValid: false
           },
-          phonenumber: {
+          location: {
             code: "+98",
             value: "",
             error: "",
             isValid: false
           },
-          city: {
-            value: "",
-            error: "",
-            isValid: false
-          },
-          seats: {
+          address: {
             value: "",
             error: "",
             isValid: false
@@ -84,15 +80,40 @@ export default class PartnerPanel extends React.Component {
             error: "",
             isValid: false
           },
-          resume: {
+          overview: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          images: {
             uploading: false,
             uploadProgress: 0,
             value: "",
             error: "",
             isValid: false
           },
-          country: {
-            value: "5d35e8288e6e9a0017c28fcf",
+          homepage: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          instagram: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          linkedin: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          twitter: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          workingfields: {
+            value: "",
             error: "",
             isValid: false
           }
@@ -100,10 +121,6 @@ export default class PartnerPanel extends React.Component {
         backgroundData: {}
       },
       combo: {
-        list_of_cities: {
-          hasLoaded: false,
-          items: []
-        },
         coworking_working_field: {
           hasLoaded: false,
           items: []
@@ -116,7 +133,7 @@ export default class PartnerPanel extends React.Component {
   // Functionality:
   //    1- If user clicks on filter requests tab inside partner panel this function will be call
 
-  filterRequestsOrOffers = (filter, e, callback) => {
+  filterTabs = (filter, e, callback) => {
     this.setState({
       filterContext: {
         ...this.state.filterContext,
@@ -183,33 +200,25 @@ export default class PartnerPanel extends React.Component {
                 <nav className="card-header-nav filter">
                   <button
                     className="filter-button"
-                    onClick={button =>
-                      this.filterRequestsOrOffers("details", button)
-                    }
+                    onClick={button => this.filterTabs("details", button)}
                   >
                     {locale.card_header.details}
                   </button>
                   <button
                     className="filter-button"
-                    onClick={button =>
-                      this.filterRequestsOrOffers("imagealbum", button)
-                    }
+                    onClick={button => this.filterTabs("imagealbum", button)}
                   >
                     {locale.card_header.image_album}
                   </button>
                   <button
                     className="filter-button"
-                    onClick={button =>
-                      this.filterRequestsOrOffers("map", button)
-                    }
+                    onClick={button => this.filterTabs("map", button)}
                   >
                     {locale.card_header.map}
                   </button>
                   <button
                     className="filter-button"
-                    onClick={button =>
-                      this.filterRequestsOrOffers("setting", button)
-                    }
+                    onClick={button => this.filterTabs("setting", button)}
                   >
                     {locale.card_header.setting}
                   </button>
