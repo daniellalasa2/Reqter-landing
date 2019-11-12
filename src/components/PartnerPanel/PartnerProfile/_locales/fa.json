@@ -1,0 +1,11 @@
+{
+  "direction": "rtl",
+  "locale": {
+    "card_header": {
+      "details": "مشخصات",
+      "image_album": "آلبوم عکس",
+      "map": "نقشه",
+      "setting": "تنظیمات"
+    }
+  }
+}

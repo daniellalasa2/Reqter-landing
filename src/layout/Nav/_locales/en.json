@@ -6,13 +6,13 @@
     "logout": "Logout",
     "partnership": "Partnership",
     "buisness_partnership": "Add your space",
-    "partner_panel": "Partner panel",
     "contact_us": "Contact Us",
     "faq": "FAQs",
     "home": "Home",
-    "partnerpanel": "Partner panel",
     "myrequests": "My Page",
     "login": "Login",
+    "partner_panel": "Partner panel",
+    "partnerpanel_manage_requests": "Manage requests",
     "partnerpanel_myproducts": "My products",
     "partnerpanel_myprofile": "My profile"
   }

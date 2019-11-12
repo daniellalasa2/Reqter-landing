@@ -26,7 +26,8 @@ import {
   faUserFriends,
   faBoxOpen,
   faSignOutAlt,
-  faUserAlt
+  faUserAlt,
+  faEnvelopeOpenText
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/images/logo.jpg";
 import Login from "../../components/Auth/Login/Login";
@@ -169,7 +170,9 @@ class Navigation extends Component {
             <Nav className="nav-links-container">
               {ROLE !== "guest" &&
                 (this.props.match.path.startsWith("/:lang?/user/") ||
-                  this.props.match.path === "/:lang?/partnerpanel/panel") && (
+                  this.props.match.path.startsWith(
+                    "/:lang?/partnerpanel/"
+                  )) && (
                   <NavItem>
                     <Link
                       to=""
@@ -186,18 +189,11 @@ class Navigation extends Component {
                   </NavItem>
                 )}
               {/* Partner panel's menu items */}
-              {this.props.match.path.startsWith(
-                "/:lang?/partnerpanel/panel"
-              ) && (
+              {this.props.match.path.startsWith("/:lang?/partnerpanel/") && (
                 <React.Fragment>
                   <NavItem>
                     <Link
-                      to=""
-                      onClick={() =>
-                        this.props.history.push(
-                          `/${lang}/partnerpanel/panel/myproducts`
-                        )
-                      }
+                      to={`/${lang}/partnerpanel/myproducts`}
                       className="nav-link"
                     >
                       <FontAwesomeIcon
@@ -208,56 +204,67 @@ class Navigation extends Component {
                       {locale.partnerpanel_myproducts}
                     </Link>
                   </NavItem>
+                  {this.props.match.path !== "/:lang?/partnerpanel/profile" ? (
+                    <NavItem>
+                      <Link
+                        to={`/${lang}/partnerpanel/profile`}
+                        className="nav-link"
+                      >
+                        <FontAwesomeIcon
+                          icon={faUserAlt}
+                          pull={direction === "ltr" ? "left" : "right"}
+                          color="black"
+                        />
+                        {locale.partnerpanel_myprofile}
+                      </Link>
+                    </NavItem>
+                  ) : (
+                    <NavItem>
+                      <Link
+                        to={`/${lang}/partnerpanel/panel`}
+                        className="nav-link"
+                      >
+                        <FontAwesomeIcon
+                          icon={faEnvelopeOpenText}
+                          pull={direction === "ltr" ? "left" : "right"}
+                          color="black"
+                        />
+                        {locale.partnerpanel_manage_requests}
+                      </Link>
+                    </NavItem>
+                  )}
+                </React.Fragment>
+              )}
+              {!this.props.match.path.startsWith("/:lang?/partnerpanel/") && (
+                <React.Fragment>
                   <NavItem>
                     <Link
-                      to=""
-                      onClick={() =>
-                        this.props.history.push(
-                          `/${lang}/partnerpanel/panel/myprofile`
-                        )
-                      }
                       className="nav-link"
+                      to={`/${lang}/partnerpanel/${
+                        ROLE !== "partner" ? "login" : "panel"
+                      }`}
                     >
                       <FontAwesomeIcon
-                        icon={faUserAlt}
+                        icon={faUserFriends}
                         pull={direction === "ltr" ? "left" : "right"}
                         color="black"
                       />
-                      {locale.partnerpanel_myprofile}
+                      {locale.partner_panel}
+                    </Link>
+                  </NavItem>
+                  <NavItem>
+                    <Link to={`/${lang}/partnership`} className="nav-link">
+                      <FontAwesomeIcon
+                        icon={faPlus}
+                        size="1x"
+                        pull={direction === "ltr" ? "left" : "right"}
+                        color="black"
+                        className="icon-myrequests"
+                      />
+                      {locale.buisness_partnership}
                     </Link>
                   </NavItem>
                 </React.Fragment>
-              )}
-              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
-                <NavItem>
-                  <Link
-                    className="nav-link"
-                    to={`/${lang}/partnerpanel/${
-                      ROLE !== "partner" ? "login" : "panel"
-                    }`}
-                  >
-                    <FontAwesomeIcon
-                      icon={faUserFriends}
-                      pull={direction === "ltr" ? "left" : "right"}
-                      color="black"
-                    />
-                    {locale.partner_panel}
-                  </Link>
-                </NavItem>
-              )}
-              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
-                <NavItem>
-                  <Link to={`/${lang}/partnership`} className="nav-link">
-                    <FontAwesomeIcon
-                      icon={faPlus}
-                      size="1x"
-                      pull={direction === "ltr" ? "left" : "right"}
-                      color="black"
-                      className="icon-myrequests"
-                    />
-                    {locale.buisness_partnership}
-                  </Link>
-                </NavItem>
               )}
               {/* <Dropdown
                 nav
@@ -498,9 +505,7 @@ class Navigation extends Component {
                       className="nav-link"
                       to=""
                       onClick={() =>
-                        this.props.history.push(
-                          `/${lang}/partnerpanel/panel/myprofile`
-                        )
+                        this.props.history.push(`/${lang}/partnerpanel/profile`)
                       }
                     >
                       {locale.partnerpanel_myprofile}

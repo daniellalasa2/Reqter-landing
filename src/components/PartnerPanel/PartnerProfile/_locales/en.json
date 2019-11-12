@@ -1,0 +1,11 @@
+{
+  "direction": "ltr",
+  "locale": {
+    "card_header": {
+      "details": "Details",
+      "image_album": "Image album",
+      "map": "Map",
+      "setting": "Setting"
+    }
+  }
+}

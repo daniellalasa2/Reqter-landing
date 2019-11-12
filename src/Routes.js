@@ -34,9 +34,6 @@ const MyRequests = React.lazy(() =>
 const OfferList = React.lazy(() =>
   import("./components/MyPage/OfferList/OfferList")
 );
-const PartnerProfile = React.lazy(() =>
-  import("./components/PartnerProfile/PartnerProfile")
-);
 const NotFound = React.lazy(() =>
   import("./components/Auth/NotFound/NotFound")
 );
@@ -49,6 +46,9 @@ const PartnerPanel = React.lazy(() =>
 );
 const PartnerLogin = React.lazy(() =>
   import("./components/PartnerPanel/PartnerLogin/PartnerLogin")
+);
+const PartnerProfile = React.lazy(() =>
+  import("./components/PartnerPanel/PartnerProfile/PartnerProfile")
 );
 //temporary
 const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
@@ -203,6 +203,13 @@ const routes = [
     name: "Partner Panel Login",
     auth: ["guest", "user"],
     component: PartnerLogin,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/partnerpanel/profile",
+    name: "Partner Panel Profile",
+    auth: ["partner"],
+    component: PartnerProfile,
     navStatus: true
   },
   {

@@ -4,15 +4,15 @@
     "login_modal_title": "ورود",
     "language": "زبان",
     "logout": "خروج",
-    "partnership": "همکاری",
     "buisness_partnership": "ثبت فضای کار",
-    "partner_panel": "پنل همکار",
     "contact_us": "تماس با ما",
     "faq": "سوالات متداول",
     "home": "خانه",
-    "partnerpanel": "پنل همکاران",
     "myrequests": "صفحه من",
+    "partnership": "همکاری",
     "login": "ورود",
+    "partner_panel": "پنل همکار",
+    "partnerpanel_manage_requests": "مدیریت درخواستها",
     "partnerpanel_myproducts": "محصولات من",
     "partnerpanel_myprofile": "پروفایل من"
   }
