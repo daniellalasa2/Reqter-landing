@@ -1,8 +1,14 @@
 .partner-profile-section {
+  & *:disabled {
+    cursor: not-allowed;
+  }
   & .form-card {
     width: 880px;
     text-align: left;
     min-height: 600px;
+    & #overview {
+      min-width: 100%;
+    }
     & .card-header {
       overflow-y: auto;
       & .card-header-nav {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader, CardBody, Button, CardFooter } from "reactstrap";
+import { Card, CardHeader, CardBody, CardFooter } from "reactstrap";
 import {
   SafeValue,
   GetPartnerInfo,
@@ -13,7 +13,12 @@ import Validator from "../../Validator/Validator";
 import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
 import PageSuspense from "../../PageSuspense";
-import { FlatInput, FlatTextArea, FlatButton } from "../../FlatForm/FlatForm";
+import {
+  FlatInput,
+  FlatTextArea,
+  FlatButton,
+  FlatAvatarUploader
+} from "../../FlatForm/FlatForm";
 import "./PartnerProfile.scss";
 // import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
@@ -485,7 +490,7 @@ export default class PartnerPanel extends React.Component {
   }
   render() {
     const { locale, direction } = this.translate;
-    const { loading, activeFilter } = this.state.filterContext;
+    const { activeFilter } = this.state.filterContext;
     const {
       filterContext,
       pageLoaded,
@@ -594,6 +599,7 @@ export default class PartnerPanel extends React.Component {
                       name="phonenumber"
                       id="phonenumber"
                       readOnly
+                      style={{ direction: "ltr" }}
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
                         partnerData,
@@ -693,39 +699,25 @@ export default class PartnerPanel extends React.Component {
                         null
                       )}
                       error={fields.overview.error}
-                      style={{ height: "150px", width: "100%" }}
+                      style={{
+                        height: "150px",
+                        width: "95%"
+                      }}
                     />
                   </React.Fragment>
                 )}
                 {activeFilter === "imagealbum" && (
                   <React.Fragment>
-                    <FlatInput
-                      label={locale.fields.name}
-                      type="text"
-                      name="name"
-                      id="name"
-                      onChange={this.formStateHandler}
-                      defaultValue={SafeValue(
-                        partnerData,
-                        "fields.name",
-                        "string",
-                        null
-                      )}
-                      error={fields.fullname.error}
-                    />
-                    <FlatInput
-                      label={locale.fields.regno}
-                      type="text"
-                      name="regno"
-                      id="regno"
-                      onChange={this.formStateHandler}
-                      defaultValue={SafeValue(
-                        partnerData,
-                        "fields.regno",
-                        "string",
-                        null
-                      )}
-                      error={fields.regno.error}
+                    <FlatAvatarUploader
+                      width={300}
+                      height={285}
+                      defaultSrc={partnerData.image}
+                      onChange={img => console.log(img)}
+                      messages={{
+                        MAX_FILE_SIZE_EXEEDED: locale.fields.file_size_exceeded
+                      }}
+                      placeholder={locale.fields.upload_placeholder}
+                      label={locale.fields.upload_avatar}
                     />
                   </React.Fragment>
                 )}

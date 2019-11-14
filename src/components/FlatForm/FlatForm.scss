@@ -6,7 +6,9 @@
 }
 input,
 textarea {
-  border-width: 0 0 1px 0 !important;
+  &:not(textarea) {
+    border-width: 0 0 1px 0 !important;
+  }
   border-color: #ced4da;
   display: block;
   width: 100%;
@@ -20,7 +22,9 @@ textarea {
   background-clip: padding-box;
   border-radius: 0;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  &:hover {
+  outline: none !important;
+  &:hover,
+  &:focus {
     border-color: #6caff7;
   }
   //disable spin count buttons for number inputs
@@ -34,7 +38,6 @@ textarea {
     appearance: textfield;
   }
 }
-
 input:focus {
   outline: 0px !important;
   -webkit-appearance: none;

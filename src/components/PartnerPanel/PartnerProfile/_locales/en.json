@@ -29,7 +29,10 @@
       "workingfields": "Working fields(type of company)",
       "workinghours": "Working hours",
       "amenities": "Amenities",
-      "submit_changes": "Submit changes"
+      "submit_changes": "Submit changes",
+      "file_size_exceeded": "file size to big!",
+      "upload_placeholder": "Choose a file",
+      "avatar_upload": "Upload avatar"
     }
   }
 }

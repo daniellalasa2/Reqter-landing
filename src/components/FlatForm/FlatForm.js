@@ -5,6 +5,8 @@ import { faCloud, faCheck } from "@fortawesome/free-solid-svg-icons";
 import "./FlatForm.scss";
 import { Button } from "reactstrap";
 import Spinner from "../../assets/script/spinner";
+import AvatarUploader from "./AvatarUploader";
+import MultiImageUploader from "./MultiImageUploader";
 /*
   Todo:
     1- CustomCheckBox must return data as the last or the first arguments toward onChange function
@@ -349,10 +351,15 @@ const FlatTextArea = ({
   error,
   name,
   direction,
+  id,
+  style,
   ...props
 }) => {
   return (
-    <div className={classnames("field-row", direction && `_${direction}`)}>
+    <div
+      id={id}
+      className={classnames("field-row", direction && `_${direction}`)}
+    >
       <span className="field-title">{label}</span>
       <textarea
         placeholder={placeholder}
@@ -360,6 +367,7 @@ const FlatTextArea = ({
         onChange={onChange}
         {...props}
         name={name}
+        style={style}
         className={error && "error-input"}
       />
       <span className="error-message">{error}</span>
@@ -642,12 +650,18 @@ const FlatDatePicker = ({ onChange, name }) => {
     </div>
   );
 };
-// Helper Functions
-// const removeClass = (e, nameOfClass) => {
-//   e.target.classList.remove(nameOfClass);
-// };
-// const addClass = (e, nameOfClass) => {
-//   e.target.classList.add(nameOfClass);
+const FlatAvatarUploader = ({ style, id, label, ...props }) => {
+  return (
+    <div className="field-row" id={id}>
+      <label>{label}</label>
+      <div className={classnames("flatAvatarUploader")} style={{ ...style }}>
+        <AvatarUploader {...props} />
+      </div>
+    </div>
+  );
+};
+// const FlatMultiImageUploader = ({}) => {
+//   <MultiImageUploader defaltImg = {} />;
 // };
 export {
   ImageSelect,
@@ -660,5 +674,6 @@ export {
   FlatUploader,
   FlatTimePicker,
   FlatDatePicker,
+  FlatAvatarUploader,
   FlatButton
 };
