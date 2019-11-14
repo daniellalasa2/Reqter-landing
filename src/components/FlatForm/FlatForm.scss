@@ -40,6 +40,10 @@ input:focus {
   -webkit-appearance: none;
   box-shadow: none !important;
 }
+input:read-only {
+  cursor: not-allowed;
+  background-color: rgb(235, 235, 235);
+}
 .form-card {
   width: 750px;
   text-align: left;
@@ -106,6 +110,20 @@ input:focus {
   }
 }
 .field-row {
+  &._ltr {
+    direction: ltr;
+    text-align: left;
+    & input,
+    textarea {
+      direction: ltr;
+    }
+  }
+  & input,
+  textarea {
+    direction: rtl;
+  }
+  direction: rtl;
+  text-align: right;
   margin-bottom: 40px;
   .field-title {
     font-size: 15px;

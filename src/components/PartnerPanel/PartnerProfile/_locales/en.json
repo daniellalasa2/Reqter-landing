@@ -6,6 +6,30 @@
       "image_album": "Image album",
       "map": "Map",
       "setting": "Setting"
+    },
+    "fields": {
+      "name": "Company name",
+      "regno": "Registration number",
+      "email": "Email",
+      "phonenumber": "Phone number",
+      "overview": "About us",
+      "homepage": "Website",
+      "instagram": "Instagram link",
+      "linkedin": "Linkedin",
+      "twitter": "Twitter",
+      "capacity": "Capacity",
+      "partnerkey": "Partner key",
+      "logo": "Logo",
+      "images": "Images album",
+      "city": "City",
+      "address": "Address",
+      "location": "Map location",
+      "locationpic": "Map location screenshot",
+      "collaborationtypes": "Collaboration types",
+      "workingfields": "Working fields(type of company)",
+      "workinghours": "Working hours",
+      "amenities": "Amenities",
+      "submit_changes": "Submit changes"
     }
   }
 }

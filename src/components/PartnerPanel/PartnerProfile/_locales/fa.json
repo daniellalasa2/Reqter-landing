@@ -6,6 +6,30 @@
       "image_album": "آلبوم عکس",
       "map": "نقشه",
       "setting": "تنظیمات"
+    },
+    "fields": {
+      "name": "نام مجموعه",
+      "regno": "شماره ثبت",
+      "email": "ایمیل",
+      "phonenumber": "شماره تماس",
+      "overview": "درباره مجموعه",
+      "homepage": "وبسایت",
+      "instagram": "لینک اینستاگرام",
+      "linkedin": "لینک لینکداین",
+      "twitter": "لینک توییتر",
+      "capacity": "ظرفیت کل",
+      "partnerkey": "نام مخصوص همکار",
+      "logo": "لوگو",
+      "images": "آلبوم عکس",
+      "city": "شهر",
+      "address": "آدرس",
+      "location": "محل روی نقشه",
+      "locationpic": "عکس روی قشه",
+      "collaborationtypes": "حوزه های فعالیت",
+      "workingfields": "نوع محموعه (زمینه های همکاری )",
+      "workinghours": "ساعات کاری",
+      "amenities": "امکانات",
+      "submit_changes": "ثبت تغییرات"
     }
   }
 }

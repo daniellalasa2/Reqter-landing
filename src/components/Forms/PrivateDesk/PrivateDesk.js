@@ -252,9 +252,9 @@ class PrivateDesk extends React.PureComponent {
             cityname = curr.title;
           }
         });
-        _formObjectGoingToSubmit["name"] = `${
-          locale.email_subject[0]
-        } ${seats} ${locale.email_subject[1]} ${cityname}`;
+        _formObjectGoingToSubmit[
+          "name"
+        ] = `${locale.email_subject[0]} ${seats} ${locale.email_subject[1]} ${cityname}`;
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData

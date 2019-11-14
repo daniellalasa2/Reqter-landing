@@ -302,10 +302,14 @@ const FlatInput = ({
   className,
   style,
   autoFocus,
-  prefix
+  prefix,
+  readOnly,
+  disabled,
+  direction
 }) => {
+  console.log("dd", direction);
   return (
-    <div className="field-row">
+    <div className={classnames("field-row", direction && `_${direction}`)}>
       {label && <span className="field-title">{label}</span>}
       <div className="input-wrapper" style={{ direction: "ltr" }}>
         {prefix && <span className="flatinput-prefix">{prefix}</span>}
@@ -324,6 +328,8 @@ const FlatInput = ({
           id={id}
           style={style}
           autoFocus={autoFocus}
+          readOnly={readOnly}
+          disabled={disabled}
           className={classnames(
             className,
             error && "error-input",
@@ -342,10 +348,11 @@ const FlatTextArea = ({
   label,
   error,
   name,
+  direction,
   ...props
 }) => {
   return (
-    <div className="field-row">
+    <div className={classnames("field-row", direction && `_${direction}`)}>
       <span className="field-title">{label}</span>
       <textarea
         placeholder={placeholder}
