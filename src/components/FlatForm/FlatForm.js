@@ -675,5 +675,6 @@ export {
   FlatTimePicker,
   FlatDatePicker,
   FlatAvatarUploader,
-  FlatButton
+  FlatButton,
+  MultiImageUploader as FlatMultiImageUploader
 };

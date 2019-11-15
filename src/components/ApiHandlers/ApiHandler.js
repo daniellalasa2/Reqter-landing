@@ -960,5 +960,6 @@ export {
   GetPartnerAcceptedOffers,
   GetPartnerLostOffers,
   CancelIssuedOffer,
-  Config
+  Config,
+  _api as APIAddresses
 };

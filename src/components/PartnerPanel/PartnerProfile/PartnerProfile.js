@@ -17,7 +17,8 @@ import {
   FlatInput,
   FlatTextArea,
   FlatButton,
-  FlatAvatarUploader
+  FlatAvatarUploader,
+  FlatMultiImageUploader
 } from "../../FlatForm/FlatForm";
 import "./PartnerProfile.scss";
 // import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
@@ -719,6 +720,7 @@ export default class PartnerPanel extends React.Component {
                       placeholder={locale.fields.upload_placeholder}
                       label={locale.fields.upload_avatar}
                     />
+                    <FlatMultiImageUploader />
                   </React.Fragment>
                 )}
                 {/* {activeFilter === "map" && (

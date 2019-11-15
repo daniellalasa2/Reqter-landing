@@ -6,48 +6,39 @@ export default class MultiImageUploader extends React.Component {
     super(props);
     const src = props.defaultSrc;
     const { messages, width, height, maxFileSize } = props;
+    const componentConfig = {
+      iconFiletypes: [".jpg", ".png", ".gif"],
+      showFiletypeIcon: true,
+      postUrl: ""
+    };
+    const djsConfig = { autoProcessQueue: false };
+    const eventHandlers = { addedfile: file => console.log(file) };
     this.state = {
       preview: null,
       src,
       width,
       height,
       messages,
-      maxFileSize
+      maxFileSize,
+      djsConfig,
+      config: componentConfig,
+      eventHandlers
     };
     this.onCrop = this.onCrop.bind(this);
     this.onClose = this.onClose.bind(this);
     this.onBeforeFileLoad = this.onBeforeFileLoad.bind(this);
   }
 
-  onClose() {
-    this.setState({ preview: null });
-  }
-
-  onCrop(preview) {
-    this.setState({ preview });
-    this.props.onChange(preview);
-  }
-
-  onBeforeFileLoad(elem) {
-    const { maxFileSize, messages } = this.state;
-    //maxFileSize in byte
-    if (elem.target.files[0].size > (maxFileSize ? maxFileSize : 71680)) {
-      alert(messages.FILE_SIZE_EXCEEDED);
-      elem.target.value = "";
-    }
-  }
-
   render() {
-    const { preview, height, width, src } = this.state;
+    const { eventHandlers, djsConfig, src, config } = this.state;
     return (
       <div>
         <DropzoneComponent
-          config={componentConfig}
+          config={config}
           eventHandlers={eventHandlers}
           djsConfig={djsConfig}
         />
-        );
-        <img src={preview} alt="Preview" />
+        , );
       </div>
     );
   }
