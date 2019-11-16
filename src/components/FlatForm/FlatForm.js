@@ -6,7 +6,8 @@ import "./FlatForm.scss";
 import { Button } from "reactstrap";
 import Spinner from "../../assets/script/spinner";
 import AvatarUploader from "./AvatarUploader";
-import MultiImageUploader from "./MultiImageUploader";
+import JsonInput from "./JsonInput";
+// import MultiImageUploader from "./MultiImageUploader";
 /*
   Todo:
     1- CustomCheckBox must return data as the last or the first arguments toward onChange function
@@ -660,6 +661,20 @@ const FlatAvatarUploader = ({ style, id, label, ...props }) => {
     </div>
   );
 };
+const FlatJsonInput = ({ label, id, name, style, ...props }) => {
+  return (
+    <div className="field-row" id={id}>
+      <label>{label}</label>
+      <div
+        name={name}
+        className={classnames("flatJsonInput")}
+        style={{ ...style }}
+      >
+        <JsonInput {...props} />
+      </div>
+    </div>
+  );
+};
 // const FlatMultiImageUploader = ({}) => {
 //   <MultiImageUploader defaltImg = {} />;
 // };
@@ -676,5 +691,6 @@ export {
   FlatDatePicker,
   FlatAvatarUploader,
   FlatButton,
-  MultiImageUploader as FlatMultiImageUploader
+  FlatJsonInput
+  // MultiImageUploader as FlatMultiImageUploader
 };

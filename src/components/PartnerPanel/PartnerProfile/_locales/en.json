@@ -32,7 +32,13 @@
       "submit_changes": "Submit changes",
       "file_size_exceeded": "file size to big!",
       "upload_placeholder": "Choose a file",
-      "avatar_upload": "Upload avatar"
+      "avatar_upload": "Upload avatar",
+      "add_working_hour_row": "Add a row",
+      "workinghours_key": "Day(Title)",
+      "workinghours_value": "Description",
+      "remove": "Remove",
+      "duplication_keys_error": "Day(Title) duplication error.",
+      "empty_key": "The Day(title) cannot leave empty."
     }
   }
 }

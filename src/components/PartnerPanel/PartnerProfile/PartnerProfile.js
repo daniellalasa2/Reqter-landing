@@ -18,8 +18,11 @@ import {
   FlatTextArea,
   FlatButton,
   FlatAvatarUploader,
-  FlatMultiImageUploader
+  FlatMultiImageUploader,
+  FlatInlineSelect,
+  FlatJsonInput
 } from "../../FlatForm/FlatForm";
+import Skeleton from "react-loading-skeleton";
 import "./PartnerProfile.scss";
 // import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
@@ -38,6 +41,8 @@ export default class PartnerPanel extends React.Component {
     this.state = {
       didDataChange: false,
       pageLoaded: false,
+      partnerData: [],
+      parnterId: "",
       filterContext: {
         activeFilter: "",
         dataContent: [],
@@ -90,6 +95,11 @@ export default class PartnerPanel extends React.Component {
             error: "",
             isValid: false
           },
+          city: {
+            value: "",
+            error: "",
+            isValid: false
+          },
           email: {
             value: "",
             error: "",
@@ -131,16 +141,40 @@ export default class PartnerPanel extends React.Component {
             value: "",
             error: "",
             isValid: false
+          },
+          collaborationtypes: {
+            value: "",
+            error: "",
+            isValid: false
           }
         },
         backgroundData: {}
       },
       combo: {
+        list_of_cities: {
+          hasLoaded: false,
+          childs: {}
+        },
+        partnership_working_fields: {
+          hasLoaded: false,
+          childs: {}
+        },
         coworking_working_field: {
           hasLoaded: false,
-          items: []
+          childs: {}
         }
       }
+    };
+    this.validationRules = {
+      name: ["required"],
+      regno: ["required"],
+      collaborationtypes: ["required"],
+      workingfields: ["required"],
+      email: ["email"],
+      homepage: ["url"],
+      city: ["required"],
+      partnership_working_fields: ["required"],
+      coworking_working_field: ["required"]
     };
   }
 
@@ -181,7 +215,7 @@ export default class PartnerPanel extends React.Component {
             partnerId: _id,
             pageLoaded: true
           },
-          () => typeof callback === "function" && callback()
+          () => typeof callback === "function" && callback(res.data[0])
         );
       }
     });
@@ -207,6 +241,7 @@ export default class PartnerPanel extends React.Component {
       isValid: validation.valid
     };
     this.setState({
+      didDataChange: true,
       form: {
         ...this.state.form,
         fields: {
@@ -485,6 +520,85 @@ export default class PartnerPanel extends React.Component {
       });
     });
   };
+  generateCheckboxDataFromApi = (name, defaultChecked) => {
+    const { lang } = this;
+    const _defaultChecked = (checkedObj, toBeSearch) => {
+      const typeofCheckedObj = typeof checkedObj;
+      if (typeofCheckedObj === "object" && checkedObj.length) {
+        return checkedObj.indexOf(toBeSearch) > -1;
+      } else if (
+        typeofCheckedObj === "string" ||
+        typeofCheckedObj === "number" ||
+        typeofCheckedObj === "boolean"
+      ) {
+        return checkedObj === toBeSearch;
+      } else {
+        return false;
+      }
+    };
+    FilterContents(name, res => {
+      const arr = [];
+      SafeValue(res, "data", "object", []).map((val, key) => {
+        arr.push({
+          title: SafeValue(val.fields, `name.${lang}`, "string", null, "name"),
+          key: val._id,
+          boxValue: key + 1,
+          dir: "rtl",
+          value: val._id,
+          defaultChecked: _defaultChecked(defaultChecked, val._id)
+        });
+        return null;
+      });
+      this.setState({
+        combo: {
+          ...this.state.combo,
+          [name]: {
+            hasLoaded: true,
+            items: arr
+          }
+        }
+      });
+    });
+  };
+  componentDidUpdate() {
+    const { pageLoaded } = this.state;
+    const {
+      list_of_cities,
+      partnership_working_fields,
+      coworking_working_field
+    } = this.state.combo;
+    //checkif pageLoaded(means partner info data stored into current component state) and combos have not been loaded yet
+    if (
+      pageLoaded &&
+      !list_of_cities.hasLoaded &&
+      !partnership_working_fields.hasLoaded &&
+      !coworking_working_field.hasLoaded
+    ) {
+      this.generateCheckboxDataFromApi(
+        "list_of_cities",
+        SafeValue(this.state.partnerData, "fields.city._id", "string", "0")
+      );
+      this.generateCheckboxDataFromApi(
+        "partnership_working_fields",
+        SafeValue(
+          this.state.partnerData,
+          "fields.collaborationtypes",
+          "object",
+          []
+        ).map(item => item._id)
+      );
+      this.generateCheckboxDataFromApi(
+        "coworking_working_field",
+        SafeValue(
+          this.state.partnerData,
+          "fields.workingfields",
+          "object",
+          []
+        ).map(item => item._id)
+      );
+    }
+  }
+
   componentDidMount() {
     //Initial datas which are going to display in partner panel
     this.updatePartnerInfo();
@@ -710,25 +824,137 @@ export default class PartnerPanel extends React.Component {
                 {activeFilter === "imagealbum" && (
                   <React.Fragment>
                     <FlatAvatarUploader
-                      width={300}
-                      height={285}
-                      defaultSrc={partnerData.image}
+                      width={260}
+                      height={260}
+                      defaultSrc={SafeValue(
+                        partnerData,
+                        "fields.logo.0",
+                        "string",
+                        ""
+                      )}
                       onChange={img => console.log(img)}
                       messages={{
                         MAX_FILE_SIZE_EXEEDED: locale.fields.file_size_exceeded
                       }}
                       placeholder={locale.fields.upload_placeholder}
-                      label={locale.fields.upload_avatar}
+                      label={locale.fields.avatar_upload}
                     />
-                    <FlatMultiImageUploader />
+                    {/* <FlatMultiImageUploader /> */}
                   </React.Fragment>
                 )}
-                {/* {activeFilter === "map" && (
+                {activeFilter === "map" && (
+                  <React.Fragment>
+                    <div className="field-row">
+                      <span className="field-title">{locale.fields.city}</span>
 
+                      {/* fill checkboxes */}
+                      {this.state.combo.list_of_cities.hasLoaded ? (
+                        <FlatInlineSelect
+                          type="radio"
+                          items={this.state.combo.list_of_cities.items}
+                          onChange={this.checkboxStateHandler}
+                          dir={direction}
+                          name="city"
+                        />
+                      ) : (
+                        <Skeleton count={2} style={{ lineHeight: 2 }} />
+                      )}
+                      <span className="error-message">
+                        {this.state.form.fields.city.error}
+                      </span>
+                    </div>
+                    <hr />
+                    <br />
+                    <FlatTextArea
+                      label={locale.fields.address}
+                      name="address"
+                      id="address"
+                      direction={locale.direction}
+                      onChange={this.formStateHandler}
+                      defaultValue={SafeValue(
+                        partnerData,
+                        `fields.address.${this.lang}`,
+                        "string",
+                        null,
+                        "fields.address"
+                      )}
+                      error={fields.address.error}
+                      style={{
+                        height: "150px",
+                        width: "95%"
+                      }}
+                    />
+                  </React.Fragment>
                 )}
                 {activeFilter === "setting" && (
+                  <React.Fragment>
+                    <div className="field-row">
+                      <span className="field-title">
+                        {locale.fields.collaborationtypes}
+                      </span>
 
-                )} */}
+                      {/* fill checkboxes */}
+                      {this.state.combo.partnership_working_fields.hasLoaded ? (
+                        <FlatInlineSelect
+                          type="checkbox"
+                          items={
+                            this.state.combo.partnership_working_fields.items
+                          }
+                          onChange={this.checkboxStateHandler}
+                          dir={direction}
+                          name="city"
+                        />
+                      ) : (
+                        <Skeleton count={2} style={{ lineHeight: 2 }} />
+                      )}
+                      <span className="error-message">
+                        {this.state.form.fields.collaborationtypes.error}
+                      </span>
+                    </div>
+                    <br />
+                    <div className="field-row">
+                      <span className="field-title">
+                        {locale.fields.workingfields}
+                      </span>
+
+                      {/* fill checkboxes */}
+                      {this.state.combo.coworking_working_field.hasLoaded ? (
+                        <FlatInlineSelect
+                          type="checkbox"
+                          items={this.state.combo.coworking_working_field.items}
+                          onChange={this.checkboxStateHandler}
+                          dir={direction}
+                          name="city"
+                        />
+                      ) : (
+                        <Skeleton count={2} style={{ lineHeight: 2 }} />
+                      )}
+                      <span className="error-message">
+                        {this.state.form.fields.workingfields.error}
+                      </span>
+                    </div>
+                    <br />
+                    <br />
+                    <FlatJsonInput
+                      onChange={res => console.log(res)}
+                      name="workinghours"
+                      text={{
+                        remove: locale.fields.remove,
+                        addButton: locale.fields.add_working_hour_row,
+                        keyText: locale.fields.workinghours_key,
+                        valueText: locale.fields.workinghours_value,
+                        duplicateKeyError: locale.fields.duplcation_keys_error,
+                        emptyKey: locale.fields.empty_key
+                      }}
+                      defaultItem={SafeValue(
+                        partnerData,
+                        "workinghours",
+                        "string",
+                        {}
+                      )}
+                    />
+                  </React.Fragment>
+                )}
               </CardBody>
               <CardFooter>
                 <FlatButton

@@ -26,13 +26,19 @@
       "location": "محل روی نقشه",
       "locationpic": "عکس روی قشه",
       "collaborationtypes": "حوزه های فعالیت",
-      "workingfields": "نوع محموعه (زمینه های همکاری )",
+      "workingfields": "نوع مجموعه (زمینه های همکاری )",
       "workinghours": "ساعات کاری",
       "amenities": "امکانات",
       "submit_changes": "ثبت تغییرات",
       "file_size_exceeded": "حجم فایل خیلی زیاد است",
       "upload_placeholder": "یک فایل را انتخاب کنید",
-      "avatar_upload": "آپلود عکس پروفایل"
+      "avatar_upload": "آپلود عکس پروفایل",
+      "add_working_hour_row": "افزودن ردیف",
+      "workinghours_key": "روز(عنوان)",
+      "workinghours_value": "شرح قوانین",
+      "remove": "حذف",
+      "duplication_keys_error": "روز(عنوان) تکراری است",
+      "empty_key": "روز(عنوان) نباید خالی باشد"
     }
   }
 }

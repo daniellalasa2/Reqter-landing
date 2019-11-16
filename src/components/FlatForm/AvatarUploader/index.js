@@ -31,7 +31,7 @@ export default class AvatarUploader extends React.Component {
     const { maxFileSize, messages } = this.state;
     //maxFileSize in byte
     if (elem.target.files[0].size > (maxFileSize ? maxFileSize : 71680)) {
-      alert(messages.FILE_SIZE_EXCEEDED);
+      alert(messages.MAX_FILE_SIZE_EXEEDED);
       elem.target.value = "";
     }
   }
@@ -39,11 +39,12 @@ export default class AvatarUploader extends React.Component {
   render() {
     const { preview, height, width, src } = this.state;
     return (
-      <div>
+      <div style={{ width: `${width}px`, margin: "auto", overflow: "hidden" }}>
         <Avatar
-          width={height}
-          height={width}
+          width={width}
+          height={height}
           onCrop={this.onCrop}
+          style={{ margin: "auto" }}
           onClose={this.onClose}
           onBeforeFileLoad={this.onBeforeFileLoad}
           onFileLoad={this.props.onChange}
@@ -51,7 +52,7 @@ export default class AvatarUploader extends React.Component {
           label={this.props.placeholder}
           {...this.props}
         />
-        <img src={preview} alt="Preview" />
+        {/* <img src={preview} alt="Preview" width={width} /> */}
       </div>
     );
   }
