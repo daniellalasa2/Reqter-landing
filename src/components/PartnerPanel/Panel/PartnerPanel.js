@@ -7,12 +7,13 @@ import {
   Button,
   Modal,
   ModalBody,
-  ModalHeader,
-  ModalFooter
+  ModalHeader
+  // ModalFooter
 } from "reactstrap";
 import {
   SafeValue,
-  GetPartnerpanelRequests,
+  GetPartnerAllRequests,
+  GetPartnerOpenRequests,
   GetPartnerInfo,
   PartnerpanelRejectRequest,
   PartnerpanelOpenRequest,
@@ -78,6 +79,24 @@ export default class PartnerPanel extends React.Component {
 
   filterRequestsOrOffers = (type, filter, e, callback) => {
     const _partnerId = this.state.partnerId;
+    const _apiCallback = res => {
+      let APIDataContent = [];
+      if (res.success_result.success) {
+        APIDataContent = res.data;
+      }
+      this.setState(
+        {
+          requestsOrOffers: {
+            ...this.state.requestsOrOffers,
+            dataContent: APIDataContent,
+            loading: false
+          }
+        },
+        () => {
+          if (typeof callback === "function") callback();
+        }
+      );
+    };
     this.setState({
       requestsOrOffers: {
         ...this.state.requestsOrOffers,
@@ -101,44 +120,15 @@ export default class PartnerPanel extends React.Component {
       });
       e.target.classList.add("active");
     }
+
     if (type === "request") {
-      GetPartnerpanelRequests(_partnerId, filter, res => {
-        let APIDataContent = [];
-        if (res.success_result.success) {
-          APIDataContent = res.data;
-        }
-        this.setState(
-          {
-            requestsOrOffers: {
-              ...this.state.requestsOrOffers,
-              dataContent: APIDataContent,
-              loading: false
-            }
-          },
-          () => {
-            if (typeof callback === "function") callback();
-          }
-        );
-      });
+      //doRequestCallback
+      if (filter === "opened") {
+        GetPartnerOpenRequests(_partnerId, _apiCallback);
+      } else {
+        GetPartnerAllRequests(_partnerId, filter, _apiCallback);
+      }
     } else {
-      const _apiCallback = res => {
-        let APIDataContent = [];
-        if (res.success_result.success) {
-          APIDataContent = res.data;
-        }
-        this.setState(
-          {
-            requestsOrOffers: {
-              ...this.state.requestsOrOffers,
-              dataContent: APIDataContent,
-              loading: false
-            }
-          },
-          () => {
-            if (typeof callback === "function") callback();
-          }
-        );
-      };
       switch (filter) {
         case "alloffers":
           GetPartnerAllOffers(_partnerId, _apiCallback);
@@ -1417,6 +1407,8 @@ export default class PartnerPanel extends React.Component {
                               ""
                             )
                           )}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           {
                             locale.requests.customer_contact_detail.request_info

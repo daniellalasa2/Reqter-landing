@@ -19,8 +19,10 @@ let _api = {
   AcceptOffer: Config.BASE_URL_REQTER + Config.URLs.accept_offer,
   RejectOffer: Config.BASE_URL_REQTER + Config.URLs.reject_offer,
   GetPartnerInfo: Config.BASE_URL_REQTER + Config.URLs.get_partner_info,
-  GetPartnerpanelRequests:
-    Config.BASE_URL_REQTER + Config.URLs.get_partnerpanel_requests,
+  GetPartnerAllRequests:
+    Config.BASE_URL_REQTER + Config.URLs.get_partnerpanel_all_requests,
+  GetPartnerOpenRequests:
+    Config.BASE_URL_REQTER + Config.URLs.get_partnerpanel_open_requests,
   PartnerpanelRejectRequest:
     Config.BASE_URL_REQTER + Config.URLs.partnerpanel_reject_request,
   PartnerpanelOpenRequest:
@@ -573,14 +575,14 @@ var QueryContent = (contentTypesArr, callback) => {
   });
 };
 //Partner profile APIs
-var GetPartnerpanelRequests = (partnerId, stage, callback) => {
+var GetPartnerAllRequests = (partnerId, stage, callback) => {
   const params = {
     "fields.partnerid": partnerId,
     "fields.stage": stage
   };
   Config.Auth().then(token => {
     axios({
-      url: _api.GetPartnerpanelRequests,
+      url: _api.GetPartnerAllRequests,
       method: "GET",
       headers: {
         ..._api.header,
@@ -613,6 +615,46 @@ var GetPartnerpanelRequests = (partnerId, stage, callback) => {
       });
   });
 };
+var GetPartnerOpenRequests = (partnerId, callback) => {
+  const params = {
+    "fields.partnerid": partnerId
+  };
+  Config.Auth().then(token => {
+    axios({
+      url: _api.GetPartnerOpenRequests,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      params: {
+        contentType: Config.CONTENT_TYPE_ID.get_partnerpanel_requests,
+        ...params
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+};
+
 var GetPartnerLostOffers = (partnerId, callback) => {
   const params = {
     "fields.partnerid": partnerId,
@@ -960,7 +1002,8 @@ export {
   GetPartnerProducts,
   PartnerpanelRejectRequest,
   PartnerpanelOpenRequest,
-  GetPartnerpanelRequests,
+  GetPartnerAllRequests,
+  GetPartnerOpenRequests,
   PartnerpanelIssueOffer,
   QueryContent,
   GetPartnerAllOffers,
