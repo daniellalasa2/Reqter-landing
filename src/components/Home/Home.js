@@ -34,9 +34,10 @@ import apply from "../../assets/images/service-icons/apply.png";
 import offer from "../../assets/images/service-icons/offer.png";
 import ContextApi from "../../components/ContextApi/ContextApi";
 //icons
-import privateOffice from "../../assets/images/products-icons/004-meet.png";
-import cowork from "../../assets/images/products-icons/005-coworking.png";
-import conferenceRoom from "../../assets/images/products-icons/002-desk.png";
+import sharedDeskIcon from "../../assets/images/products-icons/005-coworking.png";
+import privateDeskIcon from "../../assets/images/products-icons/002-desk.png";
+import officeIcon from "../../assets/images/products-icons/office.png";
+import conferenceRoomIcon from "../../assets/images/products-icons/004-meet.png";
 //backgrounds
 import product_defaultBgImg from "../../assets/images/products-bgImg/default.jpg";
 import product_privateDeskBgImg from "../../assets/images/products-bgImg/coworking.jpg";
@@ -477,7 +478,11 @@ class Home extends React.Component {
                       this.toggle("2");
                     }}
                   >
-                    <img src={cowork} alt="" className="product-icons" />
+                    <img
+                      src={sharedDeskIcon}
+                      alt=""
+                      className="product-icons"
+                    />
 
                     <strong>{product.items.shared_desk}</strong>
 
@@ -501,7 +506,11 @@ class Home extends React.Component {
                       this.toggle("3");
                     }}
                   >
-                    <img src={cowork} alt="" className="product-icons" />
+                    <img
+                      src={privateDeskIcon}
+                      alt=""
+                      className="product-icons"
+                    />
 
                     <strong>{product.items.private_desk}</strong>
 
@@ -525,7 +534,7 @@ class Home extends React.Component {
                       this.toggle("4");
                     }}
                   >
-                    <img src={privateOffice} alt="" className="product-icons" />
+                    <img src={officeIcon} alt="" className="product-icons" />
 
                     <strong>{product.items.dedicated_office}</strong>
                     <FontAwesomeIcon
@@ -549,7 +558,7 @@ class Home extends React.Component {
                     }}
                   >
                     <img
-                      src={conferenceRoom}
+                      src={conferenceRoomIcon}
                       alt=""
                       className="product-icons"
                     />
@@ -617,21 +626,8 @@ class Home extends React.Component {
               </section>
             </Col>
           </Row>
-          <ProductSpecs img={sessionRoom}>
-            <Title>{product.product_specs.session_room._title}</Title>
-            <SpecList className="rtl">
-              <Spec>{product.product_specs.session_room.description}</Spec>
-            </SpecList>
-            <Btn
-              color="#879cdd"
-              onClick={() =>
-                this.props.history.push(`/${lang}/apply/sessionroom`)
-              }
-            >
-              {product.product_specs.submit_button}
-            </Btn>
-          </ProductSpecs>
-          <ProductSpecs img={sharedDesk} direction="rtl">
+
+          <ProductSpecs img={sharedDesk} direction="ltr">
             <Title>{product.product_specs.shared_desk._title}</Title>
             <SpecList className="rtl">
               <Spec>{product.product_specs.shared_desk.description}</Spec>
@@ -640,6 +636,20 @@ class Home extends React.Component {
               color="#879cdd"
               onClick={() =>
                 this.props.history.push(`/${lang}/apply/shareddesk`)
+              }
+            >
+              {product.product_specs.submit_button}
+            </Btn>
+          </ProductSpecs>
+          <ProductSpecs img={privateDesk} direction="rtl">
+            <Title>{product.product_specs.private_desk._title}</Title>
+            <SpecList className="rtl">
+              <Spec>{product.product_specs.private_desk.description}</Spec>
+            </SpecList>
+            <Btn
+              color="#879cdd"
+              onClick={() =>
+                this.props.history.push(`/${lang}/apply/privatedesk`)
               }
             >
               {product.product_specs.submit_button}
@@ -659,15 +669,16 @@ class Home extends React.Component {
               {product.product_specs.submit_button}
             </Btn>
           </ProductSpecs>
-          <ProductSpecs img={privateDesk} direction="rtl">
-            <Title>{product.product_specs.private_desk._title}</Title>
+
+          <ProductSpecs img={sessionRoom} direction="rtl">
+            <Title>{product.product_specs.session_room._title}</Title>
             <SpecList className="rtl">
-              <Spec>{product.product_specs.private_desk.description}</Spec>
+              <Spec>{product.product_specs.session_room.description}</Spec>
             </SpecList>
             <Btn
               color="#879cdd"
               onClick={() =>
-                this.props.history.push(`/${lang}/apply/privatedesk`)
+                this.props.history.push(`/${lang}/apply/sessionroom`)
               }
             >
               {product.product_specs.submit_button}

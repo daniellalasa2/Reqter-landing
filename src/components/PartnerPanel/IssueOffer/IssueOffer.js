@@ -414,7 +414,6 @@ export default class IssueOffer extends React.Component {
                 e.target.value = this.thousandSeprator(e.target.value, false);
                 const apiData = this.thousandSeprator(e.target.value, true);
                 this.formStateHandler(e.target.name, apiData);
-                console.log(apiData);
               }}
               error={this.state.form.fields.dailyprice.error}
             />

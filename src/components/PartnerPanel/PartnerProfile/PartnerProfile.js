@@ -3,7 +3,6 @@ import { Card, CardHeader, CardBody, CardFooter } from "reactstrap";
 import {
   SafeValue,
   GetPartnerInfo,
-  Config,
   FilterContents,
   Upload
 } from "../../ApiHandlers/ApiHandler";
@@ -18,9 +17,10 @@ import {
   FlatTextArea,
   FlatButton,
   FlatAvatarUploader,
-  FlatMultiImageUploader,
+  // FlatMultiImageUploader,
   FlatInlineSelect,
-  FlatJsonInput
+  FlatJsonInput,
+  FlatUploader
 } from "../../FlatForm/FlatForm";
 import Skeleton from "react-loading-skeleton";
 import "./PartnerProfile.scss";
@@ -884,6 +884,8 @@ export default class PartnerPanel extends React.Component {
                         width: "95%"
                       }}
                     />
+                    <br />
+                    <FlatUploader label="عکس نقشه" />
                   </React.Fragment>
                 )}
                 {activeFilter === "setting" && (

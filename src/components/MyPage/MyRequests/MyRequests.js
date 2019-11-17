@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { SafeValue, GetRequestsList } from "../../ApiHandlers/ApiHandler";
+import {
+  SafeValue,
+  GetRequestsList,
+  DownloadAsset
+} from "../../ApiHandlers/ApiHandler";
 import DateFormat from "../../DateFormat/DateFormat";
 import PersianNumber from "../../PersianNumber/PersianNumber";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -142,9 +146,7 @@ export default class MyRequests extends Component {
                       <li>
                         <span>{locale.fields.resume} :‌ </span>
                         <a
-                          href={
-                            this.UPLOAD_BASEURL +
-                            "asset/download/" +
+                          href={DownloadAsset(
                             SafeValue(
                               item,
                               `fields.resume.0.${lang}`,
@@ -152,7 +154,7 @@ export default class MyRequests extends Component {
                               "",
                               "fields.resume.0"
                             )
-                          }
+                          )}
                         >
                           <FontAwesomeIcon
                             icon={faDownload}

@@ -8,6 +8,7 @@ let _api = {
   SubmitForm: Config.BASE_URL_REQTER + Config.URLs.submit_form,
   AddContent: Config.BASE_URL_CASEER + Config.URLs.add_content,
   Upload: Config.BASE_URL_UPLOAD + Config.URLs.upload,
+  Download: Config.BASE_URL_UPLOAD + Config.URLs.download,
   FilterContents: Config.BASE_URL_REQTER + Config.URLs.filter_contents,
   FilterContentsFullQuery:
     Config.BASE_URL_REQTER + Config.URLs.filter_contents_get_fullquery,
@@ -72,6 +73,12 @@ var errorHandler = statusCode => {
   return result;
 };
 
+var DownloadAsset = fileUrl => {
+  return _api.Download + fileUrl;
+};
+var UploadAsset = fileUrl => {
+  return _api.Upload + fileUrl;
+};
 var SubmitForm = (formName, data, callback) => {
   Config.Auth().then(token => {
     axios({
@@ -961,5 +968,7 @@ export {
   GetPartnerLostOffers,
   CancelIssuedOffer,
   Config,
+  DownloadAsset,
+  UploadAsset,
   _api as APIAddresses
 };

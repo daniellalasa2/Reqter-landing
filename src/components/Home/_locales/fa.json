@@ -5,7 +5,7 @@
       "header": {
         "title": "تامین فضای کاری استارت آپ ها و فریلنسر ها",
         "slang": "درخواست بدهید ، پیشنهاد بگیرید و انتخاب کنید",
-        "choose_a_product": "یک محصول را انتخاب کنید"
+        "choose_a_product": ":نوع درخواست خود را انتخاب کنید"
       },
       "header_forms": {
         "choose_city_and_seats": "با انتخاب شهر و تعداد نفرات درخواست خود را شروع کنید",
@@ -15,10 +15,10 @@
         "city_placeholder": "شهر"
       },
       "items": {
-        "shared_desk": "میزکار اشتراکی",
-        "private_desk": "میزکار اختصاصی",
-        "dedicated_office": "دفتر کار اختصاصی",
-        "session_room": "سالن جلسات"
+        "shared_desk": "درخواست میز اشتراکی",
+        "private_desk": "درخواست میز اختصاصی",
+        "dedicated_office": "درخواست دفترکار",
+        "session_room": "درخواست اتاق جلسه"
       },
       "product_specs": {
         "submit_button": "شروع درخواست",

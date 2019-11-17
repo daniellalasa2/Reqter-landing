@@ -22,7 +22,8 @@ import {
   GetPartnerAcceptedOffers,
   GetPartnerLostOffers,
   CancelIssuedOffer,
-  Config
+  Config,
+  DownloadAsset
 } from "../../ApiHandlers/ApiHandler";
 import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
 import DateFormat from "../../DateFormat/DateFormat";
@@ -50,6 +51,7 @@ export default class PartnerPanel extends React.Component {
       acceptedoffers: "acceptedoffers",
       lostoffers: "lostoffers"
     };
+    this.defaultFilter = React.createRef();
     this.state = {
       contactModal: {},
       pageLoaded: false,
@@ -1051,7 +1053,17 @@ export default class PartnerPanel extends React.Component {
       }
     });
   };
-
+  //Improvement: following function needs logic refactoring, default filter selection should dynamically get from a URL parameter
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.pageLoaded !== this.state.pageLoaded &&
+      this.state.pageLoaded === true
+    ) {
+      this.filterRequestsOrOffers("request", "newrequests", {
+        target: this.defaultFilter.current
+      });
+    }
+  }
   componentDidMount() {
     //Initial datas which are going to display in partner panel
     this.updatePartnerInfo();
@@ -1081,6 +1093,7 @@ export default class PartnerPanel extends React.Component {
                 <nav className="card-header-nav filter">
                   <button
                     className="filter-button"
+                    ref={this.defaultFilter}
                     onClick={button =>
                       this.filterRequestsOrOffers(
                         "request",
@@ -1396,11 +1409,13 @@ export default class PartnerPanel extends React.Component {
                       </span>{" "}
                       <span className="requestInfo-text">
                         <a
-                          href={SafeValue(
-                            modals.requestContact,
-                            `data.fields.resume.0.${this.lang}`,
-                            "string",
-                            ""
+                          href={DownloadAsset(
+                            SafeValue(
+                              modals.requestContact,
+                              `data.fields.resume.0.${this.lang}`,
+                              "string",
+                              ""
+                            )
                           )}
                         >
                           {

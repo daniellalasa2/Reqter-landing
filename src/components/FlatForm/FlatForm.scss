@@ -7,9 +7,9 @@
 input,
 textarea {
   &:not(textarea) {
-    border-width: 0 0 1px 0 !important;
+    border-width: 1px !important;
   }
-  border-color: #ced4da;
+  border: 1px solid lightgray;
   display: block;
   width: 100%;
   height: calc(1.5em + 0.75rem + 2px);
@@ -21,6 +21,7 @@ textarea {
   background-color: #fff;
   background-clip: padding-box;
   border-radius: 0;
+  height: 44px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   outline: none !important;
   &:hover,
@@ -52,9 +53,9 @@ input:read-only {
   text-align: left;
   border: none;
   box-shadow: 0px 0px 1px 0px lightgrey;
-  border-radius: 8px !important;
+  border-radius: 1px !important;
   margin: 80px auto 10px;
-  padding: 20px;
+  padding: 7px 20px 20px;
   .show {
     display: block !important;
     opacity: 1 !important;
@@ -150,15 +151,16 @@ input:read-only {
     min-height: 50px;
   }
   .flatinput-prefix {
-    max-height: calc(1.5em + 0.75rem + 2px);
-    line-height: 1.5;
-    margin-right: -42px;
+    max-height: 42px;
+    height: 42px;
+    line-height: 2;
+    margin-right: -43px;
     width: auto;
     max-width: 51px;
     min-width: 42px;
     padding: 6px;
     text-align: center;
-    background-color: rgb(230, 230, 230);
+    background-color: rgba(142, 163, 227, 0.4);
     border-radius: 1px;
     font-weight: bold;
     z-index: 1;
@@ -376,14 +378,14 @@ label.checkboxContainer {
   line-height: 1.9;
   width: auto;
   padding: 5px;
-  flex-grow: 1;
+
   .inline-checkbox {
     overflow: hidden;
-    flex-grow: 1;
+
     cursor: pointer;
-    height: 36px;
-    border-radius: 4px;
-    width: 100%;
+    height: 44px;
+    border-radius: 1px;
+    width: 25%;
     box-shadow: 0 0 0 1px rgba(46, 91, 150, 0.6);
     background-color: whitesmoke;
     display: inline-flex;
@@ -394,18 +396,18 @@ label.checkboxContainer {
       direction: ltr;
     }
     .key {
-      width: 35px;
+      width: 40px;
       display: inline-flex;
       text-align: center;
       span {
-        width: 30px;
+        width: 40px;
         border: 1px solid rgba(46, 91, 150, 0.4);
         background-color: rgba(142, 163, 227, 0.4);
         margin: 4px;
         display: block;
-        border-radius: 2px;
-        font-size: 15px;
-        line-height: 1.95;
+        border-radius: 1px;
+        font-size: 16px;
+        line-height: 2.3;
       }
     }
     .title {
@@ -414,7 +416,7 @@ label.checkboxContainer {
       text-align: center;
       max-width: auto;
       overflow: hidden;
-      height: 38px;
+      height: 44px;
       font-size: 15px;
       line-height: 2.4;
     }
@@ -431,7 +433,7 @@ label.checkboxContainer {
       }
     }
     &.checked {
-      box-shadow: 0 0 0px 2px rgba(46, 91, 150, 0.7);
+      box-shadow: 0 0 0px 1px rgba(46, 91, 150, 0.7);
       .key {
         span {
           background-color: rgb(46, 91, 150);
@@ -589,32 +591,30 @@ label.checkboxContainer {
 }
 .inline-checkbox-wrapper {
   line-height: 1.9;
-  width: auto;
+  width: 25%;
   padding: 5px;
-  flex-grow: 1;
   .inline-checkbox {
     overflow: hidden;
     flex-grow: 1;
     cursor: pointer;
-    height: 36px;
-    border-radius: 4px;
+    height: 44px;
+    border-radius: 1px;
     width: 100%;
     box-shadow: 0 0 0 1px rgba(46, 91, 150, 0.6);
     background-color: whitesmoke;
     display: inline-flex;
     .key {
-      width: 35px;
+      width: 44px;
       display: inline-flex;
       text-align: center;
       span {
-        width: 30px;
+        width: 40px;
         border: 1px solid rgba(46, 91, 150, 0.4);
         background-color: rgba(142, 163, 227, 0.4);
         margin: 4px;
         display: block;
-        border-radius: 2px;
-        font-size: 15px;
-        line-height: 1.95;
+        border-radius: 1px;
+        font-size: 16px;
       }
     }
     .title {
@@ -623,9 +623,9 @@ label.checkboxContainer {
       text-align: center;
       max-width: auto;
       overflow: hidden;
-      height: 38px;
+      height: 44px;
       font-size: 15px;
-      line-height: 2.4;
+      line-height: 2.8;
     }
     .checked-icon {
       width: 22px;
@@ -640,11 +640,12 @@ label.checkboxContainer {
       }
     }
     &.checked {
-      box-shadow: 0 0 0px 2px rgba(46, 91, 150, 0.7);
+      box-shadow: 0 0 0px 1px rgba(46, 91, 150, 0.7);
       .key {
         span {
           background-color: rgb(46, 91, 150);
           color: white;
+          font-weight: bold;
         }
       }
       .checked-icon {
@@ -683,10 +684,10 @@ label.checkboxContainer {
     direction: rtl;
     & .sets {
       &:first-child {
-        border-radius: 0 0.35vw 0.35vw 0 !important;
+        border-radius: 0 1px 1px 0 !important;
       }
       &:last-child {
-        border-radius: 0.35vw 0 0 0.35vw !important;
+        border-radius: 1px 0 0 1px !important;
       }
     }
   }
@@ -694,10 +695,10 @@ label.checkboxContainer {
     direction: ltr;
     & .sets {
       &:first-child {
-        border-radius: 0.35vw 0 0 0.35vw !important;
+        border-radius: 1px 0 0 1px !important;
       }
       &:last-child {
-        border-radius: 0 0.35vw 0.35vw 0 !important;
+        border-radius: 0 1px 1px 0 !important;
       }
     }
   }
@@ -705,7 +706,12 @@ label.checkboxContainer {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    border: 1px solid grey !important;
+    border: 1px solid lightgrey !important;
+    // &:not(:first-child),
+    &:not(:last-child) {
+      border-left: none !important;
+      border-radius: none;
+    }
     background-color: transparent;
     color: black;
     padding: 9px 12px 7px;
@@ -713,23 +719,18 @@ label.checkboxContainer {
     width: auto;
     min-width: 10%;
     &:hover {
-      background-color: rgba(20, 20, 20, 0.4);
-      color: white;
+      background-color: whitesmoke;
     }
-    &:not(:first-child),
-    &:not(:last-child) {
-      border-radius: none;
-    }
-    &:first-child {
-      border-radius: 0.35vw 0 0 0.35vw !important;
-    }
-    &:last-child {
-      border-radius: 0 0.35vw 0.35vw 0 !important;
-    }
+    // &:first-child {
+    //   border-radius: 1px 0 0 1px !important;
+    // }
+    // &:last-child {
+    //   border-radius: 0 1px 1px 0 !important;
+    // }
   }
   .active {
-    background-color: rgba(20, 20, 20, 0.8) !important;
-    color: white;
+    background-color: rgba(142, 163, 227, 0.4) !important;
+    font-weight: bold;
   }
 }
 
@@ -742,8 +743,10 @@ label.checkboxContainer {
   align-content: center;
   justify-content: space-around;
   padding: 1rem 1rem;
-  border: 2px dashed #5993bf;
+  border: 1px solid rgba(46, 91, 150, 0.6);
+  background-color: whitesmoke;
   direction: rtl;
+  border-radius: 1px;
   .percentage-number {
     font-size: 17px;
     width: 45px;
@@ -768,11 +771,12 @@ label.checkboxContainer {
 
   .file-select-button {
     padding: 0.25rem 0.5rem;
-    border: 1px solid black;
-    border-radius: 3px;
+    border: 1px solid rgba(46, 91, 150, 0.6);
+    border-radius: 1px;
+    background-color: rgba(142, 163, 227, 0.4);
     cursor: pointer;
     &:hover {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: rgba(142, 163, 227, 0.6);
     }
     .placeholder {
       font-size: 0.8rem;
@@ -817,11 +821,20 @@ label.checkboxContainer {
 .timeWrapper {
   @extend .dateWrapper;
 }
-
-//responsive styles section
-@media (max-width: 320px) {
-  .flatuploader {
-    padding: 1rem 1rem;
+@media (max-width: 768px) {
+  .form-section {
+    min-height: calc(100vh - 49px); //min-height calculation for small mobiles
+  }
+  .inline-checkbox-wrapper {
+    width: 33.3%;
+  }
+}
+@media (max-width: 576px) {
+  .form-section {
+    min-height: calc(100vh - 49px); //min-height calculation for small mobiles
+  }
+  .inline-checkbox-wrapper {
+    width: 50%;
   }
 }
 @media (max-width: 410px) {
@@ -830,10 +843,17 @@ label.checkboxContainer {
       display: none;
     }
   }
+  .inline-checkbox-wrapper {
+    width: 100%;
+  }
 }
 
-@media (max-width: 576px) {
-  .form-section {
-    min-height: calc(100vh - 49px); //min-height calculation for small mobiles
+//responsive styles section
+@media (max-width: 320px) {
+  .flatuploader {
+    padding: 1rem 1rem;
+  }
+  .inline-checkbox-wrapper {
+    width: 100%;
   }
 }

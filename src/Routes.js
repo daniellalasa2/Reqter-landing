@@ -50,6 +50,9 @@ const PartnerLogin = React.lazy(() =>
 const PartnerProfile = React.lazy(() =>
   import("./components/PartnerPanel/PartnerProfile/PartnerProfile")
 );
+const PartnerProducts = React.lazy(() =>
+  import("./components/PartnerPanel/PartnerProducts/PartnerProducts")
+);
 //temporary
 const ComingSoon = React.lazy(() => import("./components/DefaultInnerLinks"));
 const routes = [
@@ -210,6 +213,13 @@ const routes = [
     name: "Partner Panel Profile",
     auth: ["partner"],
     component: PartnerProfile,
+    navStatus: true
+  },
+  {
+    path: "/:lang?/partnerpanel/products",
+    name: "Partner Panel Products",
+    auth: ["partner"],
+    component: PartnerProducts,
     navStatus: true
   },
   {

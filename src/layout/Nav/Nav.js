@@ -193,7 +193,7 @@ class Navigation extends Component {
                 <React.Fragment>
                   <NavItem>
                     <Link
-                      to={`/${lang}/partnerpanel/myproducts`}
+                      // to={`/${lang}/partnerpanel/products`}
                       className="nav-link"
                     >
                       <FontAwesomeIcon
@@ -207,7 +207,7 @@ class Navigation extends Component {
                   {this.props.match.path !== "/:lang?/partnerpanel/profile" ? (
                     <NavItem>
                       <Link
-                        to={`/${lang}/partnerpanel/profile`}
+                        // to={`/${lang}/partnerpanel/profile`}
                         className="nav-link"
                       >
                         <FontAwesomeIcon
@@ -221,7 +221,7 @@ class Navigation extends Component {
                   ) : (
                     <NavItem>
                       <Link
-                        to={`/${lang}/partnerpanel/panel`}
+                        // to={`/${lang}/partnerpanel/panel`}
                         className="nav-link"
                       >
                         <FontAwesomeIcon
@@ -493,7 +493,7 @@ class Navigation extends Component {
                       to=""
                       onClick={() =>
                         this.props.history.push(
-                          `/${lang}/partnerpanel/panel/myproducts`
+                          `/${lang}/partnerpanel/panel/products`
                         )
                       }
                     >

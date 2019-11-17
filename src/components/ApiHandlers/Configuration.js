@@ -23,6 +23,7 @@ var Configuration = {
     filter_contents: "api/v1/lists",
     filter_contents_get_fullquery: "api/v1/lists/get/fullquery",
     upload: "asset/upload",
+    download: "asset/download/",
     login: "api/v1/customers/requestcode",
     verify_code: "api/v1/customers/verifycode",
     all_requests: "api/v1/requests/all",
