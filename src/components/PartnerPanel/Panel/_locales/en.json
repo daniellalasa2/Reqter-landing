@@ -9,7 +9,7 @@
     "requests": {
       "loading": "Getting information ...",
       "no_items_found": "No items found.",
-      "open_request_button": "Open",
+      "open_request_button": "Dislay",
       "reject_request_button": "Reject",
       "display_request": "Display",
       "issue_offer": "Issue offer",

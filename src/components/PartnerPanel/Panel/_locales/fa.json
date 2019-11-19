@@ -9,9 +9,9 @@
     "requests": {
       "loading": "در حال دریافت اطلاعات ...",
       "no_items_found": "موردی یافت نشد.",
-      "open_request_button": "باز کردن",
+      "open_request_button": "مشاهده",
       "reject_request_button": "رد کردن",
-      "display_request": "نمایش",
+      "display_request": "مشاهده",
       "issue_offer": "ارسال پیشنهاد",
       "cancel_offer": "لغو پیشنهاد",
       "alert": {

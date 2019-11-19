@@ -617,7 +617,8 @@ var GetPartnerAllRequests = (partnerId, stage, callback) => {
 };
 var GetPartnerOpenRequests = (partnerId, callback) => {
   const params = {
-    "fields.partnerid": partnerId
+    "fields.partnerid": partnerId,
+    "fields.stage": "opened"
   };
   Config.Auth().then(token => {
     axios({
