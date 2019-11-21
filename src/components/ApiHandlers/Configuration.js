@@ -39,6 +39,7 @@ var Configuration = {
     get_partnerpanel_open_requests: "api/v1/requests/opened",
     query_content: "api/v1/lists/get/query",
     issue_offer: "api/v1/quotes/issueoffer",
+    partner_panel_add_product: "api/v1/products/add",
     get_partner_all_offers: "api/v1/quotes/alloffers",
     get_partner_accepted_offers: "api/v1/quotes/acceptedoffers",
     get_partner_lost_offers: "api/v1/quotes/lostoffers",

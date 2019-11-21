@@ -73,7 +73,7 @@
     "card_header": {
       "new_requests": "درخواستهای جدید",
       "open_requests": "درخواستهای باز",
-      "offers": "پیشنهادات",
+      "offers": "پیشنهادات باز",
       "accepted": "پذیرفته شده ها",
       "rejected": "رد شده ها"
     }

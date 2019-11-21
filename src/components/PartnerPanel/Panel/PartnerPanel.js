@@ -157,16 +157,13 @@ export default class PartnerPanel extends React.Component {
       }
     });
     //this.state.partnerId
-    GetPartnerProducts(
-      { "fields.partnerid": "5d6d17bbaedb7b0017ae6b74" },
-      res => {
-        if (res.success_result.success) {
-          this.setState({
-            partnerProducts: res.data
-          });
-        }
+    GetPartnerProducts({ "fields.partnerid": this.state.partnerId }, res => {
+      if (res.success_result.success) {
+        this.setState({
+          partnerProducts: res.data
+        });
       }
-    );
+    });
   };
   openRequest = (requestid, request, reloadRequests) => {
     PartnerpanelOpenRequest(requestid, res => {

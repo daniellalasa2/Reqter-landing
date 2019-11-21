@@ -29,6 +29,8 @@ let _api = {
     Config.BASE_URL_REQTER + Config.URLs.partnerpanel_open_request,
   QueryContent: Config.BASE_URL_REQTER + Config.URLs.query_content,
   PartnerpanelIssueOffer: Config.BASE_URL_REQTER + Config.URLs.issue_offer,
+  PartnerpanelAddProduct:
+    Config.BASE_URL_REQTER + Config.URLs.partner_panel_add_product,
   GetPartnerAllOffers:
     Config.BASE_URL_REQTER + Config.URLs.get_partner_all_offers,
   GetPartnerAcceptedOffers:
@@ -921,6 +923,42 @@ var PartnerpanelIssueOffer = (data, callback) => {
       });
   });
 };
+var PartnerpanelAddProduct = (data, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.PartnerpanelAddProduct,
+      method: "POST",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      data: {
+        contentType: Config.CONTENT_TYPE_ID.get_partner_products,
+        fields: data
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+};
 //return safe value
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
@@ -1006,6 +1044,7 @@ export {
   GetPartnerAllRequests,
   GetPartnerOpenRequests,
   PartnerpanelIssueOffer,
+  PartnerpanelAddProduct,
   QueryContent,
   GetPartnerAllOffers,
   GetPartnerAcceptedOffers,
