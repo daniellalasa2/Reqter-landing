@@ -18,11 +18,11 @@
     flex-wrap: wrap;
     justify-content: space-around;
     & .field-row {
-      width: 208px;
+      width: 218px;
       margin-bottom: 0;
       margin-top: 0;
       align-self: flex-start;
-      &:nth-child(7) {
+      &#description {
         width: 95%;
         margin: auto;
       }

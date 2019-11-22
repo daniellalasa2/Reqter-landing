@@ -11,6 +11,8 @@
     "submit_changes": "Submit chsanges",
     "my_products": "My products",
     "fields": {
+      "delete_product": "Delete",
+      "null": "Null",
       "submit_changes": "Submit",
       "name": {
         "_title": "Product name",
@@ -23,6 +25,14 @@
       "shortdesc": {
         "_title": "Short description",
         "placeholder": "Write a short description for your product"
+      },
+      "count": {
+        "_title": "Product quantity/capacity",
+        "placeholder": "Quantity of your product"
+      },
+      "media": {
+        "_title": "Product image",
+        "placeholder": "Select your product image"
       },
       "description": {
         "_title": "Description",

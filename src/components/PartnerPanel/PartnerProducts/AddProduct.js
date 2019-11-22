@@ -12,10 +12,10 @@ import {
   SafeValue,
   PartnerpanelAddProduct
 } from "../../ApiHandlers/ApiHandler";
-import { addCommas } from "../../PersianNumber/PersianNumber";
+import { thousandSeprator } from "../../../assets/script/thousandSeprator";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 import classnames from "classnames";
-import NumberFormat from "react-number-format";
+// import NumberFormat from "react-number-format";
 import ContextApi from "../../ContextApi/ContextApi";
 export default class AddProduct extends React.Component {
   static contextType = ContextApi;
@@ -43,6 +43,16 @@ export default class AddProduct extends React.Component {
             isValid: true
           },
           code: {
+            value: "",
+            error: "",
+            isValid: true
+          },
+          count: {
+            value: "",
+            error: "",
+            isValid: true
+          },
+          media: {
             value: "",
             error: "",
             isValid: true
@@ -256,7 +266,7 @@ export default class AddProduct extends React.Component {
                   return this.context.displayNotif(
                     "success",
                     locale.notification.add_product.success,
-                    () => this.props.callback()
+                    () => this.props.callback({ success: true })
                   );
                 } else {
                   return this.context.displayNotif(
@@ -290,14 +300,6 @@ export default class AddProduct extends React.Component {
       }
     });
   };
-  thousandSeprator = (number, reverseOperation) => {
-    number = number
-      .toString()
-      .split(",")
-      .join("");
-    if (!reverseOperation) return addCommas(number);
-    else return number;
-  };
   render() {
     const {
       currentStep,
@@ -325,15 +327,13 @@ export default class AddProduct extends React.Component {
               type="radio"
               name="offeredProduct"
             />
-            <div className="field-row">
-              <Button
-                color="primary"
-                disabled={!stepsValidation[currentStep]}
-                onClick={() => this.forwardToStep(2)}
-              >
-                {locale.step1.next_step_button}
-              </Button>
-            </div>
+            <Button
+              color="primary"
+              disabled={!stepsValidation[currentStep]}
+              onClick={() => this.forwardToStep(2)}
+            >
+              {locale.step1.next_step_button}
+            </Button>
           </div>
         )}
         {currentStep === 2 && (
@@ -361,6 +361,28 @@ export default class AddProduct extends React.Component {
               error={this.state.form.fields.code.error}
             />
             <FlatInput
+              label={locale.fields.count._title}
+              type="number"
+              placeholder={locale.fields.count.placeholder}
+              name="count"
+              id="count"
+              onChange={e =>
+                this.formStateHandler(e.target.name, e.target.value)
+              }
+              error={this.state.form.fields.count.error}
+            />
+            <FlatInput
+              label={locale.fields.media._title}
+              type="number"
+              placeholder={locale.fields.media.placeholder}
+              name="media"
+              id="media"
+              onChange={e =>
+                this.formStateHandler(e.target.name, e.target.value)
+              }
+              error={this.state.form.fields.media.error}
+            />
+            <FlatInput
               label={locale.fields.shortdesc._title}
               type="text"
               placeholder={locale.fields.shortdesc.placeholder}
@@ -376,7 +398,7 @@ export default class AddProduct extends React.Component {
               type="text"
               name="perhourprice"
               id="perhourprice"
-              defaultValue={this.thousandSeprator(
+              defaultValue={thousandSeprator(
                 SafeValue(
                   selectedProductType,
                   "fields.perhourprice",
@@ -385,8 +407,8 @@ export default class AddProduct extends React.Component {
                 )
               )}
               onChange={e => {
-                e.target.value = this.thousandSeprator(e.target.value, false);
-                const apiData = this.thousandSeprator(e.target.value, true);
+                e.target.value = thousandSeprator(e.target.value, false);
+                const apiData = thousandSeprator(e.target.value, true);
                 this.formStateHandler(e.target.name, apiData);
               }}
               error={this.state.form.fields.perhourprice.error}
@@ -395,13 +417,13 @@ export default class AddProduct extends React.Component {
               label={locale.fields.dailyprice._title}
               type="text"
               name="dailyprice"
-              defaultValue={this.thousandSeprator(
+              defaultValue={thousandSeprator(
                 SafeValue(selectedProductType, "fields.dailyprice", "string", 0)
               )}
               id="dailyprice"
               onChange={e => {
-                e.target.value = this.thousandSeprator(e.target.value, false);
-                const apiData = this.thousandSeprator(e.target.value, true);
+                e.target.value = thousandSeprator(e.target.value, false);
+                const apiData = thousandSeprator(e.target.value, true);
                 this.formStateHandler(e.target.name, apiData);
               }}
               error={this.state.form.fields.dailyprice.error}
@@ -410,7 +432,7 @@ export default class AddProduct extends React.Component {
               label={locale.fields.weeklyprice._title}
               type="text"
               name="weeklyprice"
-              defaultValue={this.thousandSeprator(
+              defaultValue={thousandSeprator(
                 SafeValue(
                   selectedProductType,
                   "fields.weeklyprice",
@@ -418,7 +440,7 @@ export default class AddProduct extends React.Component {
                   0
                 )
               )}
-              data-value={this.thousandSeprator(
+              data-value={thousandSeprator(
                 SafeValue(
                   selectedProductType,
                   "fields.weeklyprice",
@@ -428,8 +450,8 @@ export default class AddProduct extends React.Component {
               )}
               id="weeklyprice"
               onChange={e => {
-                e.target.value = this.thousandSeprator(e.target.value, false);
-                const apiData = this.thousandSeprator(e.target.value, true);
+                e.target.value = thousandSeprator(e.target.value, false);
+                const apiData = thousandSeprator(e.target.value, true);
                 this.formStateHandler(e.target.name, apiData);
               }}
               error={this.state.form.fields.weeklyprice.error}
@@ -439,7 +461,7 @@ export default class AddProduct extends React.Component {
               type="text"
               name="monthlyprice"
               id="monthlyprice"
-              data-value={this.thousandSeprator(
+              data-value={thousandSeprator(
                 SafeValue(
                   selectedProductType,
                   "fields.weeklyprice",
@@ -447,7 +469,7 @@ export default class AddProduct extends React.Component {
                   0
                 )
               )}
-              defaultValue={this.thousandSeprator(
+              defaultValue={thousandSeprator(
                 SafeValue(
                   selectedProductType,
                   "fields.monthlyprice",
@@ -456,8 +478,8 @@ export default class AddProduct extends React.Component {
                 )
               )}
               onChange={e => {
-                e.target.value = this.thousandSeprator(e.target.value, false);
-                const apiData = this.thousandSeprator(e.target.value, true);
+                e.target.value = thousandSeprator(e.target.value, false);
+                const apiData = thousandSeprator(e.target.value, true);
                 this.formStateHandler(e.target.name, apiData);
               }}
               error={this.state.form.fields.monthlyprice.error}

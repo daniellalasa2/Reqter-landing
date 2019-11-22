@@ -6,12 +6,18 @@
       justify-content: space-between;
       display: flex;
     }
+    & .addProduct-button {
+    }
   }
-  //   & .modal {
-  //     & .modal-content {
-  //       width: 700px;
-  //     }
-  //   }
+  & .table {
+    & td {
+      vertical-align: middle;
+      text-align: center;
+      & .product-image {
+        width: 94px;
+      }
+    }
+  }
   &._rtl {
     & .form-card {
       text-align: right;
@@ -21,6 +27,6 @@
 }
 #addProduct-modal {
   & .modal-content {
-    width: 700px;
+    width: 800px;
   }
 }

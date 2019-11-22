@@ -11,6 +11,8 @@
     "submit_changes": "ثبت تغییرات",
     "my_products": "محصولات من",
     "fields": {
+      "delete_product": "حذف",
+      "null": "خالی",
       "submit_changes": "ثبت محصولات",
       "name": {
         "_title": "نام محصول",
@@ -19,6 +21,14 @@
       "code": {
         "_title": "کد محصول",
         "placeholder": "کد محصول  را وارد کنید"
+      },
+      "count": {
+        "_title": "تعداد/ظرفیت",
+        "placeholder": "تعداد/ظرفیت محصول"
+      },
+      "media": {
+        "_title": "عکس محصصول",
+        "placeholder": "عکس محصول خود را انتخاب کنید"
       },
       "shortdesc": {
         "_title": "توضیح کوتاه درباره محصول",

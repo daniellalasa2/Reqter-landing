@@ -14,6 +14,7 @@ import {
   QueryContent,
   Config,
   GetPartnerInfo,
+  GetPartnerProducts,
   SafeValue
 } from "../../ApiHandlers/ApiHandler";
 import ContextApi from "../../ContextApi/ContextApi";
@@ -21,6 +22,8 @@ import PageSuspense from "../../PageSuspense";
 import { FlatButton } from "../../FlatForm/FlatForm";
 import AddProduct from "./AddProduct";
 import classnames from "classnames";
+import { thousandSeprator } from "../../../assets/script/thousandSeprator";
+import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 import "./PartnerProducts.scss";
 export default class PartnerProducts extends React.Component {
   static contextType = ContextApi;
@@ -96,44 +99,160 @@ export default class PartnerProducts extends React.Component {
     }
   };
   generateProductsTable = () => {
-    const { products } = this.state.partnerData;
+    const products = this.state.partnerProducts;
     const { locale } = this.translate;
-    const generatedObjects = products.map(product => (
-      <tr>
+    // console.log(products);
+    const generatedObjects = products.map((product, idx) => (
+      <tr key={idx}>
         <td>
-          <span>{SafeValue(product, "", "string", locale.fields.null)}</span>
+          <span>
+            <img
+              className="product-image"
+              src={SafeValue(
+                product,
+                `fields.media.0.${this.lang}`,
+                "string",
+                NoImageAlt,
+                "fields.media.0"
+              )}
+              onError={e => {
+                e.target.src = NoImageAlt;
+                e.target.onError = null;
+              }}
+              alt="product_img"
+            />
+          </span>
         </td>
         <td>
-          <span>{SafeValue(product, "", "string", locale.fields.null)}</span>
+          <span>
+            {SafeValue(
+              product,
+              `fields.name.${this.lang}`,
+              "string",
+              locale.fields.null,
+              "fields.name"
+            )}
+          </span>
         </td>
         <td>
-          <span>{SafeValue(product, "", "string", locale.fields.null)}</span>
+          <span>
+            {SafeValue(
+              product,
+              `fields.producttype.fields.name.${this.lang}`,
+              "string",
+              locale.fields.null,
+              "fields.producttype.fields.name"
+            )}
+          </span>
+        </td>
+
+        <td>
+          {SafeValue(product, "fields.perhourprice", "string", false) && (
+            <React.Fragment>
+              <small>
+                <strong>{locale.fields.hourlyprice._title}:&nbsp;</strong>
+                {thousandSeprator(
+                  SafeValue(
+                    product,
+                    "fields.perhourprice",
+                    "string",
+                    locale.null
+                  )
+                )}
+              </small>
+              <br />
+            </React.Fragment>
+          )}
+
+          {SafeValue(product, "fields.dailyprice", "string", false) && (
+            <React.Fragment>
+              <small>
+                <strong>{locale.fields.dailyprice._title}:&nbsp;</strong>
+                {thousandSeprator(
+                  SafeValue(product, "fields.dailyprice", "string", locale.null)
+                )}
+              </small>
+              <br />
+            </React.Fragment>
+          )}
+
+          {SafeValue(product, "fields.weeklyprice", "string", false) && (
+            <React.Fragment>
+              <small>
+                <strong>{locale.fields.weeklyprice._title}:&nbsp;</strong>
+                {thousandSeprator(
+                  SafeValue(
+                    product,
+                    "fields.weeklyprice",
+                    "string",
+                    locale.null
+                  )
+                )}
+              </small>
+              <br />
+            </React.Fragment>
+          )}
+          {SafeValue(product, "fields.monthlyprice", "string", false) && (
+            <React.Fragment>
+              <small>
+                <strong>{locale.fields.monthlyprice._title}:&nbsp;</strong>
+                {thousandSeprator(
+                  SafeValue(
+                    product,
+                    "fields.monthlyprice",
+                    "string",
+                    locale.null
+                  )
+                )}
+              </small>
+            </React.Fragment>
+          )}
         </td>
         <td>
-          <span>{SafeValue(product, "", "string", locale.fields.null)}</span>
+          <FlatButton
+            style={{ backgroundColor: "var(--red)", border: "none" }}
+            suspense={false}
+            size="sm"
+          >
+            {locale.fields.delete_product}
+          </FlatButton>
         </td>
       </tr>
     ));
     return generatedObjects;
   };
-  getPartnerProduct = callback => {
+  getPartnerInfo(callback) {
     GetPartnerInfo({ "fields.phonenumber": this.context.auth.ID }, res => {
       if (res.success_result.success) {
         const { _id } = res.data[0];
         this.setState(
           {
             partnerData: res.data[0],
-            partnerId: _id,
-            pageLoaded: true
+            partnerId: _id
           },
           () => typeof callback === "function" && callback()
+        );
+      }
+    });
+  }
+  getPartnerProduct = (partnerId, callback) => {
+    GetPartnerProducts({ "fields.partnerid": partnerId }, res => {
+      if (res.success_result.success) {
+        this.setState(
+          {
+            partnerProducts: res.data,
+            pageLoaded: true
+          },
+          () => {
+            typeof callback === "function" && callback();
+          }
         );
       }
     });
   };
   componentDidMount() {
     this.getProductTypes();
-    this.getPartnerProduct();
+    this.getPartnerInfo(() => this.getPartnerProduct(this.state.partnerId));
   }
   render() {
     const { locale, direction } = this.translate;
@@ -158,49 +277,32 @@ export default class PartnerProducts extends React.Component {
               <CardHeader>
                 <strong>{locale.my_products}</strong>
                 <Button
-                  style={{ backgroundColor: "#6d8ae0", border: "none" }}
+                  style={{
+                    backgroundColor: "#6d8ae0",
+                    border: "none",
+                    fontSize: "15px",
+                    fontWeight: "bold"
+                  }}
+                  className="addProduct-button"
                   size="sm"
                   onClick={() => this.addOrEditProduct("add")}
                 >
                   {" "}
-                  + افزودن محصول
+                  افزودن محصول
                 </Button>
               </CardHeader>
               <CardBody>
                 <Table bordered hover>
                   <thead>
                     <tr>
+                      <th>عکس محصول</th>
                       <th>نام محصول</th>
                       <th>نوع محصول</th>
-                      <th>عکس محصول</th>
                       <th>قیمت</th>
                       <th style={{ width: "150px" }}>ظرفیت</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Input type="text" />
-                      </td>
-                      <td>
-                        <Input type="select">
-                          <option>صندلی اختصاصی</option>
-                          <option>صندلی اشتراکی</option>
-                          <option>اتاق کار خصوصی</option>
-                          <option>اتاق جلسات</option>
-                        </Input>
-                      </td>
-                      <td>
-                        <Input type="file" />
-                      </td>
-                      <td>
-                        <Input type="number" />
-                      </td>
-                      {/* <td>
-                        <Button color="success" type="number" ></Button>
-                      </td> */}
-                    </tr>
-                  </tbody>
+                  <tbody>{this.generateProductsTable()}</tbody>
                 </Table>
               </CardBody>
             </Card>
@@ -220,7 +322,12 @@ export default class PartnerProducts extends React.Component {
                 {/* add product component */}
                 <AddProduct
                   data={this.state.modals.addProduct.data}
-                  callback={res => console.log(res)}
+                  callback={res => {
+                    if (res.success) {
+                      this.getPartnerProduct(this.state.partnerId);
+                      this.toggleModals("addProduct", {});
+                    }
+                  }}
                   lang={this.lang}
                 />
               </ModalBody>
