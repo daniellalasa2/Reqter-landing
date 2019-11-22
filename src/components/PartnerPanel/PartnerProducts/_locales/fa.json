@@ -11,8 +11,10 @@
     "submit_changes": "ثبت تغییرات",
     "my_products": "محصولات من",
     "fields": {
+      "product_image_upload": "بارگذاری عکس محصول",
+      "product_image_upload_button": "انتخاب عکس",
       "delete_product": "حذف",
-      "null": "خالی",
+      "null": "مشخص نیست",
       "submit_changes": "ثبت محصولات",
       "name": {
         "_title": "نام محصول",

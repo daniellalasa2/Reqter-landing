@@ -4,13 +4,15 @@ import {
   FlatImageSelect,
   FlatInput,
   FlatTextArea,
-  FlatButton
+  FlatButton,
+  FlatUploader
 } from "../../FlatForm/FlatForm";
 import Validator from "../../Validator/Validator";
 import { Button } from "reactstrap";
 import {
   SafeValue,
-  PartnerpanelAddProduct
+  PartnerpanelAddProduct,
+  Upload
 } from "../../ApiHandlers/ApiHandler";
 import { thousandSeprator } from "../../../assets/script/thousandSeprator";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
@@ -53,6 +55,8 @@ export default class AddProduct extends React.Component {
             isValid: true
           },
           media: {
+            uploading: false,
+            uploadProgress: 0,
             value: "",
             error: "",
             isValid: true
@@ -189,8 +193,8 @@ export default class AddProduct extends React.Component {
         inputs[index].value,
         SafeValue(this.validationRules, index, "object", []),
         this.lang,
-        index === "resume" && {
-          uploading: this.state.form.fields.resume.uploading
+        index === "media" && {
+          uploading: this.state.form.fields.media.uploading
         }
       );
 
@@ -223,6 +227,93 @@ export default class AddProduct extends React.Component {
         currentStep: tabNumber
       },
       () => typeof callback === "function" && callback(tabNumber)
+    );
+  };
+  uploadFile = e => {
+    const { locale } = this.translate;
+    let file = "";
+    try {
+      file = e.target.files[0];
+    } catch (err) {
+      this.setState({
+        form: {
+          ...this.state.form,
+          fields: {
+            ...this.state.form.fields,
+            media: {
+              ...this.state.form.fields.media,
+              error: locale.fields.media.error
+            }
+          }
+        }
+      });
+      return 0;
+    }
+    this.setState(
+      {
+        form: {
+          ...this.state.form,
+          fields: {
+            ...this.state.form.fields,
+            media: {
+              ...this.state.form.fields.media,
+              uploading: true
+            }
+          }
+        }
+      },
+      () => {
+        Upload(
+          file,
+          res => {
+            if (res.data.success) {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  fields: {
+                    ...this.state.form.fields,
+                    media: {
+                      ...this.state.form.fields.media,
+                      isValid: true,
+                      value: [{ en: res.data.file.url, fa: res.data.file.url }],
+                      uploading: false,
+                      error: ""
+                    }
+                  }
+                }
+              });
+            } else {
+              this.setState({
+                form: {
+                  ...this.state.form,
+                  fields: {
+                    ...this.state.form.fields,
+                    media: {
+                      ...this.state.form.fields.media,
+                      error: res.success_result.message,
+                      uploading: false
+                    }
+                  }
+                }
+              });
+            }
+          },
+          uploadDetail => {
+            this.setState({
+              form: {
+                ...this.state.form,
+                fields: {
+                  ...this.state.form.fields,
+                  media: {
+                    ...this.state.form.fields.media,
+                    uploadProgress: uploadDetail.progress
+                  }
+                }
+              }
+            });
+          }
+        );
+      }
     );
   };
   submitProduct = () => {
@@ -372,17 +463,6 @@ export default class AddProduct extends React.Component {
               error={this.state.form.fields.count.error}
             />
             <FlatInput
-              label={locale.fields.media._title}
-              type="number"
-              placeholder={locale.fields.media.placeholder}
-              name="media"
-              id="media"
-              onChange={e =>
-                this.formStateHandler(e.target.name, e.target.value)
-              }
-              error={this.state.form.fields.media.error}
-            />
-            <FlatInput
               label={locale.fields.shortdesc._title}
               type="text"
               placeholder={locale.fields.shortdesc.placeholder}
@@ -484,23 +564,35 @@ export default class AddProduct extends React.Component {
               }}
               error={this.state.form.fields.monthlyprice.error}
             />
-
-            <FlatTextArea
-              label={locale.fields.description._title}
-              type="text"
-              placeholder={locale.fields.description.placeholder}
-              name="description"
-              id="description"
-              data-value=""
-              onChange={e =>
-                this.formStateHandler(e.target.name, e.target.value)
-              }
-              error={this.state.form.fields.description.error}
-            />
+            <div className="inline-row">
+              <FlatTextArea
+                label={locale.fields.description._title}
+                type="text"
+                placeholder={locale.fields.description.placeholder}
+                name="description"
+                id="description"
+                data-value=""
+                onChange={e =>
+                  this.formStateHandler(e.target.name, e.target.value)
+                }
+                error={this.state.form.fields.description.error}
+              />
+              <FlatUploader
+                label={locale.fields.product_image_upload}
+                name="media"
+                id="media"
+                style={{ direction: direction }}
+                buttonValue={locale.fields.product_image_upload_button}
+                progress={this.state.form.fields.media.uploadProgress}
+                progresscolor="lightblue"
+                onChange={this.uploadFile}
+                error={this.state.form.fields.media.error}
+              />
+            </div>
             <br />
             <FlatButton
               color="primary"
-              disabled={!form.isValid}
+              disabled={!form.isValid || form.fields.media.uploading}
               suspense={this.state.form.isSubmitting}
               onClick={() => this.submitProduct()}
             >

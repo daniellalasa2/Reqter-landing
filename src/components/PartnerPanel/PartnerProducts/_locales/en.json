@@ -11,6 +11,8 @@
     "submit_changes": "Submit chsanges",
     "my_products": "My products",
     "fields": {
+      "product_image_upload": "َUpload product image",
+      "product_image_upload_button": "Select image",
       "delete_product": "Delete",
       "null": "Null",
       "submit_changes": "Submit",

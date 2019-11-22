@@ -486,7 +486,7 @@ const FlatUploader = ({
   };
   return (
     <div className="field-row" id={id}>
-      <label>{label}</label>
+      <span className="field-title">{label}</span>
       <div
         className={classnames(
           "flatuploader",

@@ -15,7 +15,8 @@ import {
   Config,
   GetPartnerInfo,
   GetPartnerProducts,
-  SafeValue
+  SafeValue,
+  DownloadAsset
 } from "../../ApiHandlers/ApiHandler";
 import ContextApi from "../../ContextApi/ContextApi";
 import PageSuspense from "../../PageSuspense";
@@ -101,19 +102,20 @@ export default class PartnerProducts extends React.Component {
   generateProductsTable = () => {
     const products = this.state.partnerProducts;
     const { locale } = this.translate;
-    // console.log(products);
     const generatedObjects = products.map((product, idx) => (
       <tr key={idx}>
         <td>
           <span>
             <img
               className="product-image"
-              src={SafeValue(
-                product,
-                `fields.media.0.${this.lang}`,
-                "string",
-                NoImageAlt,
-                "fields.media.0"
+              src={DownloadAsset(
+                SafeValue(
+                  product,
+                  `fields.media.0.${this.lang}`,
+                  "string",
+                  "-",
+                  "fields.media.0"
+                )
               )}
               onError={e => {
                 e.target.src = NoImageAlt;
@@ -209,6 +211,11 @@ export default class PartnerProducts extends React.Component {
           )}
         </td>
         <td>
+          <span>
+            {SafeValue(product, "fields.count", "string", locale.fields.null)}
+          </span>
+        </td>
+        <td>
           <FlatButton
             style={{ backgroundColor: "var(--red)", border: "none" }}
             suspense={false}
@@ -299,7 +306,8 @@ export default class PartnerProducts extends React.Component {
                       <th>نام محصول</th>
                       <th>نوع محصول</th>
                       <th>قیمت</th>
-                      <th style={{ width: "150px" }}>ظرفیت</th>
+                      <th style={{ width: "80px" }}>ظرفیت</th>
+                      <th>عملیات</th>
                     </tr>
                   </thead>
                   <tbody>{this.generateProductsTable()}</tbody>
