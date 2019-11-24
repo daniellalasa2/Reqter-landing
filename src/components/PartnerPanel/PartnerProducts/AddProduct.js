@@ -12,7 +12,9 @@ import { Button } from "reactstrap";
 import {
   SafeValue,
   PartnerpanelAddProduct,
-  Upload
+  PartnerpanelEditProduct,
+  Upload,
+  DownloadAsset
 } from "../../ApiHandlers/ApiHandler";
 import { thousandSeprator } from "../../../assets/script/thousandSeprator";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
@@ -25,77 +27,115 @@ export default class AddProduct extends React.Component {
     super(props);
     this.lang = props.lang;
     this.translate = require(`./_locales/${this.lang}.json`);
+    this.true = true;
+    this.false = props.data.operationType === "add" ? false : true;
     this.state = {
       currentStep: 1,
       stepsValidation: {
         //Button will be disable if each step validation was false
-        1: false,
-        2: false,
-        3: true
+        1: this.false,
+        2: this.false,
+        3: this.true
       },
+      selectedImg: "",
       selectedProductType: {},
       form: {
-        isValid: false, //Form validation
+        isValid: this.false, //Form validation
         submitted: false,
         isSubmitting: false,
         fields: {
           name: {
-            value: "",
+            value: SafeValue(
+              props,
+              `data.fields.name.${this.lang}`,
+              "string",
+              "",
+              "data.fields.name"
+            ),
             error: "",
-            isValid: true
+            isValid: this.true
           },
           code: {
-            value: "",
+            value: SafeValue(props, `data.fields.code`, "string", ""),
             error: "",
-            isValid: true
+            isValid: this.true
           },
           count: {
-            value: "",
+            value: SafeValue(props, `data.fields.count`, "string", ""),
             error: "",
-            isValid: true
+            isValid: this.true
           },
           media: {
             uploading: false,
             uploadProgress: 0,
-            value: "",
+            value: SafeValue(
+              props,
+              `data.fields.media.0.${this.lang}`,
+              "string",
+              "",
+              "data.fields.media"
+            ),
             error: "",
-            isValid: true
+            isValid: this.true
           },
-          shortdesc: {
-            value: "",
+          shortDesc: {
+            value: SafeValue(
+              props,
+              `data.fields.shortDesc.${this.lang}`,
+              "string",
+              "",
+              "data.fields.shortDesc"
+            ),
             error: "",
-            isValid: true
+            isValid: this.true
           },
           perhourprice: {
-            value: "",
+            value: SafeValue(props, `data.fields.perhourprice`, "string", ""),
             error: "",
-            isValid: true
+            isValid: this.true
           },
           dailyprice: {
-            value: "",
+            value: SafeValue(props, `data.fields.dailyprice`, "string", ""),
             error: "",
-            isValid: true
+            isValid: this.true
           },
           weeklyprice: {
-            value: "",
+            value: SafeValue(props, `data.fields.weeklyprice`, "string", ""),
             error: "",
-            isValid: true
+            isValid: this.true
           },
           monthlyprice: {
-            value: "",
+            value: SafeValue(props, `data.fields.monthlyprice`, "string", ""),
             error: "",
-            isValid: true
+            isValid: this.true
           },
-          description: {
-            value: "",
+          about: {
+            value: SafeValue(
+              props,
+              `data.fields.about.${this.lang}`,
+              "string",
+              "",
+              "data.fields.about"
+            ),
             error: "",
-            isValid: true
+            isValid: this.true
           }
         },
         backgroundData: {
-          productid: "",
+          productid: SafeValue(props, `data._id`, "string", ""),
           partnerid: props.data.partnerId,
-          itemstatus: "active"
+          itemstatus: SafeValue(
+            props,
+            `data.fields.itemstatus`,
+            "string",
+            "active"
+          ),
+          producttype: SafeValue(
+            props,
+            `data.fields.producttype._id`,
+            "string",
+            ""
+          )
         }
       }
     };
@@ -103,7 +143,7 @@ export default class AddProduct extends React.Component {
       name: ["required"]
     };
     this.productsDataForCheckbox = this.convertProductsDataToCheckboxData(
-      props.data.productType
+      props.data.productTypesList
     );
   }
   convertProductsDataToCheckboxData = productObj => {
@@ -113,7 +153,7 @@ export default class AddProduct extends React.Component {
         imgSrc:
           SafeValue(product, `fields.thumbnail`, "string", false) || NoImageAlt,
         title: SafeValue(product, `fields.name.${this.lang}`, "string", "---"),
-        value: JSON.stringify(product),
+        value: SafeValue(product, "_id", "string", "0"),
         key: idx
       });
     });
@@ -342,7 +382,7 @@ export default class AddProduct extends React.Component {
           }
         },
         () => {
-          PartnerpanelAddProduct(_formObjectGoingToSubmit, res => {
+          const _callback = res => {
             const { success } = res.success_result;
             this.setState(
               {
@@ -367,17 +407,20 @@ export default class AddProduct extends React.Component {
                 }
               }
             );
-          });
+          };
+
+          if (this.props.data.operationType === "add")
+            PartnerpanelAddProduct(_formObjectGoingToSubmit, _callback);
+
+          if (this.props.data.operationType === "edit")
+            PartnerpanelEditProduct(_formObjectGoingToSubmit, _callback);
         }
       );
     }
   };
   submitselectedProductType = (name, checkedObj) => {
-    const productParsedObj = JSON.parse(checkedObj.value);
-    const { backgroundData, fields } = this.state.form;
-    checkedObj = JSON.parse(checkedObj.value);
+    const { backgroundData } = this.state.form;
     this.setState({
-      selectedProductType: productParsedObj,
       stepsValidation: {
         ...this.state.stepsValidation,
         1: true
@@ -386,11 +429,12 @@ export default class AddProduct extends React.Component {
         ...this.state.form,
         backgroundData: {
           ...backgroundData,
-          producttype: checkedObj._id
+          producttype: checkedObj.value
         }
       }
     });
   };
+
   render() {
     const {
       currentStep,
@@ -412,6 +456,7 @@ export default class AddProduct extends React.Component {
             <FlatImageSelect
               className="product-items"
               items={this.productsDataForCheckbox}
+              defaultChecked={form.backgroundData.producttype}
               onChange={(name, checkedObj) =>
                 this.submitselectedProductType(name, checkedObj)
               }
@@ -435,6 +480,7 @@ export default class AddProduct extends React.Component {
               placeholder={locale.fields.name.placeholder}
               name="name"
               id="name"
+              defaultValue={form.fields.name.value}
               onChange={e =>
                 this.formStateHandler(e.target.name, e.target.value)
               }
@@ -446,6 +492,7 @@ export default class AddProduct extends React.Component {
               placeholder={locale.fields.code.placeholder}
               name="code"
               id="code"
+              defaultValue={form.fields.code.value}
               onChange={e =>
                 this.formStateHandler(e.target.name, e.target.value)
               }
@@ -457,35 +504,30 @@ export default class AddProduct extends React.Component {
               placeholder={locale.fields.count.placeholder}
               name="count"
               id="count"
+              defaultValue={form.fields.count.value}
               onChange={e =>
                 this.formStateHandler(e.target.name, e.target.value)
               }
               error={this.state.form.fields.count.error}
             />
             <FlatInput
-              label={locale.fields.shortdesc._title}
+              label={locale.fields.shortDesc._title}
               type="text"
-              placeholder={locale.fields.shortdesc.placeholder}
-              name="shortdesc"
-              id="shortdesc"
+              placeholder={locale.fields.shortDesc.placeholder}
+              name="shortDesc"
+              id="shortDesc"
+              defaultValue={form.fields.shortDesc.value}
               onChange={e =>
                 this.formStateHandler(e.target.name, e.target.value)
               }
-              error={this.state.form.fields.shortdesc.error}
+              error={this.state.form.fields.shortDesc.error}
             />
             <FlatInput
               label={locale.fields.hourlyprice._title}
               type="text"
               name="perhourprice"
+              defaultValue={form.fields.perhourprice.value}
               id="perhourprice"
-              defaultValue={thousandSeprator(
-                SafeValue(
-                  selectedProductType,
-                  "fields.perhourprice",
-                  "string",
-                  0
-                )
-              )}
               onChange={e => {
                 e.target.value = thousandSeprator(e.target.value, false);
                 const apiData = thousandSeprator(e.target.value, true);
@@ -497,9 +539,7 @@ export default class AddProduct extends React.Component {
               label={locale.fields.dailyprice._title}
               type="text"
               name="dailyprice"
-              defaultValue={thousandSeprator(
-                SafeValue(selectedProductType, "fields.dailyprice", "string", 0)
-              )}
+              defaultValue={form.fields.dailyprice.value}
               id="dailyprice"
               onChange={e => {
                 e.target.value = thousandSeprator(e.target.value, false);
@@ -512,14 +552,7 @@ export default class AddProduct extends React.Component {
               label={locale.fields.weeklyprice._title}
               type="text"
               name="weeklyprice"
-              defaultValue={thousandSeprator(
-                SafeValue(
-                  selectedProductType,
-                  "fields.weeklyprice",
-                  "string",
-                  0
-                )
-              )}
+              defaultValue={form.fields.weeklyprice.value}
               data-value={thousandSeprator(
                 SafeValue(
                   selectedProductType,
@@ -541,18 +574,11 @@ export default class AddProduct extends React.Component {
               type="text"
               name="monthlyprice"
               id="monthlyprice"
+              defaultValue={form.fields.monthlyprice.value}
               data-value={thousandSeprator(
                 SafeValue(
                   selectedProductType,
                   "fields.weeklyprice",
-                  "string",
-                  0
-                )
-              )}
-              defaultValue={thousandSeprator(
-                SafeValue(
-                  selectedProductType,
-                  "fields.monthlyprice",
                   "string",
                   0
                 )
@@ -564,19 +590,35 @@ export default class AddProduct extends React.Component {
               }}
               error={this.state.form.fields.monthlyprice.error}
             />
+            <FlatTextArea
+              label={locale.fields.about._title}
+              type="text"
+              placeholder={locale.fields.about.placeholder}
+              name="about"
+              id="about"
+              data-value=""
+              defaultValue={form.fields.about.value}
+              onChange={e =>
+                this.formStateHandler(e.target.name, e.target.value)
+              }
+              error={this.state.form.fields.about.error}
+            />
             <div className="inline-row">
-              <FlatTextArea
-                label={locale.fields.description._title}
-                type="text"
-                placeholder={locale.fields.description.placeholder}
-                name="description"
-                id="description"
-                data-value=""
-                onChange={e =>
-                  this.formStateHandler(e.target.name, e.target.value)
-                }
-                error={this.state.form.fields.description.error}
-              />
+              <div className="image-container">
+                <img
+                  src={DownloadAsset(
+                    SafeValue(
+                      form,
+                      "fields.media.value",
+                      "string",
+                      NoImageAlt,
+                      `fields.media.value.0.${this.lang}`
+                    )
+                  )}
+                  onError={e => (e.target.src = NoImageAlt)}
+                  alt="product_imd"
+                />
+              </div>
               <FlatUploader
                 label={locale.fields.product_image_upload}
                 name="media"
@@ -596,7 +638,9 @@ export default class AddProduct extends React.Component {
               suspense={this.state.form.isSubmitting}
               onClick={() => this.submitProduct()}
             >
-              {locale.step2.submit_product_button}
+              {this.props.data.operationType === "add"
+                ? locale.step2.submit_product_button
+                : locale.step2.edit_product_button}
             </FlatButton>
           </div>
         )}

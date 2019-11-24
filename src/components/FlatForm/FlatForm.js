@@ -431,11 +431,19 @@ const FlatInlineSelect = ({ items, onChange, dir, type, name }) => {
                 imgAlt = "Image Exampe"  //alt attr for img  
                 },...]
 ***************************/
-const FlatImageSelect = ({ items, onChange, dir, type, name, className }) => {
+const FlatImageSelect = ({
+  items,
+  onChange,
+  dir,
+  type,
+  name,
+  className,
+  defaultChecked
+}) => {
   const _options = items.map((val, index) => {
     return (
       <ImageSelect
-        checked={val.defaultChecked}
+        checked={val.defaultChecked || defaultChecked === val.value}
         title={val.title}
         key={index}
         boxValue={index + 1}

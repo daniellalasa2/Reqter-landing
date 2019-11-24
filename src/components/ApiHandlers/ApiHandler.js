@@ -33,6 +33,8 @@ let _api = {
     Config.BASE_URL_REQTER + Config.URLs.partner_panel_add_product,
   PartnerpanelDeleteProduct:
     Config.BASE_URL_REQTER + Config.URLs.partner_panel_delete_product,
+  PartnerpanelEditProduct:
+    Config.BASE_URL_REQTER + Config.URLs.partner_panel_edit_product,
   GetPartnerAllOffers:
     Config.BASE_URL_REQTER + Config.URLs.get_partner_all_offers,
   GetPartnerAcceptedOffers:
@@ -1000,7 +1002,7 @@ var PartnerpanelDeleteProduct = (productid, callback) => {
 var PartnerpanelEditProduct = (data, callback) => {
   Config.Auth().then(token => {
     axios({
-      url: _api.PartnerpanelAddProduct,
+      url: _api.PartnerpanelEditProduct,
       method: "PUT",
       headers: {
         ..._api.header,
@@ -1120,6 +1122,7 @@ export {
   PartnerpanelIssueOffer,
   PartnerpanelAddProduct,
   PartnerpanelDeleteProduct,
+  PartnerpanelEditProduct,
   QueryContent,
   GetPartnerAllOffers,
   GetPartnerAcceptedOffers,

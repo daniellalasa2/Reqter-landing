@@ -90,14 +90,15 @@ export default class PartnerProducts extends React.Component {
 
   //data object is mandatory for type="edit" and is optional for type="add"
   addOrEditProduct = (type, dataObject = {}) => {
-    const productType = {
-      productType: this.state.productType,
-      partnerId: this.state.partnerId
+    const initialData = {
+      productTypesList: this.state.productType,
+      partnerId: this.state.partnerId,
+      operationType: type
     };
     if (type === "add") {
-      this.toggleModals("addProduct", productType);
+      this.toggleModals("addProduct", initialData);
     } else {
-      this.toggleModals("addProduct", { ...productType, ...dataObject });
+      this.toggleModals("addProduct", { ...initialData, ...dataObject });
     }
   };
   removeProduct = (productid, callback) => {
@@ -122,138 +123,153 @@ export default class PartnerProducts extends React.Component {
   generateProductsTable = () => {
     const products = this.state.partnerProducts;
     const { locale } = this.translate;
-    const generatedObjects = products.map((product, idx) => (
-      <tr key={idx}>
-        <td>
-          <span>
-            <img
-              className="product-image"
-              src={DownloadAsset(
-                SafeValue(
+    const generatedObjects = products.map(
+      (product, idx) =>
+        product.status === "published" && (
+          <tr key={idx}>
+            <td>
+              <span>
+                <img
+                  className="product-image"
+                  src={DownloadAsset(
+                    SafeValue(
+                      product,
+                      `fields.media.0.${this.lang}`,
+                      "string",
+                      "-",
+                      "fields.media.0"
+                    )
+                  )}
+                  onError={e => {
+                    e.target.src = NoImageAlt;
+                    e.target.onError = null;
+                  }}
+                  alt="product_img"
+                />
+              </span>
+            </td>
+            <td>
+              <span>
+                {SafeValue(
                   product,
-                  `fields.media.0.${this.lang}`,
+                  `fields.name.${this.lang}`,
                   "string",
-                  "-",
-                  "fields.media.0"
-                )
+                  locale.fields.null,
+                  "fields.name"
+                )}
+              </span>
+            </td>
+            <td>
+              <span>
+                {SafeValue(
+                  product,
+                  `fields.producttype.fields.name.${this.lang}`,
+                  "string",
+                  locale.fields.null,
+                  "fields.producttype.fields.name"
+                )}
+              </span>
+            </td>
+
+            <td>
+              {SafeValue(product, "fields.perhourprice", "string", false) && (
+                <React.Fragment>
+                  <small>
+                    <strong>{locale.fields.hourlyprice._title}:&nbsp;</strong>
+                    {thousandSeprator(
+                      SafeValue(
+                        product,
+                        "fields.perhourprice",
+                        "string",
+                        locale.null
+                      )
+                    )}
+                  </small>
+                  <br />
+                </React.Fragment>
               )}
-              onError={e => {
-                e.target.src = NoImageAlt;
-                e.target.onError = null;
-              }}
-              alt="product_img"
-            />
-          </span>
-        </td>
-        <td>
-          <span>
-            {SafeValue(
-              product,
-              `fields.name.${this.lang}`,
-              "string",
-              locale.fields.null,
-              "fields.name"
-            )}
-          </span>
-        </td>
-        <td>
-          <span>
-            {SafeValue(
-              product,
-              `fields.producttype.fields.name.${this.lang}`,
-              "string",
-              locale.fields.null,
-              "fields.producttype.fields.name"
-            )}
-          </span>
-        </td>
 
-        <td>
-          {SafeValue(product, "fields.perhourprice", "string", false) && (
-            <React.Fragment>
-              <small>
-                <strong>{locale.fields.hourlyprice._title}:&nbsp;</strong>
-                {thousandSeprator(
-                  SafeValue(
-                    product,
-                    "fields.perhourprice",
-                    "string",
-                    locale.null
-                  )
-                )}
-              </small>
-              <br />
-            </React.Fragment>
-          )}
+              {SafeValue(product, "fields.dailyprice", "string", false) && (
+                <React.Fragment>
+                  <small>
+                    <strong>{locale.fields.dailyprice._title}:&nbsp;</strong>
+                    {thousandSeprator(
+                      SafeValue(
+                        product,
+                        "fields.dailyprice",
+                        "string",
+                        locale.null
+                      )
+                    )}
+                  </small>
+                  <br />
+                </React.Fragment>
+              )}
 
-          {SafeValue(product, "fields.dailyprice", "string", false) && (
-            <React.Fragment>
-              <small>
-                <strong>{locale.fields.dailyprice._title}:&nbsp;</strong>
-                {thousandSeprator(
-                  SafeValue(product, "fields.dailyprice", "string", locale.null)
+              {SafeValue(product, "fields.weeklyprice", "string", false) && (
+                <React.Fragment>
+                  <small>
+                    <strong>{locale.fields.weeklyprice._title}:&nbsp;</strong>
+                    {thousandSeprator(
+                      SafeValue(
+                        product,
+                        "fields.weeklyprice",
+                        "string",
+                        locale.null
+                      )
+                    )}
+                  </small>
+                  <br />
+                </React.Fragment>
+              )}
+              {SafeValue(product, "fields.monthlyprice", "string", false) && (
+                <React.Fragment>
+                  <small>
+                    <strong>{locale.fields.monthlyprice._title}:&nbsp;</strong>
+                    {thousandSeprator(
+                      SafeValue(
+                        product,
+                        "fields.monthlyprice",
+                        "string",
+                        locale.null
+                      )
+                    )}
+                  </small>
+                </React.Fragment>
+              )}
+            </td>
+            <td>
+              <span>
+                {SafeValue(
+                  product,
+                  "fields.count",
+                  "string",
+                  locale.fields.null
                 )}
-              </small>
-              <br />
-            </React.Fragment>
-          )}
-
-          {SafeValue(product, "fields.weeklyprice", "string", false) && (
-            <React.Fragment>
-              <small>
-                <strong>{locale.fields.weeklyprice._title}:&nbsp;</strong>
-                {thousandSeprator(
-                  SafeValue(
-                    product,
-                    "fields.weeklyprice",
-                    "string",
-                    locale.null
-                  )
-                )}
-              </small>
-              <br />
-            </React.Fragment>
-          )}
-          {SafeValue(product, "fields.monthlyprice", "string", false) && (
-            <React.Fragment>
-              <small>
-                <strong>{locale.fields.monthlyprice._title}:&nbsp;</strong>
-                {thousandSeprator(
-                  SafeValue(
-                    product,
-                    "fields.monthlyprice",
-                    "string",
-                    locale.null
-                  )
-                )}
-              </small>
-            </React.Fragment>
-          )}
-        </td>
-        <td>
-          <span>
-            {SafeValue(product, "fields.count", "string", locale.fields.null)}
-          </span>
-        </td>
-        <td>
-          <FlatButton
-            style={{ backgroundColor: "var(--red)", border: "none" }}
-            suspense={false}
-            size="sm"
-            onClick={() => this.toggleModals("warning", { id: product._id })}
-          >
-            {locale.fields.delete_product}
-          </FlatButton>{" "}
-          <Button
-            style={{ backgroundColor: "var(--gray)", border: "none" }}
-            onClick={() => this.addOrEditProduct("edit", product)}
-            size="sm"
-          >
-            {locale.fields.edit_product}
-          </Button>
-        </td>
-      </tr>
-    ));
+              </span>
+            </td>
+            <td>
+              <FlatButton
+                style={{ backgroundColor: "var(--red)", border: "none" }}
+                suspense={false}
+                size="sm"
+                onClick={() =>
+                  this.toggleModals("warning", { id: product._id })
+                }
+              >
+                {locale.fields.delete_product}
+              </FlatButton>{" "}
+              <Button
+                style={{ backgroundColor: "var(--gray)", border: "none" }}
+                onClick={() => this.addOrEditProduct("edit", product)}
+                size="sm"
+              >
+                {locale.fields.edit_product}
+              </Button>
+            </td>
+          </tr>
+        )
+    );
     return generatedObjects;
   };
   getPartnerInfo(callback) {

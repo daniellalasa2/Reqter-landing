@@ -6,7 +6,8 @@
       "next_step_button": "مرحله بعد"
     },
     "step2": {
-      "submit_product_button": "ثبت محصول جدید"
+      "submit_product_button": "ثبت محصول جدید",
+      "edit_product_button": "ویرایش محصول"
     },
     "alert": {
       "title": "هشدار",
@@ -41,11 +42,11 @@
         "_title": "عکس محصصول",
         "placeholder": "عکس محصول خود را انتخاب کنید"
       },
-      "shortdesc": {
+      "shortDesc": {
         "_title": "توضیح کوتاه درباره محصول",
         "placeholder": "اگر توضیح کوتاهی درباره محصول خود دارید بنویسید"
       },
-      "description": {
+      "about": {
         "_title": "توضیحات",
         "placeholder": "اگر توضیحات خاصی درباره محصول خود دارید اینجا بنویسید"
       },
