@@ -413,7 +413,11 @@ export default class AddProduct extends React.Component {
             PartnerpanelAddProduct(_formObjectGoingToSubmit, _callback);
 
           if (this.props.data.operationType === "edit")
-            PartnerpanelEditProduct(_formObjectGoingToSubmit, _callback);
+            PartnerpanelEditProduct(
+              _backgroundData.productid,
+              _formObjectGoingToSubmit,
+              _callback
+            );
         }
       );
     }

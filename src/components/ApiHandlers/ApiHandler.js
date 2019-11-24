@@ -999,7 +999,7 @@ var PartnerpanelDeleteProduct = (productid, callback) => {
       });
   });
 };
-var PartnerpanelEditProduct = (data, callback) => {
+var PartnerpanelEditProduct = (productid, data, callback) => {
   Config.Auth().then(token => {
     axios({
       url: _api.PartnerpanelEditProduct,
@@ -1010,6 +1010,7 @@ var PartnerpanelEditProduct = (data, callback) => {
       },
       data: {
         contentType: Config.CONTENT_TYPE_ID.get_partner_products,
+        id: productid,
         fields: data
       }
     })
