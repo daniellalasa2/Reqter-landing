@@ -33,3 +33,14 @@
     width: 800px;
   }
 }
+#deleteProduct-warning-modal {
+  & .modal-header {
+    & h5 {
+      font-size: 1.1rem;
+      font-weight: normal;
+    }
+    & .close {
+      font-size: 1.5rem;
+    }
+  }
+}

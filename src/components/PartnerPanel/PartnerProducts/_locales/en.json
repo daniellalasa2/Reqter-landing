@@ -8,12 +8,20 @@
     "step2": {
       "submit_product_button": "Submit productt"
     },
+    "alert": {
+      "title": "Warning!",
+      "description": "Unable to restore the product if it is removed.",
+      "areyousure": "Are you sure?",
+      "accept": "Yes",
+      "reject": "No"
+    },
     "submit_changes": "Submit chsanges",
     "my_products": "My products",
     "fields": {
       "product_image_upload": "َUpload product image",
       "product_image_upload_button": "Select image",
       "delete_product": "Delete",
+      "edit_product": "Edit",
       "null": "Null",
       "submit_changes": "Submit",
       "name": {
@@ -57,6 +65,10 @@
       "add_product": {
         "success": "The new product added successfuly",
         "failed": "A problem happend while adding the new product, please try later"
+      },
+      "remove_product": {
+        "success": "The product have just removed successfuly .",
+        "failed": "Unfortunately an error occured while removing the product, please try later."
       }
     },
     "modals": {

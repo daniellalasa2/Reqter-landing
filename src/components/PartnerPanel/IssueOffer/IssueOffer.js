@@ -255,7 +255,9 @@ export default class IssueOffer extends React.Component {
                   return this.context.displayNotif(
                     "success",
                     locale.notification.issue_offer.success,
-                    () => this.props.callback()
+                    () =>
+                      typeof this.props.callback === "function" &&
+                      this.props.callback()
                   );
                 } else {
                   return this.context.displayNotif(

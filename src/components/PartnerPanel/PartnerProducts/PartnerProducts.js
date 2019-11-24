@@ -15,6 +15,7 @@ import {
   Config,
   GetPartnerInfo,
   GetPartnerProducts,
+  PartnerpanelDeleteProduct,
   SafeValue,
   DownloadAsset
 } from "../../ApiHandlers/ApiHandler";
@@ -43,11 +44,11 @@ export default class PartnerProducts extends React.Component {
       modals: {
         addProduct: {
           openStatus: false,
-          data: []
+          data: {}
         },
         warning: {
           openStatus: false,
-          data: []
+          data: {}
         }
       }
     };
@@ -98,6 +99,25 @@ export default class PartnerProducts extends React.Component {
     } else {
       this.toggleModals("addProduct", { ...productType, ...dataObject });
     }
+  };
+  removeProduct = (productid, callback) => {
+    const { locale } = this.translate;
+    PartnerpanelDeleteProduct(productid, res => {
+      if (res.success_result.success) {
+        this.getPartnerProduct(this.state.partnerId, () =>
+          this.context.displayNotif(
+            "success",
+            locale.notification.remove_product.success,
+            () => typeof callback === "function" && callback()
+          )
+        );
+      } else {
+        return this.context.displayNotif(
+          "error",
+          locale.notification.remove_product.failed
+        );
+      }
+    });
   };
   generateProductsTable = () => {
     const products = this.state.partnerProducts;
@@ -220,9 +240,17 @@ export default class PartnerProducts extends React.Component {
             style={{ backgroundColor: "var(--red)", border: "none" }}
             suspense={false}
             size="sm"
+            onClick={() => this.toggleModals("warning", { id: product._id })}
           >
             {locale.fields.delete_product}
-          </FlatButton>
+          </FlatButton>{" "}
+          <Button
+            style={{ backgroundColor: "var(--gray)", border: "none" }}
+            onClick={() => this.addOrEditProduct("edit", product)}
+            size="sm"
+          >
+            {locale.fields.edit_product}
+          </Button>
         </td>
       </tr>
     ));
@@ -314,6 +342,53 @@ export default class PartnerProducts extends React.Component {
                 </Table>
               </CardBody>
             </Card>
+
+            {/* Warning modal */}
+            <Modal
+              isOpen={this.state.modals.warning.openStatus}
+              toggle={() => this.toggleModals("warning", {})}
+              className={classnames("login-modal", `_${direction}`)}
+              id="deleteProduct-warning-modal"
+            >
+              <ModalHeader
+                className="login-modal-header"
+                toggle={() => this.toggleModals("warning", {})}
+              >
+                {locale.alert.title}
+              </ModalHeader>
+              <ModalBody>
+                <span>
+                  {locale.alert.description}
+
+                  <strong style={{ fontSize: "20px" }}>
+                    {locale.alert.areyousure}
+                  </strong>
+                </span>
+                <br />
+                <FlatButton
+                  pull={direction === "ltr" ? "left" : "right"}
+                  color="primary"
+                  style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                  suspense={false}
+                  onClick={e => {
+                    this.removeProduct(this.state.modals.warning.data.id, () =>
+                      this.toggleModals("warning", {})
+                    );
+                  }}
+                >
+                  {locale.alert.accept}
+                </FlatButton>
+                <Button
+                  pull={direction === "ltr" ? "left" : "right"}
+                  color="primary"
+                  style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                  onClick={() => this.toggleModals("warning", {})}
+                >
+                  {locale.alert.reject}
+                </Button>
+              </ModalBody>
+            </Modal>
+            {/* Modals */}
             <Modal
               isOpen={this.state.modals.addProduct.openStatus}
               toggle={() => this.toggleModals("addProduct", {})}
