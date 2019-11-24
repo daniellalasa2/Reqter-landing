@@ -156,7 +156,25 @@ export default class PartnerProducts extends React.Component {
                   "string",
                   locale.fields.null,
                   "fields.name"
+                )}{" "}
+                (
+                {SafeValue(
+                  product,
+                  "fields.code",
+                  "string",
+                  locale.fields.null
                 )}
+                )
+                <br />
+                <small>
+                  {SafeValue(
+                    product,
+                    `fields.name.${this.lang}`,
+                    "string",
+                    locale.fields.null,
+                    "fields.name"
+                  )}
+                </small>
               </span>
             </td>
             <td>

@@ -10,7 +10,8 @@ import Validator from "../../Validator/Validator";
 import { Button } from "reactstrap";
 import {
   SafeValue,
-  PartnerpanelIssueOffer
+  PartnerpanelIssueOffer,
+  DownloadAsset
 } from "../../ApiHandlers/ApiHandler";
 import { addCommas } from "../../PersianNumber/PersianNumber";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
@@ -95,9 +96,22 @@ export default class IssueOffer extends React.Component {
     const productArr = [];
     productObj.forEach((product, idx) => {
       productArr.push({
-        imgSrc:
-          SafeValue(product, `fields.thumbnail`, "string", false) || NoImageAlt,
-        title: SafeValue(product, `fields.name.${this.lang}`, "string", "---"),
+        imgSrc: DownloadAsset(
+          SafeValue(
+            product,
+            `fields.media.0.${this.lang}`,
+            "string",
+            "",
+            "fields.media"
+          )
+        ),
+        title: SafeValue(
+          product,
+          `fields.name.${this.lang}`,
+          "string",
+          "---",
+          "fields.name"
+        ),
         value: JSON.stringify(product),
         key: idx
       });
@@ -337,6 +351,7 @@ export default class IssueOffer extends React.Component {
               onChange={(name, checkedObj) =>
                 this.submitSelectedProduct(name, checkedObj)
               }
+              imgAltSrc={NoImageAlt}
               type="radio"
               name="offeredProduct"
             />

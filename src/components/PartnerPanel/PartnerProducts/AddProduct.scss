@@ -38,7 +38,8 @@
         align-items: center;
         flex-grow: 0.3;
         & img {
-          width: 110px;
+          width: 100px;
+          height: 100px;
         }
       }
     }
@@ -52,6 +53,9 @@
       }
       & .input-wrapper {
         margin-top: 0 !important;
+      }
+      & .flatuploader {
+        height: 100px;
       }
       & input {
         font-size: 15px;

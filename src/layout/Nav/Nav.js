@@ -204,35 +204,32 @@ class Navigation extends Component {
                       {locale.partnerpanel_myproducts}
                     </Link>
                   </NavItem>
-                  {this.props.match.path !== "/:lang?/partnerpanel/profile" ? (
-                    <NavItem>
-                      <Link
-                        to={`/${lang}/partnerpanel/profile`}
-                        className="nav-link"
-                      >
-                        <FontAwesomeIcon
-                          icon={faUserAlt}
-                          pull={direction === "ltr" ? "left" : "right"}
-                          color="black"
-                        />
-                        {locale.partnerpanel_myprofile}
-                      </Link>
-                    </NavItem>
-                  ) : (
-                    <NavItem>
-                      <Link
-                        to={`/${lang}/partnerpanel/panel`}
-                        className="nav-link"
-                      >
-                        <FontAwesomeIcon
-                          icon={faEnvelopeOpenText}
-                          pull={direction === "ltr" ? "left" : "right"}
-                          color="black"
-                        />
-                        {locale.partnerpanel_manage_requests}
-                      </Link>
-                    </NavItem>
-                  )}
+                  <NavItem>
+                    <Link
+                      to={`/${lang}/partnerpanel/profile`}
+                      className="nav-link"
+                    >
+                      <FontAwesomeIcon
+                        icon={faUserAlt}
+                        pull={direction === "ltr" ? "left" : "right"}
+                        color="black"
+                      />
+                      {locale.partnerpanel_myprofile}
+                    </Link>
+                  </NavItem>
+                  <NavItem>
+                    <Link
+                      to={`/${lang}/partnerpanel/panel`}
+                      className="nav-link"
+                    >
+                      <FontAwesomeIcon
+                        icon={faEnvelopeOpenText}
+                        pull={direction === "ltr" ? "left" : "right"}
+                        color="black"
+                      />
+                      {locale.partnerpanel_manage_requests}
+                    </Link>
+                  </NavItem>
                 </React.Fragment>
               )}
               {!this.props.match.path.startsWith("/:lang?/partnerpanel/") && (

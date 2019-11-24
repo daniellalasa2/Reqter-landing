@@ -13,7 +13,7 @@
       "reject_request_button": "Reject",
       "display_request": "Display",
       "issue_offer": "Issue offer",
-      "cancel_offer": "Cancel offer",
+      "cancel_offer": "Cancel",
       "alert": {
         "title": "Warning !",
         "description": "If the request status is applied, it cannot be changed.",
@@ -59,7 +59,7 @@
       "request_details": "Request details",
       "sent_offer": "Sent offer",
       "offer_stage": "Offer stage",
-      "cancel_offer": "Cancel offer",
+      "cancel_offer": "Cancel",
       "not_specified_stage": "Not specified",
       "description": "Description",
       "hourlyprice": "Hourly price",

@@ -13,7 +13,7 @@
       "reject_request_button": "رد کردن",
       "display_request": "مشاهده",
       "issue_offer": "ارسال پیشنهاد",
-      "cancel_offer": "لغو پیشنهاد",
+      "cancel_offer": "لغو",
       "alert": {
         "title": "هشدار",
         "description": "در صورت اعمال وضعیت درخواست امکان تغییر وضعیت آن وجود ندارد.",
@@ -59,7 +59,7 @@
       "request_details": "جزییات درخواست",
       "sent_offer": "پیشنهاد ارسال شده",
       "offer_stage": "وضعیت",
-      "cancel_offer": "لغو پیشنهاد",
+      "cancel_offer": "لغو",
       "not_specified_stage": "نامشخص",
       "description": "توضیحات",
       "hourlyprice": "قیمت ساعتی(تومان)",

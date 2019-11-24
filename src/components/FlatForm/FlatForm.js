@@ -134,7 +134,8 @@ const ImageSelect = ({
   val,
   dir,
   imgSrc,
-  imgAlt,
+  imgAltText,
+  imgAltSrc,
   name
 }) => {
   const checkbox = useRef();
@@ -153,7 +154,13 @@ const ImageSelect = ({
           onClick={toggleCheckbox}
           style={style}
         >
-          <img src={imgSrc} alt={imgAlt} />
+          <img
+            src={imgSrc}
+            alt={imgAltText}
+            onError={e => {
+              return imgAltSrc ? (e.target.src = imgAltSrc) : "";
+            }}
+          />
           <span className="checked-icon">
             <svg height="40" width="40" id="polygon">
               <polygon
@@ -438,6 +445,8 @@ const FlatImageSelect = ({
   type,
   name,
   className,
+  imgAltSrc,
+  imgAltText,
   defaultChecked
 }) => {
   const _options = items.map((val, index) => {
@@ -449,7 +458,8 @@ const FlatImageSelect = ({
         boxValue={index + 1}
         dir={dir}
         imgSrc={val.imgSrc}
-        imgAlt={val.imgAlt | "Flat Image Select"}
+        imgAltSrc={imgAltSrc || val.imgAltSrc}
+        imgAltText={val.imgAltText || imgAltText || "Flat Image Select"}
         val={val.value}
         name={name}
       />

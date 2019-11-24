@@ -20,6 +20,8 @@
 .rar
 .tar
 /.git-old
+#linux forbidden files
+.swp
 
 npm-debug.log*
 yarn-debug.log*

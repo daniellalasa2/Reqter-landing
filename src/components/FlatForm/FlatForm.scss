@@ -326,11 +326,12 @@ label.checkboxContainer {
   .styled-checkbox {
     cursor: pointer;
     background-color: rgba(232, 232, 232, 0.7);
-    padding: 12px 0;
+    padding: 0;
     position: relative;
     display: inline-block;
-    border-radius: 5px;
+    border-radius: 4px;
     border: 1px solid lightgrey;
+    width: 100%;
     &:after {
       content: "";
       box-sizing: content-box;
@@ -353,18 +354,25 @@ label.checkboxContainer {
       }
     }
     img {
-      max-width: 80px;
-      border-radius: 10px;
+      width: 150px;
+      border-radius: 2px;
       position: relative;
-      margin: 10px 0;
+      height: 150px;
+      padding: 15px;
     }
     .title {
       font-weight: bold;
       text-align: center;
       width: 100%;
-      display: inline-block;
-      margin-top: 10px;
+      min-width: 100%;
+      margin-top: 0;
       line-height: 1;
+      height: 40px;
+      overflow: hidden;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     &.checked {
       box-shadow: 0 0 1px 3px lightgrey;
@@ -532,62 +540,6 @@ label.checkboxContainer {
 //Select component styles
 .hidden-checkbox {
   display: none;
-}
-.styled-checkbox-wrapper {
-  width: auto;
-  display: inline-block;
-  width: 150px;
-  height: auto;
-  margin: 10px;
-  .styled-checkbox {
-    cursor: pointer;
-    background-color: rgba(232, 232, 232, 0.7);
-    padding: 12px 0;
-    position: relative;
-    display: inline-block;
-    border-radius: 5px;
-    border: 1px solid lightgrey;
-    &:after {
-      content: "";
-      box-sizing: content-box;
-    }
-    .checked-icon {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      opacity: 0.5;
-      display: none;
-      #tickSvg {
-        width: 20px;
-        position: absolute;
-        right: 3px;
-      }
-      #polygon {
-        border-radius: 0px 5px;
-        position: absolute;
-        right: 0;
-      }
-    }
-    img {
-      width: 80px;
-      border-radius: 10px;
-      position: relative;
-    }
-    .title {
-      font-weight: bold;
-      text-align: center;
-      width: 100%;
-      display: inline-block;
-      margin-top: 10px;
-      line-height: 1;
-    }
-    &.checked {
-      box-shadow: 0 0 1px 3px lightgrey;
-      .checked-icon {
-        display: block;
-      }
-    }
-  }
 }
 .inline-checkbox-wrapper {
   line-height: 1.9;

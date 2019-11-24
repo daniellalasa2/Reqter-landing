@@ -147,7 +147,7 @@ export default class PartnerPanel extends React.Component {
   // Functionality:
   //  1-Get main website products from backend API and update state with product ids
   //  2-Get partner products by partnerid and update the state
-  getAndUpdateProductsList = () => {
+  getAndUpdateProducts = () => {
     //get and update productsType
     QueryContent([Config.CONTENT_TYPE_ID.product_type], res => {
       if (res.success_result.success) {
@@ -467,6 +467,7 @@ export default class PartnerPanel extends React.Component {
               )}
             </td>
             <td>
+              {console.log("pid", this.state.partnerId)}
               <Button
                 size="sm"
                 color="success"
@@ -1053,8 +1054,7 @@ export default class PartnerPanel extends React.Component {
   }
   componentDidMount() {
     //Initial datas which are going to display in partner panel
-    this.updatePartnerInfo();
-    this.getAndUpdateProductsList();
+    this.updatePartnerInfo(() => this.getAndUpdateProducts());
   }
   render() {
     const { locale, direction } = this.translate;

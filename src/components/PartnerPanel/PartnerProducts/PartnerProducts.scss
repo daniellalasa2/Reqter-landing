@@ -15,8 +15,9 @@
       vertical-align: middle;
       text-align: center;
       & .product-image {
-        // width: 94px;
-        max-height: 43px;
+        width: 100px;
+        height: 100px;
+        border-radius: 3px;
       }
     }
   }
