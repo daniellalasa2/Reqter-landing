@@ -43,14 +43,11 @@ class Main extends Component {
         );
     this.translate = require(`./_locales/${this.lang}.json`);
     window.src = GetSession("src");
+
     this.state = {
       componentTreeErrorCatched: false,
       lang: this.lang,
-      userAuth: {
-        ROLE: this.authObj ? this.authObj.ROLE : "newcomer",
-        ID: this.authObj.ID ? this.authObj.ID : "",
-        TOKEN: this.authObj ? this.authObj.TOKEN : ""
-      },
+      userAuth: this.authObj,
       displayLoginModal: false,
       loginModalTitle: this.translate.locale.login,
       defaultPhoneNumber: this.authObj ? this.authObj.ID : ""
@@ -61,7 +58,7 @@ class Main extends Component {
       ? JsonParser(GetCookie("SSUSERAUTH"))
       : GetCookie("SSGUESTAUTH")
       ? JsonParser(GetCookie("SSGUESTAUTH"))
-      : {};
+      : { ROLE: "newcomer", ID: "", TOKEN: "" };
   };
   toggleLoginModal = (status, modalTitle, defaultPhoneNumber) => {
     this.setState({
