@@ -34,8 +34,11 @@ const MyRequests = React.lazy(() =>
 const OfferList = React.lazy(() =>
   import("./components/MyPage/OfferList/OfferList")
 );
+const PartnerProfile = React.lazy(()=>
+  import("./components/PartnerProfile/PartnerProfile")
+);
 const NotFound = React.lazy(() =>
-  import("./components/Auth/NotFound/NotFound")
+import("./components/Auth/NotFound/NotFound")
 );
 const InternalError = React.lazy(() =>
   import("./components/Auth/InternalError/InternalError")
@@ -44,10 +47,10 @@ const InternalError = React.lazy(() =>
 const PartnerPanel = React.lazy(() =>
   import("./components/PartnerPanel/Panel/PartnerPanel")
 );
-const PartnerLogin = React.lazy(() =>
+const PartnerPanelLogin = React.lazy(() =>
   import("./components/PartnerPanel/PartnerLogin/PartnerLogin")
 );
-const PartnerProfile = React.lazy(() =>
+const PartnerPanelSetting = React.lazy(() =>
   import("./components/PartnerPanel/PartnerProfile/PartnerProfile")
 );
 const PartnerProducts = React.lazy(() =>
@@ -205,14 +208,14 @@ const routes = [
     path: "/:lang?/partnerpanel/login",
     name: "Partner Panel Login",
     auth: ["guest", "user"],
-    component: PartnerLogin,
+    component: PartnerPanelLogin,
     navStatus: true
   },
   {
-    path: "/:lang?/partnerpanel/profile",
-    name: "Partner Panel Profile",
+    path: "/:lang?/partnerpanel/setting",
+    name: "Partner Panel Setting",
     auth: ["partner"],
-    component: PartnerProfile,
+    component: PartnerPanelSetting,
     navStatus: true
   },
   {

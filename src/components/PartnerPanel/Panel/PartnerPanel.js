@@ -467,7 +467,6 @@ export default class PartnerPanel extends React.Component {
               )}
             </td>
             <td>
-              {console.log("pid", this.state.partnerId)}
               <Button
                 size="sm"
                 color="success"

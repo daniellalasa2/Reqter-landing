@@ -49,7 +49,6 @@ export default class PartnerProfile extends React.Component {
     this.goToIndex = this.goToIndex.bind(this);
     this.onExiting = this.onExiting.bind(this);
     this.onExited = this.onExited.bind(this);
-    this.fetchPartnerDetails();
   }
 
   //Image Carousel Functions
@@ -190,7 +189,7 @@ export default class PartnerProfile extends React.Component {
       if (partner.success_result.success) {
         const { _id, fields } = partner.data[0];
         fields.workinghours =
-          SafeValue(fields, "workinghours", "json", null) &&
+          SafeValue(fields, "workinghours", "jsonArray", null) &&
           JSON.parse(fields.workinghours).map((item, key) => (
             <li key={key}>
               <strong>{item.header}</strong>
@@ -351,7 +350,9 @@ export default class PartnerProfile extends React.Component {
     e.target.classList.add("touchable");
   };
   componentDidMount() {
+    console.log("yeap");
     this.fetchPartnerDetails();
+
     window.addEventListener(
       "scroll",
       this.contentNavigatorScrollTrigger,

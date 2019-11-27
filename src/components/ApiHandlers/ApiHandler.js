@@ -443,16 +443,18 @@ var GetPartnerInfo = (params, callback) => {
       }
     })
       .then(res => {
-        const result = errorHandler(res.status);
+        let result;
         if (
+          !res.data ||
           res.data.length === 0 ||
-          res.data[0].length === 0 ||
           res.data[0].status !== "published"
         ) {
-          result.success = false;
+          result = errorHandler(404);
+        } else {
+          result = errorHandler(SafeValue(res, "status", "number", null));
         }
         if (typeof callback === "function") {
-          return callback({
+          callback({
             success_result: result,
             data: SafeValue(res, "data", "object", [])
           });
@@ -1039,7 +1041,7 @@ var PartnerpanelEditProduct = (productid, data, callback) => {
 //return safe value
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
-//
+//TODO: SafeValue needs data conversion if type checking is passed
 var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
   let correctReturn;
   try {
@@ -1088,6 +1090,11 @@ var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
             case "json":
               type = typeof JSON.parse(data);
               if (type === "object") return data;
+              else return correctReturn();
+            case "jsonArray":
+              const parsedData = JSON.parse(data);
+              type = typeof parsedData;
+              if (type === "object" && parsedData.length) return data;
               else return correctReturn();
             default:
               return correctReturn();

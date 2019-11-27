@@ -598,7 +598,6 @@ export default class PartnerPanel extends React.Component {
       );
     }
   }
-
   componentDidMount() {
     //Initial datas which are going to display in partner panel
     this.updatePartnerInfo();

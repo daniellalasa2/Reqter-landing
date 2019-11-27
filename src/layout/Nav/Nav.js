@@ -206,7 +206,7 @@ class Navigation extends Component {
                   </NavItem>
                   <NavItem>
                     <Link
-                      to={`/${lang}/partnerpanel/profile`}
+                      to={`/${lang}/partnerpanel/setting`}
                       className="nav-link"
                     >
                       <FontAwesomeIcon
@@ -502,7 +502,7 @@ class Navigation extends Component {
                       className="nav-link"
                       to=""
                       onClick={() =>
-                        this.props.history.push(`/${lang}/partnerpanel/profile`)
+                        this.props.history.push(`/${lang}/partnerpanel/setting`)
                       }
                     >
                       {locale.partnerpanel_myprofile}
