@@ -281,12 +281,12 @@ export default class Login extends React.Component {
                 error={this.state.form.fields.phoneNumber.error}
                 autoFocus={true}
                 defaultValue={this.props.defaultPhoneNumber}
+                onKeyUp={e => e.key === "Enter" && this.Login()}
               />
               <Button
                 color="info"
                 onClick={this.Login}
                 disabled={!this.state.form.fields.phoneNumber.isValid}
-                // onKeyUp={e => console.log("this: ", e)}
               >
                 {this.state.form.isSubmitting ? (
                   <img
@@ -313,6 +313,7 @@ export default class Login extends React.Component {
                 slyle={{ letterSpacing: "7px", marginTop: "14px" }}
                 onChange={this.formStateHandler}
                 error={this.state.form.fields.code.error}
+                onKeyUp={e => e.key === "Enter" && this.CheckCode()}
               />
               <span
                 className="resend-code-link"

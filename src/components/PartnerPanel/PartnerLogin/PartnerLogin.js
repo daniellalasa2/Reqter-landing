@@ -299,6 +299,7 @@ export default class Login extends React.Component {
                 error={this.state.form.fields.phoneNumber.error}
                 autoFocus={true}
                 defaultValue={this.props.defaultPhoneNumber}
+                onKeyUp={e => (e.key === "Enter" ? this.Login() : null)}
               />
               <Button
                 color="info"
@@ -331,6 +332,7 @@ export default class Login extends React.Component {
                 slyle={{ letterSpacing: "7px", marginTop: "14px" }}
                 onChange={this.formStateHandler}
                 error={this.state.form.fields.code.error}
+                onKeyUp={e => e.key === "Enter" && this.CheckCode()}
               />
               <span
                 className="resend-code-link"

@@ -1,15 +1,18 @@
 .JsonInput {
   & input {
     border-width: 1px !important;
+    border-radius: 1px;
   }
   & table td {
     vertical-align: middle;
+    padding: 0.5rem;
   }
   direction: "ltr";
   & table .addRow {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
-    padding: 5px 10px;
+    padding: 0;
+    border-radius: 1px;
   }
   & span.jsonError {
     display: inline-block;

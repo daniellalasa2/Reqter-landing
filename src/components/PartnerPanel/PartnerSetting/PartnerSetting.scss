@@ -45,9 +45,15 @@
         direction: rtl;
         text-align: right;
         margin-bottom: 40px;
-        min-width: 45%;
+        min-width: 29%;
         flex-grow: 1;
-        margin: 18px;
+        margin: 15px;
+      }
+      & .albumImageUploaderWrapper {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: space-around;
       }
     }
   }

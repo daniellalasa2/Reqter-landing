@@ -5,85 +5,39 @@ export default class JsonInput extends React.Component {
   constructor(props) {
     super(props);
     const { defaultItems } = props;
-    const initializeObj = defaultItems
+    const initializedObj = defaultItems
       ? typeof defaultItems === "string"
         ? JSON.parse(defaultItems)
         : defaultItems
-      : { key1: "" };
+      : [{ key: "", value: "" }];
     this.state = {
-      objectsList: initializeObj,
+      objectsList: initializedObj,
       jsonError: ""
     };
   }
-  // jsonValidator = json => {
-  //   const text = JSON.stringify(json);
-  //   if (
-  //     /^[\],:{}\s]*$/.test(
-  //       text
-  //         .replace(/\\["\\\/bfnrtu]/g, "@")
-  //         .replace(
-  //           /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
-  //           "]"
-  //         )
-  //         .replace(/(?:^|:|,)(?:\s*\[)+/g, "")
-  //     )
-  //   ) {
-  //     return true;
-  //   } else {
-  //     console.log("JsonInput component error: JSON format error");
-  //     return false;
-  //   }
-  // };
-  removeThePair = key => {
+  removeThePair = idx => {
     var newObj = this.state.objectsList;
-    delete newObj[key];
+    newObj.splice(idx, 1);
     this.setState({
       objectsList: newObj
     });
   };
-  addAPair = () => {
-    const { objectsList } = this.state;
-    const numberOfKeys = Object.keys(objectsList).length;
-    const newKey = "key" + (numberOfKeys + 1);
+  addPair = () => {
+    let arrObj = this.state.objectsList;
+    arrObj.push({ key: "", value: "" });
     this.setState({
-      objectsList: {
-        ...objectsList,
-        //generate a new key:value for new added item
-        [newKey]: ""
-      }
+      objectsList: arrObj
     });
   };
   inputChange = e => {
-    let { name, value } = e.target; //key1 , 1
-    const type = e.target.getAttribute("data-type"); //key
-    let newObjectsList = this.state.objectsList; //key1:"",key2:""
-    let jsonErrorText = ""; //""
-    value = String(value); //1
-    name = String(name); //key1
-    switch (type) {
-      case "key": //key
-        //changing the name of a specific key in Json
-        if (
-          (newObjectsList[value] && newObjectsList[value].length > 0) ||
-          newObjectsList[value] === ""
-        ) {
-          //ignoring keys duplication
-          jsonErrorText = this.props.text.duplicateKeyError;
-        } else {
-          if (value.length > 0) {
-            newObjectsList[value] = newObjectsList[name];
-            delete newObjectsList[name];
-          } else {
-            jsonErrorText = this.props.text.emptyKey;
-          }
-        }
-        break;
-      case "value":
-        //changing the value of a key
-        newObjectsList[name] = value;
-        break;
-      default:
-    }
+    let { name, value } = e.target;
+    const type = e.target.getAttribute("data-type");
+    const index = e.target.getAttribute("data-idx");
+    let newObjectsList = this.state.objectsList;
+    let jsonErrorText = "";
+    value = String(value);
+    name = String(name);
+    newObjectsList[index][type] = value;
     this.setState({
       objectsList: newObjectsList,
       jsonError: jsonErrorText
@@ -91,45 +45,46 @@ export default class JsonInput extends React.Component {
   };
   generateTableBasedOnStateJson = () => {
     const { objectsList } = this.state;
-    const generatedElements = [];
-    let reactChildKey = 1;
-    for (const itemKey in objectsList) {
-      generatedElements.push(
-        <tr key={reactChildKey}>
-          <td>
-            <Input
-              type="text"
-              data-type="key"
-              placeholder="Key"
-              defaultValue={itemKey}
-              name={itemKey}
-              onChange={this.inputChange}
-            />
-          </td>
-          <td>
-            <Input
-              type="text"
-              data-type="value"
-              placeholder="Value"
-              defaultValue={objectsList[itemKey]}
-              name={itemKey}
-              onChange={this.inputChange}
-            />
-          </td>
-          <td>
-            <Button
-              style={{ borderWidth: "1px" }}
-              size="sm"
-              color="danger"
-              onClick={() => this.removeThePair(itemKey)}
-            >
-              <strong>&nbsp;X&nbsp;</strong>
-            </Button>
-          </td>
-        </tr>
-      );
-      reactChildKey++;
-    }
+    const newArr = Array.from(objectsList);
+    const generatedElements = newArr.map((obj, idx) => (
+      <tr key={`child${idx}_${obj.key}`}>
+        <td>
+          <Input
+            type="text"
+            data-type="key"
+            data-idx={idx}
+            placeholder="Key"
+            defaultValue={obj.key}
+            name={`key_${idx}_${obj.key}`}
+            onChange={this.inputChange}
+          />
+        </td>
+        <td>
+          <Input
+            data-idx={idx}
+            type="text"
+            data-type="value"
+            placeholder="Value"
+            defaultValue={obj.value}
+            name={`value_${idx}_${obj.value}`}
+            onChange={this.inputChange}
+          />
+        </td>
+        <td>
+          <Button
+            style={{
+              borderWidth: "0",
+              borderRadius: "1px",
+              backgroundColor: "#2e5b96"
+            }}
+            size="sm"
+            onClick={() => this.removeThePair(idx)}
+          >
+            <strong>&nbsp;X&nbsp;</strong>
+          </Button>
+        </td>
+      </tr>
+    ));
     return generatedElements;
   };
   //life cycles
@@ -138,7 +93,6 @@ export default class JsonInput extends React.Component {
     require("./index.scss");
   }
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.state);
     //call the parent callback on each component update
     if (this.state.jsonError === undefined || this.state.jsonError.length === 0)
       this.props.onChange({ ...this.state.objectsList });
@@ -151,7 +105,7 @@ export default class JsonInput extends React.Component {
       <div
         className={classnames("JsonInput", () => direction && `_${direction}`)}
       >
-        <Table>
+        <Table bordered>
           <thead>
             <tr>
               <th>
@@ -171,10 +125,14 @@ export default class JsonInput extends React.Component {
               <td colSpan="3">
                 <Button
                   size="sm"
-                  color="success"
-                  style={{ display: "block", margin: "auto" }}
+                  style={{
+                    display: "block",
+                    margin: "auto",
+                    borderRadius: "1px",
+                    backgroundColor: "#2e5b96"
+                  }}
                 >
-                  <span className="addRow" onClick={this.addAPair}>
+                  <span className="addRow" onClick={this.addPair}>
                     +&nbsp;{text.addButton}
                   </span>
                 </Button>

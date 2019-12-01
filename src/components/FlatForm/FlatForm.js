@@ -7,6 +7,7 @@ import { Button } from "reactstrap";
 import Spinner from "../../assets/script/spinner";
 import AvatarUploader from "./AvatarUploader";
 import JsonInput from "./JsonInput";
+import ImageUploaderApiIncluded from "./ImageUploaderApiIncluded";
 // import MultiImageUploader from "./MultiImageUploader";
 /*
   Todo:
@@ -315,15 +316,16 @@ const FlatInput = ({
   prefix,
   readOnly,
   disabled,
-  direction
+  direction,
+  ...props
 }) => {
-  console.log("dd", direction);
   return (
     <div className={classnames("field-row", direction && `_${direction}`)}>
       {label && <span className="field-title">{label}</span>}
       <div className="input-wrapper" style={{ direction: "ltr" }}>
         {prefix && <span className="flatinput-prefix">{prefix}</span>}
         <input
+          {...props}
           type={type}
           placeholder={placeholder}
           onClick={onClick}
@@ -361,12 +363,14 @@ const FlatTextArea = ({
   direction,
   id,
   style,
+  wrapperStyle,
   ...props
 }) => {
   return (
     <div
       id={id}
       className={classnames("field-row", direction && `_${direction}`)}
+      style={wrapperStyle}
     >
       <span className="field-title">{label}</span>
       <textarea
@@ -494,6 +498,7 @@ const FlatUploader = ({
   placeholder,
   buttonValue,
   onChange,
+  wrapperStyle,
   id,
   error
 }) => {
@@ -503,7 +508,7 @@ const FlatUploader = ({
     setFileName(e.target.files[0].name);
   };
   return (
-    <div className="field-row" id={id}>
+    <div className="field-row" id={id} style={wrapperStyle}>
       <span className="field-title">{label}</span>
       <div
         className={classnames(
@@ -693,9 +698,6 @@ const FlatJsonInput = ({ label, id, name, style, ...props }) => {
     </div>
   );
 };
-// const FlatMultiImageUploader = ({}) => {
-//   <MultiImageUploader defaltImg = {} />;
-// };
 export {
   ImageSelect,
   InlineSelect,
@@ -709,6 +711,6 @@ export {
   FlatDatePicker,
   FlatAvatarUploader,
   FlatButton,
-  FlatJsonInput
-  // MultiImageUploader as FlatMultiImageUploader
+  FlatJsonInput,
+  ImageUploaderApiIncluded as FlatImageUploaderApiIncluded
 };

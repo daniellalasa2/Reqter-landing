@@ -17,13 +17,13 @@ import {
   FlatTextArea,
   FlatButton,
   FlatAvatarUploader,
-  // FlatMultiImageUploader,
   FlatInlineSelect,
   FlatJsonInput,
-  FlatUploader
+  FlatUploader,
+  FlatImageUploaderApiIncluded
 } from "../../FlatForm/FlatForm";
 import Skeleton from "react-loading-skeleton";
-import "./PartnerProfile.scss";
+import "./PartnerSetting.scss";
 // import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
 export default class PartnerPanel extends React.Component {
@@ -815,7 +815,7 @@ export default class PartnerPanel extends React.Component {
                       error={fields.overview.error}
                       style={{
                         height: "150px",
-                        width: "95%"
+                        width: "96.3%"
                       }}
                     />
                   </React.Fragment>
@@ -838,12 +838,44 @@ export default class PartnerPanel extends React.Component {
                       placeholder={locale.fields.upload_placeholder}
                       label={locale.fields.avatar_upload}
                     />
-                    {/* <FlatMultiImageUploader /> */}
+                    <br />
+                    <br />
+                    <div className="albumImageUploaderWrapper">
+                      <span style={{ width: "100%", margin: "1rem 0 0.5rem" }}>
+                        آلبوم عکس
+                      </span>
+                      <br />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => console.log("ImgUploader: ", res)}
+                        name="image1"
+                        innerText="انتخاب عکس"
+                      />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => console.log("ImgUploader: ", res)}
+                        name="image1"
+                        innerText="انتخاب عکس"
+                      />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => console.log("ImgUploader: ", res)}
+                        name="image1"
+                        innerText="انتخاب عکس"
+                      />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => console.log("ImgUploader: ", res)}
+                        name="image1"
+                        innerText="انتخاب عکس"
+                      />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => console.log("ImgUploader: ", res)}
+                        name="image1"
+                        innerText="انتخاب عکس"
+                      />
+                    </div>
                   </React.Fragment>
                 )}
                 {activeFilter === "map" && (
                   <React.Fragment>
-                    <div className="field-row">
+                    <div className="field-row" style={{ width: "100%" }}>
                       <span className="field-title">{locale.fields.city}</span>
 
                       {/* fill checkboxes */}
@@ -862,8 +894,6 @@ export default class PartnerPanel extends React.Component {
                         {this.state.form.fields.city.error}
                       </span>
                     </div>
-                    <hr />
-                    <br />
                     <FlatTextArea
                       label={locale.fields.address}
                       name="address"
@@ -879,12 +909,14 @@ export default class PartnerPanel extends React.Component {
                       )}
                       error={fields.address.error}
                       style={{
-                        height: "150px",
-                        width: "95%"
+                        height: "83px"
                       }}
+                      wrapperStyle={{ width: "100%" }}
                     />
-                    <br />
-                    <FlatUploader label="عکس نقشه" />
+                    <FlatUploader
+                      label="عکس نقشه"
+                      wrapperStyle={{ width: "100%" }}
+                    />
                   </React.Fragment>
                 )}
                 {activeFilter === "setting" && (
@@ -934,7 +966,6 @@ export default class PartnerPanel extends React.Component {
                         {this.state.form.fields.workingfields.error}
                       </span>
                     </div>
-                    <br />
                     <br />
                     <FlatJsonInput
                       onChange={res => console.log(res)}
