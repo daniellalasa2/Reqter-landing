@@ -12,7 +12,7 @@ export default class ImageUploaderApiIncluded extends React.Component {
     };
     this.state = {
       progress: 0,
-      selectedImgUrl: "",
+      selectedImgUrl: props.defaultUrl ? props.defaultUrl : "",
       uploading: false
     };
     this.fileRef = React.createRef();
@@ -38,22 +38,23 @@ export default class ImageUploaderApiIncluded extends React.Component {
       case "imgWrapperStyle":
         grabbedStyle = {
           border: "2px dashed #2e5b96",
-          width: "150px",
-          height: "150px",
+          width: "140px",
+          height: "140px",
           borderRadius: "1px",
-          backgroundColor: "transparent",
+          backgroundColor: this.state.selectedImgUrl ? "gray" : "transparent",
           color: "black",
           fontWeight: "bold",
           fontSize: "20px",
           display: "inline-flex",
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
+          margin: "10px"
         };
         break;
       case "imageStyle":
         grabbedStyle = {
-          width: "150px",
-          height: "150px",
+          width: "140px",
+          height: "140px",
           display: this.state.selectedImgUrl ? "block" : "none",
           position: "absolute"
         };
@@ -79,7 +80,7 @@ export default class ImageUploaderApiIncluded extends React.Component {
           />
         )}
         {this.state.uploading ? (
-          <span style={{ color: "gray", direction: "ltr" }}>
+          <span style={{ color: "gray", direction: "ltr", zIndex: "1" }}>
             {this.state.progress} %
           </span>
         ) : (
@@ -87,10 +88,14 @@ export default class ImageUploaderApiIncluded extends React.Component {
             style={{
               display: "flex",
               selfAlign: "center",
-              fontSize: "18px",
+              fontSize: "16px",
               fontWeight: "bold",
-              color: "#2e5b96",
-              cursor: "pointer"
+              color: this.state.selectedImgUrl ? "white" : "#2e5b96",
+              cursor: "pointer",
+              backgroundColor: "rgba(255,255,255,0.6)",
+              padding: "5px",
+              borderRadius: "5px",
+              zIndex: "1"
             }}
             onClick={() => this.fileRef.current.click()}
           >

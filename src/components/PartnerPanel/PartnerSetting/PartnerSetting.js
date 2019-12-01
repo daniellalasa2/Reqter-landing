@@ -220,7 +220,9 @@ export default class PartnerPanel extends React.Component {
       }
     });
   };
-
+  handleAlbumUploadedImages = file => {
+    console.log(file);
+  };
   checkboxStateHandler = (name, data) => {
     let checkBoxValuesArr = [];
     if (data.length) {
@@ -822,22 +824,21 @@ export default class PartnerPanel extends React.Component {
                 )}
                 {activeFilter === "imagealbum" && (
                   <React.Fragment>
-                    <FlatAvatarUploader
-                      width={260}
-                      height={260}
-                      defaultSrc={SafeValue(
+                    <span style={{ width: "100%", margin: "1rem 0 0.5rem" }}>
+                      لوگو
+                    </span>
+                    <FlatImageUploaderApiIncluded
+                      onChange={res => this.handleAlbumUploadedImages(res)}
+                      name="image6"
+                      innerText="تغییر عکس"
+                      defaultUrl={SafeValue(
                         partnerData,
                         "fields.logo.0",
                         "string",
                         ""
                       )}
-                      onChange={img => console.log(img)}
-                      messages={{
-                        MAX_FILE_SIZE_EXEEDED: locale.fields.file_size_exceeded
-                      }}
-                      placeholder={locale.fields.upload_placeholder}
-                      label={locale.fields.avatar_upload}
                     />
+
                     <br />
                     <br />
                     <div className="albumImageUploaderWrapper">
@@ -846,28 +847,53 @@ export default class PartnerPanel extends React.Component {
                       </span>
                       <br />
                       <FlatImageUploaderApiIncluded
-                        onChange={res => console.log("ImgUploader: ", res)}
+                        onChange={res => this.handleAlbumUploadedImages(res)}
                         name="image1"
                         innerText="انتخاب عکس"
                       />
                       <FlatImageUploaderApiIncluded
-                        onChange={res => console.log("ImgUploader: ", res)}
-                        name="image1"
+                        onChange={res => this.handleAlbumUploadedImages(res)}
+                        name="image2"
                         innerText="انتخاب عکس"
                       />
                       <FlatImageUploaderApiIncluded
-                        onChange={res => console.log("ImgUploader: ", res)}
-                        name="image1"
+                        onChange={res => this.handleAlbumUploadedImages(res)}
+                        name="image3"
                         innerText="انتخاب عکس"
                       />
                       <FlatImageUploaderApiIncluded
-                        onChange={res => console.log("ImgUploader: ", res)}
-                        name="image1"
+                        onChange={res => this.handleAlbumUploadedImages(res)}
+                        name="image4"
                         innerText="انتخاب عکس"
                       />
                       <FlatImageUploaderApiIncluded
-                        onChange={res => console.log("ImgUploader: ", res)}
-                        name="image1"
+                        onChange={res => this.handleAlbumUploadedImages(res)}
+                        name="image5"
+                        innerText="انتخاب عکس"
+                      />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => this.handleAlbumUploadedImages(res)}
+                        name="image6"
+                        innerText="انتخاب عکس"
+                      />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => this.handleAlbumUploadedImages(res)}
+                        name="image7"
+                        innerText="انتخاب عکس"
+                      />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => this.handleAlbumUploadedImages(res)}
+                        name="image8"
+                        innerText="انتخاب عکس"
+                      />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => this.handleAlbumUploadedImages(res)}
+                        name="image9"
+                        innerText="انتخاب عکس"
+                      />
+                      <FlatImageUploaderApiIncluded
+                        onChange={res => this.handleAlbumUploadedImages(res)}
+                        name="image10"
                         innerText="انتخاب عکس"
                       />
                     </div>
