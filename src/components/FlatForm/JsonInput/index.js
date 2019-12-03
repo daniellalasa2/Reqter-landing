@@ -5,11 +5,13 @@ export default class JsonInput extends React.Component {
   constructor(props) {
     super(props);
     const { defaultItems } = props;
-    const initializedObj = defaultItems
-      ? typeof defaultItems === "string"
-        ? JSON.parse(defaultItems)
-        : defaultItems
-      : [{ key: "", value: "" }];
+    // this.objStructure = { header: "", body: "" };
+    const initializedObj =
+      (defaultItems &&
+        typeof defaultItems === "string" &&
+        JSON.parse(defaultItems).length &&
+        JSON.parse(defaultItems)) ||
+      new Array({ header: "", body: "", childId: 0 });
     this.state = {
       objectsList: initializedObj,
       jsonError: ""
@@ -23,8 +25,9 @@ export default class JsonInput extends React.Component {
     });
   };
   addPair = () => {
-    let arrObj = this.state.objectsList;
-    arrObj.push({ key: "", value: "" });
+    let stateObj = this.state.objectsList;
+    const arrObj = Array.from(stateObj);
+    arrObj.push({ header: "", body: "", childId: stateObj.length });
     this.setState({
       objectsList: arrObj
     });
@@ -33,58 +36,80 @@ export default class JsonInput extends React.Component {
     let { name, value } = e.target;
     const type = e.target.getAttribute("data-type");
     const index = e.target.getAttribute("data-idx");
-    let newObjectsList = this.state.objectsList;
+    let newObjectsList = Array.from(this.state.objectsList);
     let jsonErrorText = "";
     value = String(value);
     name = String(name);
     newObjectsList[index][type] = value;
-    this.setState({
-      objectsList: newObjectsList,
-      jsonError: jsonErrorText
-    });
+    this.setState(
+      {
+        objectsList: newObjectsList,
+        jsonError: jsonErrorText
+      },
+      () => {
+        if (
+          this.state.jsonError === undefined ||
+          this.state.jsonError.length === 0
+        ) {
+          let generatedArr = Array.from(this.state.objectsList);
+          for (var i = 0; i < generatedArr.length; i++) {
+            delete generatedArr[i]["childId"];
+          }
+          console.log(generatedArr);
+          this.props.onChange({
+            target: {
+              value: JSON.stringify(this.state.objectsList),
+              name: this.props.name
+            }
+          });
+        }
+      }
+    );
   };
   generateTableBasedOnStateJson = () => {
     const { objectsList } = this.state;
     const newArr = Array.from(objectsList);
-    const generatedElements = newArr.map((obj, idx) => (
-      <tr key={`child${idx}_${obj.key}`}>
-        <td>
-          <Input
-            type="text"
-            data-type="key"
-            data-idx={idx}
-            placeholder="Key"
-            defaultValue={obj.key}
-            name={`key_${idx}_${obj.key}`}
-            onChange={this.inputChange}
-          />
-        </td>
-        <td>
-          <Input
-            data-idx={idx}
-            type="text"
-            data-type="value"
-            placeholder="Value"
-            defaultValue={obj.value}
-            name={`value_${idx}_${obj.value}`}
-            onChange={this.inputChange}
-          />
-        </td>
-        <td>
-          <Button
-            style={{
-              borderWidth: "0",
-              borderRadius: "1px",
-              backgroundColor: "#2e5b96"
-            }}
-            size="sm"
-            onClick={() => this.removeThePair(idx)}
-          >
-            <strong>&nbsp;X&nbsp;</strong>
-          </Button>
-        </td>
-      </tr>
-    ));
+    const generatedElements = newArr.map((obj, idx) => {
+      return (
+        <tr key={obj.childId}>
+          <td>
+            <Input
+              type="text"
+              data-type="header"
+              data-idx={idx}
+              defaultValue={obj.header}
+              placeholder="Key"
+              name={`key_${obj.childId}`}
+              onChange={this.inputChange}
+            />
+          </td>
+          <td>
+            <Input
+              data-idx={idx}
+              type="text"
+              data-type="body"
+              placeholder="Value"
+              defaultValue={obj.body}
+              name={`value_${obj.childId}`}
+              onChange={this.inputChange}
+            />
+          </td>
+          <td>
+            <Button
+              style={{
+                borderWidth: "0",
+                borderRadius: "1px",
+                backgroundColor: "#2e5b96"
+              }}
+              size="sm"
+              onClick={() => this.removeThePair(obj.childId)}
+            >
+              <strong>&nbsp;X&nbsp;</strong>
+            </Button>
+          </td>
+        </tr>
+      );
+    });
     return generatedElements;
   };
   //life cycles
@@ -92,12 +117,6 @@ export default class JsonInput extends React.Component {
     //load styles while component is going to mount
     require("./index.scss");
   }
-  componentDidUpdate(prevProps, prevState) {
-    //call the parent callback on each component update
-    if (this.state.jsonError === undefined || this.state.jsonError.length === 0)
-      this.props.onChange({ ...this.state.objectsList });
-  }
-  componentDidMount() {}
   render() {
     const { direction, text } = this.props;
     const { jsonError } = this.state;

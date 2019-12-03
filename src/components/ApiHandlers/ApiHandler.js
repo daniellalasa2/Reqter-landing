@@ -86,7 +86,11 @@ var errorHandler = statusCode => {
 };
 
 var DownloadAsset = fileUrl => {
-  return _api.Download + fileUrl;
+  if (fileUrl.startsWith(_api.Download)) {
+    return fileUrl;
+  } else {
+    return _api.Download + fileUrl;
+  }
 };
 var UploadAsset = fileUrl => {
   return _api.Upload + fileUrl;

@@ -16,7 +16,6 @@ import {
   FlatInput,
   FlatTextArea,
   FlatButton,
-  FlatAvatarUploader,
   FlatInlineSelect,
   FlatJsonInput,
   FlatUploader,
@@ -206,14 +205,48 @@ export default class PartnerPanel extends React.Component {
     }
   };
   updatePartnerInfo = callback => {
+    const fields = { ...this.state.form.fields };
     GetPartnerInfo({ "fields.phonenumber": this.context.auth.ID }, res => {
       if (res.success_result.success) {
-        const { _id } = res.data[0];
+        const result = res.data[0].fields;
+        const { _id } = result;
+        for (let dataIdx in result) {
+          switch (dataIdx) {
+            case "amenities":
+            case "collaborationtypes":
+            case "workingfields":
+              fields[dataIdx] = {
+                ...fields[dataIdx],
+                value: result[dataIdx].map(item => item._id),
+                isValid: true
+              };
+              break;
+            case "country":
+            case "city":
+              fields[dataIdx] = {
+                ...fields[dataIdx],
+                value: result[dataIdx]._id,
+                isValid: true
+              };
+              break;
+            default:
+              fields[dataIdx] = {
+                ...fields[dataIdx],
+                value: result[dataIdx],
+                isValid: true
+              };
+          }
+        }
         this.setState(
           {
             partnerData: res.data[0],
             partnerId: _id,
-            pageLoaded: true
+            pageLoaded: true,
+            form: {
+              ...this.state.form,
+              isValid: true,
+              fields: fields
+            }
           },
           () => typeof callback === "function" && callback(res.data[0])
         );
@@ -257,6 +290,7 @@ export default class PartnerPanel extends React.Component {
     });
   };
   formStateHandler = e => {
+    console.log(e.target.name);
     let _this = e.target;
     const name = _this.name;
     const value = _this.value;
@@ -281,6 +315,7 @@ export default class PartnerPanel extends React.Component {
       }
     });
   };
+
   validatePhoneNumber = (doLogin, callback) => {
     const { locale } = this.translate;
     const { value, code } = this.state.form.fields.phonenumber;
@@ -485,7 +520,6 @@ export default class PartnerPanel extends React.Component {
       }
     );
   };
-
   urlParser = url => {
     let regex = /[?&]([^=#]+)=([^&#]*)/g,
       params = {},
@@ -495,33 +529,32 @@ export default class PartnerPanel extends React.Component {
     }
     return params;
   };
-
-  generateCheckboxDataFromApi = (name, defaultChecked) => {
-    const { lang } = this;
-    FilterContents(name, res => {
-      const arr = [];
-      SafeValue(res, "data", "object", []).map((val, key) => {
-        arr.push({
-          title: SafeValue(val.fields, `name.${lang}`, "string", null, "name"),
-          key: val._id,
-          boxValue: key + 1,
-          dir: "rtl",
-          value: val._id,
-          defaultChecked: defaultChecked && defaultChecked === val._id
-        });
-        return null;
-      });
-      this.setState({
-        combo: {
-          ...this.state.combo,
-          [name]: {
-            hasLoaded: true,
-            items: arr
-          }
-        }
-      });
-    });
-  };
+  // generateCheckboxDataFromApi = (name, defaultChecked) => {
+  //   const { lang } = this;
+  //   FilterContents(name, res => {
+  //     const arr = [];
+  //     SafeValue(res, "data", "object", []).map((val, key) => {
+  //       arr.push({
+  //         title: SafeValue(val.fields, `name.${lang}`, "string", null, "name"),
+  //         key: val._id,
+  //         boxValue: key + 1,
+  //         dir: "rtl",
+  //         value: val._id,
+  //         defaultChecked: defaultChecked && defaultChecked === val._id
+  //       });
+  //       return null;
+  //     });
+  //     this.setState({
+  //       combo: {
+  //         ...this.state.combo,
+  //         [name]: {
+  //           hasLoaded: true,
+  //           items: arr
+  //         }
+  //       }
+  //     });
+  //   });
+  // };
   generateCheckboxDataFromApi = (name, defaultChecked) => {
     const { lang } = this;
     const _defaultChecked = (checkedObj, toBeSearch) => {
@@ -564,6 +597,7 @@ export default class PartnerPanel extends React.Component {
   };
   componentDidUpdate() {
     const { pageLoaded } = this.state;
+    console.log("state", this.state);
     const {
       list_of_cities,
       partnership_working_fields,
@@ -961,7 +995,7 @@ export default class PartnerPanel extends React.Component {
                           }
                           onChange={this.checkboxStateHandler}
                           dir={direction}
-                          name="city"
+                          name="collaborationtypes"
                         />
                       ) : (
                         <Skeleton count={2} style={{ lineHeight: 2 }} />
@@ -983,7 +1017,7 @@ export default class PartnerPanel extends React.Component {
                           items={this.state.combo.coworking_working_field.items}
                           onChange={this.checkboxStateHandler}
                           dir={direction}
-                          name="city"
+                          name="workingfields"
                         />
                       ) : (
                         <Skeleton count={2} style={{ lineHeight: 2 }} />
@@ -994,7 +1028,7 @@ export default class PartnerPanel extends React.Component {
                     </div>
                     <br />
                     <FlatJsonInput
-                      onChange={res => console.log(res)}
+                      onChange={this.formStateHandler}
                       name="workinghours"
                       text={{
                         remove: locale.fields.remove,

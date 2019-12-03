@@ -1,5 +1,7 @@
 import React from "react";
 import { Upload, DownloadAsset } from "../../ApiHandlers/ApiHandler";
+import "./index.scss";
+import classnames from "classnames";
 export default class ImageUploaderApiIncluded extends React.Component {
   constructor(props) {
     super(props);
@@ -41,13 +43,13 @@ export default class ImageUploaderApiIncluded extends React.Component {
           width: "140px",
           height: "140px",
           borderRadius: "1px",
-          backgroundColor: this.state.selectedImgUrl ? "gray" : "transparent",
           color: "black",
           fontWeight: "bold",
           fontSize: "20px",
           display: "inline-flex",
           justifyContent: "center",
           alignItems: "center",
+          backgroundImage: "gray",
           margin: "10px"
         };
         break;
@@ -69,7 +71,10 @@ export default class ImageUploaderApiIncluded extends React.Component {
     const { styleExporter } = this;
     return (
       <div
-        className="ImageUploaderApiIncluded"
+        className={classnames(
+          "ImageUploaderApiIncluded",
+          this.state.selectedImgUrl ? "hasImage" : ""
+        )}
         style={styleExporter("imgWrapperStyle")}
       >
         {this.state.selectedImgUrl && (
@@ -97,6 +102,7 @@ export default class ImageUploaderApiIncluded extends React.Component {
               borderRadius: "5px",
               zIndex: "1"
             }}
+            className="selectorButton"
             onClick={() => this.fileRef.current.click()}
           >
             {this.props.innerText}

@@ -4,7 +4,7 @@
     "card_header": {
       "details": "مشخصات",
       "image_album": "آلبوم عکس",
-      "map": "نقشه",
+      "map": "اطلاعات جغرافیایی",
       "setting": "تنظیمات"
     },
     "fields": {
@@ -35,7 +35,7 @@
       "avatar_upload": "آپلود عکس پروفایل",
       "add_working_hour_row": "افزودن ردیف",
       "workinghours_key": "روز(عنوان)",
-      "workinghours_value": "شرح قوانین",
+      "workinghours_value": "ساعات کار",
       "remove": "حذف",
       "duplication_keys_error": "روز(عنوان) تکراری است",
       "empty_key": "روز(عنوان) نباید خالی باشد"

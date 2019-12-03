@@ -54,10 +54,50 @@
         flex-wrap: wrap;
         width: 100%;
         justify-content: space-around;
+        & .enabled {
+          content: "+";
+          display: flex;
+          width: 140px;
+          height: 140px;
+          background-color: rgb(235, 235, 235);
+          position: absolute;
+          z-index: 2;
+          font-size: 4em;
+          color: dimgray;
+          justify-content: center;
+          align-items: center;
+          align-content: center;
+          margin-top: 0em;
+          cursor: pointer;
+          outline: 2px dashed gray;
+          /* padding: 56px; */
+          line-height: initial;
+          padding-top: 14px;
+        }
+        & .disabled {
+          content: "";
+          display: flex;
+          width: 140px;
+          height: 140px;
+          background-color: dimgray;
+          position: absolute;
+          z-index: 2;
+          font-size: 4em;
+          color: dimgray;
+          justify-content: center;
+          align-items: center;
+          align-content: center;
+          margin-top: 0em;
+          cursor: not-allowed;
+          /* padding: 56px; */
+          line-height: initial;
+          padding-top: 14px;
+        }
       }
     }
   }
 }
+
 .partner-profile-section._rtl {
   & .form-card {
     direction: rtl;

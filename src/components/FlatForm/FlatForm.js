@@ -23,7 +23,7 @@ class SelectRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checkedElements: [],
+      checkedElements: props.checkedElements,
       renderedChildren: null
     };
     this.thisRef = React.createRef();
@@ -400,7 +400,11 @@ const FlatTextArea = ({
                 },...]
 ***************************/
 const FlatInlineSelect = ({ items, onChange, dir, type, name }) => {
+  const checkedElements = [];
   const _options = items.map((val, index) => {
+    if (val.defaultChecked) {
+      checkedElements.push(val);
+    }
     return (
       <InlineSelect
         checked={val.defaultChecked}
@@ -415,7 +419,12 @@ const FlatInlineSelect = ({ items, onChange, dir, type, name }) => {
   });
   const _select =
     items.length > 0 ? (
-      <SelectRow onChange={onChange} dir={dir} type={type}>
+      <SelectRow
+        onChange={onChange}
+        dir={dir}
+        type={type}
+        checkedElements={checkedElements}
+      >
         {_options}
       </SelectRow>
     ) : (
@@ -453,7 +462,11 @@ const FlatImageSelect = ({
   imgAltText,
   defaultChecked
 }) => {
+  const checkedElements = [];
   const _options = items.map((val, index) => {
+    if (val.defaultChecked) {
+      checkedElements.push(val);
+    }
     return (
       <ImageSelect
         checked={val.defaultChecked || defaultChecked === val.value}
@@ -475,6 +488,7 @@ const FlatImageSelect = ({
         onChange={onChange}
         dir={dir}
         type={type}
+        checkedElements={checkedElements}
         className={className}
       >
         {_options}
@@ -693,7 +707,7 @@ const FlatJsonInput = ({ label, id, name, style, ...props }) => {
         className={classnames("flatJsonInput")}
         style={{ ...style }}
       >
-        <JsonInput {...props} />
+        <JsonInput {...props} name={name} />
       </div>
     </div>
   );
