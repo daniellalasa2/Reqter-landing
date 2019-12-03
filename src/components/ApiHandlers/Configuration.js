@@ -121,3 +121,4 @@ function GetInitialToken(callback) {
     });
 }
 export default Configuration;
+export { GetInitialToken };

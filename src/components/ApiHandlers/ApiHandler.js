@@ -1,5 +1,6 @@
 import axios from "axios";
-import Configuration from "./Configuration";
+import Configuration, { GetInitialToken } from "./Configuration";
+import { SetCookie, JsonToString } from "../CookieHandler/CookieHandler";
 var Config = Configuration;
 let _api = {
   header: {
@@ -72,6 +73,9 @@ var errorHandler = statusCode => {
       result.message = "مشکل امنیتی رخ داده است . لطفا بعدا امتحان کنید";
       break;
     case 403:
+      SetCookie("SSGUESTAUTH", "", -1);
+      SetCookie("SSUSERAUTH", "", -1);
+      window.location.href = "/";
       result.message = "توکن منقضی شده";
       break;
     default:
