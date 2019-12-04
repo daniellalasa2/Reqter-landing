@@ -469,6 +469,7 @@ var GetPartnerInfo = (params, callback) => {
         }
       })
       .catch(err => {
+        console.error(err);
         const result = errorHandler(
           SafeValue(err.response, "status", "number", 0)
         );

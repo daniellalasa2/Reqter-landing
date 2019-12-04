@@ -18,16 +18,16 @@ export default class JsonInput extends React.Component {
     };
   }
   removeThePair = idx => {
-    var newObj = this.state.objectsList;
-    newObj.splice(idx, 1);
+    var clonedObj = Array.from(this.state.objectsList);
+    clonedObj = clonedObj.filter(val => val.childId !== idx && val);
     this.setState({
-      objectsList: newObj
+      objectsList: clonedObj
     });
   };
   addPair = () => {
     let stateObj = this.state.objectsList;
     const arrObj = Array.from(stateObj);
-    arrObj.push({ header: "", body: "", childId: stateObj.length });
+    arrObj.push({ header: "", body: "", childId: arrObj.length });
     this.setState({
       objectsList: arrObj
     });
@@ -51,11 +51,14 @@ export default class JsonInput extends React.Component {
           this.state.jsonError === undefined ||
           this.state.jsonError.length === 0
         ) {
-          let generatedArr = Array.from(this.state.objectsList);
-          for (var i = 0; i < generatedArr.length; i++) {
-            delete generatedArr[i]["childId"];
+          const { objectsList } = this.state;
+          const generatedArr = [];
+          for (const item in objectsList) {
+            generatedArr.push({
+              header: objectsList[item].header,
+              body: objectsList[item].body
+            });
           }
-          console.log(generatedArr);
           this.props.onChange({
             target: {
               value: JSON.stringify(this.state.objectsList),

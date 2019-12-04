@@ -217,7 +217,9 @@ export default class PartnerPanel extends React.Component {
             case "workingfields":
               fields[dataIdx] = {
                 ...fields[dataIdx],
-                value: result[dataIdx].map(item => item._id),
+                value: SafeValue(result, "dataIdx", "jsonArray", []).map(
+                  item => item._id
+                ),
                 isValid: true
               };
               break;
