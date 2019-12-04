@@ -43,7 +43,7 @@ export default class PartnerPanel extends React.Component {
       partnerData: [],
       parnterId: "",
       filterContext: {
-        activeFilter: "",
+        activeFilter: "details",
         dataContent: [],
         loading: false
       },
@@ -208,8 +208,8 @@ export default class PartnerPanel extends React.Component {
     const fields = { ...this.state.form.fields };
     GetPartnerInfo({ "fields.phonenumber": this.context.auth.ID }, res => {
       if (res.success_result.success) {
-        const result = res.data[0].fields;
-        const { _id } = result;
+        const result = SafeValue(res, "data.0.fields", "object", {});
+        const { _id } = SafeValue(result, "", "object", {});
         for (let dataIdx in result) {
           switch (dataIdx) {
             case "amenities":
@@ -227,21 +227,21 @@ export default class PartnerPanel extends React.Component {
             case "city":
               fields[dataIdx] = {
                 ...fields[dataIdx],
-                value: result[dataIdx]._id,
+                value: SafeValue(result, "dataIdx._id", "object", {}),
                 isValid: true
               };
               break;
             default:
               fields[dataIdx] = {
                 ...fields[dataIdx],
-                value: result[dataIdx],
+                value: SafeValue(result, "dataIdx", "string", null),
                 isValid: true
               };
           }
         }
         this.setState(
           {
-            partnerData: res.data[0],
+            partnerData: SafeValue(res, "data.0", "object", {}),
             partnerId: _id,
             pageLoaded: true,
             form: {
@@ -250,7 +250,9 @@ export default class PartnerPanel extends React.Component {
               fields: fields
             }
           },
-          () => typeof callback === "function" && callback(res.data[0])
+          () =>
+            typeof callback === "function" &&
+            callback(SafeValue(res, "data.0", "object", {}))
         );
       }
     });
@@ -670,7 +672,7 @@ export default class PartnerPanel extends React.Component {
               <CardHeader>
                 <nav className="card-header-nav filter">
                   <button
-                    className="filter-button"
+                    className="filter-button active"
                     onClick={button => this.filterTabs("details", button)}
                   >
                     {locale.card_header.details}
