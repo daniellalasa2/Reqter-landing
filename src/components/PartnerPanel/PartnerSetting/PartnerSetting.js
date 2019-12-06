@@ -4,7 +4,8 @@ import {
   SafeValue,
   GetPartnerInfo,
   FilterContents,
-  Upload
+  Upload,
+  PartnerpanelUpdateSetting
 } from "../../ApiHandlers/ApiHandler";
 import Validator from "../../Validator/Validator";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -112,7 +113,7 @@ export default class PartnerPanel extends React.Component {
           images: {
             uploading: false,
             uploadProgress: 0,
-            value: "",
+            value: [],
             error: "",
             isValid: false
           },
@@ -209,7 +210,7 @@ export default class PartnerPanel extends React.Component {
     GetPartnerInfo({ "fields.phonenumber": this.context.auth.ID }, res => {
       if (res.success_result.success) {
         const result = SafeValue(res, "data.0.fields", "object", {});
-        const { _id } = SafeValue(result, "", "object", {});
+        const  _id  = SafeValue(res, "data.0._id", "string", "");;
         for (let dataIdx in result) {
           switch (dataIdx) {
             case "amenities":
@@ -217,7 +218,7 @@ export default class PartnerPanel extends React.Component {
             case "workingfields":
               fields[dataIdx] = {
                 ...fields[dataIdx],
-                value: SafeValue(result, "dataIdx", "jsonArray", []).map(
+                value: SafeValue(result, dataIdx, "jsonArray", []).map(
                   item => item._id
                 ),
                 isValid: true
@@ -227,14 +228,14 @@ export default class PartnerPanel extends React.Component {
             case "city":
               fields[dataIdx] = {
                 ...fields[dataIdx],
-                value: SafeValue(result, "dataIdx._id", "object", {}),
+                value: SafeValue(result, `${dataIdx}._id`, "object", {}),
                 isValid: true
               };
               break;
             default:
               fields[dataIdx] = {
                 ...fields[dataIdx],
-                value: SafeValue(result, "dataIdx", "string", null),
+                value: SafeValue(result, dataIdx, "string", null),
                 isValid: true
               };
           }
@@ -257,8 +258,26 @@ export default class PartnerPanel extends React.Component {
       }
     });
   };
-  handleAlbumUploadedImages = file => {
-    console.log(file);
+  handleAlbumUploadedImages = (file,res) => {
+    const {value} = this.state.form.fields.images;
+    let arr = Array.isArray(value) ? Array.from(value) : [];
+    if(res.data.replace){
+      arr["prev_file"] = res.data.file.url;
+    }else{
+      arr.push(res.data.file.url);
+    }
+    this.setState({
+      form:{
+        ...this.state.form,
+        fields:{
+          ...this.state.form.fields,
+          images:{
+            ...this.state.form.fields.images,
+            value:arr
+          }
+        }
+      }
+    });
   };
   checkboxStateHandler = (name, data) => {
     let checkBoxValuesArr = [];
@@ -376,154 +395,133 @@ export default class PartnerPanel extends React.Component {
     });
     return _formIsValid;
   };
-  // submitForm = () => {
+  submitForm = () => {
+    const { locale } = this.translate;
+    const _this = this;
+    const inputs = this.state.form.fields;
+    let _isValid = true;//this.checkFormValidation();
+    let _formObjectGoingToSubmit = {};
+    //if form was valid then convert state form to api form
+    // if the form was valid then submit it
+    if (_isValid) {
+      for (let index in inputs) {
+        _formObjectGoingToSubmit[index] = inputs[index].value;
+      }
+      PartnerpanelUpdateSetting(_this.state.partnerId, _formObjectGoingToSubmit, res => {
+              if (res.success_result.success) {
+                this.setState({
+                  form: {
+                    ...this.state.form,
+                    submitted: true
+                  }
+                }, this.context.displayNotif(
+                  "success",
+                  locale.notification.update_partner.success,
+                  () => this.props.callback({ success: true })
+                ));
+              } else {
+                this.setState({
+                  form: {
+                    ...this.state.form,
+                    isSubmitting: false
+                  }
+                },
+                this.context.displayNotif(
+                  "error",
+                  locale.notification.update_partner.failed
+                )
+                );
+              }
+            });
+          }
+    }
+      // uploadFile = e => {
   //   const { locale } = this.translate;
-  //   const _this = this;
-  //   const inputs = this.state.form.fields;
-  //   let _isValid = this.checkFormValidation();
-  //   const _backgroundData = this.state.form.backgroundData;
-  //   let _formObjectGoingToSubmit = {};
-  //   //if form was valid then convert state form to api form
-  //   // if the form was valid then submit it
-  //   if (_isValid) {
-  //     for (let index in inputs) {
-  //       _formObjectGoingToSubmit[index] = inputs[index].value;
-  //     }
-  //     this.validatePhoneNumber(true, () => {
-  //       // fetch additional background data state to final api object if form was valid
-  //       const { seats, city, phonenumber } = _formObjectGoingToSubmit;
-  //       _formObjectGoingToSubmit["phonenumber"] =
-  //         this.state.form.fields.phonenumber.code + phonenumber;
-  //       let cityname = locale.email_subject[2];
-  //       this.state.combo.list_of_cities.items.forEach(curr => {
-  //         if (curr.value === city) {
-  //           cityname = curr.title;
+  //   let file = "";
+  //   try {
+  //     file = e.target.files[0];
+  //   } catch (err) {
+  //     this.setState({
+  //       form: {
+  //         ...this.state.form,
+  //         fields: {
+  //           ...this.state.form.fields,
+  //           resume: {
+  //             ...this.state.form.fields.resume,
+  //             error: locale.fields.resume.error
+  //           }
   //         }
-  //       });
-  //       _formObjectGoingToSubmit[
-  //         "name"
-  //       ] = `${locale.email_subject[0]} ${seats} ${locale.email_subject[1]} ${cityname}`;
-  //       _formObjectGoingToSubmit = {
-  //         ..._formObjectGoingToSubmit,
-  //         ..._backgroundData
-  //       };
-  //       this.setState(
-  //         {
-  //           form: {
-  //             ...this.state.form,
-  //             isSubmitting: true
+  //       }
+  //     });
+  //     return 0;
+  //   }
+  //   this.setState(
+  //     {
+  //       form: {
+  //         ...this.state.form,
+  //         fields: {
+  //           ...this.state.form.fields,
+  //           resume: {
+  //             ...this.state.form.fields.resume,
+  //             uploading: true
+  //           }
+  //         }
+  //       }
+  //     },
+  //     () => {
+  //       Upload(
+  //         file,
+  //         res => {
+  //           if (res.data.success) {
+  //             this.setState({
+  //               form: {
+  //                 ...this.state.form,
+  //                 fields: {
+  //                   ...this.state.form.fields,
+  //                   resume: {
+  //                     ...this.state.form.fields.resume,
+  //                     isValid: true,
+  //                     value: [{ en: res.data.file.url, fa: res.data.file.url }],
+  //                     uploading: false,
+  //                     error: ""
+  //                   }
+  //                 }
+  //               }
+  //             });
+  //           } else {
+  //             this.setState({
+  //               form: {
+  //                 ...this.state.form,
+  //                 fields: {
+  //                   ...this.state.form.fields,
+  //                   resume: {
+  //                     ...this.state.form.fields.resume,
+  //                     error: res.success_result.message,
+  //                     uploading: false
+  //                   }
+  //                 }
+  //               }
+  //             });
   //           }
   //         },
-  //         () => {
-  //           SubmitForm(_this.contentTypeName, _formObjectGoingToSubmit, res => {
-  //             if (res.success) {
-  //               this.setState({
-  //                 form: {
-  //                   ...this.state.form,
-  //                   submitted: true
+  //         uploadDetail => {
+  //           this.setState({
+  //             form: {
+  //               ...this.state.form,
+  //               fields: {
+  //                 ...this.state.form.fields,
+  //                 resume: {
+  //                   ...this.state.form.fields.resume,
+  //                   uploadProgress: uploadDetail.progress
   //                 }
-  //               });
-  //             } else {
-  //               this.setState({
-  //                 form: {
-  //                   ...this.state.form,
-  //                   isSubmitting: false
-  //                 }
-  //               });
+  //               }
   //             }
   //           });
   //         }
   //       );
-  //     });
-  //   }
+  //     }
+  //   );
   // };
-  uploadFile = e => {
-    const { locale } = this.translate;
-    let file = "";
-    try {
-      file = e.target.files[0];
-    } catch (err) {
-      this.setState({
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            resume: {
-              ...this.state.form.fields.resume,
-              error: locale.fields.resume.error
-            }
-          }
-        }
-      });
-      return 0;
-    }
-    this.setState(
-      {
-        form: {
-          ...this.state.form,
-          fields: {
-            ...this.state.form.fields,
-            resume: {
-              ...this.state.form.fields.resume,
-              uploading: true
-            }
-          }
-        }
-      },
-      () => {
-        Upload(
-          file,
-          res => {
-            if (res.data.success) {
-              this.setState({
-                form: {
-                  ...this.state.form,
-                  fields: {
-                    ...this.state.form.fields,
-                    resume: {
-                      ...this.state.form.fields.resume,
-                      isValid: true,
-                      value: [{ en: res.data.file.url, fa: res.data.file.url }],
-                      uploading: false,
-                      error: ""
-                    }
-                  }
-                }
-              });
-            } else {
-              this.setState({
-                form: {
-                  ...this.state.form,
-                  fields: {
-                    ...this.state.form.fields,
-                    resume: {
-                      ...this.state.form.fields.resume,
-                      error: res.success_result.message,
-                      uploading: false
-                    }
-                  }
-                }
-              });
-            }
-          },
-          uploadDetail => {
-            this.setState({
-              form: {
-                ...this.state.form,
-                fields: {
-                  ...this.state.form.fields,
-                  resume: {
-                    ...this.state.form.fields.resume,
-                    uploadProgress: uploadDetail.progress
-                  }
-                }
-              }
-            });
-          }
-        );
-      }
-    );
-  };
   urlParser = url => {
     let regex = /[?&]([^=#]+)=([^&#]*)/g,
       params = {},
@@ -559,6 +557,20 @@ export default class PartnerPanel extends React.Component {
   //     });
   //   });
   // };
+  createImageAlbum = (items,count)=>{
+    const generatedElements = [];
+    for(var i=0;i<count;i++){
+      generatedElements.push(    
+        <FlatImageUploaderApiIncluded
+          onChange={this.handleAlbumUploadedImages}
+          defaultUrl={Array.isArray(items) && SafeValue(items,String(i),"string",false) ? items[i] : undefined}
+          name={`image${i}`}
+          innerText="انتخاب عکس"
+        />
+      );
+    };
+    return generatedElements;
+  };
   generateCheckboxDataFromApi = (name, defaultChecked) => {
     const { lang } = this;
     const _defaultChecked = (checkedObj, toBeSearch) => {
@@ -866,7 +878,7 @@ export default class PartnerPanel extends React.Component {
                       لوگو
                     </span>
                     <FlatImageUploaderApiIncluded
-                      onChange={res => this.handleAlbumUploadedImages(res)}
+                      onChange={this.handleAlbumUploadedImages}
                       name="image6"
                       innerText="تغییر عکس"
                       defaultUrl={SafeValue(
@@ -884,56 +896,7 @@ export default class PartnerPanel extends React.Component {
                         آلبوم عکس
                       </span>
                       <br />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image1"
-                        innerText="انتخاب عکس"
-                      />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image2"
-                        innerText="انتخاب عکس"
-                      />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image3"
-                        innerText="انتخاب عکس"
-                      />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image4"
-                        innerText="انتخاب عکس"
-                      />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image5"
-                        innerText="انتخاب عکس"
-                      />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image6"
-                        innerText="انتخاب عکس"
-                      />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image7"
-                        innerText="انتخاب عکس"
-                      />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image8"
-                        innerText="انتخاب عکس"
-                      />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image9"
-                        innerText="انتخاب عکس"
-                      />
-                      <FlatImageUploaderApiIncluded
-                        onChange={res => this.handleAlbumUploadedImages(res)}
-                        name="image10"
-                        innerText="انتخاب عکس"
-                      />
+                     {this.createImageAlbum(this.state.form.fields.images,10)}
                     </div>
                   </React.Fragment>
                 )}
@@ -1057,6 +1020,7 @@ export default class PartnerPanel extends React.Component {
                   disabled={!didDataChange}
                   suspense={form.isSubmitting}
                   colorr="success"
+                  onClick={this.submitForm}
                 >
                   {locale.fields.submit_changes}
                 </FlatButton>

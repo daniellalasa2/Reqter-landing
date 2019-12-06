@@ -14,7 +14,7 @@ export default class ImageUploaderApiIncluded extends React.Component {
     };
     this.state = {
       progress: 0,
-      selectedImgUrl: props.defaultUrl ? props.defaultUrl : "",
+      selectedImgUrl: props.defaultUrl ? DownloadAsset(props.defaultUrl) : "",
       uploading: false
     };
     this.fileRef = React.createRef();
@@ -25,6 +25,12 @@ export default class ImageUploaderApiIncluded extends React.Component {
     Upload(
       file,
       res => {
+        if(this.props.defaultUrl){
+          res.data["prev_file"] = this.props.defaultUrl;
+          res.data["replace"] = true;
+        }else{
+          res.data["replace"] = false;
+        }
         this.props.onChange(this.props.name, res);
         this.setState({
           selectedImgUrl: DownloadAsset(res.data.file.filename)
@@ -103,8 +109,7 @@ export default class ImageUploaderApiIncluded extends React.Component {
               zIndex: "1"
             }}
             className="selectorButton"
-            onClick={() => this.fileRef.current.click()}
-          >
+            onClick={() => this.fileRef.current.click()}>
             {this.props.innerText}
           </span>
         )}

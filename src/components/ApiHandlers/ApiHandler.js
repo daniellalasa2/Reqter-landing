@@ -42,7 +42,8 @@ let _api = {
     Config.BASE_URL_REQTER + Config.URLs.get_partner_accepted_offers,
   GetPartnerLostOffers:
     Config.BASE_URL_REQTER + Config.URLs.get_partner_lost_offers,
-  CancelIssuedOffer: Config.BASE_URL_REQTER + Config.URLs.cancel_issued_offer
+  CancelIssuedOffer: Config.BASE_URL_REQTER + Config.URLs.cancel_issued_offer,
+  PartnerPanelUpdateSetting:Config.BASE_URL_REQTER + Config.URLs.partner_panel_update_setting
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -86,7 +87,7 @@ var errorHandler = statusCode => {
 };
 
 var DownloadAsset = fileUrl => {
-  if (fileUrl.startsWith(_api.Download)) {
+  if (fileUrl.indexOf(Config.URLs.download) > -1) {
     return fileUrl;
   } else {
     return _api.Download + fileUrl;
@@ -1047,6 +1048,43 @@ var PartnerpanelEditProduct = (productid, data, callback) => {
       });
   });
 };
+
+var PartnerpanelUpdateSetting = (partnerid, data, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.PartnerPanelUpdateSetting,
+      method: "PUT",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      data: {
+        id: partnerid,
+        fields: data
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+};
 //return safe value
 //data: the data which you are going to search field through it
 //field: specific index inside data that you need it or pass set of indexes that seprates via dot exp: "index1.index2.index3" = ["index1"]["index2"]["index3"]
@@ -1148,5 +1186,6 @@ export {
   Config,
   DownloadAsset,
   UploadAsset,
+  PartnerpanelUpdateSetting,
   _api as APIAddresses
 };
