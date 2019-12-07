@@ -52,7 +52,7 @@ var Configuration = {
     get_partner_accepted_offers: "api/v1/quotes/acceptedoffers",
     get_partner_lost_offers: "api/v1/quotes/lostoffers",
     cancel_issued_offer: "api/v1/quotes/cancel/",
-    partner_panel_update_setting:"api/v1/partners/updateprofile"
+    partner_panel_update_setting: "api/v1/partners/updateprofile"
   },
   CONTENT_TYPE_ID: {
     partnership: "5d358ebc8e6e9a0017c28fc9",
@@ -63,6 +63,7 @@ var Configuration = {
     coworking_working_field: "5d3af3a1a9602900177a5056",
     list_of_countries: "5d35e6e68e6e9a0017c28fcd",
     list_of_cities: "5d35e6fa8e6e9a0017c28fce",
+    amenities: "5d8878da643f8400177a4862",
     sessionroom_equipments: "5d5bcb6eed9a82001737c751",
     contact_us: "5d3e97363a65540017a90f11",
     request_stages: "5d6b5d205b60dc0017c95118",

@@ -43,7 +43,8 @@ let _api = {
   GetPartnerLostOffers:
     Config.BASE_URL_REQTER + Config.URLs.get_partner_lost_offers,
   CancelIssuedOffer: Config.BASE_URL_REQTER + Config.URLs.cancel_issued_offer,
-  PartnerPanelUpdateSetting:Config.BASE_URL_REQTER + Config.URLs.partner_panel_update_setting
+  PartnerPanelUpdateSetting:
+    Config.BASE_URL_REQTER + Config.URLs.partner_panel_update_setting
 };
 var errorHandler = statusCode => {
   const result = { message: "", code: statusCode, success: false };
@@ -87,10 +88,14 @@ var errorHandler = statusCode => {
 };
 
 var DownloadAsset = fileUrl => {
-  if (fileUrl.indexOf(Config.URLs.download) > -1) {
-    return fileUrl;
+  if (fileUrl && fileUrl.length > 0) {
+    if (fileUrl.indexOf(Config.URLs.download) > -1) {
+      return fileUrl;
+    } else {
+      return _api.Download + fileUrl;
+    }
   } else {
-    return _api.Download + fileUrl;
+    return fileUrl;
   }
 };
 var UploadAsset = fileUrl => {
@@ -1113,7 +1118,11 @@ var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
     index = parseInt(index) === index ? parseInt(index) : index;
     //if index was empty string then just check validation of data
     if (index === "") {
-      if (data !== null && data !== undefined && typeof data === type) {
+      if (
+        data !== null &&
+        data !== undefined &&
+        (type === "all" || typeof data === type)
+      ) {
         return data;
       } else {
         return correctReturn();
@@ -1132,6 +1141,7 @@ var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
         if (data !== null && data !== undefined) {
           //special type checkings mention here
           switch (type) {
+            case "all":
             case typeof data:
               return data;
             case "json":

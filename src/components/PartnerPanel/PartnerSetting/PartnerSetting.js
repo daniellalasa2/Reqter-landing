@@ -24,6 +24,13 @@ import {
 } from "../../FlatForm/FlatForm";
 import Skeleton from "react-loading-skeleton";
 import "./PartnerSetting.scss";
+import CedarMaps from "@cedarstudios/react-cedarmaps";
+const {
+  RotationControl,
+  ZoomControl,
+  Cluster,
+  Marker
+} = CedarMaps.getReactMapboxGl();
 // import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
 export default class PartnerPanel extends React.Component {
@@ -100,6 +107,11 @@ export default class PartnerPanel extends React.Component {
             error: "",
             isValid: false
           },
+          amenities: {
+            value: "",
+            error: "",
+            isValid: false
+          },
           email: {
             value: "",
             error: "",
@@ -153,15 +165,19 @@ export default class PartnerPanel extends React.Component {
       combo: {
         list_of_cities: {
           hasLoaded: false,
-          childs: {}
+          items: {}
         },
         partnership_working_fields: {
           hasLoaded: false,
-          childs: {}
+          items: {}
         },
         coworking_working_field: {
           hasLoaded: false,
-          childs: {}
+          items: {}
+        },
+        amenities: {
+          hasLoaded: false,
+          items: {}
         }
       }
     };
@@ -209,8 +225,9 @@ export default class PartnerPanel extends React.Component {
     const fields = { ...this.state.form.fields };
     GetPartnerInfo({ "fields.phonenumber": this.context.auth.ID }, res => {
       if (res.success_result.success) {
-        const result = SafeValue(res, "data.0.fields", "object", {});
-        const  _id  = SafeValue(res, "data.0._id", "string", "");;
+        const _SafeValue = SafeValue;
+        const result = _SafeValue(res, "data.0.fields", "object", {});
+        const _id = _SafeValue(res, "data.0._id", "string", "");
         for (let dataIdx in result) {
           switch (dataIdx) {
             case "amenities":
@@ -218,7 +235,7 @@ export default class PartnerPanel extends React.Component {
             case "workingfields":
               fields[dataIdx] = {
                 ...fields[dataIdx],
-                value: SafeValue(result, dataIdx, "jsonArray", []).map(
+                value: _SafeValue(result, dataIdx, "object", []).map(
                   item => item._id
                 ),
                 isValid: true
@@ -228,21 +245,21 @@ export default class PartnerPanel extends React.Component {
             case "city":
               fields[dataIdx] = {
                 ...fields[dataIdx],
-                value: SafeValue(result, `${dataIdx}._id`, "object", {}),
+                value: _SafeValue(result, `${dataIdx}._id`, "string", ""),
                 isValid: true
               };
               break;
             default:
               fields[dataIdx] = {
                 ...fields[dataIdx],
-                value: SafeValue(result, dataIdx, "string", null),
+                value: _SafeValue(result, dataIdx, "all", null),
                 isValid: true
               };
           }
         }
         this.setState(
           {
-            partnerData: SafeValue(res, "data.0", "object", {}),
+            partnerData: _SafeValue(res, "data.0", "object", {}),
             partnerId: _id,
             pageLoaded: true,
             form: {
@@ -253,27 +270,28 @@ export default class PartnerPanel extends React.Component {
           },
           () =>
             typeof callback === "function" &&
-            callback(SafeValue(res, "data.0", "object", {}))
+            callback(_SafeValue(res, "data.0", "object", {}))
         );
       }
     });
   };
-  handleAlbumUploadedImages = (file,res) => {
-    const {value} = this.state.form.fields.images;
+  handleAlbumUploadedImages = (name, res) => {
+    const { value } = this.state.form.fields[name];
     let arr = Array.isArray(value) ? Array.from(value) : [];
-    if(res.data.replace){
-      arr["prev_file"] = res.data.file.url;
-    }else{
+    if (res.data.replace) {
+      arr[arr.indexOf(res.data.prev_file)] = res.data.file.url;
+    } else {
       arr.push(res.data.file.url);
     }
     this.setState({
-      form:{
+      didDataChange: true,
+      form: {
         ...this.state.form,
-        fields:{
+        fields: {
           ...this.state.form.fields,
-          images:{
-            ...this.state.form.fields.images,
-            value:arr
+          [name]: {
+            ...this.state.form.fields[name],
+            value: arr
           }
         }
       }
@@ -313,7 +331,6 @@ export default class PartnerPanel extends React.Component {
     });
   };
   formStateHandler = e => {
-    console.log(e.target.name);
     let _this = e.target;
     const name = _this.name;
     const value = _this.value;
@@ -399,7 +416,7 @@ export default class PartnerPanel extends React.Component {
     const { locale } = this.translate;
     const _this = this;
     const inputs = this.state.form.fields;
-    let _isValid = true;//this.checkFormValidation();
+    let _isValid = true; //this.checkFormValidation();
     let _formObjectGoingToSubmit = {};
     //if form was valid then convert state form to api form
     // if the form was valid then submit it
@@ -407,35 +424,42 @@ export default class PartnerPanel extends React.Component {
       for (let index in inputs) {
         _formObjectGoingToSubmit[index] = inputs[index].value;
       }
-      PartnerpanelUpdateSetting(_this.state.partnerId, _formObjectGoingToSubmit, res => {
-              if (res.success_result.success) {
-                this.setState({
-                  form: {
-                    ...this.state.form,
-                    submitted: true
-                  }
-                }, this.context.displayNotif(
-                  "success",
-                  locale.notification.update_partner.success,
-                  () => this.props.callback({ success: true })
-                ));
-              } else {
-                this.setState({
-                  form: {
-                    ...this.state.form,
-                    isSubmitting: false
-                  }
-                },
-                this.context.displayNotif(
-                  "error",
-                  locale.notification.update_partner.failed
-                )
-                );
-              }
-            });
+      PartnerpanelUpdateSetting(
+        _this.state.partnerId,
+        _formObjectGoingToSubmit,
+        res => {
+          if (res.success_result.success) {
+            this.setState(
+              {
+                form: {
+                  ...this.state.form,
+                  submitted: true
+                }
+              },
+              this.context.displayNotif(
+                "success",
+                locale.notification.update_partner.success
+              )
+            );
+          } else {
+            this.setState(
+              {
+                form: {
+                  ...this.state.form,
+                  isSubmitting: false
+                }
+              },
+              this.context.displayNotif(
+                "error",
+                locale.notification.update_partner.failed
+              )
+            );
           }
+        }
+      );
     }
-      // uploadFile = e => {
+  };
+  // uploadFile = e => {
   //   const { locale } = this.translate;
   //   let file = "";
   //   try {
@@ -557,25 +581,33 @@ export default class PartnerPanel extends React.Component {
   //     });
   //   });
   // };
-  createImageAlbum = (items,count)=>{
+  createImageAlbum = (items, count) => {
     const generatedElements = [];
-    for(var i=0;i<count;i++){
-      generatedElements.push(    
-        <FlatImageUploaderApiIncluded
-          onChange={this.handleAlbumUploadedImages}
-          defaultUrl={Array.isArray(items) && SafeValue(items,String(i),"string",false) ? items[i] : undefined}
-          name={`image${i}`}
-          innerText="انتخاب عکس"
-        />
+    for (var i = 0; i < count; i++) {
+      generatedElements.push(
+        <React.Fragment key={i}>
+          <FlatImageUploaderApiIncluded
+            onChange={this.handleAlbumUploadedImages}
+            defaultUrl={
+              Array.isArray(items) &&
+              SafeValue(items, String(i), "string", false)
+                ? items[i]
+                : undefined
+            }
+            name="images"
+            innerText="انتخاب عکس"
+          />
+        </React.Fragment>
       );
-    };
+    }
     return generatedElements;
   };
   generateCheckboxDataFromApi = (name, defaultChecked) => {
     const { lang } = this;
+    console.log("DCHECK", defaultChecked);
     const _defaultChecked = (checkedObj, toBeSearch) => {
       const typeofCheckedObj = typeof checkedObj;
-      if (typeofCheckedObj === "object" && checkedObj.length) {
+      if (Array.isArray(defaultChecked)) {
         return checkedObj.indexOf(toBeSearch) > -1;
       } else if (
         typeofCheckedObj === "string" ||
@@ -613,7 +645,6 @@ export default class PartnerPanel extends React.Component {
   };
   componentDidUpdate() {
     const { pageLoaded } = this.state;
-    console.log("state", this.state);
     const {
       list_of_cities,
       partnership_working_fields,
@@ -628,25 +659,24 @@ export default class PartnerPanel extends React.Component {
     ) {
       this.generateCheckboxDataFromApi(
         "list_of_cities",
-        SafeValue(this.state.partnerData, "fields.city._id", "string", "0")
+        SafeValue(this.state.form, "fields.city.value", "string", "0")
       );
       this.generateCheckboxDataFromApi(
         "partnership_working_fields",
         SafeValue(
-          this.state.partnerData,
-          "fields.collaborationtypes",
+          this.state.form,
+          "fields.collaborationtypes.value",
           "object",
           []
-        ).map(item => item._id)
+        )
       );
       this.generateCheckboxDataFromApi(
         "coworking_working_field",
-        SafeValue(
-          this.state.partnerData,
-          "fields.workingfields",
-          "object",
-          []
-        ).map(item => item._id)
+        SafeValue(this.state.form, "fields.workingfields.value", "object", [])
+      );
+      this.generateCheckboxDataFromApi(
+        "amenities",
+        SafeValue(this.state.form, "fields.amenities.value", "object", "0")
       );
     }
   }
@@ -654,17 +684,17 @@ export default class PartnerPanel extends React.Component {
     //Initial datas which are going to display in partner panel
     this.updatePartnerInfo();
   }
+  clusterMarker = coordinates => (
+    <Marker coordinates={coordinates} style={{}}>
+      C
+    </Marker>
+  );
   render() {
     const { locale, direction } = this.translate;
     const { activeFilter } = this.state.filterContext;
-    const {
-      filterContext,
-      pageLoaded,
-      partnerData,
-      didDataChange,
-      form
-    } = this.state;
+    const { filterContext, pageLoaded, didDataChange, form } = this.state;
     const { fields } = this.state.form;
+    const partnerData = form.fields;
     if (pageLoaded) {
       return (
         <section
@@ -711,7 +741,12 @@ export default class PartnerPanel extends React.Component {
               </CardHeader>
               <CardBody>
                 {/************ Details ************/}
-                {activeFilter === "details" && (
+                <section
+                  className={classnames(
+                    "contentSection",
+                    activeFilter === "details" && "displaySection"
+                  )}
+                >
                   <React.Fragment>
                     <FlatInput
                       label={locale.fields.name}
@@ -720,8 +755,8 @@ export default class PartnerPanel extends React.Component {
                       name="name"
                       id="name"
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.name",
+                        form,
+                        "fields.name.value",
                         "string",
                         null
                       )}
@@ -736,8 +771,8 @@ export default class PartnerPanel extends React.Component {
                       id="regno"
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.regno",
+                        form,
+                        "fields.regno.value",
                         "string",
                         null
                       )}
@@ -751,8 +786,8 @@ export default class PartnerPanel extends React.Component {
                       id="email"
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.email",
+                        form,
+                        "fields.email.value",
                         "string",
                         null
                       )}
@@ -768,8 +803,8 @@ export default class PartnerPanel extends React.Component {
                       style={{ direction: "ltr" }}
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.phonenumber",
+                        form,
+                        "fields.phonenumber.value",
                         "string",
                         null
                       )}
@@ -783,8 +818,8 @@ export default class PartnerPanel extends React.Component {
                       id="homepage"
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.homepage",
+                        form,
+                        "fields.homepage.value",
                         "string",
                         null
                       )}
@@ -798,8 +833,8 @@ export default class PartnerPanel extends React.Component {
                       id="linkedin"
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.linkedin",
+                        form,
+                        "fields.linkedin.value",
                         "string",
                         null
                       )}
@@ -813,8 +848,8 @@ export default class PartnerPanel extends React.Component {
                       id="twitter"
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.twitter",
+                        form,
+                        "fields.twitter.value",
                         "string",
                         null
                       )}
@@ -828,8 +863,8 @@ export default class PartnerPanel extends React.Component {
                       id="capacity"
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.capacity",
+                        form,
+                        "fields.capacity.value",
                         "string",
                         null
                       )}
@@ -844,14 +879,35 @@ export default class PartnerPanel extends React.Component {
                       onChange={this.formStateHandler}
                       readOnly
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.partnerkey",
+                        form,
+                        "fields.partnerkey.value",
                         "string",
                         null
                       )}
                       error={fields.partnerkey.error}
                     />
                     <br />
+                    <div className="field-row" style={{ width: "100%" }}>
+                      <span className="field-title">
+                        {locale.fields.amenities}
+                      </span>
+
+                      {/* fill checkboxes */}
+                      {this.state.combo.amenities.hasLoaded ? (
+                        <FlatInlineSelect
+                          type="checkbox"
+                          items={this.state.combo.amenities.items}
+                          onChange={this.checkboxStateHandler}
+                          dir={direction}
+                          name="amenities"
+                        />
+                      ) : (
+                        <Skeleton count={2} style={{ lineHeight: 2 }} />
+                      )}
+                      <span className="error-message">
+                        {this.state.form.fields.amenities.error}
+                      </span>
+                    </div>
                     <FlatTextArea
                       label={locale.fields.overview}
                       name="overview"
@@ -859,8 +915,8 @@ export default class PartnerPanel extends React.Component {
                       direction={locale.direction}
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
-                        partnerData,
-                        "fields.overview",
+                        form,
+                        "fields.overview.value",
                         "string",
                         null
                       )}
@@ -871,19 +927,24 @@ export default class PartnerPanel extends React.Component {
                       }}
                     />
                   </React.Fragment>
-                )}
-                {activeFilter === "imagealbum" && (
+                </section>
+                <section
+                  className={classnames(
+                    "contentSection",
+                    activeFilter === "imagealbum" && "displaySection"
+                  )}
+                >
                   <React.Fragment>
                     <span style={{ width: "100%", margin: "1rem 0 0.5rem" }}>
                       لوگو
                     </span>
                     <FlatImageUploaderApiIncluded
                       onChange={this.handleAlbumUploadedImages}
-                      name="image6"
+                      name="logo"
                       innerText="تغییر عکس"
                       defaultUrl={SafeValue(
-                        partnerData,
-                        "fields.logo.0",
+                        form,
+                        "fields.logo.value.0",
                         "string",
                         ""
                       )}
@@ -896,11 +957,20 @@ export default class PartnerPanel extends React.Component {
                         آلبوم عکس
                       </span>
                       <br />
-                     {this.createImageAlbum(this.state.form.fields.images,10)}
+                      {this.createImageAlbum(
+                        this.state.form.fields.images.value,
+                        10
+                      )}
                     </div>
                   </React.Fragment>
-                )}
-                {activeFilter === "map" && (
+                </section>
+
+                <section
+                  className={classnames(
+                    "contentSection",
+                    activeFilter === "map" && "displaySection"
+                  )}
+                >
                   <React.Fragment>
                     <div className="field-row" style={{ width: "100%" }}>
                       <span className="field-title">{locale.fields.city}</span>
@@ -928,11 +998,11 @@ export default class PartnerPanel extends React.Component {
                       direction={locale.direction}
                       onChange={this.formStateHandler}
                       defaultValue={SafeValue(
-                        partnerData,
-                        `fields.address.${this.lang}`,
+                        form,
+                        `fields.address.value.${this.lang}`,
                         "string",
                         null,
-                        "fields.address"
+                        "fields.address.value"
                       )}
                       error={fields.address.error}
                       style={{
@@ -940,80 +1010,113 @@ export default class PartnerPanel extends React.Component {
                       }}
                       wrapperStyle={{ width: "100%" }}
                     />
-                    <FlatUploader
-                      label="عکس نقشه"
-                      wrapperStyle={{ width: "100%" }}
-                    />
-                  </React.Fragment>
-                )}
-                {activeFilter === "setting" && (
-                  <React.Fragment>
-                    <div className="field-row">
-                      <span className="field-title">
-                        {locale.fields.collaborationtypes}
-                      </span>
-
-                      {/* fill checkboxes */}
-                      {this.state.combo.partnership_working_fields.hasLoaded ? (
-                        <FlatInlineSelect
-                          type="checkbox"
-                          items={
-                            this.state.combo.partnership_working_fields.items
-                          }
-                          onChange={this.checkboxStateHandler}
-                          dir={direction}
-                          name="collaborationtypes"
-                        />
-                      ) : (
-                        <Skeleton count={2} style={{ lineHeight: 2 }} />
-                      )}
-                      <span className="error-message">
-                        {this.state.form.fields.collaborationtypes.error}
-                      </span>
-                    </div>
                     <br />
-                    <div className="field-row">
-                      <span className="field-title">
-                        {locale.fields.workingfields}
-                      </span>
-
-                      {/* fill checkboxes */}
-                      {this.state.combo.coworking_working_field.hasLoaded ? (
-                        <FlatInlineSelect
-                          type="checkbox"
-                          items={this.state.combo.coworking_working_field.items}
-                          onChange={this.checkboxStateHandler}
-                          dir={direction}
-                          name="workingfields"
-                        />
-                      ) : (
-                        <Skeleton count={2} style={{ lineHeight: 2 }} />
-                      )}
-                      <span className="error-message">
-                        {this.state.form.fields.workingfields.error}
-                      </span>
-                    </div>
-                    <br />
-                    <FlatJsonInput
-                      onChange={this.formStateHandler}
-                      name="workinghours"
-                      text={{
-                        remove: locale.fields.remove,
-                        addButton: locale.fields.add_working_hour_row,
-                        keyText: locale.fields.workinghours_key,
-                        valueText: locale.fields.workinghours_value,
-                        duplicateKeyError: locale.fields.duplcation_keys_error,
-                        emptyKey: locale.fields.empty_key
+                    <CedarMaps
+                      containerStyle={{
+                        height: "350px",
+                        width: "100%",
+                        minWidth: "100%"
                       }}
-                      defaultItem={SafeValue(
-                        partnerData,
-                        "workinghours",
-                        "string",
-                        {}
-                      )}
-                    />
+                      token="f75377a3951e4aa044fcb296a80f1e96569aeb31"
+                      center={[51.34379364705882, 35.74109568627451]}
+                    >
+                      <RotationControl />
+                      <ZoomControl />
+                      {/* <Cluster ClusterMarkerFactory={this.clusterMarker}>
+                        {SafeValue(
+                          form,
+                          `fields.location.value`,
+                          "string",
+                          null
+                        )
+                          <Marker
+                            // key={key}
+                            style={{}}
+                            coordinates={feature.geometry.coordinates}
+                            onClick={this.onMarkerClick.bind(
+                              this,
+                              feature.geometry.coordinates
+                            )}
+                          >
+                            M
+                          </Marker>
+                        }
+                      </Cluster> */}
+                    </CedarMaps>
                   </React.Fragment>
-                )}
+                </section>
+
+                <section
+                  className={classnames(
+                    "contentSection",
+                    activeFilter === "setting" && "displaySection"
+                  )}
+                >
+                  <div className="field-row">
+                    <span className="field-title">
+                      {locale.fields.collaborationtypes}
+                    </span>
+
+                    {/* fill checkboxes */}
+                    {this.state.combo.partnership_working_fields.hasLoaded ? (
+                      <FlatInlineSelect
+                        type="checkbox"
+                        items={
+                          this.state.combo.partnership_working_fields.items
+                        }
+                        onChange={this.checkboxStateHandler}
+                        dir={direction}
+                        name="collaborationtypes"
+                      />
+                    ) : (
+                      <Skeleton count={2} style={{ lineHeight: 2 }} />
+                    )}
+                    <span className="error-message">
+                      {this.state.form.fields.collaborationtypes.error}
+                    </span>
+                  </div>
+                  <br />
+                  <div className="field-row">
+                    <span className="field-title">
+                      {locale.fields.workingfields}
+                    </span>
+
+                    {/* fill checkboxes */}
+                    {this.state.combo.coworking_working_field.hasLoaded ? (
+                      <FlatInlineSelect
+                        type="checkbox"
+                        items={this.state.combo.coworking_working_field.items}
+                        onChange={this.checkboxStateHandler}
+                        dir={direction}
+                        name="workingfields"
+                      />
+                    ) : (
+                      <Skeleton count={2} style={{ lineHeight: 2 }} />
+                    )}
+                    <span className="error-message">
+                      {this.state.form.fields.workingfields.error}
+                    </span>
+                  </div>
+                  <br />
+                  <FlatJsonInput
+                    onChange={this.formStateHandler}
+                    name="workinghours"
+                    text={{
+                      remove: locale.fields.remove,
+                      addButton: locale.fields.add_working_hour_row,
+                      keyText: locale.fields.workinghours_key,
+                      valueText: locale.fields.workinghours_value,
+                      duplicateKeyError: locale.fields.duplcation_keys_error,
+                      emptyKey: locale.fields.empty_key
+                    }}
+                    defaultItem={SafeValue(
+                      form,
+                      "fields.workinghours.value",
+                      "string",
+                      {}
+                    )}
+                  />
+                </section>
               </CardBody>
               <CardFooter>
                 <FlatButton

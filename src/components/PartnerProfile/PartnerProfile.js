@@ -22,7 +22,8 @@ import {
   SafeValue,
   GetPartnerInfo,
   GetPartnerProducts,
-  Config
+  Config,
+  DownloadAsset
 } from "../ApiHandlers/ApiHandler";
 import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
 // import SimpleMap from "../SimpleMap/SimpleMap";
@@ -88,7 +89,7 @@ export default class PartnerProfile extends React.Component {
         onExited={this.onExited}
         key={key}
       >
-        <img src={item.src} alt={item.altText} />
+        <img src={DownloadAsset(item.src)} alt={item.altText} />
         <CarouselCaption
           captionText={item.caption}
           captionHeader={item.caption}
@@ -213,7 +214,9 @@ export default class PartnerProfile extends React.Component {
           ));
         fields.images.forEach(image => {
           images.push({
-            src: SafeValue(image, this.lang, "string", null, " "),
+            src: DownloadAsset(
+              SafeValue(image, this.lang, "string", null, " ")
+            ),
             altText: "",
             caption: ""
           });
@@ -434,7 +437,7 @@ export default class PartnerProfile extends React.Component {
                   size="lg"
                   color="black"
                 />{" "}
-                {address[this.lang]}
+                {SafeValue(address, this.lang, "string", false, " ")}
               </div>
             )}
           </section>
@@ -572,9 +575,7 @@ export default class PartnerProfile extends React.Component {
               <FontAwesomeIcon icon={faMapPin} size="lg" color="dimgrey" />
               <span>
                 <strong>{locale.address}</strong>
-                {SafeValue(address, this.lang, "string", false, " ") && (
-                  <p>{address[this.lang]}</p>
-                )}
+                <p>{SafeValue(address, this.lang, "string", null, " ")}</p>
               </span>
             </div>
             <div className="map">
@@ -612,7 +613,7 @@ export default class PartnerProfile extends React.Component {
                   rel="noopener noreferrer"
                 >
                   <img
-                    src={locationpic}
+                    src={DownloadAsset(locationpic)}
                     alt="partner static map"
                     className="map-img"
                     style={{ width: "100%" }}
@@ -631,7 +632,7 @@ export default class PartnerProfile extends React.Component {
                   rel="noopener noreferrer"
                 >
                   <img
-                    src={locationpic}
+                    src={DownloadAsset(locationpic)}
                     alt="partner static map"
                     className="map-img"
                     style={{ width: "100%" }}

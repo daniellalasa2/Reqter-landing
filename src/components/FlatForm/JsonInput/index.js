@@ -4,13 +4,13 @@ import classnames from "classnames";
 export default class JsonInput extends React.Component {
   constructor(props) {
     super(props);
-    const { defaultItems } = props;
+    const { defaultItem } = props;
     // this.objStructure = { header: "", body: "" };
     const initializedObj =
-      (defaultItems &&
-        typeof defaultItems === "string" &&
-        JSON.parse(defaultItems).length &&
-        JSON.parse(defaultItems)) ||
+      (defaultItem &&
+        typeof defaultItem === "string" &&
+        JSON.parse(defaultItem).length &&
+        JSON.parse(defaultItem)) ||
       new Array({ header: "", body: "", childId: 0 });
     this.state = {
       objectsList: initializedObj,
@@ -20,9 +20,18 @@ export default class JsonInput extends React.Component {
   removeThePair = idx => {
     var clonedObj = Array.from(this.state.objectsList);
     clonedObj = clonedObj.filter(val => val.childId !== idx && val);
-    this.setState({
-      objectsList: clonedObj
-    });
+    this.setState(
+      {
+        objectsList: clonedObj
+      },
+      () =>
+        this.props.onChange({
+          target: {
+            value: JSON.stringify(this.state.objectsList),
+            name: this.props.name
+          }
+        })
+    );
   };
   addPair = () => {
     let stateObj = this.state.objectsList;

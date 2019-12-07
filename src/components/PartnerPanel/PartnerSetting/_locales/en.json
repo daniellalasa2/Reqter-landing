@@ -7,10 +7,10 @@
       "map": "Map",
       "setting": "Setting"
     },
-    "notification":{
-      "update_partner":{
-        "failed":"Your information update was unsuccessful",
-        "success":"Your information updated successfully"
+    "notification": {
+      "update_partner": {
+        "failed": "Your information update was unsuccessful",
+        "success": "Your information updated successfully"
       }
     },
     "fields": {
