@@ -134,6 +134,7 @@ class Home extends React.Component {
   };
   toggle = tab => {
     if (this.state.activeTab !== tab) {
+      window.scrollTo(0, 0);
       this.setState({
         activeTab: tab,
         form: {

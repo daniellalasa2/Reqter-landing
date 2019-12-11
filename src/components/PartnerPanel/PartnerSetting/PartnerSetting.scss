@@ -130,3 +130,23 @@
     }
   }
 }
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+#map-position {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  width: 300px;
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  font-family: "Courier New";
+  font-size: 12px;
+  border-radius: 10px;
+}

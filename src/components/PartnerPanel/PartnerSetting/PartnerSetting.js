@@ -4,7 +4,6 @@ import {
   SafeValue,
   GetPartnerInfo,
   FilterContents,
-  Upload,
   PartnerpanelUpdateSetting
 } from "../../ApiHandlers/ApiHandler";
 import Validator from "../../Validator/Validator";
@@ -24,14 +23,19 @@ import {
 } from "../../FlatForm/FlatForm";
 import Skeleton from "react-loading-skeleton";
 import "./PartnerSetting.scss";
-import CedarMaps from "@cedarstudios/react-cedarmaps";
-const {
-  RotationControl,
-  ZoomControl,
-  Cluster,
-  Marker
-} = CedarMaps.getReactMapboxGl();
+// import CedarMaps from "@cedarstudios/react-cedarmaps";
+import markerUrl from "../../../assets/images/map-marker.png";
+import cedarMap from "../../../assets/script/cedarMap.js";
+// const {
+//   RotationControl,
+//   ZoomControl,
+//   Marker,
+//   Layer,
+//   Feature
+// } = CedarMaps.getReactMapboxGl();
 // import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
+import scriptLoader from "../../../assets/script/ScriptLoader";
+
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
 export default class PartnerPanel extends React.Component {
   static contextType = ContextApi;
@@ -279,7 +283,12 @@ export default class PartnerPanel extends React.Component {
     const { value } = this.state.form.fields[name];
     let arr = Array.isArray(value) ? Array.from(value) : [];
     if (res.data.replace) {
-      arr[arr.indexOf(res.data.prev_file)] = res.data.file.url;
+      arr[arr.indexOf(res.data.prev_file)] = SafeValue(
+        res,
+        "data.file.url",
+        "string",
+        ""
+      );
     } else {
       arr.push(res.data.file.url);
     }
@@ -604,7 +613,6 @@ export default class PartnerPanel extends React.Component {
   };
   generateCheckboxDataFromApi = (name, defaultChecked) => {
     const { lang } = this;
-    console.log("DCHECK", defaultChecked);
     const _defaultChecked = (checkedObj, toBeSearch) => {
       const typeofCheckedObj = typeof checkedObj;
       if (Array.isArray(defaultChecked)) {
@@ -683,12 +691,23 @@ export default class PartnerPanel extends React.Component {
   componentDidMount() {
     //Initial datas which are going to display in partner panel
     this.updatePartnerInfo();
+    this.cedarMapLib = scriptLoader(
+      "cedarMapLib",
+      "head",
+      "https://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.js"
+    );
+    this.leafletLib = scriptLoader(
+      "leafletLib",
+      "head",
+      "https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.65.1/L.Control.Locate.min.js"
+    );
+    this.cedarMapScript = scriptLoader("cedarMapScript", "body");
+    this.cedarMapScript.write(cedarMap);
   }
-  clusterMarker = coordinates => (
-    <Marker coordinates={coordinates} style={{}}>
-      C
-    </Marker>
-  );
+  componentWillUnmount() {
+    // this.cedarMapLib.remove();
+    // this.leafletLib.remove();
+  }
   render() {
     const { locale, direction } = this.translate;
     const { activeFilter } = this.state.filterContext;
@@ -1011,7 +1030,7 @@ export default class PartnerPanel extends React.Component {
                       wrapperStyle={{ width: "100%" }}
                     />
                     <br />
-                    <CedarMaps
+                    {/* <CedarMaps
                       containerStyle={{
                         height: "350px",
                         width: "100%",
@@ -1019,30 +1038,25 @@ export default class PartnerPanel extends React.Component {
                       }}
                       token="f75377a3951e4aa044fcb296a80f1e96569aeb31"
                       center={[51.34379364705882, 35.74109568627451]}
-                    >
-                      <RotationControl />
-                      <ZoomControl />
-                      {/* <Cluster ClusterMarkerFactory={this.clusterMarker}>
-                        {SafeValue(
-                          form,
-                          `fields.location.value`,
-                          "string",
-                          null
-                        )
-                          <Marker
-                            // key={key}
-                            style={{}}
-                            coordinates={feature.geometry.coordinates}
-                            onClick={this.onMarkerClick.bind(
-                              this,
-                              feature.geometry.coordinates
-                            )}
-                          >
-                            M
-                          </Marker>
-                        }
-                      </Cluster> */}
-                    </CedarMaps>
+                    > */}
+                    {/* <RotationControl /> */}
+                    {/* <ZoomControl /> */}
+                    {/* <Layer
+                        type="symbol"
+                        layout={{ "icon-image": "harbor-15" }}
+                      ></Layer>
+                      <Marker
+                        coordinates={[-0.2416815, 51.5285582]}
+                        anchor="bottom"
+                        onDragEnd={res => console.log("drag", res)}
+                        onClick={(res, res2) => console.log("ponts", res, res2)}
+                      >
+                        <img src={markerUrl} alt="M" width="60px" />
+                      </Marker> */}
+                    {/* <Marker></Marker>
+                    </CedarMaps> */}
+                    <div id="map"> </div>
+                    <div id="map-position"></div>
                   </React.Fragment>
                 </section>
 

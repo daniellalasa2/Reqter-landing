@@ -32,6 +32,7 @@ import {
 import "./OfferList.scss";
 import verifiedIcon from "../../../assets/images/sample-icon/verified.png";
 import classnames from "classnames";
+import ImageAlt from "../../../assets/images/alternatives/noimage.png";
 export default class MyRequests extends Component {
   static contextType = ContextApi;
   constructor(props, context) {
@@ -124,14 +125,13 @@ export default class MyRequests extends Component {
           <div className="offer-card" key={item._id}>
             <div className="offer-card-details">
               <div className="product-header">
-                {SafeValue(
-                  item,
-                  `fields.partnerid.fields.logo.0.en`,
-                  "string",
-                  null,
-                  "fields.partnerid.fields.logo.0"
-                ) && (
-                  <div className="partner-img">
+                <div className="partner-img">
+                  {SafeValue(
+                    item,
+                    "fields.partnerid.fields.partnerkey",
+                    "string",
+                    ""
+                  ) ? (
                     <a
                       href={`/#/p/${SafeValue(
                         item,
@@ -147,7 +147,7 @@ export default class MyRequests extends Component {
                           item,
                           "fields.partnerid.fields.logo.0.en",
                           "string",
-                          "",
+                          ImageAlt,
                           "fields.partnerid.fields.logo.0"
                         )}
                         alt={SafeValue(
@@ -158,8 +158,24 @@ export default class MyRequests extends Component {
                         )}
                       />
                     </a>
-                  </div>
-                )}
+                  ) : (
+                    <img
+                      src={SafeValue(
+                        item,
+                        "fields.partnerid.fields.logo.0.en",
+                        "string",
+                        ImageAlt,
+                        "fields.partnerid.fields.logo.0"
+                      )}
+                      alt={SafeValue(
+                        item,
+                        "fields.partnerid.fields.partnerkey",
+                        "string",
+                        ""
+                      )}
+                    />
+                  )}
+                </div>
                 <div className="partner-title">
                   <h5>
                     <strong className="product-title-wrapper">
@@ -174,23 +190,63 @@ export default class MyRequests extends Component {
                       </strong>
                     </strong>
                   </h5>
-                  <h6>
-                    <strong>
-                      {SafeValue(
+                  {SafeValue(
+                    item,
+                    "fields.partnerid.fields.partnerkey",
+                    "string",
+                    ""
+                  ) ? (
+                    <a
+                      href={`/#/p/${SafeValue(
                         item,
-                        `fields.partnerid.fields.name.${lang}`,
+                        "fields.partnerid.fields.partnerkey",
                         "string",
-                        locale.fields.parter_default_name,
-                        "fields.partnerid.fields.name"
-                      )}{" "}
-                      {SafeValue(
-                        item,
-                        "fields.partnerid.fields.verified",
-                        "string",
-                        null
-                      ) && <img src={verifiedIcon} alt="verified" width="20" />}
-                    </strong>
-                  </h6>
+                        ""
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <h6>
+                        <strong>
+                          {SafeValue(
+                            item,
+                            `fields.partnerid.fields.name.${lang}`,
+                            "string",
+                            locale.fields.parter_default_name,
+                            "fields.partnerid.fields.name"
+                          )}{" "}
+                          {SafeValue(
+                            item,
+                            "fields.partnerid.fields.verified",
+                            "string",
+                            null
+                          ) && (
+                            <img src={verifiedIcon} alt="verified" width="20" />
+                          )}
+                        </strong>
+                      </h6>
+                    </a>
+                  ) : (
+                    <h6>
+                      <strong>
+                        {SafeValue(
+                          item,
+                          `fields.partnerid.fields.name.${lang}`,
+                          "string",
+                          locale.fields.parter_default_name,
+                          "fields.partnerid.fields.name"
+                        )}{" "}
+                        {SafeValue(
+                          item,
+                          "fields.partnerid.fields.verified",
+                          "string",
+                          null
+                        ) && (
+                          <img src={verifiedIcon} alt="verified" width="20" />
+                        )}
+                      </strong>
+                    </h6>
+                  )}
                 </div>
               </div>
 

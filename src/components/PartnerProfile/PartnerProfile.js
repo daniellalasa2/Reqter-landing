@@ -249,6 +249,7 @@ export default class PartnerProfile extends React.Component {
           { name: "privatedesk", id: Config.PRODUCT_TYPE_ID.private_desk },
           { name: "shareddesk", id: Config.PRODUCT_TYPE_ID.shared_desk }
         ];
+        console.log("id arr", product_ids);
         productsArr.forEach((product, index) => {
           const { _id } = product;
           const {
@@ -264,10 +265,14 @@ export default class PartnerProfile extends React.Component {
           if (product.status === "published") {
             let productName = null;
             for (let i = 0; i < product_ids.length; i++) {
-              if (product_ids[i].id === producttype) {
+              if (
+                product_ids[i].id ===
+                SafeValue(producttype, "_id", "string", " ")
+              ) {
                 productName = product_ids[i].name;
               }
             }
+            console.log("productName", productName);
             generatedProducts.push(
               <tr key={index}>
                 <th scope="row">
@@ -353,7 +358,6 @@ export default class PartnerProfile extends React.Component {
     e.target.classList.add("touchable");
   };
   componentDidMount() {
-    console.log("yeap");
     this.fetchPartnerDetails();
 
     window.addEventListener(

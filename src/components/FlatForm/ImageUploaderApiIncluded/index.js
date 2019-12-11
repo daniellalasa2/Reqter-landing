@@ -25,10 +25,10 @@ export default class ImageUploaderApiIncluded extends React.Component {
     Upload(
       file,
       res => {
-        if(this.props.defaultUrl){
+        if (this.props.defaultUrl) {
           res.data["prev_file"] = this.props.defaultUrl;
           res.data["replace"] = true;
-        }else{
+        } else {
           res.data["replace"] = false;
         }
         this.props.onChange(this.props.name, res);
@@ -109,7 +109,8 @@ export default class ImageUploaderApiIncluded extends React.Component {
               zIndex: "1"
             }}
             className="selectorButton"
-            onClick={() => this.fileRef.current.click()}>
+            onClick={() => this.fileRef.current.click()}
+          >
             {this.props.innerText}
           </span>
         )}
@@ -119,6 +120,7 @@ export default class ImageUploaderApiIncluded extends React.Component {
           style={{ display: "none" }}
           onChange={this.uploadImage}
           ref={this.fileRef}
+          accept="image/*"
         />
       </div>
     );

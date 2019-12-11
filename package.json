@@ -24,6 +24,7 @@
     "react-dom": "^16.8.6",
     "react-dropzone-component": "^3.2.0",
     "react-lazy-load": "^3.0.13",
+    "react-leaflet": "^2.6.0",
     "react-loading-skeleton": "^1.1.2",
     "react-notifications": "^1.4.3",
     "react-number-format": "^4.0.8",
