@@ -1,45 +1,78 @@
-import React, { Component } from "react";
-import GoogleMapReact from "google-map-react";
+import React from "react";
+import { Map, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
-class SimpleMap extends Component {
-  static defaultProps = {
-    center: {
-      lat: 0,
-      lng: 0
-    },
-    zoom: 13
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+});
+
+export default class MapWithMarker extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      center: props.center,
+      marker: props.markerPosition,
+      zoom: props.zoom,
+      draggable: props.draggable
+    };
+    // $FlowFixMe: ref
+    this.refmarker = React.createRef();
+    this.mapContainerStyle = props.containerStyle;
+  }
+  toggleDraggable = () => {
+    this.setState({ draggable: !this.state.draggable });
+  };
+
+  updatePosition = () => {
+    const marker = this.refmarker.current;
+    if (marker != null) {
+      this.setState(
+        {
+          marker: marker.leafletElement.getLatLng()
+        },
+        () => this.props.onMarkerUpdate(this.state.marker)
+      );
+    }
   };
 
   render() {
-    const {
-      apiKey,
-      pinDesc,
-      PinComponent,
-      width,
-      height,
-      center,
-      zoom,
-      lng,
-      lat
-    } = this.props;
+    const position = [this.state.center.lat, this.state.center.lng];
+    const markerPosition = [this.state.marker.lat, this.state.marker.lng];
+
     return (
-      // Important! Always set the container height explicitly
-      <div style={{ height: height, width: width }}>
-        <GoogleMapReact
-          // key={"simplemapkey"}
-          bootstrapURLKeys={{ key: apiKey }}
-          defaultCenter={center}
-          defaultZoom={zoom}
+      <Map
+        center={position}
+        zoom={this.state.zoom}
+        style={this.mapContainerStyle}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <Marker
+          draggable={this.state.draggable}
+          onDragend={this.updatePosition}
+          position={markerPosition}
+          ref={this.refmarker}
         >
-          <PinComponent
-            lat={lat ? lat : center.lat}
-            lng={lng ? lng : center.lng}
-            text={pinDesc}
-          />
-        </GoogleMapReact>
-      </div>
+          {!this.props.staticMap && (
+            <Popup minWidth={90}>
+              <span onClick={this.toggleDraggable}>
+                {this.state.draggable
+                  ? this.props.dragMarkerMessage
+                  : this.props.locationName}
+              </span>
+            </Popup>
+          )}
+          {this.props.staticMap && (
+            <Popup minWidth={90}>
+              <span>{this.props.locationName}</span>
+            </Popup>
+          )}
+        </Marker>
+      </Map>
     );
   }
 }
-
-export default SimpleMap;

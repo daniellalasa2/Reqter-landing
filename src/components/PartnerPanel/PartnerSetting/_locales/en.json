@@ -30,6 +30,7 @@
       "city": "City",
       "address": "Address",
       "location": "Location info",
+      "location_help": "Please drag the marker and release it on your exact location",
       "locationpic": "Location info screenshot",
       "collaborationtypes": "Collaboration types",
       "workingfields": "Working fields(type of company)",

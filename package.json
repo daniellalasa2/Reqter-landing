@@ -3,26 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cedarstudios/react-cedarmaps": "^1.0.3",
+    "@babel/plugin-proposal-export-namespace-from": "^7.7.4",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-brands-svg-icons": "^5.10.1",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "axios": "^0.19.0",
     "bootstrap": "4.3.1",
-    "google-map-react": "^1.1.4",
+    "flow-bin": "^0.113.0",
     "jalali-moment": "^3.3.3",
     "jquery": "3",
+    "leaflet": "^1.6.0",
     "node-sass": "^4.12.0",
     "normalize.css": "^8.0.1",
     "popper.js": "^1.14.7",
-    "react": "^16.8.6",
+    "react": "^16.12.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-app-polyfill": "^1.0.2",
     "react-avatar-edit": "^0.8.3",
     "react-device-detect": "^1.9.10",
-    "react-dom": "^16.8.6",
-    "react-dropzone-component": "^3.2.0",
+    "react-dom": "^16.12.0",
     "react-lazy-load": "^3.0.13",
     "react-leaflet": "^2.6.0",
     "react-loading-skeleton": "^1.1.2",
@@ -32,13 +32,15 @@
     "react-scripts": "3.0.1",
     "react-toastify": "^5.4.0",
     "reactstrap": "^8.0.1",
-    "samim-font": "^1.0.2"
+    "samim-font": "^1.0.2",
+    "typescript": "^3.7.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "flow": "flow"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -56,6 +58,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/preset-flow": "^7.7.4",
     "cypress": "^3.4.1"
   }
 }

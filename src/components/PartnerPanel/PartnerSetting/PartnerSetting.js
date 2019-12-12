@@ -23,19 +23,9 @@ import {
 } from "../../FlatForm/FlatForm";
 import Skeleton from "react-loading-skeleton";
 import "./PartnerSetting.scss";
-// import CedarMaps from "@cedarstudios/react-cedarmaps";
 import markerUrl from "../../../assets/images/map-marker.png";
-import cedarMap from "../../../assets/script/cedarMap.js";
-// const {
-//   RotationControl,
-//   ZoomControl,
-//   Marker,
-//   Layer,
-//   Feature
-// } = CedarMaps.getReactMapboxGl();
-// import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
-import scriptLoader from "../../../assets/script/ScriptLoader";
-
+import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
+import MapWithMarker from "../../SimpleMap/SimpleMap.js";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
 export default class PartnerPanel extends React.Component {
   static contextType = ContextApi;
@@ -691,23 +681,9 @@ export default class PartnerPanel extends React.Component {
   componentDidMount() {
     //Initial datas which are going to display in partner panel
     this.updatePartnerInfo();
-    this.cedarMapLib = scriptLoader(
-      "cedarMapLib",
-      "head",
-      "https://api.cedarmaps.com/cedarmaps.js/v1.8.0/cedarmaps.js"
-    );
-    this.leafletLib = scriptLoader(
-      "leafletLib",
-      "head",
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.65.1/L.Control.Locate.min.js"
-    );
-    this.cedarMapScript = scriptLoader("cedarMapScript", "body");
-    this.cedarMapScript.write(cedarMap);
   }
-  componentWillUnmount() {
-    // this.cedarMapLib.remove();
-    // this.leafletLib.remove();
-  }
+  // componentWillUnmount() {
+  // }
   render() {
     const { locale, direction } = this.translate;
     const { activeFilter } = this.state.filterContext;
@@ -1030,33 +1006,39 @@ export default class PartnerPanel extends React.Component {
                       wrapperStyle={{ width: "100%" }}
                     />
                     <br />
-                    {/* <CedarMaps
-                      containerStyle={{
-                        height: "350px",
-                        width: "100%",
-                        minWidth: "100%"
-                      }}
-                      token="f75377a3951e4aa044fcb296a80f1e96569aeb31"
-                      center={[51.34379364705882, 35.74109568627451]}
-                    > */}
-                    {/* <RotationControl /> */}
-                    {/* <ZoomControl /> */}
-                    {/* <Layer
-                        type="symbol"
-                        layout={{ "icon-image": "harbor-15" }}
-                      ></Layer>
-                      <Marker
-                        coordinates={[-0.2416815, 51.5285582]}
-                        anchor="bottom"
-                        onDragEnd={res => console.log("drag", res)}
-                        onClick={(res, res2) => console.log("ponts", res, res2)}
-                      >
-                        <img src={markerUrl} alt="M" width="60px" />
-                      </Marker> */}
-                    {/* <Marker></Marker>
-                    </CedarMaps> */}
-                    <div id="map"> </div>
-                    <div id="map-position"></div>
+                    <div id="map">
+                      {/* Map component */}
+                      <span className="field-title">
+                        {locale.fields.location}
+                        <small
+                          style={{ display: "block" }}
+                          className="field-title"
+                        >
+                          {locale.fields.location_help}
+                        </small>
+                      </span>
+                      <br />
+
+                      <MapWithMarker
+                        center={{ lat: 35.6892, lng: 51.389 }}
+                        containerStyle={{
+                          height: "450px",
+                          width: "100%",
+                          margin: "0 auto"
+                        }}
+                        zoom={4}
+                        markerPosition={{ lat: 35.6892, lng: 51.389 }}
+                        draggable={true}
+                        onMarkerUpdate={position =>
+                          this.formStateHandler({
+                            target: { name: "location", value: position }
+                          })
+                        }
+                        static={false}
+                        dragMarkerMessage={locale.fields.location_help}
+                        locationName={this.state.form.fields.name.value}
+                      />
+                    </div>
                   </React.Fragment>
                 </section>
 

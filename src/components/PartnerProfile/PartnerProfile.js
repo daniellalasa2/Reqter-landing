@@ -30,6 +30,7 @@ import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
 import ContextApi from "../ContextApi/ContextApi";
 import classnames from "classnames";
 import PageSuspense from "../PageSuspense";
+import MapWithMarker from "../SimpleMap/SimpleMap.js";
 export default class PartnerProfile extends React.Component {
   static contextType = ContextApi;
   constructor(props, context) {
@@ -583,44 +584,38 @@ export default class PartnerProfile extends React.Component {
               </span>
             </div>
             <div className="map">
-              {/* <SimpleMap
-                apiKey="AIzaSyC0UQaQpwYxq-aOi5yXY9dU7b9mWAePwKE"
-                lng={Number(SafeValue(location, "longitude", "string", 0))}
-                lat={Number(SafeValue(location, "latitude", "string", 0))}
-                zoom={15}
-                pinDesc="paradisehub"
-                center={{
-                  lat: Number(SafeValue(location, "latitude", "string", 0)),
-                  lng: Number(SafeValue(location, "longitude", "string", 0))
-                }}
-                PinComponent={() => (
-                  <FontAwesomeIcon
-                    icon={faMapMarkerAlt}
-                    size="lg"
-                    color="#e22828"
-                    style={{ fontSize: "3em" }}
-                  />
-                )}
-                height="100%"
-                width="100%"
-              /> */}
-
               <BrowserView>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${SafeValue(
                     location,
-                    "latitude",
-                    "string",
+                    "lat",
+                    "number",
                     0
-                  )},${SafeValue(location, "longitude", "string", 0)}`}
+                  )},${SafeValue(location, "lng", "number", 0)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img
-                    src={DownloadAsset(locationpic)}
+                  {/* {console.log("loc", location)} */}
+                  {/* <img
+                    src={`https://www.openstreetmap.org/?mlat=${location.lat}&mlon=${location.lng}#map=17/35.80254/51.49161&layers=N`}
                     alt="partner static map"
                     className="map-img"
                     style={{ width: "100%" }}
+                  /> */}
+                  <MapWithMarker
+                    center={location}
+                    zoom={15}
+                    containerStyle={{ width: "100%", margin: "0 auto" }}
+                    markerPosition={location}
+                    draggable={false}
+                    staticMap={true}
+                    locationName={SafeValue(
+                      name,
+                      this.lang,
+                      "string",
+                      false,
+                      " "
+                    )}
                   />
                 </a>
               </BrowserView>
@@ -628,18 +623,33 @@ export default class PartnerProfile extends React.Component {
                 <a
                   href={`geo:${SafeValue(
                     location,
-                    "latitude",
-                    "string",
+                    "lat",
+                    "number",
                     0
-                  )},${SafeValue(location, "longitude", "string", 0)}`}
+                  )},${SafeValue(location, "lng", "number", 0)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img
+                  {/* <img
                     src={DownloadAsset(locationpic)}
                     alt="partner static map"
                     className="map-img"
                     style={{ width: "100%" }}
+                  /> */}
+                  <MapWithMarker
+                    center={location}
+                    zoom={15}
+                    containerStyle={{ width: "100%", margin: "0 auto" }}
+                    markerPosition={location}
+                    draggable={false}
+                    staticMap={true}
+                    locationName={SafeValue(
+                      name,
+                      this.lang,
+                      "string",
+                      false,
+                      " "
+                    )}
                   />
                 </a>
               </MobileView>
