@@ -15,16 +15,20 @@ export default class MapWithMarker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      center: {
-        lat: SafeValue(
-          props,
-          "center",
-          "object",
-          { lat: 0, lng: 0 },
-          "defaultCenter"
-        )
-      },
-      marker: props.markerPosition,
+      center: SafeValue(
+        props,
+        "center",
+        "object",
+        { lat: 0, lng: 0 },
+        "defaultCenter"
+      ),
+      marker: SafeValue(
+        props,
+        "markerPosition",
+        "object",
+        { lat: 0, lng: 0 },
+        "defaultMarkerPosition"
+      ),
       zoom: SafeValue(props, "zoom", "number", 5),
       draggable: SafeValue(props, "draggable", "boolean", false)
     };
