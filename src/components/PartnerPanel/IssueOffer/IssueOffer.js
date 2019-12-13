@@ -95,26 +95,31 @@ export default class IssueOffer extends React.Component {
   convertProductsDataToCheckboxData = productObj => {
     const productArr = [];
     productObj.forEach((product, idx) => {
-      productArr.push({
-        imgSrc: DownloadAsset(
-          SafeValue(
+      if (
+        product.status === "published" &&
+        SafeValue(product, "fields.itemstatus", "string", null) === "active"
+      ) {
+        productArr.push({
+          imgSrc: DownloadAsset(
+            SafeValue(
+              product,
+              `fields.media.0.${this.lang}`,
+              "string",
+              "",
+              "fields.media"
+            )
+          ),
+          title: SafeValue(
             product,
-            `fields.media.0.${this.lang}`,
+            `fields.name.${this.lang}`,
             "string",
-            "",
-            "fields.media"
-          )
-        ),
-        title: SafeValue(
-          product,
-          `fields.name.${this.lang}`,
-          "string",
-          "---",
-          "fields.name"
-        ),
-        value: JSON.stringify(product),
-        key: idx
-      });
+            "---",
+            "fields.name"
+          ),
+          value: JSON.stringify(product),
+          key: idx
+        });
+      }
     });
     return productArr;
   };
