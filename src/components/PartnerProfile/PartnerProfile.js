@@ -585,73 +585,62 @@ export default class PartnerProfile extends React.Component {
             </div>
             <div className="map">
               <BrowserView>
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${SafeValue(
-                    location,
-                    "lat",
-                    "number",
-                    0
-                  )},${SafeValue(location, "lng", "number", 0)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {/* {console.log("loc", location)} */}
-                  {/* <img
-                    src={`https://www.openstreetmap.org/?mlat=${location.lat}&mlon=${location.lng}#map=17/35.80254/51.49161&layers=N`}
+                {SafeValue(location, "lat", "number", false) &&
+                SafeValue(location, "lng", "number", false) ? (
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${SafeValue(
+                      location,
+                      "lat",
+                      "number",
+                      0
+                    )},${SafeValue(location, "lng", "number", 0)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7Clabel:L%7C${location.lat},${location.lng}&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=16`}
+                      alt="partner static map"
+                      className="map-img"
+                      style={{ width: "100%" }}
+                    />
+                  </a>
+                ) : (
+                  <img
+                    src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&center=32.4279,53.6880&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=5`}
                     alt="partner static map"
                     className="map-img"
                     style={{ width: "100%" }}
-                  /> */}
-                  <MapWithMarker
-                    center={location}
-                    zoom={15}
-                    containerStyle={{ width: "100%", margin: "0 auto" }}
-                    markerPosition={location}
-                    draggable={false}
-                    staticMap={true}
-                    locationName={SafeValue(
-                      name,
-                      this.lang,
-                      "string",
-                      false,
-                      " "
-                    )}
                   />
-                </a>
+                )}
               </BrowserView>
               <MobileView>
-                <a
-                  href={`geo:${SafeValue(
-                    location,
-                    "lat",
-                    "number",
-                    0
-                  )},${SafeValue(location, "lng", "number", 0)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {/* <img
-                    src={DownloadAsset(locationpic)}
+                {SafeValue(location, "lat", "number", false) &&
+                SafeValue(location, "lng", "number", false) ? (
+                  <a
+                    href={`geo:${SafeValue(
+                      location,
+                      "lat",
+                      "number",
+                      0
+                    )},${SafeValue(location, "lng", "number", 0)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7Clabel:L%7C${location.lat},${location.lng}&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=16`}
+                      alt="partner static map"
+                      className="map-img"
+                      style={{ width: "100%", borderRadius: "8px" }}
+                    />
+                  </a>
+                ) : (
+                  <img
+                    src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&center=32.4279,53.6880&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=5`}
                     alt="partner static map"
                     className="map-img"
-                    style={{ width: "100%" }}
-                  /> */}
-                  <MapWithMarker
-                    center={location}
-                    zoom={15}
-                    containerStyle={{ width: "100%", margin: "0 auto" }}
-                    markerPosition={location}
-                    draggable={false}
-                    staticMap={true}
-                    locationName={SafeValue(
-                      name,
-                      this.lang,
-                      "string",
-                      false,
-                      " "
-                    )}
+                    style={{ width: "100%", borderRadius: "8px" }}
                   />
-                </a>
+                )}
               </MobileView>
             </div>
           </div>

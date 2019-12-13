@@ -2,7 +2,7 @@ import React from "react";
 import { Map, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
+import { SafeValue } from "../ApiHandlers/ApiHandler";
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
@@ -15,10 +15,18 @@ export default class MapWithMarker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      center: props.center,
+      center: {
+        lat: SafeValue(
+          props,
+          "center",
+          "object",
+          { lat: 0, lng: 0 },
+          "defaultCenter"
+        )
+      },
       marker: props.markerPosition,
-      zoom: props.zoom,
-      draggable: props.draggable
+      zoom: SafeValue(props, "zoom", "number", 5),
+      draggable: SafeValue(props, "draggable", "boolean", false)
     };
     // $FlowFixMe: ref
     this.refmarker = React.createRef();
@@ -43,7 +51,6 @@ export default class MapWithMarker extends React.Component {
   render() {
     const position = [this.state.center.lat, this.state.center.lng];
     const markerPosition = [this.state.marker.lat, this.state.marker.lng];
-
     return (
       <Map
         center={position}

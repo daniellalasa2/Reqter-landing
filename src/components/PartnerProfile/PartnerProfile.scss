@@ -62,7 +62,7 @@ $green: #58d37b;
       flex-direction: row;
       display: flex;
       height: auto;
-      z-index: 4;
+      z-index: 1010;
       transition: all 0.3s ease;
       -webkit-transition: all 0.3s ease;
       -moz-transition: all 0.3s ease;
@@ -245,7 +245,7 @@ $green: #58d37b;
     & .facilities-detail {
       width: 100%;
       border: 1px solid lightgrey;
-      border-radius: 8px;
+      border-radius: 5px;
       ul {
         padding: 0;
         margin: 0;
@@ -285,8 +285,10 @@ $green: #58d37b;
       height: 500px;
       max-height: 500px;
       overflow-y: hidden;
-      & .map-img {
-        &:hover {
+      box-shadow: 0 0px 5px -1px grey;
+      border-radius: 5px;
+      &:hover {
+        & .map-img {
           cursor: pointer;
         }
       }
@@ -321,6 +323,11 @@ $green: #58d37b;
     & .content-navigator {
       display: none;
     }
+    & .partner-address {
+      & .map {
+        border-radius: 0;
+      }
+    }
   }
 }
 @media (max-width: 768px) {
@@ -348,6 +355,11 @@ $green: #58d37b;
       & .tab {
         width: auto !important;
         padding: 25px 5vw;
+      }
+    }
+    & .partner-address {
+      & .map {
+        height: 400px;
       }
     }
   }
@@ -411,7 +423,7 @@ $green: #58d37b;
     }
     & .partner-address {
       & .map {
-        height: 200px;
+        height: 300px;
       }
     }
   }

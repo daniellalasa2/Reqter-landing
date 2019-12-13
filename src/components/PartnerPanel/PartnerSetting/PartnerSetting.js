@@ -1020,14 +1020,15 @@ export default class PartnerPanel extends React.Component {
                       <br />
 
                       <MapWithMarker
-                        center={{ lat: 35.6892, lng: 51.389 }}
+                        center={fields.location.value}
+                        defaultCenter={{ lat: 32.4279, lng: 53.688 }}
                         containerStyle={{
                           height: "450px",
                           width: "100%",
                           margin: "0 auto"
                         }}
-                        zoom={4}
-                        markerPosition={{ lat: 35.6892, lng: 51.389 }}
+                        zoom={13}
+                        markerPosition={fields.location.value}
                         draggable={true}
                         onMarkerUpdate={position =>
                           this.formStateHandler({
