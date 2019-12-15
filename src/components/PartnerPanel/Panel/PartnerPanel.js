@@ -7,7 +7,8 @@ import {
   Button,
   Modal,
   ModalBody,
-  ModalHeader
+  ModalHeader,
+  Input
   // ModalFooter
 } from "reactstrap";
 import {
@@ -24,7 +25,8 @@ import {
   GetPartnerLostOffers,
   CancelIssuedOffer,
   Config,
-  DownloadAsset
+  DownloadAsset,
+  FilterContents
 } from "../../ApiHandlers/ApiHandler";
 import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
 import DateFormat from "../../DateFormat/DateFormat";
@@ -36,6 +38,8 @@ import IssueOffer from "../IssueOffer/IssueOffer";
 import PageSuspense from "../../PageSuspense";
 import "./PartnerPanel.scss";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
+import Configuration from "../../ApiHandlers/Configuration";
+import { FlatInput, FlatTextArea } from "../../FlatForm/FlatForm";
 //!!!!!!!!IMPORTANT: Partner state checking////////////////////////////
 export default class PartnerPanel extends React.Component {
   static contextType = ContextApi;
@@ -69,6 +73,9 @@ export default class PartnerPanel extends React.Component {
         warning: { openStatus: false, data: {} },
         requestContact: { openStatus: false, data: {} },
         issueOffer: { openStatus: false, data: {} }
+      },
+      combo: {
+        partnerpanel_reject_reasonlist: []
       }
     };
   }
@@ -176,6 +183,8 @@ export default class PartnerPanel extends React.Component {
     });
   };
   rejectRequest = (requestid, theListTypeThatIsGoingToUpdate, callback) => {
+    const form = document.getElementById("reject_reason_form");
+    console.log("form", form);
     PartnerpanelRejectRequest(requestid, res => {
       if (res.success_result.success) {
         this.filterRequestsOrOffers(
@@ -199,6 +208,41 @@ export default class PartnerPanel extends React.Component {
           if (typeof callback === "function") callback();
         }
       );
+    });
+  };
+  generateCheckboxDataFromApi = (name, defaultChecked) => {
+    const { lang } = this;
+    const _defaultChecked = (checkedObj, toBeSearch) => {
+      const typeofCheckedObj = typeof checkedObj;
+      if (Array.isArray(defaultChecked)) {
+        return checkedObj.indexOf(toBeSearch) > -1;
+      } else if (
+        typeofCheckedObj === "string" ||
+        typeofCheckedObj === "number" ||
+        typeofCheckedObj === "boolean"
+      ) {
+        return checkedObj === toBeSearch;
+      } else {
+        return false;
+      }
+    };
+    FilterContents(name, res => {
+      const arr = [];
+      SafeValue(res, "data", "object", []).map((val, key) => {
+        arr.push({
+          title: SafeValue(val, `fields.name.${lang}`, "string", null, "name"),
+          value: val._id,
+          description: SafeValue(val, "description", "string", null),
+          defaultChecked: _defaultChecked(defaultChecked, val._id)
+        });
+        return null;
+      });
+      this.setState({
+        combo: {
+          ...this.state.combo,
+          [name]: arr
+        }
+      });
     });
   };
   //------------------------Toggle Modals------------------------------//
@@ -388,6 +432,9 @@ export default class PartnerPanel extends React.Component {
                     requestId: request._id,
                     goingToUpdateRequestsListType: this.state.requestsOrOffers
                       .activeFilter,
+                    title: locale.requests.alert.reject_request.title,
+                    description:
+                      locale.requests.alert.reject_request.description,
                     callback: () => {
                       this.toggleModals("warning", {});
                     }
@@ -521,6 +568,9 @@ export default class PartnerPanel extends React.Component {
                     requestId: request._id,
                     goingToUpdateRequestsListType: this.state.requestsOrOffers
                       .activeFilter,
+                    title: locale.requests.alert.reject_request.title,
+                    description:
+                      locale.requests.alert.reject_request.description,
                     callback: () => {
                       this.toggleModals("warning", {});
                     }
@@ -772,6 +822,8 @@ export default class PartnerPanel extends React.Component {
                 onClick={() =>
                   this.toggleModals("warning", {
                     offerId: offer._id,
+                    title: locale.requests.alert.reject_offer.title,
+                    description: locale.requests.alert.reject_offer.description,
                     callback: () => {
                       this.toggleModals("warning", {});
                     }
@@ -1054,6 +1106,7 @@ export default class PartnerPanel extends React.Component {
   componentDidMount() {
     //Initial datas which are going to display in partner panel
     this.updatePartnerInfo(() => this.getAndUpdateProducts());
+    this.generateCheckboxDataFromApi("partnerpanel_reject_reasonlist");
   }
   render() {
     const { locale, direction } = this.translate;
@@ -1186,21 +1239,66 @@ export default class PartnerPanel extends React.Component {
                 className="login-modal-header"
                 toggle={() => this.toggleModals("warning", {})}
               >
-                {locale.requests.alert.title}
+                {modals.warning.data.title}
               </ModalHeader>
               <ModalBody>
-                <span>
-                  {locale.requests.alert.description}
-
-                  <strong style={{ fontSize: "20px" }}>
-                    {locale.requests.alert.areyousure}
-                  </strong>
-                </span>
+                <span>{modals.warning.data.description}</span>
                 <br />
+                {(activeFilter === "newrequests" ||
+                  activeFilter === "openrequests") && (
+                  <form id="reject_reason_form">
+                    <br />
+                    <Input
+                      type="select"
+                      id="reject_reason_selectbox"
+                      name="name"
+                      onChange={val => {
+                        console.log("val", val);
+                        // const reason = this.state.combo.partnerpanel_reject_reasonlist.filter(
+                        //   item => item._id === val && val
+                        // );
+                        // this.setState({
+                        //   combo: {
+                        //     ...this.state.combo,
+                        //     partnerpanel_reject_reasonlist: {
+                        //       ...this.state.combo
+                        //         .partnerpanel_reject_reasonlist,
+                        //       selectedReasonDesc: reason.description
+                        //     }
+                        //   }
+                        // });
+                      }}
+                    >
+                      {SafeValue(
+                        this.state,
+                        "combo.partnerpanel_reject_reasonlist",
+                        "object",
+                        []
+                      ).map(reason => (
+                        <option value={reason.value} key={reason.value}>
+                          {SafeValue(reason, `title`, "string", null)}
+                        </option>
+                      ))}
+                    </Input>
+                    <br />
+                    <FlatTextArea
+                      name="description"
+                      defaultValue={
+                        this.state.combo.partnerpanel_reject_reasonlist
+                          .selectedReasonDesc
+                      }
+                      id="reject_reason_description"
+                      style={{ minHeight: "150px" }}
+                    />
+                  </form>
+                )}
                 <Button
                   pull={direction === "ltr" ? "left" : "right"}
-                  color="primary"
-                  style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                  style={{
+                    padding: "6px 25px",
+                    margin: "20px 10px 0",
+                    backgroundColor: "#bd2130"
+                  }}
                   onClick={() => {
                     if (
                       activeFilter === "newrequests" ||
@@ -1224,8 +1322,13 @@ export default class PartnerPanel extends React.Component {
                 </Button>
                 <Button
                   pull={direction === "ltr" ? "left" : "right"}
-                  color="primary"
-                  style={{ padding: "6px 25px", margin: "20px 10px 0" }}
+                  color="default"
+                  style={{
+                    padding: "6px 25px",
+                    margin: "20px 10px 0",
+                    backgroundColor: "gray",
+                    color: "white"
+                  }}
                   onClick={() => this.toggleModals("warning", {})}
                 >
                   {locale.requests.alert.reject}

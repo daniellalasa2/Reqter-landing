@@ -10,6 +10,7 @@ $green: #58d37b;
   min-height: 700px;
   margin: 66px 0 0 0;
   background-color: white;
+
   & .carousel {
     & .carousel-indicators {
       z-index: 5;
@@ -293,6 +294,12 @@ $green: #58d37b;
         }
       }
     }
+  }
+  & .textelement-placeholder {
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: gray;
   }
 }
 

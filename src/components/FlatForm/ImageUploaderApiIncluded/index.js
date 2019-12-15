@@ -101,9 +101,11 @@ export default class ImageUploaderApiIncluded extends React.Component {
               selfAlign: "center",
               fontSize: "16px",
               fontWeight: "bold",
-              color: this.state.selectedImgUrl ? "white" : "#2e5b96",
+              color: this.state.selectedImgUrl ? "white" : "gray",
               cursor: "pointer",
-              backgroundColor: "rgba(255,255,255,0.6)",
+              backgroundColor: this.state.selectedImgUrl
+                ? "rgba(100, 100, 100, 0.8)"
+                : "transparent",
               padding: "5px",
               borderRadius: "5px",
               zIndex: "1"

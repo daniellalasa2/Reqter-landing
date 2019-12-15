@@ -626,7 +626,7 @@ const FlatTimePicker = ({ onChange, name }) => {
 const FlatButton = ({ value, color, suspense, ...props }) => {
   return (
     <Button {...props} disabled={suspense ? true : props.disabled}>
-      {suspense ? <Spinner width="30px" /> : props.children}
+      {suspense ? <Spinner width="25px" /> : props.children}
     </Button>
   );
 };

@@ -188,7 +188,10 @@ export default class PartnerProfile extends React.Component {
     const params = { "fields.partnerkey": _this.partnerKey };
     const images = [];
     GetPartnerInfo(params, partner => {
-      if (partner.success_result.success) {
+      if (
+        partner.success_result.success &&
+        SafeValue(partner, "data.0.fields.logo", "object", false).length > 0
+      ) {
         const { _id, fields } = partner.data[0];
         fields.workinghours =
           SafeValue(fields, "workinghours", "jsonArray", null) &&
@@ -250,7 +253,6 @@ export default class PartnerProfile extends React.Component {
           { name: "privatedesk", id: Config.PRODUCT_TYPE_ID.private_desk },
           { name: "shareddesk", id: Config.PRODUCT_TYPE_ID.shared_desk }
         ];
-        console.log("id arr", product_ids);
         productsArr.forEach((product, index) => {
           const { _id } = product;
           const {
@@ -273,7 +275,6 @@ export default class PartnerProfile extends React.Component {
                 productName = product_ids[i].name;
               }
             }
-            console.log("productName", productName);
             generatedProducts.push(
               <tr key={index}>
                 <th scope="row">
@@ -555,26 +556,26 @@ export default class PartnerProfile extends React.Component {
               </Table>
             </div>
           )}
-          {SafeValue(
-            amenities,
-            this.lang,
-            "string",
-            locale.no_amenities,
-            " "
-          ) && (
-            <div
-              className="partner-facilities nav-section"
-              id="facilities-section"
-            >
-              <div className="section-title">
-                <FontAwesomeIcon icon={faHeart} size="lg" color="dimgrey" />
-                {locale.facilities}
-              </div>
+
+          <div
+            className="partner-facilities nav-section"
+            id="facilities-section"
+          >
+            <div className="section-title">
+              <FontAwesomeIcon icon={faHeart} size="lg" color="dimgrey" />
+              {locale.facilities}
+            </div>
+            {SafeValue(amenities, this.lang, "string", false, " ") ? (
               <div className="facilities-detail">
                 <ul>{amenities}</ul>
               </div>
-            </div>
-          )}
+            ) : (
+              <span className="textelement-placeholder">
+                {locale.no_amenities}
+              </span>
+            )}
+          </div>
+
           <div className="partner-address nav-section" id="address-section">
             <div className="section-title">
               <FontAwesomeIcon icon={faMapPin} size="lg" color="dimgrey" />

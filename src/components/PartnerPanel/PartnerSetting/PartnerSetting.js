@@ -423,6 +423,12 @@ export default class PartnerPanel extends React.Component {
       for (let index in inputs) {
         _formObjectGoingToSubmit[index] = inputs[index].value;
       }
+      this.setState({
+        form: {
+          ...this.state.form,
+          isSubmitting: true
+        }
+      });
       PartnerpanelUpdateSetting(
         _this.state.partnerId,
         _formObjectGoingToSubmit,
@@ -430,9 +436,11 @@ export default class PartnerPanel extends React.Component {
           if (res.success_result.success) {
             this.setState(
               {
+                didDataChange: false,
                 form: {
                   ...this.state.form,
-                  submitted: true
+                  submitted: true,
+                  isSubmitting: false
                 }
               },
               this.context.displayNotif(
@@ -1116,11 +1124,13 @@ export default class PartnerPanel extends React.Component {
                 </section>
               </CardBody>
               <CardFooter>
+                {console.log("is submitting:", form.isSubmitting)}
                 <FlatButton
                   disabled={!didDataChange}
                   suspense={form.isSubmitting}
-                  colorr="success"
+                  color="success"
                   onClick={this.submitForm}
+                  style={{ minWidth: "120px", float: "left" }}
                 >
                   {locale.fields.submit_changes}
                 </FlatButton>

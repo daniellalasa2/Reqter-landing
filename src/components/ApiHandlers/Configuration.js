@@ -74,7 +74,8 @@ var Configuration = {
     get_partnerpanel_requests: "5d58df5a74c64b0017fb45d8",
     product_type: "5d36a7d18e6e9a0017c28fd6",
     issue_offer: "5d35adc68e6e9a0017c28fcb",
-    get_partner_all_offers: "5d35adc68e6e9a0017c28fcb"
+    get_partner_all_offers: "5d35adc68e6e9a0017c28fcb",
+    partnerpanel_reject_reasonlist: "5de64305b90b250017221703"
   },
   PRODUCT_TYPE_ID: {
     private_desk: "5d36a9d78e6e9a0017c28fd9",
