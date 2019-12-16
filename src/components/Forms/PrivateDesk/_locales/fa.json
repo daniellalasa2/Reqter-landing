@@ -32,6 +32,14 @@
       "city": {
         "_title": "شهر"
       },
+      "description": {
+        "_title": "توضیحات",
+        "placeholder": "اگر توضیح خاصی دارید بنویسید"
+      },
+      "district": {
+        "_title": "محله",
+        "error": "انتخاب محله اجباری است"
+      },
       "resume": {
         "_title": "آپلود رزومه",
         "placeholder": "یک فایل را انتخاب کنید",

@@ -15,7 +15,8 @@ import {
   FlatInput,
   FlatUploader,
   FlatNumberSet,
-  FlatInlineSelect
+  FlatInlineSelect,
+  FlatTextArea
 } from "../../FlatForm/FlatForm";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
 import Validator from "../../Validator/Validator";
@@ -83,6 +84,11 @@ class DedicatedOffice extends React.PureComponent {
             value: "5d35e8288e6e9a0017c28fcf",
             error: "",
             isValid: false
+          },
+          description: {
+            value: "",
+            error: "",
+            isValid: true
           }
         },
         backgroundData: {
@@ -98,6 +104,10 @@ class DedicatedOffice extends React.PureComponent {
           items: []
         },
         coworking_working_field: {
+          hasLoaded: false,
+          items: []
+        },
+        district: {
           hasLoaded: false,
           items: []
         }
@@ -252,9 +262,9 @@ class DedicatedOffice extends React.PureComponent {
             cityname = curr.title;
           }
         });
-        _formObjectGoingToSubmit["name"] = `${
-          locale.email_subject[0]
-        } ${seats} ${locale.email_subject[1]} ${cityname}`;
+        _formObjectGoingToSubmit[
+          "name"
+        ] = `${locale.email_subject[0]} ${seats} ${locale.email_subject[1]} ${cityname}`;
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
@@ -587,6 +597,16 @@ class DedicatedOffice extends React.PureComponent {
                     onChange={this.uploadFile}
                     style={{ direction: direction }}
                     error={this.state.form.fields.resume.error}
+                  />
+                  <FlatTextArea
+                    label={locale.fields.description._title}
+                    type="text"
+                    placeholder={locale.fields.description.placeholder}
+                    name="description"
+                    id="description"
+                    onChange={this.formStateHandler}
+                    style={{ minHeight: "100px" }}
+                    error={this.state.form.fields.description.error}
                   />
                 </CardBody>
               </section>

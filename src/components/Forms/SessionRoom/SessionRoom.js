@@ -11,7 +11,11 @@ import Skeleton from "react-loading-skeleton";
 import SuccessSubmit from "../SubmitStatus/SuccessSubmit/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FlatInput, FlatInlineSelect } from "../../FlatForm/FlatForm";
+import {
+  FlatInput,
+  FlatInlineSelect,
+  FlatTextArea
+} from "../../FlatForm/FlatForm";
 import moment from "jalali-moment";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
 import NumberFormat from "react-number-format";
@@ -82,6 +86,11 @@ class SessionRoom extends React.PureComponent {
           },
           country: {
             value: "5d35e8288e6e9a0017c28fcf",
+            error: "",
+            isValid: true
+          },
+          description: {
+            value: "",
             error: "",
             isValid: true
           }
@@ -297,9 +306,9 @@ class SessionRoom extends React.PureComponent {
           }
         });
 
-        _formObjectGoingToSubmit["name"] = `${
-          locale.email_subject[0]
-        } ${seats} ${locale.email_subject[1]} ${cityname}`;
+        _formObjectGoingToSubmit[
+          "name"
+        ] = `${locale.email_subject[0]} ${seats} ${locale.email_subject[1]} ${cityname}`;
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
@@ -579,6 +588,16 @@ class SessionRoom extends React.PureComponent {
                     defaultValue={this.state.form.fields.seats.value}
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.seats.error}
+                  />
+                  <FlatTextArea
+                    label={locale.fields.description._title}
+                    type="text"
+                    placeholder={locale.fields.description.placeholder}
+                    name="description"
+                    id="description"
+                    onChange={this.formStateHandler}
+                    style={{ minHeight: "100px" }}
+                    error={this.state.form.fields.description.error}
                   />
                 </CardBody>
               </section>

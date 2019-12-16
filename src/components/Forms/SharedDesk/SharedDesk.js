@@ -15,7 +15,8 @@ import {
   FlatInput,
   FlatUploader,
   FlatNumberSet,
-  FlatInlineSelect
+  FlatInlineSelect,
+  FlatTextArea
 } from "../../FlatForm/FlatForm";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
 import Validator from "../../Validator/Validator";
@@ -83,6 +84,11 @@ class SharedDesk extends React.PureComponent {
             value: "5d35e8288e6e9a0017c28fcf",
             error: "",
             isValid: false
+          },
+          description: {
+            value: "",
+            error: "",
+            isValid: true
           }
         },
         backgroundData: {
@@ -254,9 +260,9 @@ class SharedDesk extends React.PureComponent {
           }
         });
 
-        _formObjectGoingToSubmit["name"] = `${
-          locale.email_subject[0]
-        } ${seats} ${locale.email_subject[1]} ${cityname}`;
+        _formObjectGoingToSubmit[
+          "name"
+        ] = `${locale.email_subject[0]} ${seats} ${locale.email_subject[1]} ${cityname}`;
         _formObjectGoingToSubmit = {
           ..._formObjectGoingToSubmit,
           ..._backgroundData
@@ -587,6 +593,16 @@ class SharedDesk extends React.PureComponent {
                     progresscolor="lightblue"
                     onChange={this.uploadFile}
                     error={this.state.form.fields.resume.error}
+                  />
+                  <FlatTextArea
+                    label={locale.fields.description._title}
+                    type="text"
+                    placeholder={locale.fields.description.placeholder}
+                    name="description"
+                    id="description"
+                    style={{ minHeight: "100px" }}
+                    onChange={this.formStateHandler}
+                    error={this.state.form.fields.description.error}
                   />
                 </CardBody>
               </section>

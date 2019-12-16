@@ -36,6 +36,14 @@
         "error": "Cannot choosing a file right now, please try later",
         "buttonValue": "Choose"
       },
+      "description": {
+        "_title": "Description",
+        "placeholder": "If you have any comment write below"
+      },
+      "district": {
+        "_title": "district",
+        "error": "Select a district is mandatory"
+      },
       "seats": {
         "_title": "Number of sears",
         "placeholder": "Number of seats"

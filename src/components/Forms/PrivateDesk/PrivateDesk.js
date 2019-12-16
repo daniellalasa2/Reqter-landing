@@ -15,7 +15,8 @@ import {
   FlatInput,
   FlatUploader,
   FlatNumberSet,
-  FlatInlineSelect
+  FlatInlineSelect,
+  FlatTextArea
 } from "../../FlatForm/FlatForm";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
 import Validator from "../../Validator/Validator";
@@ -83,6 +84,11 @@ class PrivateDesk extends React.PureComponent {
             value: "5d35e8288e6e9a0017c28fcf",
             error: "",
             isValid: false
+          },
+          description: {
+            value: "",
+            error: "",
+            isValid: true
           }
         },
         backgroundData: {
@@ -586,6 +592,16 @@ class PrivateDesk extends React.PureComponent {
                     error={this.state.form.fields.resume.error}
                   />
                 </CardBody>
+                <FlatTextArea
+                  label={locale.fields.description._title}
+                  type="text"
+                  placeholder={locale.fields.description.placeholder}
+                  name="description"
+                  id="description"
+                  onChange={this.formStateHandler}
+                  style={{ minHeight: "100px" }}
+                  error={this.state.form.fields.description.error}
+                />
               </section>
               <CardFooter>
                 <Button

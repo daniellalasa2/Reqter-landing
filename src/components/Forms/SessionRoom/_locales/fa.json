@@ -25,6 +25,14 @@
       "equipments": {
         "_title": "تجهیزات مورد نیاز"
       },
+      "description": {
+        "_title": "توضیحات",
+        "placeholder": "اگر توضیح خاصی دارید بنویسید"
+      },
+      "district": {
+        "_title": "محله",
+        "error": "انتخاب محله اجباری است"
+      },
       "phonenumber": {
         "_title": "شماره تماس",
         "placeholder": "9123456789"
