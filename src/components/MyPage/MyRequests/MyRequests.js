@@ -32,11 +32,7 @@ export default class MyRequests extends Component {
       requestsList: []
     };
     this.offerStage = {
-      approved: [
-        "5d6b5dd25b60dc0017c9511c",
-        "5d7e582415586f0017d4836c",
-        "5d7e585915586f0017d4836d"
-      ]
+      approved: ["5d7e582415586f0017d4836c", "5d7e585915586f0017d4836d"]
     };
     this.updateRequestList();
   }

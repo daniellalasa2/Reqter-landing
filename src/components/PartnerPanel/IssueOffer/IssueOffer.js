@@ -13,7 +13,7 @@ import {
   PartnerpanelIssueOffer,
   DownloadAsset
 } from "../../ApiHandlers/ApiHandler";
-import { addCommas } from "../../PersianNumber/PersianNumber";
+import PersianNumber, { addCommas } from "../../PersianNumber/PersianNumber";
 import NoImageAlt from "../../../assets/images/alternatives/noimage.png";
 import classnames from "classnames";
 import NumberFormat from "react-number-format";
@@ -330,11 +330,12 @@ export default class IssueOffer extends React.Component {
     });
   };
   thousandSeprator = (number, reverseOperation) => {
+    // Remove the number commas
     number = number
       .toString()
       .split(",")
       .join("");
-    if (!reverseOperation) return addCommas(number);
+    if (!reverseOperation) return PersianNumber(addCommas(number), this.lang);
     else return number;
   };
   render() {

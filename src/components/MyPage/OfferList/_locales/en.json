@@ -27,6 +27,7 @@
         "monthly": "Monthly price",
         "weekly": "Weekly price"
       },
+      "startdate": "Start date",
       "currency": { "name": "Toman" },
       "submission_date": "Submission date",
       "partner_comment": {

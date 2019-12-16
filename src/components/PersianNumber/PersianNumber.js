@@ -9,6 +9,23 @@ const PersianNumber = (num, locale) => {
   }
 };
 function addCommas(nStr) {
+  const persianArr = {
+    "۰": "0",
+    "۱": "1",
+    "۲": "2",
+    "۳": "3",
+    "۴": "4",
+    "۵": "5",
+    "۶": "6",
+    "۷": "7",
+    "۸": "8",
+    "۹": "9"
+  };
+  let convertedString = "";
+  for (let i = 0; i < nStr.length; i++) {
+    convertedString += persianArr[nStr[i]];
+  }
+  nStr = convertedString;
   nStr += "";
   var x = nStr.split(".");
   var x1 = x[0];

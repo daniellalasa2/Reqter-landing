@@ -260,7 +260,7 @@ export default class MyRequests extends Component {
                       item,
                       `fields.city.fields.name.${lang}`,
                       "string",
-                      "",
+                      locale.error.not_specified,
                       "fields.city.fields.name"
                     )}
                   </strong>
@@ -334,8 +334,24 @@ export default class MyRequests extends Component {
                     </strong>
                   </li>
                 )}
+                {SafeValue(item, "fields.startdate", "string", false) && (
+                  <li>
+                    {locale.fields.startdate}:
+                    <br />
+                    <strong>
+                      {PersianNumber(item.fields.startdate, lang, lang)}
+                    </strong>
+                  </li>
+                )}
                 {item.fields.description && (
-                  <li style={{ display: "contents" }}>
+                  <li
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      flex: "1 1 100%",
+                      maxWidth: "100%"
+                    }}
+                  >
                     {locale.fields.partner_comment._title}:
                     <br />
                     <strong>

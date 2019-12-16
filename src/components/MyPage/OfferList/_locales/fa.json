@@ -33,6 +33,7 @@
         "_title": "توضیح همکار درباره درخواست",
         "not_specified": "توضیح خاصی وجود ندارد"
       },
+      "startdate": "تاریخ شروع",
       "stage_buttons": {
         "approve": "قبول",
         "deny": "رد"
