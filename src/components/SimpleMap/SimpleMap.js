@@ -51,7 +51,19 @@ export default class MapWithMarker extends React.Component {
       );
     }
   };
+  componentDidMount() {
+    const map = this.refs.map.leafletElement;
+    // console.log("map", map);
 
+    // map.load("load", () => {
+    //   console.log("loaded");
+    // });
+    map.whenReady(() => {
+      setInterval(() => {
+        map.invalidateSize();
+      }, 0);
+    });
+  }
   render() {
     const position = [this.state.center.lat, this.state.center.lng];
     const markerPosition = [this.state.marker.lat, this.state.marker.lng];
@@ -60,8 +72,10 @@ export default class MapWithMarker extends React.Component {
         center={position}
         zoom={this.state.zoom}
         style={this.mapContainerStyle}
+        ref="map"
+        {...this.props}
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
         <Marker
           draggable={this.state.draggable}
           onDragend={this.updatePosition}

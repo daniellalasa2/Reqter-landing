@@ -104,8 +104,16 @@
         }
       }
       & #map {
+        margin: 15px;
+        width: 100%;
+      }
+      & .mapWithMarker {
         width: 100%;
         margin: 15px;
+        min-width: 770px;
+        height: 450px;
+        width: 100%;
+        margin: 0 auto;
       }
     }
   }
@@ -129,6 +137,19 @@
       & .offers-table {
         & td {
           text-align: right;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .partner-profile-section {
+    & .form-card {
+      & .card-body {
+        & .mapWithMarker {
+          min-width: 100% !important;
+
+          height: 300px;
         }
       }
     }

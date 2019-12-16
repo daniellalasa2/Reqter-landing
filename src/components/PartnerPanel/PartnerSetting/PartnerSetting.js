@@ -1029,11 +1029,7 @@ export default class PartnerPanel extends React.Component {
                       <MapWithMarker
                         center={fields.location.value}
                         defaultCenter={{ lat: 32.4279, lng: 53.688 }}
-                        containerStyle={{
-                          height: "450px",
-                          width: "100%",
-                          margin: "0 auto"
-                        }}
+                        className="mapWithMarker"
                         defaultMarkerPosition={{ lat: 32.4279, lng: 53.688 }}
                         zoom={13}
                         markerPosition={fields.location.value}
@@ -1130,7 +1126,11 @@ export default class PartnerPanel extends React.Component {
                   suspense={form.isSubmitting}
                   color="success"
                   onClick={this.submitForm}
-                  style={{ minWidth: "120px", float: "left" }}
+                  style={{
+                    minWidth: "120px",
+                    float: "left",
+                    marginLeft: "14px"
+                  }}
                 >
                   {locale.fields.submit_changes}
                 </FlatButton>
