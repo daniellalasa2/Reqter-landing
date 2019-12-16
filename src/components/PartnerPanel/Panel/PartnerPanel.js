@@ -188,12 +188,12 @@ export default class PartnerPanel extends React.Component {
   rejectRequest = (requestid, theListTypeThatIsGoingToUpdate, callback) => {
     // console.log("form", form);
     // const APIData = form.searialize();
-    var name = document.getElementById("reject_reason_selectbox").value;
+    var reasonid = document.getElementById("reject_reason_selectbox").value;
     var description = document.getElementById("reject_reason_description")
       .value;
     var data = {
-      name: name,
-      description: description
+      rejectreason: reasonid,
+      rejectdesc: description
     };
     PartnerpanelRejectRequest(requestid, data, res => {
       if (res.success_result.success) {
