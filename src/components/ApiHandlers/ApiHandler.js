@@ -799,7 +799,7 @@ var GetPartnerAllOffers = (partnerId, callback) => {
       });
   });
 };
-var PartnerpanelRejectRequest = (id, callback) => {
+var PartnerpanelRejectRequest = (id, data, callback) => {
   Config.Auth().then(token => {
     axios({
       url: _api.PartnerpanelRejectRequest + id,
@@ -810,6 +810,7 @@ var PartnerpanelRejectRequest = (id, callback) => {
       },
       data: {
         fields: {
+          ...data,
           stage: "closed"
         }
       }

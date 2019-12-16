@@ -75,7 +75,10 @@ export default class PartnerPanel extends React.Component {
         issueOffer: { openStatus: false, data: {} }
       },
       combo: {
-        partnerpanel_reject_reasonlist: []
+        partnerpanel_reject_reasonlist: {
+          items: [],
+          selectedReasonDesc: ""
+        }
       }
     };
   }
@@ -183,9 +186,16 @@ export default class PartnerPanel extends React.Component {
     });
   };
   rejectRequest = (requestid, theListTypeThatIsGoingToUpdate, callback) => {
-    const form = document.getElementById("reject_reason_form");
-    console.log("form", form);
-    PartnerpanelRejectRequest(requestid, res => {
+    // console.log("form", form);
+    // const APIData = form.searialize();
+    var name = document.getElementById("reject_reason_selectbox").value;
+    var description = document.getElementById("reject_reason_description")
+      .value;
+    var data = {
+      name: name,
+      description: description
+    };
+    PartnerpanelRejectRequest(requestid, data, res => {
       if (res.success_result.success) {
         this.filterRequestsOrOffers(
           "request",
@@ -228,11 +238,11 @@ export default class PartnerPanel extends React.Component {
     };
     FilterContents(name, res => {
       const arr = [];
-      SafeValue(res, "data", "object", []).map((val, key) => {
+      SafeValue(res, "data", "object", []).forEach((val, key) => {
         arr.push({
           title: SafeValue(val, `fields.name.${lang}`, "string", null, "name"),
           value: val._id,
-          description: SafeValue(val, "description", "string", null),
+          description: SafeValue(val, "fields.description", "string", null),
           defaultChecked: _defaultChecked(defaultChecked, val._id)
         });
         return null;
@@ -240,7 +250,7 @@ export default class PartnerPanel extends React.Component {
       this.setState({
         combo: {
           ...this.state.combo,
-          [name]: arr
+          [name]: { ...this.state.combo[name], items: arr }
         }
       });
     });
@@ -1253,25 +1263,22 @@ export default class PartnerPanel extends React.Component {
                       id="reject_reason_selectbox"
                       name="name"
                       onChange={val => {
-                        console.log("val", val);
-                        // const reason = this.state.combo.partnerpanel_reject_reasonlist.filter(
-                        //   item => item._id === val && val
-                        // );
-                        // this.setState({
-                        //   combo: {
-                        //     ...this.state.combo,
-                        //     partnerpanel_reject_reasonlist: {
-                        //       ...this.state.combo
-                        //         .partnerpanel_reject_reasonlist,
-                        //       selectedReasonDesc: reason.description
-                        //     }
-                        //   }
-                        // });
+                        const reason = SafeValue(
+                          this.state,
+                          "combo.partnerpanel_reject_reasonlist.items",
+                          "object",
+                          []
+                        ).filter(
+                          item => item.value === val.target.value && item
+                        );
+                        document.getElementById(
+                          "reject_reason_description"
+                        ).value = reason[0].description;
                       }}
                     >
                       {SafeValue(
                         this.state,
-                        "combo.partnerpanel_reject_reasonlist",
+                        "combo.partnerpanel_reject_reasonlist.items",
                         "object",
                         []
                       ).map(reason => (
@@ -1283,10 +1290,12 @@ export default class PartnerPanel extends React.Component {
                     <br />
                     <FlatTextArea
                       name="description"
-                      defaultValue={
-                        this.state.combo.partnerpanel_reject_reasonlist
-                          .selectedReasonDesc
-                      }
+                      defaultValue={SafeValue(
+                        this.state,
+                        "combo.partnerpanel_reject_reasonlist.items.0.description",
+                        "string",
+                        null
+                      )}
                       id="reject_reason_description"
                       style={{ minHeight: "150px" }}
                     />

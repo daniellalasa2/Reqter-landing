@@ -368,12 +368,12 @@ const FlatTextArea = ({
 }) => {
   return (
     <div
-      id={id}
       className={classnames("field-row", direction && `_${direction}`)}
       style={wrapperStyle}
     >
       <span className="field-title">{label}</span>
       <textarea
+        id={id}
         placeholder={placeholder}
         onClick={onClick}
         onChange={onChange}
