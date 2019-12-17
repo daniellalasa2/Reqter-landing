@@ -1,7 +1,7 @@
 {
   "direction": "rtl",
   "locale": {
-    "login_modal_title": "ورود",
+    "login_modal_title": "ورود به پنل کاربر",
     "language": "زبان",
     "logout": "خروج",
     "buisness_partnership": "ثبت فضای کار",
@@ -10,7 +10,7 @@
     "home": "خانه",
     "myrequests": "صفحه من",
     "partnership": "همکاری",
-    "login": "ورود",
+    "login": "ورود به پنل کاربر",
     "partner_panel": "پنل همکار",
     "partnerpanel_manage_requests": "مدیریت درخواستها",
     "partnerpanel_myproducts": "محصولات من",

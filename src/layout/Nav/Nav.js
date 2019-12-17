@@ -189,49 +189,52 @@ class Navigation extends Component {
                   </NavItem>
                 )}
               {/* Partner panel's menu items */}
-              {this.props.match.path.startsWith("/:lang?/partnerpanel/") && (
-                <React.Fragment>
-                  <NavItem>
-                    <Link
-                      to={`/${lang}/partnerpanel/products`}
-                      className="nav-link"
-                    >
-                      <FontAwesomeIcon
-                        icon={faBoxOpen}
-                        pull={direction === "ltr" ? "left" : "right"}
-                        color="black"
-                      />
-                      {locale.partnerpanel_myproducts}
-                    </Link>
-                  </NavItem>
-                  <NavItem>
-                    <Link
-                      to={`/${lang}/partnerpanel/setting`}
-                      className="nav-link"
-                    >
-                      <FontAwesomeIcon
-                        icon={faUserAlt}
-                        pull={direction === "ltr" ? "left" : "right"}
-                        color="black"
-                      />
-                      {locale.partnerpanel_myprofile}
-                    </Link>
-                  </NavItem>
-                  <NavItem>
-                    <Link
-                      to={`/${lang}/partnerpanel/panel`}
-                      className="nav-link"
-                    >
-                      <FontAwesomeIcon
-                        icon={faEnvelopeOpenText}
-                        pull={direction === "ltr" ? "left" : "right"}
-                        color="black"
-                      />
-                      {locale.partnerpanel_manage_requests}
-                    </Link>
-                  </NavItem>
-                </React.Fragment>
-              )}
+              {this.props.match.path.startsWith("/:lang?/partnerpanel/") &&
+                !this.props.match.path.startsWith(
+                  "/:lang?/partnerpanel/login"
+                ) && (
+                  <React.Fragment>
+                    <NavItem>
+                      <Link
+                        to={`/${lang}/partnerpanel/products`}
+                        className="nav-link"
+                      >
+                        <FontAwesomeIcon
+                          icon={faBoxOpen}
+                          pull={direction === "ltr" ? "left" : "right"}
+                          color="black"
+                        />
+                        {locale.partnerpanel_myproducts}
+                      </Link>
+                    </NavItem>
+                    <NavItem>
+                      <Link
+                        to={`/${lang}/partnerpanel/setting`}
+                        className="nav-link"
+                      >
+                        <FontAwesomeIcon
+                          icon={faUserAlt}
+                          pull={direction === "ltr" ? "left" : "right"}
+                          color="black"
+                        />
+                        {locale.partnerpanel_myprofile}
+                      </Link>
+                    </NavItem>
+                    <NavItem>
+                      <Link
+                        to={`/${lang}/partnerpanel/panel`}
+                        className="nav-link"
+                      >
+                        <FontAwesomeIcon
+                          icon={faEnvelopeOpenText}
+                          pull={direction === "ltr" ? "left" : "right"}
+                          color="black"
+                        />
+                        {locale.partnerpanel_manage_requests}
+                      </Link>
+                    </NavItem>
+                  </React.Fragment>
+                )}
               {!this.props.match.path.startsWith("/:lang?/partnerpanel/") && (
                 <React.Fragment>
                   <NavItem>
@@ -397,7 +400,7 @@ class Navigation extends Component {
                   {locale.home}
                 </span>
               </li> */}
-              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
+              {!this.props.match.path.startsWith("/:lang?/partnerpanel") && (
                 <li>
                   {ROLE === "user" ? (
                     <span
@@ -460,7 +463,7 @@ class Navigation extends Component {
                 </Collapse>
               </li>
 
-              {this.props.match.path !== "/:lang?/partnerpanel/panel" && (
+              {!this.props.match.path.startsWith("/:lang?/partnerpanel") && (
                 <React.Fragment>
                   <li>
                     <Link className="nav-link" to={`/${lang}/partnership`}>
@@ -480,36 +483,37 @@ class Navigation extends Component {
                 </React.Fragment>
               )}
 
-              {this.props.match.path.startsWith(
-                "/:lang?/partnerpanel/panel"
-              ) && (
-                <React.Fragment>
-                  <li>
-                    <Link
-                      className="nav-link"
-                      to=""
-                      onClick={() =>
-                        this.props.history.push(
-                          `/${lang}/partnerpanel/panel/products`
-                        )
-                      }
-                    >
-                      {locale.partnerpanel_myproducts}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="nav-link"
-                      to=""
-                      onClick={() =>
-                        this.props.history.push(`/${lang}/partnerpanel/setting`)
-                      }
-                    >
-                      {locale.partnerpanel_myprofile}
-                    </Link>
-                  </li>
-                </React.Fragment>
-              )}
+              {this.props.match.path.startsWith("/:lang?/partnerpanel") &&
+                !this.props.match.path.startsWith(
+                  "/:lang?/partnerpanel/login"
+                ) && (
+                  <React.Fragment>
+                    <li>
+                      <Link
+                        className="nav-link"
+                        to={`/${lang}/partnerpanel/panel`}
+                      >
+                        {locale.partnerpanel_manage_requests}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="nav-link"
+                        to={`/${lang}/partnerpanel/products`}
+                      >
+                        {locale.partnerpanel_myproducts}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="nav-link"
+                        to={`/${lang}/partnerpanel/setting`}
+                      >
+                        {locale.partnerpanel_myprofile}
+                      </Link>
+                    </li>
+                  </React.Fragment>
+                )}
               <li>
                 <Link className="nav-link" to={`/${lang}/contactus`}>
                   {locale.contact_us}

@@ -209,19 +209,20 @@ class Main extends Component {
                       </React.Fragment>
                     ) : (
                       <React.Fragment>
-                        {this.state.userAuth === "partner" && (
-                          <Redirect
-                            from="/:lang?/partnerpanel/login"
-                            to="/:lang?/partnerpanel/panel"
-                          />
+                        {this.state.userAuth.ROLE === "partner" &&
+                          route.path.startsWith(
+                            "/:lang?/partnerpanel/login"
+                          ) && <Redirect to="/:lang?/partnerpanel/panel" />}
+                        {route.path.startsWith("/:lang?/partnerpanel") ? (
+                          this.state.userAuth.ROLE !== "partner" && (
+                            <Redirect
+                              to={`/${this.defaultLang}/partnerpanel/login`}
+                            />
+                          )
+                        ) : (
+                          <Redirect to={`/${this.defaultLang}`} />
                         )}
-                        {this.state.userAuth !== "partner" && (
-                          <Redirect
-                            from="/:lang?/partnerpanel/panel"
-                            to="/:lang?/partnerpanel/login"
-                          />
-                        )}
-                        <Redirect to={`/${this.defaultLang}`} />
+                        {/* <Redirect to={`/${this.defaultLang}`} /> */}
                       </React.Fragment>
                     )
                   }
