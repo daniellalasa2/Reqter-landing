@@ -361,7 +361,7 @@ export default class PartnerProducts extends React.Component {
                 </Button>
               </CardHeader>
               <CardBody>
-                <Table bordered hover>
+                <Table bordered hover responsive>
                   <thead>
                     <tr>
                       <th>عکس محصول</th>
