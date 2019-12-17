@@ -23,7 +23,12 @@ function addCommas(nStr) {
   };
   let convertedString = "";
   for (let i = 0; i < nStr.length; i++) {
-    convertedString += persianArr[nStr[i]];
+    if (persianArr[nStr[i]]) {
+      convertedString += persianArr[nStr[i]];
+    } else {
+      convertedString = nStr;
+      break;
+    }
   }
   nStr = convertedString;
   nStr += "";
