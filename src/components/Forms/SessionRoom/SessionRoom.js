@@ -119,7 +119,7 @@ class SessionRoom extends React.PureComponent {
       phonenumber: ["required", "phonenumber"],
       city: ["required"],
       seats: ["required", "number"],
-      email: ["email"],
+      email: ["required", "email"],
       startdate: ["date"],
       enddate: ["date"]
     };

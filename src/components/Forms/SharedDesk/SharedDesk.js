@@ -116,7 +116,7 @@ class SharedDesk extends React.PureComponent {
       phonenumber: ["required", "phonenumber"],
       city: ["required"],
       seats: ["required", "number"],
-      email: ["email"],
+      email: ["required", "email"],
       workingfield: ["required"],
       resume: ["upload"]
     };

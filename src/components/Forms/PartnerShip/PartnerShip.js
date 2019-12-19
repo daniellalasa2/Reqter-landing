@@ -99,7 +99,7 @@ class PartnerShip extends React.PureComponent {
       collaborationtypes: ["required"],
       workingfields: ["required"],
       phonenumber: ["required", "phonenumber"],
-      email: ["email"],
+      email: ["required", "email"],
       homepage: ["url"]
     };
   }
