@@ -89,14 +89,13 @@ var errorHandler = statusCode => {
 
 var DownloadAsset = fileUrl => {
   if (fileUrl && fileUrl.length > 0) {
-    if (fileUrl.indexOf(Config.URLs.download) > -1) {
-      return fileUrl;
+    if (fileUrl.startsWith("http")) {
+      fileUrl = _api.Download + fileUrl.slice(fileUrl.lastIndexOf("/") + 1);
     } else {
-      return _api.Download + fileUrl;
+      fileUrl = _api.Download + fileUrl;
     }
-  } else {
-    return fileUrl;
   }
+  return fileUrl;
 };
 var UploadAsset = fileUrl => {
   return _api.Upload + fileUrl;
