@@ -613,7 +613,7 @@ export default class PartnerProfile extends React.Component {
               <FontAwesomeIcon icon={faHeart} size="lg" color="dimgrey" />
               {locale.facilities}
             </div>
-            {SafeValue(amenities, this.lang, "string", false, " ") ? (
+            {SafeValue(amenities, this.lang, "object", false, " ") ? (
               <div className="facilities-detail">
                 <ul>{amenities}</ul>
               </div>
