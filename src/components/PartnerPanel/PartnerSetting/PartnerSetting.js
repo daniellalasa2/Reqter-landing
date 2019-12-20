@@ -1074,7 +1074,7 @@ export default class PartnerPanel extends React.Component {
                           ),
                           lng: SafeValue(
                             fields,
-                            "location.value.langitude",
+                            "location.value.longitude",
                             "number",
                             53.688
                           )
@@ -1092,7 +1092,7 @@ export default class PartnerPanel extends React.Component {
                           ),
                           lng: SafeValue(
                             fields,
-                            "location.value.langitude",
+                            "location.value.longitude",
                             "number",
                             53.688
                           )
@@ -1190,7 +1190,6 @@ export default class PartnerPanel extends React.Component {
                 </section>
               </CardBody>
               <CardFooter>
-                {console.log("is submitting:", form.isSubmitting)}
                 <FlatButton
                   disabled={!didDataChange}
                   suspense={form.isSubmitting}

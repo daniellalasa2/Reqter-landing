@@ -634,36 +634,56 @@ export default class PartnerProfile extends React.Component {
             </div>
             <div className="map">
               <BrowserView>
-                {SafeValue(location, "latitude", "number", false) &&
-                SafeValue(location, "longitude", "number", false) ? (
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${SafeValue(
-                      location,
-                      "latitude",
-                      "number",
-                      0
-                    )},${SafeValue(location, "longitude", "number", 0)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=16`}
-                      alt="partner static map"
-                      className="map-img"
-                      style={{ width: "100%" }}
-                    />
-                  </a>
-                ) : (
-                  <img
-                    src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&center=32.4279,53.6880&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=5`}
-                    alt="partner static map"
-                    className="map-img"
-                    style={{ width: "100%" }}
-                  />
-                )}
+                <MapWithMarker
+                  center={{
+                    lat: SafeValue(location, "latitude", "number", 32.4279),
+                    lng: SafeValue(location, "longitude", "number", 53.688)
+                  }}
+                  defaultCenter={{ lat: 32.4279, lng: 53.688 }}
+                  className="mapWithMarker"
+                  defaultMarkerPosition={{ lat: 32.4279, lng: 53.688 }}
+                  zoom={13}
+                  markerPosition={{
+                    lat: SafeValue(location, "latitude", "number", 32.4279),
+                    lng: SafeValue(location, "longitude", "number", 53.688)
+                  }}
+                  draggable={false}
+                  static={true}
+                  // locationName={this.state.form.fields.name.value}
+                />
+                {/* {SafeValue(location, "latitude", "number", false) &&
+                  SafeValue(location, "longitude", "number", false) && (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${SafeValue(
+                        location,
+                        "latitude",
+                        "number",
+                        0
+                      )},${SafeValue(location, "longitude", "number", 0)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    ></a>
+                  )} */}
               </BrowserView>
               <MobileView>
-                {SafeValue(location, "latitude", "number", false) &&
+                <MapWithMarker
+                  center={{
+                    lat: SafeValue(location, "latitude", "number", 32.4279),
+                    lng: SafeValue(location, "longitude", "number", 53.688)
+                  }}
+                  defaultCenter={{ lat: 32.4279, lng: 53.688 }}
+                  className="mapWithMarker"
+                  defaultMarkerPosition={{ lat: 32.4279, lng: 53.688 }}
+                  zoom={13}
+                  markerPosition={{
+                    lat: SafeValue(location, "latitude", "number", 32.4279),
+                    lng: SafeValue(location, "longitude", "number", 53.688)
+                  }}
+                  draggable={false}
+                  static={true}
+                  // locationName={this.state.form.fields.name.value}
+                />
+                {/* {SafeValue(location, "latitude", "number", false) &&
                 SafeValue(location, "longitude", "number", false) ? (
                   <a
                     href={`geo:${SafeValue(
@@ -675,21 +695,8 @@ export default class PartnerProfile extends React.Component {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=16`}
-                      alt="partner static map"
-                      className="map-img"
-                      style={{ width: "100%", borderRadius: "8px" }}
-                    />
-                  </a>
-                ) : (
-                  <img
-                    src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&center=32.4279,53.6880&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=5`}
-                    alt="partner static map"
-                    className="map-img"
-                    style={{ width: "100%", borderRadius: "8px" }}
-                  />
-                )}
+                    مسیریابی
+                   <a/>)} */}
               </MobileView>
             </div>
           </div>
