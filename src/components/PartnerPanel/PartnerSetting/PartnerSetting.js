@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "reactstrap";
+import { Link } from "react-router-dom";
 import {
   SafeValue,
   GetPartnerInfo,
@@ -859,6 +860,21 @@ export default class PartnerPanel extends React.Component {
                       error={fields.twitter.error}
                     />
                     <FlatInput
+                      label={locale.fields.instagram}
+                      type="text"
+                      direction={locale.direction}
+                      name="instagram"
+                      id="instagram"
+                      onChange={this.formStateHandler}
+                      defaultValue={SafeValue(
+                        form,
+                        "fields.instagram.value",
+                        "string",
+                        null
+                      )}
+                      error={fields.instagram.error}
+                    />
+                    <FlatInput
                       label={locale.fields.capacity}
                       type="number"
                       direction={locale.direction}
@@ -888,7 +904,29 @@ export default class PartnerPanel extends React.Component {
                         null
                       )}
                       error={fields.partnerkey.error}
-                    />
+                    >
+                      {SafeValue(
+                        form,
+                        "fields.partnerkey.value",
+                        "string",
+                        false
+                      ) && (
+                        <Link
+                          to={`/${this.lang}/p/${form.fields.partnerkey.value}`}
+                          target="_blank"
+                          style={{
+                            float: "right",
+                            display: "inline-block",
+                            textAlign: "right",
+                            fontSize: "14px",
+                            marginTop: "0px",
+                            width: "100%"
+                          }}
+                        >
+                          {locale.fields.visit_profile}
+                        </Link>
+                      )}
+                    </FlatInput>
                     <br />
                     <div className="field-row" style={{ width: "100%" }}>
                       <span className="field-title">

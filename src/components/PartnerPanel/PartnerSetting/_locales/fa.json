@@ -45,7 +45,8 @@
       "workinghours_value": "ساعات کار",
       "remove": "حذف",
       "duplication_keys_error": "روز(عنوان) تکراری است",
-      "empty_key": "روز(عنوان) نباید خالی باشد"
+      "empty_key": "روز(عنوان) نباید خالی باشد",
+      "visit_profile": "مشاهده پروفایل"
     }
   }
 }

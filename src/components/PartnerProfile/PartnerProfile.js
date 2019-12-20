@@ -19,6 +19,11 @@ import {
   faMapPin
 } from "@fortawesome/free-solid-svg-icons";
 import {
+  faTwitter,
+  faInstagram,
+  faLinkedinIn
+} from "@fortawesome/free-brands-svg-icons";
+import {
   SafeValue,
   GetPartnerInfo,
   GetPartnerProducts,
@@ -26,7 +31,6 @@ import {
   DownloadAsset
 } from "../ApiHandlers/ApiHandler";
 import PersianNumber, { addCommas } from "../PersianNumber/PersianNumber";
-// import SimpleMap from "../SimpleMap/SimpleMap";
 import ContextApi from "../ContextApi/ContextApi";
 import classnames from "classnames";
 import PageSuspense from "../PageSuspense";
@@ -391,7 +395,10 @@ export default class PartnerProfile extends React.Component {
       locationpic,
       location,
       workinghours,
-      amenities
+      amenities,
+      linkedin,
+      twitter,
+      instagram
     } = this.state.partnerInfo;
     const { locale, direction } = this.translate;
     if (pageLoaded) {
@@ -446,6 +453,47 @@ export default class PartnerProfile extends React.Component {
                 {SafeValue(address, this.lang, "string", false, " ")}
               </div>
             )}
+            <br />
+            <div className="social-networks">
+              {instagram && (
+                <a
+                  href={instagram}
+                  className="instagram"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <FontAwesomeIcon
+                    icon={faInstagram}
+                    color="dimgray"
+                    size="2x"
+                  />
+                </a>
+              )}
+              {linkedin && (
+                <a
+                  href={linkedin}
+                  className="linkedin"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <FontAwesomeIcon
+                    icon={faLinkedinIn}
+                    color="dimgray"
+                    size="2x"
+                  />
+                </a>
+              )}
+              {twitter && (
+                <a
+                  href={twitter}
+                  className="twitter"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <FontAwesomeIcon icon={faTwitter} color="dimgray" size="2x" />
+                </a>
+              )}
+            </div>
           </section>
           <section className="content-navigator" id="content-navigator">
             <div className="items-wrapper" id="items-wrapper">

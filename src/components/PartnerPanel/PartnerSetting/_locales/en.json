@@ -45,7 +45,8 @@
       "workinghours_value": "Description",
       "remove": "Remove",
       "duplication_keys_error": "Day(Title) duplication error.",
-      "empty_key": "The Day(title) cannot leave empty."
+      "empty_key": "The Day(title) cannot leave empty.",
+      "visit_profile": "Visit profile"
     }
   }
 }

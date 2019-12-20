@@ -158,6 +158,28 @@ $green: #58d37b;
       font-weight: bold;
       font-size: 16px;
     }
+
+    & .social-networks {
+      padding: auto 8px;
+      & a {
+        margin: auto 10px;
+        &.twitter:hover {
+          & svg {
+            color: #00acee;
+          }
+        }
+        &.linkedin:hover {
+          & svg {
+            color: #0077b5;
+          }
+        }
+        &.instagram:hover {
+          & svg {
+            color: #e1306c;
+          }
+        }
+      }
+    }
   }
 
   & .nav-section {
@@ -364,6 +386,7 @@ $green: #58d37b;
         padding: 25px 5vw;
       }
     }
+
     & .partner-address {
       & .map {
         height: 400px;

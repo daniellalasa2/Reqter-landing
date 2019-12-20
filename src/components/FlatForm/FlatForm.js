@@ -319,13 +319,14 @@ const FlatInput = ({
   direction,
   ...props
 }) => {
+  const propsClone = { ...props };
+  delete props.children;
   return (
     <div className={classnames("field-row", direction && `_${direction}`)}>
       {label && <span className="field-title">{label}</span>}
       <div className="input-wrapper" style={{ direction: "ltr" }}>
         {prefix && <span className="flatinput-prefix">{prefix}</span>}
         <input
-          {...props}
           type={type}
           placeholder={placeholder}
           onClick={onClick}
@@ -347,8 +348,10 @@ const FlatInput = ({
             error && "error-input",
             prefix && "has-prefix"
           )}
+          {...props}
         />
       </div>
+      {propsClone.children}
       <span className="error-message">{error}</span>
     </div>
   );
