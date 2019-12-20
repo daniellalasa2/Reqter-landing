@@ -586,20 +586,20 @@ export default class PartnerProfile extends React.Component {
             </div>
             <div className="map">
               <BrowserView>
-                {SafeValue(location, "lat", "number", false) &&
-                SafeValue(location, "lng", "number", false) ? (
+                {SafeValue(location, "latitude", "number", false) &&
+                SafeValue(location, "longitude", "number", false) ? (
                   <a
                     href={`https://www.google.com/maps/search/?api=1&query=${SafeValue(
                       location,
-                      "lat",
+                      "latitude",
                       "number",
                       0
-                    )},${SafeValue(location, "lng", "number", 0)}`}
+                    )},${SafeValue(location, "longitude", "number", 0)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7Clabel:L%7C${location.lat},${location.lng}&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=16`}
+                      src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=16`}
                       alt="partner static map"
                       className="map-img"
                       style={{ width: "100%" }}
@@ -615,20 +615,20 @@ export default class PartnerProfile extends React.Component {
                 )}
               </BrowserView>
               <MobileView>
-                {SafeValue(location, "lat", "number", false) &&
-                SafeValue(location, "lng", "number", false) ? (
+                {SafeValue(location, "latitude", "number", false) &&
+                SafeValue(location, "longitude", "number", false) ? (
                   <a
                     href={`geo:${SafeValue(
                       location,
-                      "lat",
+                      "latitude",
                       "number",
                       0
-                    )},${SafeValue(location, "lng", "number", 0)}`}
+                    )},${SafeValue(location, "longitude", "number", 0)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7Clabel:L%7C${location.lat},${location.lng}&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=16`}
+                      src={`https://maps.googleapis.com/maps/api/staticmap?size=640x300&maptype=roadmap&markers=size:mid%7Ccolor:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=AIzaSyDCh7hZWvhShGaFvu4URlqnpeXFFlyIZik&scale=2&format=JPG&zoom=16`}
                       alt="partner static map"
                       className="map-img"
                       style={{ width: "100%", borderRadius: "8px" }}

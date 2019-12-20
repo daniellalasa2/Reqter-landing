@@ -34,14 +34,14 @@ export default class MapWithMarker extends React.Component {
     };
     // $FlowFixMe: ref
     this.refmarker = React.createRef();
-    this.mapContainerStyle = props.containerStyle;
+    this.mapContainerStyle = SafeValue(props, "containerStyle", "object", {});
   }
   toggleDraggable = () => {
     this.setState({ draggable: !this.state.draggable });
   };
-
   updatePosition = () => {
     const marker = this.refmarker.current;
+
     if (marker != null) {
       this.setState(
         {
@@ -53,11 +53,6 @@ export default class MapWithMarker extends React.Component {
   };
   componentDidMount() {
     const map = this.refs.map.leafletElement;
-    // console.log("map", map);
-
-    // map.load("load", () => {
-    //   console.log("loaded");
-    // });
     map.whenReady(() => {
       setInterval(() => {
         map.invalidateSize();
@@ -67,14 +62,11 @@ export default class MapWithMarker extends React.Component {
   render() {
     const position = [this.state.center.lat, this.state.center.lng];
     const markerPosition = [this.state.marker.lat, this.state.marker.lng];
+    // const position = [50, 30];
+    // const markerPosition = [50, 30];
+
     return (
-      <Map
-        center={position}
-        zoom={this.state.zoom}
-        style={this.mapContainerStyle}
-        ref="map"
-        {...this.props}
-      >
+      <Map center={position} zoom={this.state.zoom} ref="map">
         <TileLayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png" />
         <Marker
           draggable={this.state.draggable}

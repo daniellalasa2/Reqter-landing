@@ -8,6 +8,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     window.NODE_ENV = process.env.NODE_ENV;
+    console.log(process.env.NODE_ENV);
     console.log("gate", process.env.REACT_APP_GATEWAY);
   }
   render() {

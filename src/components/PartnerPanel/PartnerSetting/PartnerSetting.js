@@ -1027,16 +1027,48 @@ export default class PartnerPanel extends React.Component {
                       </span>
                       <br />
                       <MapWithMarker
-                        center={fields.location.value}
+                        center={{
+                          lat: SafeValue(
+                            fields,
+                            "location.value.latitude",
+                            "number",
+                            32.4279
+                          ),
+                          lng: SafeValue(
+                            fields,
+                            "location.value.langitude",
+                            "number",
+                            53.688
+                          )
+                        }}
                         defaultCenter={{ lat: 32.4279, lng: 53.688 }}
                         className="mapWithMarker"
                         defaultMarkerPosition={{ lat: 32.4279, lng: 53.688 }}
                         zoom={13}
-                        markerPosition={fields.location.value}
+                        markerPosition={{
+                          lat: SafeValue(
+                            fields,
+                            "location.value.latitude",
+                            "number",
+                            32.4279
+                          ),
+                          lng: SafeValue(
+                            fields,
+                            "location.value.langitude",
+                            "number",
+                            53.688
+                          )
+                        }}
                         draggable={true}
                         onMarkerUpdate={position =>
                           this.formStateHandler({
-                            target: { name: "location", value: position }
+                            target: {
+                              name: "location",
+                              value: {
+                                latitude: position.lat,
+                                longitude: position.lng
+                              }
+                            }
                           })
                         }
                         static={false}
