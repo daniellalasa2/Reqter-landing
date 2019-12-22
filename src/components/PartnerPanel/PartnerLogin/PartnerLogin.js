@@ -2,8 +2,8 @@ import React from "react";
 import { Button, Card, CardHeader, CardBody, Alert } from "reactstrap";
 import { FlatInput } from "../../FlatForm/FlatForm";
 import {
-  LoginRequest,
-  VerifyCode,
+  PartnerLoginRequest,
+  PartnerVerifyCode,
   SafeValue,
   GetPartnerInfo
 } from "../../ApiHandlers/ApiHandler";
@@ -84,7 +84,7 @@ export default class Login extends React.Component {
     const _this = this;
     const { value, code } = this.state.form.fields.phoneNumber;
     const phonenumber = code + value;
-    LoginRequest(phonenumber, res => {
+    PartnerLoginRequest(phonenumber, res => {
       _this.PendingForm(false);
       if (res.data.success) {
         _this.setState({
@@ -169,7 +169,7 @@ export default class Login extends React.Component {
     const phonenumber = code + value;
     data["phoneNumber"] = phonenumber;
     data["code"] = this.state.form.fields.code.value;
-    VerifyCode(data, res => {
+    PartnerVerifyCode(data, res => {
       _this.PendingForm(false);
       if (res.data.success) {
         //set cookie then update program Cookie authentication

@@ -15,6 +15,8 @@ let _api = {
     Config.BASE_URL_REQTER + Config.URLs.filter_contents_get_fullquery,
   Login: Config.BASE_URL_REQTER + Config.URLs.login,
   VerifyCode: Config.BASE_URL_REQTER + Config.URLs.verify_code,
+  PartnerLogin: Config.BASE_URL_REQTER + Config.URLs.partner_login,
+  PartnerVerifyCode: Config.BASE_URL_REQTER + Config.URLs.partner_verify_code,
   GetRequestsList: Config.BASE_URL_REQTER + Config.URLs.all_requests,
   GetOfferList: Config.BASE_URL_REQTER + Config.URLs.all_offers,
   AcceptOffer: Config.BASE_URL_REQTER + Config.URLs.accept_offer,
@@ -597,6 +599,77 @@ var QueryContent = (contentTypesArr, callback) => {
   });
 };
 //Partner profile APIs
+var PartnerLoginRequest = (phoneNumber, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.PartnerLogin,
+      method: "POST",
+      headers: {
+        ..._api.header,
+        authorization: token,
+        clientid: Config.CLIENT_ID
+      },
+      data: {
+        phoneNumber: phoneNumber
+      }
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", {})
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+};
+
+var PartnerVerifyCode = (data, callback) => {
+  Config.Auth().then(token => {
+    axios({
+      url: _api.PartnerVerifyCode,
+      method: "POST",
+      headers: {
+        ..._api.header,
+        authorization: token,
+        clientid: Config.CLIENT_ID
+      },
+      data: data
+    })
+      .then(res => {
+        const result = errorHandler(SafeValue(res, "status", "number", null));
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          return callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+};
 var GetPartnerAllRequests = (partnerId, stage, callback) => {
   const params = {
     "fields.partnerid": partnerId,
@@ -1178,6 +1251,8 @@ export {
   AcceptOffer,
   RejectOffer,
   AddContent,
+  PartnerVerifyCode,
+  PartnerLoginRequest,
   GetPartnerInfo,
   GetPartnerProducts,
   PartnerpanelRejectRequest,

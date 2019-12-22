@@ -26,6 +26,8 @@ var Configuration = {
     download: "asset/download/",
     login: "api/v1/customers/requestcode",
     verify_code: "api/v1/customers/verifycode",
+    partner_login: "api/v1/partners/requestcode",
+    partner_verify_code: "api/v1/partners/verifycode",
     all_requests: "api/v1/requests/all",
     all_offers: "api/v1/requests/offers/all",
     get_initial_token: "api/v1/auth/token",
