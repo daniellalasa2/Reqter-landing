@@ -56,14 +56,12 @@ export default class MapWithMarker extends React.Component {
     map.whenReady(() => {
       setInterval(() => {
         map.invalidateSize();
-      }, 0);
+      }, 50);
     });
   }
   render() {
     const position = [this.state.center.lat, this.state.center.lng];
     const markerPosition = [this.state.marker.lat, this.state.marker.lng];
-    // const position = [50, 30];
-    // const markerPosition = [50, 30];
 
     return (
       <Map center={position} zoom={this.state.zoom} ref="map">
