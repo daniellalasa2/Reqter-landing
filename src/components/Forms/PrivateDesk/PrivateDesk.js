@@ -37,61 +37,62 @@ class PrivateDesk extends React.PureComponent {
         isValid: false,
         submitted: false,
         isSubmitting: false,
-        fields: {
-          fullname: {
-            value: "",
-            error: "",
-            isValid: false
-          },
-          birthyear: {
-            value: "",
-            error: "",
-            isValid: false
-          },
-          workingfield: {
-            value: "",
-            error: "",
-            isValid: false
-          },
-          phonenumber: {
-            code: "+98",
-            value: "",
-            error: "",
-            isValid: false
-          },
-          city: {
-            value: "",
-            error: "",
-            isValid: false
-          },
-          seats: {
-            value: "",
-            error: "",
-            isValid: false
-          },
-          email: {
-            value: "",
-            error: "",
-            isValid: false
-          },
-          resume: {
-            uploading: false,
-            uploadProgress: 0,
-            value: "",
-            error: "",
-            isValid: false
-          },
-          country: {
-            value: "5d35e8288e6e9a0017c28fcf",
-            error: "",
-            isValid: false
-          },
-          description: {
-            value: "",
-            error: "",
-            isValid: true
-          }
-        },
+        fields: {},
+        // fields: {
+        //   fullname: {
+        //     value: "",
+        //     error: "",
+        //     isValid: false
+        //   },
+        //   birthyear: {
+        //     value: "",
+        //     error: "",
+        //     isValid: false
+        //   },
+        //   workingfield: {
+        //     value: "",
+        //     error: "",
+        //     isValid: false
+        //   },
+        //   phonenumber: {
+        //     code: "+98",
+        //     value: "",
+        //     error: "",
+        //     isValid: false
+        //   },
+        //   city: {
+        //     value: "",
+        //     error: "",
+        //     isValid: false
+        //   },
+        //   seats: {
+        //     value: "",
+        //     error: "",
+        //     isValid: false
+        //   },
+        //   email: {
+        //     value: "",
+        //     error: "",
+        //     isValid: false
+        //   },
+        //   resume: {
+        //     uploading: false,
+        //     uploadProgress: 0,
+        //     value: "",
+        //     error: "",
+        //     isValid: false
+        //   },
+        //   country: {
+        //     value: "5d35e8288e6e9a0017c28fcf",
+        //     error: "",
+        //     isValid: false
+        //   },
+        //   description: {
+        //     value: "",
+        //     error: "",
+        //     isValid: true
+        //   }
+        // },
         backgroundData: {
           src: window.src,
           product: Config.PRODUCT_TYPE_ID.private_desk,
@@ -110,19 +111,64 @@ class PrivateDesk extends React.PureComponent {
         }
       }
     };
-    this.validationRules = {
-      fullname: ["required"],
-      birthyear: ["required", "birthyear_shamsi"],
-      educationfield: ["required"],
-      phonenumber: ["required", "phonenumber"],
-      city: ["required"],
-      seats: ["required", "number"],
-      email: ["required", "email"],
-      workingfield: ["required"],
-      resume: ["upload"]
-    };
-  }
+    this.stateFieldsGenerator = (form => {
+      const f = {};
+      for (let i = 0; i <= form.fields.length - 1; i++) {
+        const key = form.fields[i].name;
+        if (form.fields[i].inVisible) {
+        } else {
+          f[key] = {
+            value: "",
+            error: "",
+            isValid: true
+          };
+          if (form.fields[i].isRequired) {
+            f[key].isValid = false;
+          }
 
+          if (form.fields[i].type === "media") {
+            f[key] = {
+              ...f[key],
+              uploading: false,
+              uploadProgress: 0
+            };
+          }
+
+          if (
+            form.fields[i].type === "string" &&
+            form.fields[i].appearance.toLowerCase() === "phonenumber"
+          ) {
+            f[key] = {
+              ...f[key],
+              code: !this.availableCountryCodes && "+98"
+            };
+          }
+          if (key === "country") {
+            f[key] = {
+              ...f[key],
+              value: "5d35e8288e6e9a0017c28fcf"
+            };
+          }
+        }
+      }
+      return f;
+    })(formAPI);
+
+    this.validationRules = (form => {
+      const v = {};
+      for (let i = 0; i <= form.fields.length - 1; i++) {
+        const key = form.fields[i].name;
+        v[key] = [];
+        if (form.fields[i].isRequired) {
+          v[key].push("required");
+        }
+        if (form.fields[i].appearance === "default")
+          v[key].push(form.fields[i].type);
+        else v[key].push(form.fields[i].appearance);
+      }
+      return v;
+    })(formAPI);
+  }
   checkboxStateHandler = (name, data) => {
     let checkBoxValuesArr = [];
     if (data.length) {
