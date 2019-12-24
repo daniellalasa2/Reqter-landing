@@ -19,6 +19,7 @@ var Configuration = {
   SPACE_ID: process.env.REACT_APP_SPACE_ID || "5cf3883dcce4de00174d48cf",
   Auth: CheckAuthToken,
   URLs: {
+    get_contenttype_by_id:"ctypes/getbyid",
     submit_form: "api/v1/requests/submit",
     filter_contents: "api/v1/lists",
     filter_contents_get_fullquery: "api/v1/lists/get/fullquery",

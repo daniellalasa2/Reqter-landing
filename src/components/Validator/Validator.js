@@ -127,7 +127,8 @@ const Validator = (value, rules, locale = "fa", additional) => {
           }
           break;
         default:
-          throw new Error("Invalid validation rule");
+        
+          //throw new Error("Invalid validation rule");
       }
       if (!validationObj.valid) {
         switch (property) {

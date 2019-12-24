@@ -6,6 +6,7 @@ let _api = {
   header: {
     "Content-Type": "application/json"
   },
+  GetContentTypeById:Config.BASE_URL_CASEER + Config.URLs.get_contenttype_by_id,
   SubmitForm: Config.BASE_URL_REQTER + Config.URLs.submit_form,
   AddContent: Config.BASE_URL_CASEER + Config.URLs.add_content,
   Upload: Config.BASE_URL_UPLOAD + Config.URLs.upload,
@@ -88,7 +89,41 @@ var errorHandler = statusCode => {
   }
   return result;
 };
-
+var GetContentTypeById = (type,callback)=>{
+ Config.Auth().then(token => {
+    axios({
+      url: _api.GetContentTypeById,
+      method: "GET",
+      headers: {
+        ..._api.header,
+        authorization: token
+      },
+      params: {
+        id: type
+      }
+    })
+      .then(res => {
+        const result = errorHandler(res.status);
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: SafeValue(res, "data", "object", [])
+          });
+        }
+      })
+      .catch(err => {
+        const result = errorHandler(
+          SafeValue(err.response, "status", "number", 0)
+        );
+        if (typeof callback === "function") {
+          callback({
+            success_result: result,
+            data: []
+          });
+        }
+      });
+  });
+}
 var DownloadAsset = fileUrl => {
   if (fileUrl && fileUrl.length > 0) {
     if (fileUrl.startsWith("http")) {
@@ -141,9 +176,16 @@ var SubmitForm = (formName, data, callback) => {
 //                 2- list_of_countries
 //                 3- list_of_cities
 var FilterContents = (type, callback) => {
+  let _url = "";
+  //If regex match then type is a mongoId
+  if(new RegExp(/^[a-f\d]{24}$/).test(type)){
+    _url = _api.FilterContents + `/${type}`
+  }else{
+    _url = _api.FilterContents + `/${Config.CONTENT_TYPE_ID[type]}`
+  }
   Config.Auth().then(token => {
     axios({
-      url: _api.FilterContents + `/${Config.CONTENT_TYPE_ID[type]}`,
+      url: _url,
       method: "GET",
       headers: {
         ..._api.header,
@@ -1240,6 +1282,7 @@ var SafeValue = (data, index, type, defaultValue, alternativeIndex) => {
   }
 };
 export {
+  GetContentTypeById,
   SubmitForm,
   FilterContents,
   Upload,
