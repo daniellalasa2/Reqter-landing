@@ -636,16 +636,16 @@ export default class PartnerProfile extends React.Component {
               <BrowserView>
                 <MapWithMarker
                   center={{
-                    lat: SafeValue(location, "latitude", "number", 32.4279),
-                    lng: SafeValue(location, "longitude", "number", 53.688)
+                    lat: SafeValue(location, "latitude", "all", 32.4279),
+                    lng: SafeValue(location, "longitude", "all", 53.688)
                   }}
                   defaultCenter={{ lat: 32.4279, lng: 53.688 }}
                   className="mapWithMarker"
                   defaultMarkerPosition={{ lat: 32.4279, lng: 53.688 }}
                   zoom={13}
                   markerPosition={{
-                    lat: SafeValue(location, "latitude", "number", 32.4279),
-                    lng: SafeValue(location, "longitude", "number", 53.688)
+                    lat: SafeValue(location, "latitude", "all", 32.4279),
+                    lng: SafeValue(location, "longitude", "all", 53.688)
                   }}
                   draggable={false}
                   static={true}
@@ -668,16 +668,16 @@ export default class PartnerProfile extends React.Component {
               <MobileView>
                 <MapWithMarker
                   center={{
-                    lat: SafeValue(location, "latitude", "number", 32.4279),
-                    lng: SafeValue(location, "longitude", "number", 53.688)
+                    lat: SafeValue(location, "latitude", "all", 32.4279),
+                    lng: SafeValue(location, "longitude", "all", 53.688)
                   }}
                   defaultCenter={{ lat: 32.4279, lng: 53.688 }}
                   className="mapWithMarker"
                   defaultMarkerPosition={{ lat: 32.4279, lng: 53.688 }}
                   zoom={13}
                   markerPosition={{
-                    lat: SafeValue(location, "latitude", "number", 32.4279),
-                    lng: SafeValue(location, "longitude", "number", 53.688)
+                    lat: SafeValue(location, "latitude", "all", 32.4279),
+                    lng: SafeValue(location, "longitude", "all", 53.688)
                   }}
                   draggable={false}
                   static={true}

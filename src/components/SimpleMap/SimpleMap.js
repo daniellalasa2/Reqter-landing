@@ -51,19 +51,21 @@ export default class MapWithMarker extends React.Component {
       );
     }
   };
+
   componentDidMount() {
-    const map = this.refs.map.leafletElement;
-    map.whenReady(() => {
-      setInterval(() => {
-        map.invalidateSize();
-      }, 0);
+    this.map = this.refs.map.leafletElement;
+    this.map.whenReady(() => {
+      this.mapInterval = setInterval(() => {
+        this.map.invalidateSize();
+      }, 50);
     });
+  }
+  componentWillUnmount() {
+    clearInterval(this.mapInterval);
   }
   render() {
     const position = [this.state.center.lat, this.state.center.lng];
     const markerPosition = [this.state.marker.lat, this.state.marker.lng];
-    // const position = [50, 30];
-    // const markerPosition = [50, 30];
 
     return (
       <Map center={position} zoom={this.state.zoom} ref="map">

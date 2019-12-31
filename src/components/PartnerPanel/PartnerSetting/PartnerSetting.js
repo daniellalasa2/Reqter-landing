@@ -1069,13 +1069,13 @@ export default class PartnerPanel extends React.Component {
                           lat: SafeValue(
                             fields,
                             "location.value.latitude",
-                            "number",
+                            "all",
                             32.4279
                           ),
                           lng: SafeValue(
                             fields,
                             "location.value.longitude",
-                            "number",
+                            "all",
                             53.688
                           )
                         }}
@@ -1087,13 +1087,13 @@ export default class PartnerPanel extends React.Component {
                           lat: SafeValue(
                             fields,
                             "location.value.latitude",
-                            "number",
+                            "all",
                             32.4279
                           ),
                           lng: SafeValue(
                             fields,
                             "location.value.longitude",
-                            "number",
+                            "all",
                             53.688
                           )
                         }}
