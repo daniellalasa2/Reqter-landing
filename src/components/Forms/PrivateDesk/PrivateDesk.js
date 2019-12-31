@@ -5,8 +5,7 @@ import {
   SubmitForm,
   Upload,
   FilterContents,
-  SafeValue,
-  GetContentTypeById
+  SafeValue
 } from "../../ApiHandlers/ApiHandler";
 import Skeleton from "react-loading-skeleton";
 import SuccessSubmit from "../SubmitStatus/SuccessSubmit/SuccessSubmit";
@@ -24,7 +23,6 @@ import Validator from "../../Validator/Validator";
 import ContextApi from "../../ContextApi/ContextApi";
 import classnames from "classnames";
 import "../Coworking.scss";
-import formAPI from "../../../mock/contentTypes.js";
 class PrivateDesk extends React.PureComponent {
   static contextType = ContextApi;
   constructor(props, context) {
@@ -38,62 +36,61 @@ class PrivateDesk extends React.PureComponent {
         isValid: false,
         submitted: false,
         isSubmitting: false,
-        fields: {},
-        // fields: {
-        //   fullname: {
-        //     value: "",
-        //     error: "",
-        //     isValid: false
-        //   },
-        //   birthyear: {
-        //     value: "",
-        //     error: "",
-        //     isValid: false
-        //   },
-        //   workingfield: {
-        //     value: "",
-        //     error: "",
-        //     isValid: false
-        //   },
-        //   phonenumber: {
-        //     code: "+98",
-        //     value: "",
-        //     error: "",
-        //     isValid: false
-        //   },
-        //   city: {
-        //     value: "",
-        //     error: "",
-        //     isValid: false
-        //   },
-        //   seats: {
-        //     value: "",
-        //     error: "",
-        //     isValid: false
-        //   },
-        //   email: {
-        //     value: "",
-        //     error: "",
-        //     isValid: false
-        //   },
-        //   resume: {
-        //     uploading: false,
-        //     uploadProgress: 0,
-        //     value: "",
-        //     error: "",
-        //     isValid: false
-        //   },
-        //   country: {
-        //     value: "5d35e8288e6e9a0017c28fcf",
-        //     error: "",
-        //     isValid: false
-        //   },
-        //   description: {
-        //     value: "",
-        //     error: "",
-        //     isValid: true
-        //   }
-        // },
+        fields: {
+          fullname: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          birthyear: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          workingfield: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          phonenumber: {
+            code: "+98",
+            value: "",
+            error: "",
+            isValid: false
+          },
+          city: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          seats: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          email: {
+            value: "",
+            error: "",
+            isValid: false
+          },
+          resume: {
+            uploading: false,
+            uploadProgress: 0,
+            value: "",
+            error: "",
+            isValid: false
+          },
+          country: {
+            value: "5d35e8288e6e9a0017c28fcf",
+            error: "",
+            isValid: false
+          },
+          description: {
+            value: "",
+            error: "",
+            isValid: true
+          }
+        },
         backgroundData: {
           src: window.src,
           product: Config.PRODUCT_TYPE_ID.private_desk,
@@ -101,81 +98,30 @@ class PrivateDesk extends React.PureComponent {
           product_id: this.urlParams.product_id
         }
       },
-      combo: {}
-    };  
-    this.validationRules = {};
-  }
-  stateFieldsGenerator = form => {
-      const f = {};//fields
-      const c = {};//combos
-      for (let i = 0; i <= form.fields.length - 1; i++) {
-        const field = form.fields[i];
-        const {name} = field;
-        const defaultValue = SafeValue(this.urlParams, name, "string", "")
-        if (field.inVisible) {
-
-        } else {
-          f[name] = {
-            value: defaultValue,
-            error: "",
-            isValid: field.isRequired && !defaultValue? false :true
-          };
-          if (field.type === "media") {
-            f[name] = {
-              ...f[name],
-              uploading: false,
-              uploadProgress: 0
-            };
-          }
-          if (
-            field.type === "string" &&
-            field.appearance.toLowerCase() === "phonenumber"
-          ) {
-            f[name] = {
-              ...f[name],
-              code: !this.availableCountryCodes && "+98"
-            };
-          }
-          if (name === "country") {
-            f[name] = {
-              ...f[name],
-              value: "5d35e8288e6e9a0017c28fcf"
-            };
-          }
-          if(field.type === "reference"){
-            c[name] = {
-              hasLoaded: false,
-              contentType:SafeValue(field,"references.0","string","0"),
-              items: []
-            };
-          }
-        }
-      }
-      return {
-        form:{
-          ...this.state.form,
-          fields:{
-            ...this.state.form.fields,
-            ...f
-          }
+      combo: {
+        list_of_cities: {
+          hasLoaded: false,
+          items: []
         },
-        combo:c
-      };
-    }
-    generateValidationRules = form => {
-      const v = {};
-      for (let i = 0; i <= form.fields.length - 1; i++) {
-        const key = form.fields[i].name;
-        v[key] = [];
-        if (form.fields[i].isRequired) {
-          v[key].push("required");
+        coworking_working_field: {
+          hasLoaded: false,
+          items: []
         }
-        if (form.fields[i].appearance === "default")
-          v[key].push(form.fields[i].type);
-        else v[key].push(form.fields[i].appearance);
       }
-      return v;
     };
+    this.validationRules = {
+      fullname: ["required"],
+      birthyear: ["required", "birthyear_shamsi"],
+      educationfield: ["required"],
+      phonenumber: ["required", "phonenumber"],
+      city: ["required"],
+      seats: ["required", "number"],
+      email: ["required", "email"],
+      workingfield: ["required"],
+      resume: ["upload"]
+    };
+  }
+
   checkboxStateHandler = (name, data) => {
     let checkBoxValuesArr = [];
     if (data.length) {
@@ -449,16 +395,6 @@ class PrivateDesk extends React.PureComponent {
 
   generateCheckboxDataFromApi = (name, defaultChecked) => {
     const { lang } = this;
-    let comboIdx = "";
-    if(new RegExp(/^[a-f\d]{24}$/).test(name)){
-      for(const key in this.state.combo){
-        if(this.state.combo[key].contentType === name){
-          comboIdx = key;
-        } 
-      }
-    }else{
-      comboIdx = name;
-    }
     FilterContents(name, res => {
       const arr = [];
       SafeValue(res, "data", "object", []).map((val, key) => {
@@ -475,8 +411,7 @@ class PrivateDesk extends React.PureComponent {
       this.setState({
         combo: {
           ...this.state.combo,
-          [comboIdx]: {
-            ...this.state.combo[comboIdx],
+          [name]: {
             hasLoaded: true,
             items: arr
           }
@@ -484,182 +419,30 @@ class PrivateDesk extends React.PureComponent {
       });
     });
   };
-  inputsGenerator = (form)=>{
-    const { locale, direction } = this.translate;
-    const items = [];
-    debugger;
-    const arr = form.fields.sort(item=>item.order);
-    arr.forEach((field)=>{
-        const key = field.name;
-        if(!field.inVisible){
-        const defaultValueFromState = this.state.form.fields[key].value;
-        switch(field.type+field.appearance){
-          case "string"+"text":
-            if(field.isMultiLine){
-            items.push(
-              <FlatTextArea
-                label={SafeValue(field,`title.${this.lang}`,"string"," ")}
-                type="text"
-                placeholder={SafeValue(field,`title.${this.lang}.helpDesk`,"string","")}
-                name={key}
-                id={key}
-                defaultValue={defaultValueFromState}
-                onChange={this.formStateHandler}
-                style={{ minHeight: "100px" }}
-                error={this.state.form.fields[key].error}
-              />
-            )
-            }else{
-              items.push(<FlatInput
-                label={SafeValue(field,`title.${this.lang}`,"string"," ")}
-                type="text"
-                placeholder={SafeValue(field,`title.${this.lang}.helpDesk`,"string","")}
-                name={key}
-                id={key}
-                defaultValue={defaultValueFromState}
-                autoFocus
-                onChange={this.formStateHandler}
-                error={this.state.form.fields[key].error}
-              />)
-            }
-          break;
-          case "string"+"phonenumber":
-            items.push(<FlatInput
-              label={SafeValue(field,`title.${this.lang}`,"string"," ")}
-              type="number"
-              prefix={this.state.form.fields[key].code}
-              placeholder={SafeValue(field,`title.${this.lang}.helpDesk`,"string","")}
-              name={key}
-              id={key}
-              maxLength="10"
-              defaultValue={defaultValueFromState}
-              style={{ direction: direction }}
-              onChange={this.formStateHandler}
-              error={this.state.form.fields[key].error}
-            />)
-          break;
-          case "string"+"email":
-            items.push(<FlatInput
-              label={SafeValue(field,`title.${this.lang}`,"string"," ")}
-              type="email"
-              placeholder={SafeValue(field,`title.${this.lang}.helpDesk`,"string","")}
-              name={key}
-              defaultValue={defaultValueFromState}
-              id={key}
-              onChange={this.formStateHandler}
-              error={this.state.form.fields[key].error}
-            />)
-          break;
-          case "number"+"year":
-            items.push(<FlatInput
-              label={SafeValue(field,`title.${this.lang}`,"string"," ")}
-              type="number"
-              placeholder={SafeValue(field,`title.${this.lang}.helpDesk`,"string","")}
-              name={key}
-              defaultValue={defaultValueFromState}
-              id={key}
-              onChange={this.formStateHandler}
-              error={this.state.form.fields[key].error}
-            />)
-          break;
-          case "reference"+"default":
-            items.push(<div className="field-row">
-              <span className="field-title">
-                {SafeValue(field,`title.${this.lang}`,"string"," ")}
-              </span>
-
-              {/* fill checkboxes */}
-              {this.state.combo[key].hasLoaded ?(
-                <FlatInlineSelect
-                  type={field.isList ? "checkbox" : "radio"}
-                  items={this.state.combo[key].items}
-                  onChange={this.checkboxStateHandler}
-                  dir={direction}
-                  name={key}
-                />
-              ) : (
-                <Skeleton count={2} style={{ lineHeight: 2 }} />
-              )}
-              <span className="error-message">
-                {this.state.form.fields[key].error}
-              </span>
-            </div>)
-          break;
-          case "url","":
-          break;
-          case "media"+"default":
-            items.push(<FlatUploader
-              label={SafeValue(field,`title.${this.lang}`,"string"," ")}
-              name={key}
-              id={key}
-              style={{ direction: direction }}
-              buttonValue="آپلود"//locale.fields[key].buttonValue}
-              placeholder={SafeValue(field,`title.${this.lang}.helpDesk`,"string"," ")}
-              progress={this.state.form.fields[key].uploadProgress}
-              progresscolor="lightblue"
-              onChange={this.uploadFile}
-              error={this.state.form.fields[key].error}
-            />)
-          break;
-          case "number"+"number":
-            items.push(<FlatInput
-              label={SafeValue(field,`title.${this.lang}`,"string"," ")}
-              type="number"              
-              placeholder={SafeValue(field,`title.${this.lang}.helpDesk`,"string","")}
-              name={key}
-              id={key}
-              onChange={this.formStateHandler}
-              defaultValue={defaultValueFromState}
-              error={this.state.form.fields[key].error}
-            />)
-          break;
-          case "number"+"rangeSlider":
-            items.push(<FlatNumberSet
-              label={SafeValue(field,`title.${this.lang}`,"string"," ")}
-              type="number"
-              range={SafeValue(field,'limit',"object",false)? [field.limit.min,field.limit.max] : [1,5]}
-              defaultValue={this.state.form.fields[key].value}
-              name={key}
-              id={key}
-              direction={direction}
-              defaultValue={defaultValueFromState}
-              onChange={this.formStateHandler}
-              error={this.state.form.fields[key].error}
-            />)
-          break;
-          default:
-          break;
-        }
-        }
-    });
-    return items;
-  };
-  componentWillMount(){
-        // debugger;
-    // GetContentTypeById(this.urlParams.formId,(res)=>{
-      // if(res.success_result.success){
-      this.setState(
-        // formAPI:res.data,
-        this.stateFieldsGenerator(formAPI)
-      );
-      this.validationRules = this.generateValidationRules(formAPI);
-      // }
-    // });
-  }
   componentDidMount() {
     const exportedUrlParams = this.urlParser(this.props.location.search);
     const selectedCity = SafeValue(exportedUrlParams, "city", "string", ""),
       neededSeats = SafeValue(exportedUrlParams, "seats", "string", "1");
-      //debugger;
-    for(const name in this.state.combo){
-      if(this.state.form.fields[name].value){
-        //if reference has default selected item
-        this.generateCheckboxDataFromApi(this.state.combo[name].contentType,this.state.form.fields[name].value);
-      }else{
-        //else not
-        this.generateCheckboxDataFromApi(this.state.combo[name].contentType);
+    this.setState({
+      form: {
+        ...this.state.form,
+        fields: {
+          ...this.state.form.fields,
+          seats: {
+            ...this.state.form.fields.seats,
+            value: neededSeats,
+            isValid: !isNaN(Number(neededSeats))
+          },
+          city: {
+            ...this.state.form.fields.city,
+            value: selectedCity,
+            isValid: selectedCity && true
+          }
+        }
       }
-    }
+    });
+    this.generateCheckboxDataFromApi("list_of_cities", selectedCity);
+    this.generateCheckboxDataFromApi("coworking_working_field");
   }
   render() {
     const { locale, direction } = this.translate;
@@ -697,8 +480,7 @@ class PrivateDesk extends React.PureComponent {
                   </span>
                 </CardHeader>
                 <CardBody>
-                {this.inputsGenerator(formAPI)}
-                  {/* <FlatInput
+                  <FlatInput
                     label={locale.fields.fullname._title}
                     type="text"
                     placeholder={locale.fields.fullname.placeholder}
@@ -712,8 +494,11 @@ class PrivateDesk extends React.PureComponent {
                   <FlatInput
                     label={locale.fields.birthyear._title}
                     type="number"
+                    max={9999}
+                    min={1270}
                     placeholder={locale.fields.birthyear.placeholder}
                     name="birthyear"
+                    maxLength="4"
                     id="birthyear"
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.birthyear.error}
@@ -721,10 +506,10 @@ class PrivateDesk extends React.PureComponent {
                   <div className="field-row">
                     <span className="field-title">
                       {locale.fields.workingfield._title}
-                    </span> */}
+                    </span>
 
                     {/* fill checkboxes */}
-                    {/* {this.state.combo.coworking_working_field.hasLoaded ? (
+                    {this.state.combo.coworking_working_field.hasLoaded ? (
                       <FlatInlineSelect
                         type="checkbox"
                         items={this.state.combo.coworking_working_field.items}
@@ -765,10 +550,10 @@ class PrivateDesk extends React.PureComponent {
                   <div className="field-row">
                     <span className="field-title">
                       {locale.fields.city._title}
-                    </span> */}
+                    </span>
 
                     {/* fill checkboxes */}
-                    {/* {this.state.combo.list_of_cities.hasLoaded ? (
+                    {this.state.combo.list_of_cities.hasLoaded ? (
                       <FlatInlineSelect
                         type="radio"
                         items={this.state.combo.list_of_cities.items}
@@ -806,6 +591,7 @@ class PrivateDesk extends React.PureComponent {
                     onChange={this.uploadFile}
                     error={this.state.form.fields.resume.error}
                   />
+                </CardBody>
                 <FlatTextArea
                   label={locale.fields.description._title}
                   type="text"
@@ -815,8 +601,7 @@ class PrivateDesk extends React.PureComponent {
                   onChange={this.formStateHandler}
                   style={{ minHeight: "100px" }}
                   error={this.state.form.fields.description.error}
-                /> */}
-                </CardBody>
+                />
               </section>
               <CardFooter>
                 <Button
@@ -829,8 +614,10 @@ class PrivateDesk extends React.PureComponent {
                       alt=""
                       style={{ margin: "-12px 16px" }}
                     />
-                  ) : (
+                  ) : this.validatePhoneNumber() ? (
                     locale.fields.submit.submit
+                  ) : (
+                    locale.fields.submit.verify_phonenumber
                   )}
                 </Button>
               </CardFooter>
