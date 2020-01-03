@@ -123,7 +123,7 @@
     transition: width 0.4s ease-in-out;
     -webkit-transition: width 0.4s ease-in-out;
     cursor: pointer;
-    width: 70px;
+    width: 135px;
   }
 }
 .logo-text {
@@ -148,7 +148,7 @@
     }
   }
   img {
-    width: 50px;
+    width: 112px;
   }
   .nav-link {
     &.login,
@@ -288,6 +288,7 @@
       display: flex;
       flex-direction: row-reverse;
       align-items: center;
+      
       .menu-icon {
         display: block;
         color: white;
@@ -297,8 +298,11 @@
         display: none;
       }
     }
+   
   }
-
+  .nav-logo-container-col{
+    & img {width:80px}
+  }
   .scrolledNav {
     padding: 12px 0;
     .menu-icon {
@@ -315,7 +319,7 @@
       }
     }
     img {
-      width: 35px;
+      width: 80px;
     }
   }
 

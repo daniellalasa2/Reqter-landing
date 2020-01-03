@@ -29,13 +29,14 @@ import {
   faUserAlt,
   faEnvelopeOpenText
 } from "@fortawesome/free-solid-svg-icons";
-import logo from "../../assets/images/logo.jpg";
 import Login from "../../components/Auth/Login/Login";
 import "./Nav.scss";
 import ContextApi, {
   ContextConsumer
 } from "../../components/ContextApi/ContextApi";
 import { SetCookie } from "../../components/CookieHandler/CookieHandler";
+const logo = require("../../assets/images/logo-s.png");
+const logof = require("../../assets/images/logo-f.png");
 
 class Navigation extends Component {
   static contextType = ContextApi;
@@ -61,6 +62,9 @@ class Navigation extends Component {
     } else {
       const navMainContainer = document.getElementById("nav-main-container");
       navMainContainer.classList.add("scrolledNav");
+      this.setState({
+        didBodyScrolled: true
+      });
     }
   }
   //WARNING! To be deprecated in React v17. Use componentDidMount instead.
@@ -147,16 +151,16 @@ class Navigation extends Component {
         <Row className="nav-main-container" id="nav-main-container">
           <Col xs="8" lg="2" md="2" className="nav-logo-container-col">
             <img
-              src={logo}
+              src={this.state.didBodyScrolled ? logof : logo}
               alt=""
               onClick={() => window.location.replace("/")}
             />
-            <span className="logo-text-box">
+            {/* <span className="logo-text-box">
               <strong className="logo-text">
                 Startup <br />
                 Space
               </strong>
-            </span>
+            </span> */}
           </Col>
           <Col xs="4" md="10" lg="10" className="nav-links-container-col">
             <FontAwesomeIcon
