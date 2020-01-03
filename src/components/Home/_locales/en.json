@@ -3,8 +3,8 @@
   "locale": {
     "product": {
       "header": {
-        "title": "Provide work space for start-ups and freelancers",
-        "slang": "Apply, Get offered and Choose",
+        "title": "Request a coworking space for start-ups and freelancers",
+        "slang": "Apply to get offers from all coworking spaces in your city",
         "choose_a_product": "Choose type of your request: "
       },
       "header_forms": {
@@ -43,15 +43,15 @@
     "how_to_use": {
       "_title": "Steps to get the job done",
       "get_service": {
-        "_title": "Get the service",
+        "_title": "Choose your coworking space",
         "description": "After you have reviewed the offers received by your clients, the connection will be established between you and the appropriate server for the job."
       },
       "match_making": {
-        "_title": "Review and send to related providers",
+        "_title": "Review and send to related coworking spaces",
         "description": "Your inquiry will be submitted to our top service providers and providers after being reviewed by our professional team."
       },
       "submit_form": {
-        "_title": "Fill out the service request form",
+        "_title": "Fill out the coworking space request form",
         "description": "Fill out the service request form online"
       }
     },

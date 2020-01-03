@@ -3,7 +3,7 @@ select {
 }
 .picture-fader {
   background-color: rgba(0, 0, 0, 0.5);
-  height: 550px;
+  height: 750px;
   width: 100%;
   position: relative;
   z-index: 2;
@@ -16,7 +16,7 @@ select {
   background-size: cover;
   background-position: center;
   width: 100%;
-  height: 550px;
+  height: 750px;
   display: block;
   padding: 0;
   margin: 0;
@@ -40,11 +40,12 @@ select {
       padding-top: 100px;
     }
     .product-inline-form-wrapper {
-      margin-top: 90px;
+      margin-top: 60px;
     }
     .default-header-content {
-      h2 {
+      h1 {
         margin-top: 50px;
+        font-size: 32px;
       }
       span.choose-a-product {
         position: relative !important;
@@ -63,7 +64,7 @@ select {
       box-sizing: content-box;
       border-radius: 7px;
       background-color: whitesmoke;
-      margin-top: 30px;
+      margin-top: 70px;
       .input-group {
         outline: none !important;
         border-radius: 0;
@@ -120,7 +121,7 @@ select {
   position: relative;
   max-width: 947px;
   padding: 0 3px;
-  margin: 145px auto 13px;
+  margin: 195px auto 13px;
   z-index: 4;
   .products {
     display: flex;
@@ -128,7 +129,7 @@ select {
     padding: 0;
     justify-content: center;
     .active {
-      border: 4px solid #b8a4e6;
+      background-color:  #ded9e9;
     }
     li {
       display: flex;
@@ -177,6 +178,7 @@ select {
 //smart watches and extra small devices
 @media (max-width: 320px) {
   .products-box {
+    margin-top: 145px !important;
     .products {
       li {
         width: 90% !important;
@@ -193,7 +195,7 @@ select {
     display: none;
   }
   .products-box {
-    margin-top: 45px !important;
+    margin-top: 145px !important;
     .products {
       flex-direction: column;
       align-items: center;
@@ -312,6 +314,7 @@ select {
 //landscape phone and up , small tablets
 @media (min-width: 576.01px) {
   .products-box {
+    
     .products {
       li {
         .chevron-icon {

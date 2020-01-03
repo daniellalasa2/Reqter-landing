@@ -64,7 +64,7 @@ class Home extends React.Component {
           neededSeats: { value: "", isValid: true }
         }
       },
-      activeTab: "1",
+      activeTab: "2",
       bgImg: {
         "1": product_defaultBgImg,
         "2": product_sharedDeskBgImg,
@@ -218,11 +218,12 @@ class Home extends React.Component {
                       <Row>
                         <Col sm="12">
                           <section className="default-header-content">
-                            <h2>
+                            <h1>
                               <strong>{product.header.title}</strong>
-                            </h2>
+                            </h1>
                             <br />
                             <h4>{product.header.slang}</h4>
+
                             <span className="choose-a-product">
                               <strong>{product.header.choose_a_product}</strong>
                             </span>
@@ -235,11 +236,35 @@ class Home extends React.Component {
                       <Row>
                         <Col sm="12">
                           <div className="product-inline-form-wrapper">
-                            <h5>
-                              {" "}
-                              {product.header_forms.choose_city_and_seats}
-                            </h5>
-                            <div className="product-request-form-box">
+                            <h1
+                              style={{
+                                "font-size": "32px",
+                                "margin-bottom": "20px"
+                              }}
+                            >
+                              <strong style={{ padding: "10px" }}>
+                                {product.header.title}
+                              </strong>
+                            </h1>
+                            <h5> {product.header.slang}</h5>
+                            <div
+                              className="product-request-form-box"
+                              style={{
+                                textAlign: "right",
+                                "padding-top": "15px"
+                              }}
+                            >
+                              <span
+                                className="choose-a-product"
+                                style={{
+                                  color: "black",
+                                  textAlign: "right"
+                                }}
+                              >
+                                <strong style={{ padding: "10px" }}>
+                                  {product.header_forms.choose_city_and_seats}
+                                </strong>
+                              </span>
                               <InputGroup size="lg">
                                 <InputGroupAddon addonType="prepend">
                                   <Button
@@ -297,10 +322,33 @@ class Home extends React.Component {
                       <Row>
                         <Col sm="12">
                           <div className="product-inline-form-wrapper">
-                            <h5>
-                              {product.header_forms.choose_city_and_seats}
-                            </h5>
-                            <div className="product-request-form-box">
+                            <h1
+                              style={{
+                                "font-size": "32px",
+                                "margin-bottom": "20px"
+                              }}
+                            >
+                              <strong>{product.header.title}</strong>
+                            </h1>
+                            <h5>{product.header.slang}</h5>
+                            <div
+                              className="product-request-form-box"
+                              style={{
+                                textAlign: "right",
+                                "padding-top": "15px"
+                              }}
+                            >
+                              <span
+                                className="choose-a-product"
+                                style={{
+                                  color: "black",
+                                  textAlign: "right"
+                                }}
+                              >
+                                <strong style={{ padding: "10px" }}>
+                                  {product.header_forms.choose_city_and_seats}
+                                </strong>
+                              </span>
                               <InputGroup size="lg">
                                 <InputGroupAddon addonType="prepend">
                                   <Button
@@ -357,8 +405,33 @@ class Home extends React.Component {
                     <TabPane tabId="4">
                       <Row>
                         <Col sm="12" className="product-inline-form-wrapper">
-                          <h5>{product.header_forms.choose_city_and_seats}</h5>
-                          <div className="product-request-form-box">
+                          <h1
+                            style={{
+                              "font-size": "32px",
+                              "margin-bottom": "20px"
+                            }}
+                          >
+                            <strong>{product.header.title}</strong>
+                          </h1>
+                          <h5>{product.header.slang}</h5>
+                          <div
+                            className="product-request-form-box"
+                            style={{
+                              textAlign: "right",
+                              "padding-top": "15px"
+                            }}
+                          >
+                            <span
+                              className="choose-a-product"
+                              style={{
+                                color: "black",
+                                textAlign: "right"
+                              }}
+                            >
+                              <strong style={{ padding: "10px" }}>
+                                {product.header_forms.choose_city_and_seats}
+                              </strong>
+                            </span>
                             <InputGroup size="lg">
                               <InputGroupAddon addonType="prepend">
                                 <Button
@@ -414,8 +487,33 @@ class Home extends React.Component {
                     <TabPane tabId="5">
                       <Row>
                         <Col sm="12" className="product-inline-form-wrapper">
-                          <h5>{product.header_forms.choose_city_and_seats}</h5>
-                          <div className="product-request-form-box">
+                          <h1
+                            style={{
+                              "font-size": "32px",
+                              "margin-bottom": "20px"
+                            }}
+                          >
+                            <strong>{product.header.title}</strong>
+                          </h1>
+                          <h5>{product.header.slang}</h5>
+                          <div
+                            className="product-request-form-box"
+                            style={{
+                              textAlign: "right",
+                              "padding-top": "15px"
+                            }}
+                          >
+                            <span
+                              className="choose-a-product"
+                              style={{
+                                color: "black",
+                                textAlign: "right"
+                              }}
+                            >
+                              <strong style={{ padding: "10px" }}>
+                                {product.header_forms.choose_city_and_seats}
+                              </strong>
+                            </span>
                             <InputGroup size="lg">
                               <InputGroupAddon addonType="prepend">
                                 <Button
@@ -587,9 +685,7 @@ class Home extends React.Component {
               </Row> */}
             </div>
           </Col>
-          <Col lg="12">
-            <div className="crooked-divider" />
-          </Col>
+          <Col lg="12">{/* <div className="crooked-divider" /> */}</Col>
         </Row>
         <section>
           <Row>
