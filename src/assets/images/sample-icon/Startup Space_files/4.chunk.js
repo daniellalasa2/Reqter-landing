@@ -423,9 +423,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Configuration = {
-  BASE_URL_CASEER: "https://app-ipanel.herokuapp.com/",
-  BASE_URL_REQTER: "https://app-rpanel.herokuapp.com/",
-  BASE_URL_UPLOAD: "https://app-spanel.herokuapp.com/",
+  BASE_URL_CASEER: "https://requester.reqter.com/",
+  BASE_URL_REQTER: "https://requester.reqter.com/",
+  BASE_URL_UPLOAD: "https://assets.reqter.com/",
   CLIENT_ID: "1d42c55e-0f44-4613-adba-a5bbbca878e1",
   SPACE_ID: "5cf3883dcce4de00174d48cf",
   Auth: CheckAuthToken,

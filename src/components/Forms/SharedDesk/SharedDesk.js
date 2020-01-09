@@ -7,7 +7,6 @@ import {
   FilterContents
 } from "../../ApiHandlers/ApiHandler";
 import { Config } from "../../ApiHandlers/ApiHandler";
-import Skeleton from "react-loading-skeleton";
 import SuccessSubmit from "../SubmitStatus/SuccessSubmit/SuccessSubmit";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -16,13 +15,15 @@ import {
   FlatUploader,
   FlatNumberSet,
   FlatInlineSelect,
-  FlatTextArea
+  FlatTextArea,
+  FlatCustomWrapper
 } from "../../FlatForm/FlatForm";
 import LoadingSpinner from "../../../assets/images/spinner.svg";
 import Validator from "../../Validator/Validator";
 import ContextApi from "../../ContextApi/ContextApi";
 import "../Coworking.scss";
 import classnames from "classnames";
+import Skeleton from "react-loading-skeleton";
 class SharedDesk extends React.PureComponent {
   static contextType = ContextApi;
   constructor(props, context) {
@@ -443,7 +444,6 @@ class SharedDesk extends React.PureComponent {
         }
       }
     });
-
     this.generateCheckboxDataFromApi("list_of_cities", selectedCity);
     this.generateCheckboxDataFromApi("coworking_working_field");
   }
@@ -484,6 +484,7 @@ class SharedDesk extends React.PureComponent {
                 </CardHeader>
                 <CardBody>
                   <FlatInput
+                    direction={direction}
                     label={locale.fields.fullname._title}
                     type="text"
                     placeholder={locale.fields.fullname.placeholder}
@@ -495,6 +496,7 @@ class SharedDesk extends React.PureComponent {
                   />
 
                   <FlatInput
+                    direction={direction}
                     label={locale.fields.birthyear._title}
                     type="number"
                     max={9999}
@@ -506,29 +508,31 @@ class SharedDesk extends React.PureComponent {
                     onChange={this.formStateHandler}
                     error={this.state.form.fields.birthyear.error}
                   />
-                  <div className="field-row">
-                    <span className="field-title">
-                      {locale.fields.workingfield._title}
-                    </span>
+                  <FlatCustomWrapper
+                    skeletonConfig={{
+                      style: { lineHeight: 2 },
+                      count: 5
+                    }}
+                    skeleton={
+                      this.state.combo.coworking_working_field.hasLoaded
+                    }
+                    error={this.state.form.fields.workingfield.error}
+                    label={locale.fields.workingfield._title}
+                    direction={direction}
+                  >
+                    <FlatInlineSelect
+                      direction={direction}
+                      type="checkbox"
+                      items={this.state.combo.coworking_working_field.items}
+                      onChange={this.checkboxStateHandler}
+                      dir={direction}
+                      name="workingfield"
+                    />
+                  </FlatCustomWrapper>
 
-                    {/* fill checkboxes */}
-                    {this.state.combo.coworking_working_field.hasLoaded ? (
-                      <FlatInlineSelect
-                        type="checkbox"
-                        items={this.state.combo.coworking_working_field.items}
-                        onChange={this.checkboxStateHandler}
-                        dir={direction}
-                        name="workingfield"
-                      />
-                    ) : (
-                      <Skeleton count={5} style={{ lineHeight: 2 }} />
-                    )}
-                    <span className="error-message">
-                      {this.state.form.fields.workingfield.error}
-                    </span>
-                  </div>
                   <div className="contact-section">
                     <FlatInput
+                      direction={direction}
                       label={locale.fields.phonenumber._title}
                       type="text"
                       prefix={this.state.form.fields.phonenumber.code}
@@ -541,6 +545,7 @@ class SharedDesk extends React.PureComponent {
                       error={this.state.form.fields.phonenumber.error}
                     />
                     <FlatInput
+                      direction={direction}
                       label={locale.fields.email._title}
                       type="email"
                       placeholder={locale.fields.email.placeholder}
@@ -550,31 +555,29 @@ class SharedDesk extends React.PureComponent {
                       error={this.state.form.fields.email.error}
                     />
                   </div>
-                  <div className="field-row">
-                    <span className="field-title">
-                      {locale.fields.city._title}
-                    </span>
-
-                    {/* fill checkboxes */}
-                    {this.state.combo.list_of_cities.hasLoaded ? (
-                      <FlatInlineSelect
-                        type="radio"
-                        items={this.state.combo.list_of_cities.items}
-                        onChange={this.checkboxStateHandler}
-                        dir={direction}
-                        name="city"
-                      />
-                    ) : (
-                      <Skeleton count={2} style={{ lineHeight: 2 }} />
-                    )}
-                    <span className="error-message">
-                      {this.state.form.fields.city.error}
-                    </span>
-                  </div>
+                  <FlatCustomWrapper
+                    skeletonConfig={{
+                      style: { lineHeight: 2 },
+                      count: 2
+                    }}
+                    skeleton={this.state.combo.list_of_cities.hasLoaded}
+                    error={this.state.form.fields.city.error}
+                    label={locale.fields.city._title}
+                    direction={direction}
+                  >
+                    <FlatInlineSelect
+                      direction={direction}
+                      type="radio"
+                      items={this.state.combo.list_of_cities.items}
+                      onChange={this.checkboxStateHandler}
+                      dir={direction}
+                      name="city"
+                    />
+                  </FlatCustomWrapper>
                   <FlatNumberSet
+                    direction={direction}
                     label={locale.fields.seats._title}
                     type="number"
-                    direction={direction}
                     range={[1, 10]}
                     defaultValue={this.state.form.fields.seats.value}
                     name="seats"
@@ -583,6 +586,7 @@ class SharedDesk extends React.PureComponent {
                     error={this.state.form.fields.seats.error}
                   />
                   <FlatUploader
+                    direction={direction}
                     label={locale.fields.resume._title}
                     name="resume"
                     id="resume"
@@ -595,6 +599,7 @@ class SharedDesk extends React.PureComponent {
                     error={this.state.form.fields.resume.error}
                   />
                   <FlatTextArea
+                    direction={direction}
                     label={locale.fields.description._title}
                     type="text"
                     placeholder={locale.fields.description.placeholder}

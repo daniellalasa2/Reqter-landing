@@ -8,6 +8,7 @@ import Spinner from "../../assets/script/spinner";
 import AvatarUploader from "./AvatarUploader";
 import JsonInput from "./JsonInput";
 import ImageUploaderApiIncluded from "./ImageUploaderApiIncluded";
+import Skeleton from "react-loading-skeleton";
 // import MultiImageUploader from "./MultiImageUploader";
 /*
   Todo:
@@ -253,6 +254,7 @@ const FlatNumberSet = ({
   error,
   name,
   defaultValue,
+  direction,
   id
 }) => {
   const _wrapperRef = useRef();
@@ -285,9 +287,18 @@ const FlatNumberSet = ({
     );
   }
   return (
-    <div className="field-row" id={id}>
+    <div
+      className={classnames("field-row", direction ? "_" + direction : "")}
+      id={id}
+    >
       <label>{label}</label>
-      <div ref={_wrapperRef} className="number-range-buttons-container">
+      <div
+        ref={_wrapperRef}
+        className={classnames(
+          "number-range-buttons-container",
+          direction ? "_" + direction : ""
+        )}
+      >
         {numberRangeButtons}
       </div>
       <span className="error-message">{error}</span>
@@ -516,6 +527,7 @@ const FlatUploader = ({
   buttonValue,
   onChange,
   wrapperStyle,
+  direction,
   id,
   error
 }) => {
@@ -525,7 +537,11 @@ const FlatUploader = ({
     setFileName(e.target.files[0].name);
   };
   return (
-    <div className="field-row" id={id} style={wrapperStyle}>
+    <div
+      className={classnames("field-row", direction && "_" + direction)}
+      id={id}
+      style={wrapperStyle}
+    >
       <span className="field-title">{label}</span>
       <div
         className={classnames(
@@ -715,6 +731,36 @@ const FlatJsonInput = ({ label, id, name, style, ...props }) => {
     </div>
   );
 };
+
+const FlatCustomWrapper = ({
+  label, //section title(label)
+  error, //error message
+  direction, //wrapper direction: rtl or ltr
+  skeleton, //make skeleton active or deactive
+  skeletonConfig, //skeleton config accepts: all react-skeleton props
+  ...props
+}) => {
+  return (
+    <div
+      className={classnames("field-row", direction && "_" + direction)}
+      {...props}
+    >
+      {label && <span className="field-title">&nbsp;{label}</span>}
+
+      {/* fill checkboxes */}
+      {skeleton ? (
+        props.children
+      ) : (
+        <Skeleton
+          count={skeletonConfig.count}
+          style={skeletonConfig.style}
+          {...skeletonConfig}
+        />
+      )}
+      <span className="error-message">{error}</span>
+    </div>
+  );
+};
 export {
   ImageSelect,
   InlineSelect,
@@ -729,5 +775,6 @@ export {
   FlatAvatarUploader,
   FlatButton,
   FlatJsonInput,
+  FlatCustomWrapper,
   ImageUploaderApiIncluded as FlatImageUploaderApiIncluded
 };

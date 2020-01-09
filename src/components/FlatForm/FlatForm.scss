@@ -125,6 +125,7 @@ input:read-only {
   & input,
   textarea {
     direction: rtl;
+    margin-top:9px;
   }
   direction: rtl;
   text-align: right;
@@ -636,10 +637,10 @@ label.checkboxContainer {
     direction: rtl;
     & .sets {
       &:first-child {
-        border-radius: 0 1px 1px 0 !important;
+        border-radius: 0px 1px 1px 0px ;
       }
       &:last-child {
-        border-radius: 1px 0 0 1px !important;
+        border-radius: 1px 0px 0px 1px ;
       }
     }
   }
@@ -647,10 +648,10 @@ label.checkboxContainer {
     direction: ltr;
     & .sets {
       &:first-child {
-        border-radius: 1px 0 0 1px !important;
+        border-radius: 1px 0px 0px 1px ;
       }
       &:last-child {
-        border-radius: 0 1px 1px 0 !important;
+        border-radius: 0px 1px 1px 0px ;
       }
     }
   }
@@ -660,9 +661,18 @@ label.checkboxContainer {
     -moz-appearance: none;
     border: 1px solid lightgrey !important;
     // &:not(:first-child),
-    &:not(:last-child) {
-      border-left: none !important;
-      border-radius: none;
+    &._ltr{
+      &:not(:last-child) {
+        border-right: none !important;
+        border-radius: none;
+      }
+    }
+    &._rtl{
+      &:not(:last-child) {
+        border-left: none !important;
+        border-radius: none;
+      }
+
     }
     background-color: transparent;
     color: black;
@@ -699,6 +709,7 @@ label.checkboxContainer {
   background-color: whitesmoke;
   direction: rtl;
   border-radius: 1px;
+  margin-top:10px;
   .percentage-number {
     font-size: 17px;
     width: 45px;

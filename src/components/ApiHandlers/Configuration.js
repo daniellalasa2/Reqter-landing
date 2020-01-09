@@ -7,19 +7,17 @@ import {
 import axios from "axios";
 var Configuration = {
   BASE_URL_CASEER:
-    process.env.REACT_APP_GATEWAY || "https://reqter-adminapi.herokuapp.com/",
+    process.env.REACT_APP_GATEWAY || "https://adminapi.reqter.com/",
   BASE_URL_REQTER:
-    process.env.REACT_APP_BASE_URL_REQTER ||
-    "https://reqter-requester.herokuapp.com/",
+    process.env.REACT_APP_BASE_URL_REQTER || "https://requester.reqter.com/",
   BASE_URL_UPLOAD:
-    process.env.REACT_APP_BASE_URL_UPLOAD ||
-    "https://reqter-assets.herokuapp.com/",
+    process.env.REACT_APP_BASE_URL_UPLOAD || "https://assets.reqter.com/",
   CLIENT_ID:
     process.env.REACT_APP_CLIENT_ID || "1d42c55e-0f44-4613-adba-a5bbbca878e1",
   SPACE_ID: process.env.REACT_APP_SPACE_ID || "5cf3883dcce4de00174d48cf",
   Auth: CheckAuthToken,
   URLs: {
-    get_contenttype_by_id:"ctypes/getbyid",
+    get_contenttype_by_id: "ctypes/getbyid",
     submit_form: "api/v1/requests/submit",
     filter_contents: "api/v1/lists",
     filter_contents_get_fullquery: "api/v1/lists/get/fullquery",
