@@ -29,7 +29,6 @@ import {
   faUserAlt,
   faEnvelopeOpenText
 } from "@fortawesome/free-solid-svg-icons";
-import Login from "../../components/Auth/Login/Login";
 import "./Nav.scss";
 import ContextApi, {
   ContextConsumer
@@ -136,18 +135,6 @@ class Navigation extends Component {
     const { locale, direction } = this.translate;
     return (
       <div className={classnames(direction === "ltr" && "_ltr")}>
-        <ContextConsumer>
-          {ctx => (
-            <Login
-              lang={ctx.lang}
-              openModal={ctx.displayLoginModal}
-              toggle={() => this.toggleLogin(null, locale.login_modal_title)}
-              updateAuth={ctx.updateAuth}
-              modalTitle={locale.login_modal_title}
-              defaultPhoneNumber={ctx.defaultPhoneNumber}
-            />
-          )}
-        </ContextConsumer>
         <Row className="nav-main-container" id="nav-main-container">
           <Col xs="8" lg="2" md="2" className="nav-logo-container-col">
             <img
